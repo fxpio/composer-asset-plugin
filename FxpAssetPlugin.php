@@ -66,12 +66,7 @@ class FxpAssetPlugin implements PluginInterface
                     throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a asset type validated, only "' . implode('", "', array_keys($this->types)) . '" are accepted');
                 }
 
-                if (in_array($repo['asset-type'], array('npm'))) {
-                    $repo['filename'] = 'package.json';
-                } else {
-                    $repo['filename'] = $repo['asset-type'] . '.json';
-                }
-
+                $repo['filename'] = $this->types[$repo['asset-type']];
                 $repos[$name] = $rm->createRepository($repo['type'], $repo);
 
                 $rm->addRepository($repos[$name]);
