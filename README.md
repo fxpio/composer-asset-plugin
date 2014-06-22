@@ -3,6 +3,15 @@ Fxp Composer Asset Plugin
 
 The Composer Asset Plugin allows you to manage your assets with NPM or Bower directly in the Composer.
 
+Features include:
+
+- Works with native management system versions of VCS repository of Composer (public and private repository)
+- Drivers for:
+  - Git
+  - Github
+- Caches the package versions
+- Caches the package content
+
 Documentation
 -------------
 
