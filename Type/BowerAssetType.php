@@ -33,8 +33,51 @@ class BowerAssetType extends AbstractAssetType
     {
         $package = array(
             'name'    => $this->getComposerVendorName() . '/' . $data['name'],
+            'type'    => "bower-asset-library",
             'version' => $data['version'],
         );
+
+        if (isset($data['keywords'])) {
+            $package['keywords'] = $data['keywords'];
+        }
+
+        if (isset($data['license'])) {
+            $package['license'] = $data['license'];
+        }
+
+        if (isset($data['dependencies'])) {
+            $package['require'] = array();
+
+            foreach ($data['dependencies'] as $dependency => $version) {
+                $package['require'][$this->getComposerVendorName() . '/' . $dependency] = $version;
+            }
+        }
+
+        if (isset($data['devDependencies'])) {
+            $package['require-dev'] = array();
+
+            foreach ($data['devDependencies'] as $dependency => $version) {
+                $package['require-dev'][$this->getComposerVendorName() . '/' . $dependency] = $version;
+            }
+        }
+
+        $extra = array();
+
+        if (isset($data['main'])) {
+            $extra['bower-asset-main'] = $data['main'];
+        }
+
+        if (isset($data['ignore'])) {
+            $extra['bower-asset-ignore'] = $data['ignore'];
+        }
+
+        if (isset($data['private'])) {
+            $extra['bower-asset-private'] = $data['private'];
+        }
+
+        if (count($extra) > 0) {
+            $package['extra'] = $extra;
+        }
 
         return $package;
     }
