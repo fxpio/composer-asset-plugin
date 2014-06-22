@@ -5,7 +5,9 @@ The Composer Asset Plugin allows you to manage your assets with NPM or Bower dir
 
 Features include:
 
-- Works with native management system versions of VCS repository of Composer (public and private repository)
+- Works with native management system versions of VCS repository of Composer for:
+  - [NPM Package](https://www.npmjs.org) (public and private repository)
+  - [Bower Package](http://bower.io) (public and private repository)
 - Drivers for:
   - Git
   - Github
