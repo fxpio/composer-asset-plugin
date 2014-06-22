@@ -24,14 +24,6 @@ use Composer\Repository\RepositoryInterface;
 class FxpAssetPlugin implements PluginInterface
 {
     /**
-     * @var array<string, string>
-     */
-    protected $types = array(
-        'npm'   => 'package.json',
-        'bower' => 'bower.json',
-    );
-
-    /**
      * {@inheritdoc}
      */
     public function activate(Composer $composer, IOInterface $io)
@@ -41,7 +33,7 @@ class FxpAssetPlugin implements PluginInterface
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
-        foreach (array_keys($this->types) as $assetType) {
+        foreach (Assets::getTypes() as $assetType) {
             $rm->setRepositoryClass($assetType . '-vcs', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
             $rm->setRepositoryClass($assetType . '-git', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
         }
@@ -61,12 +53,6 @@ class FxpAssetPlugin implements PluginInterface
                 if (false === strpos($repo['type'], '-')) {
                     throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined in this way: "%asset-type%-%type%"');
                 }
-                $repo['asset-type'] = substr($repo['type'], 0, strpos($repo['type'], '-'));
-                if (!in_array($repo['asset-type'], array_keys($this->types))) {
-                    throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a asset type validated, only "' . implode('", "', array_keys($this->types)) . '" are accepted');
-                }
-
-                $repo['filename'] = $this->types[$repo['asset-type']];
                 $repos[$name] = $rm->createRepository($repo['type'], $repo);
 
                 $rm->addRepository($repos[$name]);

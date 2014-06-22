@@ -22,6 +22,8 @@ use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
+use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
  * Asset VCS repository.
@@ -30,6 +32,11 @@ use Composer\Repository\VcsRepository;
  */
 class AssetVcsRepository extends VcsRepository
 {
+    /**
+     * @var AssetTypeInterface
+     */
+    protected $assetType;
+
     /**
      * Constructor.
      *
@@ -45,6 +52,11 @@ class AssetVcsRepository extends VcsRepository
             'github' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
             'git'    => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
         );
+        $assetType = substr($repoConfig['type'], 0, strpos($repoConfig['type'], '-'));
+        $assetType = Assets::createType($assetType);
+        $repoConfig['asset-type'] = $assetType->getName();
+        $repoConfig['filename'] = $assetType->getFilename();
+        $this->assetType = $assetType;
 
         parent::__construct($repoConfig, $io, $config, $dispatcher, $drivers);
     }
@@ -57,9 +69,9 @@ class AssetVcsRepository extends VcsRepository
         $this->packages = array();
 
         $verbose = $this->verbose;
-        $assetType = $this->repoConfig['asset-type'];
-        $prefixPackage = $assetType . '-asset/';
-        $filename = $this->repoConfig['filename'];
+        $assetType = $this->assetType->getName();
+        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
+        $filename = $this->assetType->getFilename();
 
         $driver = $this->getDriver();
         if (!$driver) {
@@ -216,11 +228,20 @@ class AssetVcsRepository extends VcsRepository
         }
     }
 
+    /**
+     * Pre process the data of package before the conversion to Package instance.
+     *
+     * @param VcsDriverInterface $driver
+     * @param array              $data
+     * @param string             $identifier
+     *
+     * @return array
+     */
     private function preProcess(VcsDriverInterface $driver, array $data, $identifier)
     {
         // keep the name of the main identifier for all packages
         $data['name'] = $this->packageName ?: $data['name'];
-        $data['name'] = $this->repoConfig['asset-type'] . '-asset/' . $data['name'];
+        $data = $this->assetType->convert($data);
 
         if (!isset($data['dist'])) {
             $data['dist'] = $driver->getDist($identifier);
@@ -232,6 +253,13 @@ class AssetVcsRepository extends VcsRepository
         return $data;
     }
 
+    /**
+     * Validates the branch.
+     *
+     * @param string $branch
+     *
+     * @return bool
+     */
     private function validateBranch($branch)
     {
         try {
@@ -242,6 +270,13 @@ class AssetVcsRepository extends VcsRepository
         return false;
     }
 
+    /**
+     * Validates the tag.
+     *
+     * @param string $version
+     *
+     * @return bool
+     */
     private function validateTag($version)
     {
         try {
