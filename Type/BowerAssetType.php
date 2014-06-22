@@ -37,6 +37,10 @@ class BowerAssetType extends AbstractAssetType
             'version' => $data['version'],
         );
 
+        if (isset($data['description'])) {
+            $package['description'] = $data['description'];
+        }
+
         if (isset($data['keywords'])) {
             $package['keywords'] = $data['keywords'];
         }
