@@ -1,0 +1,32 @@
+{
+    "name": "fxp/composer-asset-plugin",
+    "description": "Manage your assets with NPM or Bower directly in the Composer",
+    "keywords": ["package", "management", "dependency", "asset", "npm", "bower", "composer", "nodejs"],
+    "homepage": "https://github.com/francoispluchino/composer-asset-plugin",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "François Pluchino",
+            "email": "francois.pluchino@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "composer-plugin-api": "1.0.0"
+    },
+    "require-dev": {
+        "composer/composer": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fxp\\Composer\\AssetPlugin\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
