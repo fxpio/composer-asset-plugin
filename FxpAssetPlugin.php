@@ -33,6 +33,9 @@ class FxpAssetPlugin implements PluginInterface
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
+        $rm->setRepositoryClass('npm', 'Fxp\Composer\AssetPlugin\Repository\NpmRepository');
+        $rm->addRepository($rm->createRepository('npm', array('repositoryManager' => $rm)));
+
         $rm->setRepositoryClass('bower', 'Fxp\Composer\AssetPlugin\Repository\BowerRepository');
         $rm->addRepository($rm->createRepository('bower', array('repositoryManager' => $rm)));
 
