@@ -8,13 +8,16 @@ Features include:
 - Works with native management system versions of VCS repository of Composer for:
   - [NPM Package](https://www.npmjs.org) (public and private repository)
   - [Bower Package](http://bower.io) (public and private repository)
+- Gets and creates automatically a Asset VCS Repository defined in:
+  - [NPM Registry](https://www.npmjs.org)
+  - [Bower Registry](http://bower.io)
 - Drivers for:
   - Git
   - Github
 - Caches the package versions
 - Caches the package content
 - Compatible with:
-  - search command
+  - search command (bower only)
   - show command
   - licenses command
   - status command
