@@ -11,6 +11,13 @@ Features include:
   - Github
 - Caches the package versions
 - Caches the package content
+- Compatible with:
+  - search command
+  - show command
+  - licenses command
+  - status command
+  - dependencies (require)
+  - dev dependencies (require-dev)
 
 Documentation
 -------------
