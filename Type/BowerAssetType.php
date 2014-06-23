@@ -34,7 +34,7 @@ class BowerAssetType extends AbstractAssetType
         $package = array(
             'name'    => $this->getComposerVendorName() . '/' . $data['name'],
             'type'    => "bower-asset-library",
-            'version' => $data['version'],
+            'version' => $this->convertVersion($data['version']),
         );
 
         if (isset($data['description'])) {
@@ -53,6 +53,7 @@ class BowerAssetType extends AbstractAssetType
             $package['require'] = array();
 
             foreach ($data['dependencies'] as $dependency => $version) {
+                $version = $this->convertVersion($version);
                 $package['require'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }
@@ -61,6 +62,7 @@ class BowerAssetType extends AbstractAssetType
             $package['require-dev'] = array();
 
             foreach ($data['devDependencies'] as $dependency => $version) {
+                $version = $this->convertVersion($version);
                 $package['require-dev'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }

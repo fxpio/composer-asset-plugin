@@ -33,4 +33,25 @@ abstract class AbstractAssetType implements AssetTypeInterface
     {
         return $this->getName() . '.json';
     }
+
+    /**
+     * Converts the asset version to composer version.
+     *
+     * @param string $version
+     *
+     * @return string
+     */
+    protected function convertVersion($version)
+    {
+        $prefix = substr($version, 0, 1);
+
+        if ('^' === $prefix) {
+            $version = substr($version, 1);
+        }
+
+        $version = str_replace('-', '-beta', $version);
+        $version = str_replace('||', ',', $version);
+
+        return $version;
+    }
 }

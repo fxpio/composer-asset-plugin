@@ -42,7 +42,7 @@ class NpmAssetType extends AbstractAssetType
         $package = array(
             'name'    => $this->getComposerVendorName() . '/' . $data['name'],
             'type'    => "npm-asset-library",
-            'version' => $data['version'],
+            'version' => $this->convertVersion($data['version']),
         );
 
         if (isset($data['description'])) {
@@ -81,6 +81,7 @@ class NpmAssetType extends AbstractAssetType
             $package['require'] = array();
 
             foreach ($data['dependencies'] as $dependency => $version) {
+                $version = $this->convertVersion($version);
                 $package['require'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }
@@ -89,6 +90,7 @@ class NpmAssetType extends AbstractAssetType
             $package['require-dev'] = array();
 
             foreach ($data['devDependencies'] as $dependency => $version) {
+                $version = $this->convertVersion($version);
                 $package['require-dev'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }
