@@ -44,12 +44,29 @@ abstract class AbstractAssetType implements AssetTypeInterface
     protected function convertVersion($version)
     {
         $prefix = substr($version, 0, 1);
+        $pattern = '/\-[a-z](1,2)[0-9]+|[0-9]+[a-z]+[0-9]+/';
 
         if ('^' === $prefix) {
             $version = substr($version, 1);
         }
 
-        $version = str_replace('-', '-beta', $version);
+        if (false === strpos($version, '#') && preg_match_all($pattern, $version, $matches, PREG_OFFSET_CAPTURE)) {
+            $newVersion = substr($version, 0, $matches[0][0][1]);
+            $tag = $matches[0][0][0];
+
+            preg_match_all('/([a-z]{2,})[0-9]+/', $tag, $subMatches, PREG_OFFSET_CAPTURE);
+
+            if ($subMatches[0]) {
+                $newVersion .= preg_replace('/[a-z]+/', '-$0', $tag);
+
+            } elseif (0 === strpos($tag, 'b')) {
+                $newVersion .= '-beta' . substr($tag, 1);
+            }
+
+            $version = $newVersion;
+        }
+
+        $version = str_replace('rc', 'RC', $version);
         $version = str_replace('||', ',', $version);
 
         return $version;
