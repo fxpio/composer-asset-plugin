@@ -38,6 +38,8 @@ The following repository types are supported:
 
 ##### NPM mapping
 
+The `package.json` of asset repository is automatically converted to a Complete Package instance with:
+
 | NPM Package          | Composer Package                      |
 |----------------------|---------------------------------------|
 | name                 | name (`npm-asset/{name}`)             |
@@ -47,8 +49,8 @@ The following repository types are supported:
 | keywords             | keywords                              |
 | homepage             | homepage                              |
 | license              | license                               |
-| author               | authors[0]                            |
-| contributors         | authors[`n`] (merging with `author`)  |
+| author               | authors [ 0 ]                         |
+| contributors         | authors [ n ] (merging with `author`) |
 | dependencies         | require                               |
 | devDependencies      | require-dev                           |
 | bin                  | bin                                   |
@@ -83,6 +85,8 @@ The following repository types are supported:
 | `not used`           | archive                               |
 
 ##### Bower mapping
+
+The `bower.json` of asset repository is automatically converted to a Complete Package instance with:
 
 | Bower Package        | Composer Package                      |
 |----------------------|---------------------------------------|
