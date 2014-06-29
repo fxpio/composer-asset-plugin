@@ -3,6 +3,17 @@ Fxp Composer Asset Plugin
 
 The Composer Asset Plugin allows you to manage your assets with NPM or Bower directly in the Composer.
 
+To manage dependencies of javascript asset in PHP, we have several possibilities:
+
+1. Install Node.js and use NPM or Bower command line in addition to Composer command line
+2. Do the solution 1, but add the Composer scripts to automate the process
+3. Include assets directly in the project (really not recommended)
+
+But none of these solutions can't simply manage the javascript assets with their dependencies directly
+into Composer. It is in this context that this plugin was developed, allowing using the main lists of
+javascript deposits, but with the possibility of keeping dependency management in Composer, with the
+same advantages in the management of versions.
+
 Features include:
 
 - Works with native management system versions of VCS repository of Composer for:
@@ -14,6 +25,9 @@ Features include:
 - Drivers for:
   - Git
   - Github
+- Conversion of asset version to the composer version for:
+  - NPM
+  - Bower
 - Caches the package versions
 - Caches the package content
 - Compatible with:
