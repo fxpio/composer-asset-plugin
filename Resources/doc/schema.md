@@ -49,8 +49,8 @@ The `package.json` of asset repository is automatically converted to a Complete 
 | keywords             | keywords                              |
 | homepage             | homepage                              |
 | license              | license                               |
-| author               | authors [ 0 ]                         |
-| contributors         | authors [ n ] (merging with `author`) |
+| author               | authors [0]                           |
+| contributors         | authors [1] (merging with `author`)   |
 | dependencies         | require                               |
 | devDependencies      | require-dev                           |
 | bin                  | bin                                   |
