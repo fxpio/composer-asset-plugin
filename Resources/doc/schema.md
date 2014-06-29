@@ -48,7 +48,7 @@ The following repository types are supported:
 | homepage             | homepage                              |
 | license              | license                               |
 | author               | authors[0]                            |
-| contributors         | authors[n] (merging with `author`)    |
+| contributors         | authors[`n`] (merging with `author`)  |
 | dependencies         | require                               |
 | devDependencies      | require-dev                           |
 | bin                  | bin                                   |
@@ -127,6 +127,8 @@ any package that is available there.
 
 If you go to the [NPM website](https://www.npmjs.org), you can browse and search for packages.
 
+All packages are automatically prefixed with `npm-asset/`.
+
 ### Bower Composer Repository
 
 [Bower Package](http://bower.io) is the main Bower repository. A Bower Composer repository
@@ -135,3 +137,5 @@ be the central repository that everybody uses. This means that you can automatic
 any package that is available there.
 
 If you go to the [Bower website](http://bower.io/search/), you can browse and search for packages.
+
+All packages are automatically prefixed with `bower-asset/`.
