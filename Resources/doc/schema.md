@@ -50,7 +50,7 @@ The `package.json` of asset repository is automatically converted to a Complete 
 | homepage             | homepage                              |
 | license              | license                               |
 | author               | authors [0]                           |
-| contributors         | authors [1] (merging with `author`)   |
+| contributors         | authors [n], merging with `author`    |
 | dependencies         | require                               |
 | devDependencies      | require-dev                           |
 | bin                  | bin                                   |
