@@ -43,6 +43,8 @@ class GitHubDriver extends BaseGitHubDriver
 
         if (!isset($this->infoCache[$identifier])) {
             $notFoundRetries = 2;
+            $resource = null;
+            $composer = null;
             while ($notFoundRetries) {
                 try {
                     $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/' . $this->repoConfig['filename'] . '?ref='.urlencode($identifier);
