@@ -16,11 +16,11 @@ use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\GitHubDriver as BaseGitHubDriver;
 
 /**
- * Github vcs driver.
+ * GitHub vcs driver.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class GithubDriver extends BaseGitHubDriver
+class GitHubDriver extends BaseGitHubDriver
 {
     /**
      * {@inheritDoc}
