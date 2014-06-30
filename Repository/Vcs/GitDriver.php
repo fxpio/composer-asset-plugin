@@ -41,7 +41,7 @@ class GitDriver extends BaseGitDriver
             $this->process->execute(sprintf('git show %s', $resource), $composer, $this->repoDir);
 
             if (!trim($composer)) {
-                return;
+                return null;
             }
 
             $composer = JsonFile::parseJson($composer, $resource);
