@@ -32,9 +32,11 @@ class Assets
     /**
      * Creates asset type.
      *
-     * @param $type
+     * @param string $type
      *
      * @return AssetTypeInterface
+     *
+     * @throws \InvalidArgumentException When the asset type does not exist
      */
     public static function createType($type)
     {

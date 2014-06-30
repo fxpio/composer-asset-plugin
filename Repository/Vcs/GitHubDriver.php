@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
+use Composer\Cache;
 use Composer\Downloader\TransportException;
 use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\GitHubDriver as BaseGitHubDriver;
@@ -22,6 +23,11 @@ use Composer\Repository\Vcs\GitHubDriver as BaseGitHubDriver;
  */
 class GitHubDriver extends BaseGitHubDriver
 {
+    /**
+     * @var Cache
+     */
+    protected $cache;
+
     /**
      * {@inheritDoc}
      */

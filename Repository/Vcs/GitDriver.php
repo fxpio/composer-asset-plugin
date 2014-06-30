@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
+use Composer\Cache;
 use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\GitDriver as BaseGitDriver;
 
@@ -21,6 +22,11 @@ use Composer\Repository\Vcs\GitDriver as BaseGitDriver;
  */
 class GitDriver extends BaseGitDriver
 {
+    /**
+     * @var Cache
+     */
+    protected $cache;
+
     /**
      * {@inheritDoc}
      */
