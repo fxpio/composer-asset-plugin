@@ -38,6 +38,11 @@ class AssetVcsRepository extends VcsRepository
     protected $assetType;
 
     /**
+     * @var VersionParser
+     */
+    protected $versionParser;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -73,6 +78,7 @@ class AssetVcsRepository extends VcsRepository
         $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $filename = $this->assetType->getFilename();
 
+        /* @var VcsDriverInterface $driver */
         $driver = $this->getDriver();
         if (!$driver) {
             throw new \InvalidArgumentException('No driver found to handle Asset VCS repository '.$this->url);

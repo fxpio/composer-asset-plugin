@@ -34,6 +34,7 @@ interface AssetTypeInterface
 
     /**
      * Gets the filename of asset package.
+     *
      * @return string
      */
     public function getFilename();
