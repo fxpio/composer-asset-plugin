@@ -11,7 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin;
 
-use Composer\Composer;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
