@@ -31,7 +31,7 @@ Features include:
   - [Bower Registry](http://bower.io)
 - Drivers for:
   - Git
-  - Github
+  - GitHub
 - Conversion of asset version to the composer version for:
   - NPM
   - Bower
