@@ -12,7 +12,7 @@ Basic Usage
 $ composer global require "fxp/composer-asset-plugin:~1.0"
 ```
 
-### Project scope installation (work with the PR [#3082](https://github.com/composer/composer/pull/3082))
+### Project scope installation (will work with the PR [#3082](https://github.com/composer/composer/pull/3082))
 
 ```shell
 $ composer require "fxp/composer-asset-plugin:~1.0"

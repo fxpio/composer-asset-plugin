@@ -1,6 +1,11 @@
 Fxp Composer Asset Plugin
 =========================
 
+#### Warning!
+```
+Currently the plugin only works in "global" mode, the PR [#3082](https://github.com/composer/composer/pull/3082) will work the plugin in "project" mode
+```
+
 The Composer Asset Plugin allows you to manage your assets with NPM or Bower directly in the Composer.
 
 To manage dependencies of javascript asset in PHP, we have several possibilities:
@@ -8,6 +13,8 @@ To manage dependencies of javascript asset in PHP, we have several possibilities
 1. Install Node.js and use NPM or Bower command line in addition to Composer command line
 2. Do the solution 1, but add the Composer scripts to automate the process
 3. Include assets directly in the project (really not recommended)
+4. Adds Package Repository in `composer.json` with the direct download link
+5. Creates a Satis or Packagist server
 
 But none of these solutions can't simply manage the javascript assets with their dependencies directly
 into Composer. It is in this context that this plugin was developed, allowing using the main lists of
