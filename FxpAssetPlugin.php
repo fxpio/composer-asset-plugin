@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Fxp Composer Asset Plugin package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
