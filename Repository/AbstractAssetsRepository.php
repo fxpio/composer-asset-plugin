@@ -17,7 +17,6 @@ use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
-use Composer\Package\CompletePackage;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -137,11 +136,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             }
 
             $this->providers[$name] = array();
-
-            /* @var CompletePackage $package */
-            foreach ($this->repos[$name]->getPackages() as $package) {
-                $this->providers[$name][$package->getUniqueName()] = $package;
-            }
 
         } catch (TransportException $ex) {
             $this->providers[$name] = array();
