@@ -22,7 +22,7 @@ $ composer require "fxp/composer-asset-plugin:~1.0"
 
 ### Usage with asset repository
 
-To add a dependency on an asset, you must add the asset to the property
+Adding a dependency on an asset, you must add the asset to the property
 `require` of the `composer.json` of your project.
 
 It must be prefixed with `{asset-type}-asset/`.

@@ -22,10 +22,10 @@ It goes without saying that each library javascript must be developed with his u
 language, that front-end developers know well. However, in the case of a complete project PHP, it is
 not necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to be installed.
 
-It is in this context that this plugin has been created: it is not necessary to add an `composer.json`
+It is in this context that this plugin was created: it's not necessary to add an `composer.json`
 file and save the library on [Packagist.org](https://packagist.org/), in addition to do this for NPM or
-Bower. In addition, third party libraries used regularly only supports NPM and/or Bower, and it is
-therefore difficult or impossible, to add the Composer file, and this is understandable.
+Bower. In addition, third party libraries used regularly only supports NPM and/or Bower, and therefore it
+is more difficult even impossible to add the Composer file, and this is understandable.
 
 That is why the plugin supports only transposing the package informations of NPM or Bower, to a
 compatible version for Composer, allowing a management of dependencies for a project PHP much more readily.
