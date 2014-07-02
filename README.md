@@ -11,7 +11,8 @@ Fxp Composer Asset Plugin
 > Currently the plugin only works in "global" mode, the PR [#3082](https://github.com/composer/composer/pull/3082)
 > will work the plugin in "project" mode
 
-The Composer Asset Plugin allows you to manage your assets with NPM or Bower directly in the Composer.
+The Composer Asset Plugin allows you to manage your assets with NPM or Bower package file directly in
+the Composer.
 
 This plugin is not intended to circumvent dependency managers, that are NPM or Bower, but to provide a
 simple solution to include assets managed by a PHP project with Composer.
