@@ -11,8 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin\Type;
 
-use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
-
 /**
  * Bower asset type.
  *
@@ -36,7 +34,7 @@ class BowerAssetType extends AbstractAssetType
         $package = array(
             'name'    => $this->getComposerVendorName() . '/' . $data['name'],
             'type'    => "bower-asset-library",
-            'version' => SemverConverter::convertVersion($data['version']),
+            'version' => $this->getVersionConverter()->convertVersion($data['version']),
         );
 
         if (isset($data['description'])) {
@@ -55,7 +53,7 @@ class BowerAssetType extends AbstractAssetType
             $package['require'] = array();
 
             foreach ($data['dependencies'] as $dependency => $version) {
-                $version = SemverConverter::convertRange($version);
+                $version = $this->getVersionConverter()->convertRange($version);
                 $package['require'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }
@@ -64,7 +62,7 @@ class BowerAssetType extends AbstractAssetType
             $package['require-dev'] = array();
 
             foreach ($data['devDependencies'] as $dependency => $version) {
-                $version = SemverConverter::convertRange($version);
+                $version = $this->getVersionConverter()->convertRange($version);
                 $package['require-dev'][$this->getComposerVendorName() . '/' . $dependency] = $version;
             }
         }

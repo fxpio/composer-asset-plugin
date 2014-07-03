@@ -23,7 +23,6 @@ use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
 use Fxp\Composer\AssetPlugin\Assets;
-use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -129,11 +128,11 @@ class AssetVcsRepository extends VcsRepository
 
                 // manually versioned package
                 if (isset($data['version'])) {
-                    $data['version'] = SemverConverter::convertVersion($data['version']);
+                    $data['version'] = $this->assetType->getVersionConverter()->convertVersion($data['version']);
                     $data['version_normalized'] = $this->versionParser->normalize($data['version']);
                 } else {
                     // auto-versioned package, read value from tag
-                    $data['version'] = SemverConverter::convertVersion($tag);
+                    $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
                     $data['version_normalized'] = $parsedTag;
                 }
 
@@ -288,7 +287,7 @@ class AssetVcsRepository extends VcsRepository
     private function validateTag($version)
     {
         try {
-            $version = SemverConverter::convertVersion($version);
+            $version = $this->assetType->getVersionConverter()->convertVersion($version);
 
             return $this->versionParser->normalize($version);
         } catch (\Exception $e) {

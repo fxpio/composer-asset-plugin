@@ -23,9 +23,9 @@ class SemverConverter implements VersionConverterInterface
     /**
      * {@inheritdoc}
      */
-    public static function convertVersion($version)
+    public function convertVersion($version)
     {
-        if (preg_match_all(static::createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
+        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
                 $version, $matches, PREG_OFFSET_CAPTURE)) {
             $end = substr($version, strlen($matches[1][0][0]));
             $version = $matches[1][0][0] . '-';
@@ -82,7 +82,7 @@ class SemverConverter implements VersionConverterInterface
     /**
      * {@inheritdoc}
      */
-    public static function convertRange($range)
+    public function convertRange($range)
     {
         foreach (array('<', '>', '=', '~', '^', '||') as $character) {
             $range = str_replace($character . ' ', $character, $range);
@@ -116,7 +116,7 @@ class SemverConverter implements VersionConverterInterface
                     break;
                 default:
                     if ('~' === $special) {
-                        $newMatch = '>='.static::convertVersion($match).',<';
+                        $newMatch = '>='.$this->convertVersion($match).',<';
                         $exp = explode('.', $match);
                         $upVersion = isset($exp[0]) ? $exp[0] : '0';
 
@@ -126,10 +126,10 @@ class SemverConverter implements VersionConverterInterface
                             $upVersion .= '.1';
                         }
 
-                        $newMatch .= static::convertVersion($upVersion);
+                        $newMatch .= $this->convertVersion($upVersion);
                         $matches[$i] = $newMatch;
                     } else {
-                        $matches[$i] = static::convertVersion($match);
+                        $matches[$i] = $this->convertVersion($match);
                     }
                     $special = null;
                     break;
@@ -146,7 +146,7 @@ class SemverConverter implements VersionConverterInterface
      *
      * @return string The full pattern with '/'
      */
-    protected static function createPattern($pattern)
+    protected function createPattern($pattern)
     {
         $numVer = '([0-9]+|\x|\*)';
         $numVer2 = '(' . $numVer . '\.' . $numVer . ')';

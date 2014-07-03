@@ -11,6 +11,8 @@
 
 namespace Fxp\Composer\AssetPlugin\Type;
 
+use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
+
 /**
  * Asset type interface.
  *
@@ -38,6 +40,13 @@ interface AssetTypeInterface
      * @return string
      */
     public function getFilename();
+
+    /**
+     * Gets the version converter.
+     *
+     * @return VersionConverterInterface
+     */
+    public function getVersionConverter();
 
     /**
      * Converts the asset data package to composer data package.

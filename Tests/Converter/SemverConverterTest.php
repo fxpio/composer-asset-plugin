@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Converter;
 
 use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
+use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 
 /**
  * Tests for the conversion of Semver syntax to composer syntax.
@@ -21,11 +22,26 @@ use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
 class SemverConverterTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var VersionConverterInterface
+     */
+    protected $converter;
+
+    protected function setUp()
+    {
+        $this->converter = new SemverConverter();
+    }
+
+    protected function tearDown()
+    {
+        $this->converter = null;
+    }
+
+    /**
      * @dataProvider getTestVersions
      */
     public function testConverter($semver, $composer)
     {
-        $this->assertEquals($composer, SemverConverter::convertVersion($semver));
+        $this->assertEquals($composer, $this->converter->convertVersion($semver));
     }
 
     public function getTestVersions()
@@ -70,7 +86,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testRangeConverter($semver, $composer)
     {
-        $this->assertEquals($composer, SemverConverter::convertRange($semver));
+        $this->assertEquals($composer, $this->converter->convertRange($semver));
     }
 
     public function getTestRanges()
