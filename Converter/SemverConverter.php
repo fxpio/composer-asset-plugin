@@ -84,6 +84,11 @@ class SemverConverter implements VersionConverterInterface
      */
     public static function convertRange($range)
     {
+        foreach (array('<', '>', '=', '~', '^', '||') as $character) {
+            $range = str_replace($character . ' ', $character, $range);
+        }
+        $range = str_replace(' ||', '||', $range);
+
         $pattern = '/(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
         $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
         $special = null;
@@ -131,11 +136,7 @@ class SemverConverter implements VersionConverterInterface
             }
         }
 
-        $range = implode('', $matches);
-        $range = str_replace(',|', '|', $range);
-        $range = str_replace('|,', '|', $range);
-
-        return $range;
+        return implode('', $matches);
     }
 
     /**
