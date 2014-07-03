@@ -1,0 +1,26 @@
+{
+    "name": "test",
+    "description": "Test bower",
+    "version": "1.0.0-pre",
+    "keywords": [
+        "foo",
+        "bar"
+    ],
+    "license": "MIT",
+    "bin": "bin/foo",
+    "main": [
+        "dist/js/foo.js"
+    ],
+    "ignore": [
+        ".*"
+    ],
+    "dependencies": {
+        "library1": ">= 1.0.0",
+        "library2": ">= 1.0.0"
+    },
+    "devDependencies": {
+        "dev-library1": ">= 1.0.0",
+        "dev-library2": ">= 1.0.0"
+    },
+    "private": false
+}
