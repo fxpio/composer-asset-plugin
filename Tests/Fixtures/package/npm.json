@@ -1,0 +1,73 @@
+{
+    "name": "test",
+    "description": "Test NPM",
+    "version": "1.0.0-pre",
+    "keywords": [
+        "foo",
+        "bar"
+    ],
+    "homepage": "http://test.tld",
+    "license": "MIT",
+    "author": {
+        "name": "Foo Bar",
+        "email": "foo@bar.tld",
+        "url": "http://foo.bar.tld"
+    },
+    "contributors": [
+        {
+            "name": "Bar Foo",
+            "email": "bar@foo.tld",
+            "url": "http://bar.foo.tld"
+        }
+    ],
+    "dependencies": {
+        "library1": ">= 1.0.0",
+        "library2": ">= 1.0.0"
+    },
+    "devDependencies": {
+        "dev-library1": ">= 1.0.0",
+        "dev-library2": ">= 1.0.0"
+    },
+    "bin": "bin/foo",
+    "bugs": {
+        "url": "http://foo.bar.tld",
+        "email": "foo@bar.tld"
+    },
+    "files": [
+        "dist/js/foo.js"
+    ],
+    "main": [
+        "dist/js/bar.js"
+    ],
+    "man": [],
+    "directories": {
+        "lib": "lib",
+        "bin": "bin",
+        "man": "man",
+        "doc": "doc",
+        "example": "example"
+    },
+    "repository": {
+        "type" : "git",
+        "url" : "http://github.com/npm/npm.git"
+    },
+    "scripts": {
+        "build": "npm install && grunt"
+    },
+    "config": {
+        "foo": "bar"
+    },
+    "bundledDependencies": [],
+    "optionalDependencies": [],
+    "engines": {
+        "node": ">=0.10.3 <0.12"
+    },
+    "engineStrict": true,
+    "os": ["darwin", "linux"],
+    "cpu": ["x64", "ia32"],
+    "preferGlobal": true,
+    "private": false,
+    "publishConfig": {
+        "foo": "bar"
+    }
+}
