@@ -11,6 +11,10 @@
 
 namespace Fxp\Composer\AssetPlugin\Type;
 
+use Fxp\Composer\AssetPlugin\Converter\BowerPackageConverter;
+use Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface;
+use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
+
 /**
  * Bower asset type.
  *
@@ -19,76 +23,23 @@ namespace Fxp\Composer\AssetPlugin\Type;
 class BowerAssetType extends AbstractAssetType
 {
     /**
-     * {@inheritdoc}
+     * Constructor.
+     *
+     * @param PackageConverterInterface $packageConverter
+     * @param VersionConverterInterface $versionConverter
      */
-    public function getName()
+    public function __construct(PackageConverterInterface $packageConverter = null, VersionConverterInterface $versionConverter = null)
     {
-        return 'bower';
+        $packageConverter = !$packageConverter ? new BowerPackageConverter($this) : $packageConverter;
+
+        parent::__construct($packageConverter, $versionConverter);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data)
+    public function getName()
     {
-        $package = array(
-            'name'    => $this->getComposerVendorName() . '/' . $data['name'],
-            'type'    => "bower-asset-library",
-            'version' => $this->getVersionConverter()->convertVersion($data['version']),
-        );
-
-        if (isset($data['description'])) {
-            $package['description'] = $data['description'];
-        }
-
-        if (isset($data['keywords'])) {
-            $package['keywords'] = $data['keywords'];
-        }
-
-        if (isset($data['license'])) {
-            $package['license'] = $data['license'];
-        }
-
-        if (isset($data['dependencies'])) {
-            $package['require'] = array();
-
-            foreach ($data['dependencies'] as $dependency => $version) {
-                $version = $this->getVersionConverter()->convertRange($version);
-                $package['require'][$this->getComposerVendorName() . '/' . $dependency] = $version;
-            }
-        }
-
-        if (isset($data['devDependencies'])) {
-            $package['require-dev'] = array();
-
-            foreach ($data['devDependencies'] as $dependency => $version) {
-                $version = $this->getVersionConverter()->convertRange($version);
-                $package['require-dev'][$this->getComposerVendorName() . '/' . $dependency] = $version;
-            }
-        }
-
-        if (isset($data['bin'])) {
-            $package['bin'] = $data['bin'];
-        }
-
-        $extra = array();
-
-        if (isset($data['main'])) {
-            $extra['bower-asset-main'] = $data['main'];
-        }
-
-        if (isset($data['ignore'])) {
-            $extra['bower-asset-ignore'] = $data['ignore'];
-        }
-
-        if (isset($data['private'])) {
-            $extra['bower-asset-private'] = $data['private'];
-        }
-
-        if (count($extra) > 0) {
-            $package['extra'] = $extra;
-        }
-
-        return $package;
+        return 'bower';
     }
 }

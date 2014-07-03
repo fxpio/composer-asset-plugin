@@ -248,7 +248,7 @@ class AssetVcsRepository extends VcsRepository
     {
         // keep the name of the main identifier for all packages
         $data['name'] = $this->packageName ?: $data['name'];
-        $data = $this->assetType->convert($data);
+        $data = $this->assetType->getPackageConverter()->convert($data);
 
         if (!isset($data['dist'])) {
             $data['dist'] = $driver->getDist($identifier);

@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Type;
 
+use Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface;
 use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
 use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 
@@ -22,13 +23,25 @@ use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 abstract class AbstractAssetType implements AssetTypeInterface
 {
     /**
+     * @var PackageConverterInterface
+     */
+    protected $packageConverter;
+
+    /**
      * @var VersionConverterInterface
      */
     protected $versionConverter;
 
-    public function __construct()
+    /**
+     * Constructor.
+     *
+     * @param PackageConverterInterface $packageConverter
+     * @param VersionConverterInterface $versionConverter
+     */
+    public function __construct(PackageConverterInterface $packageConverter, VersionConverterInterface $versionConverter = null)
     {
-        $this->versionConverter = new SemverConverter();
+        $this->packageConverter = $packageConverter;
+        $this->versionConverter = !$versionConverter ? new SemverConverter() : $versionConverter;
     }
 
     /**
@@ -45,6 +58,14 @@ abstract class AbstractAssetType implements AssetTypeInterface
     public function getFilename()
     {
         return $this->getName() . '.json';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPackageConverter()
+    {
+        return $this->packageConverter;
     }
 
     /**
