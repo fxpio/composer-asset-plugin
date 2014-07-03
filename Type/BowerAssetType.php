@@ -69,6 +69,10 @@ class BowerAssetType extends AbstractAssetType
             }
         }
 
+        if (isset($data['bin'])) {
+            $package['bin'] = $data['bin'];
+        }
+
         $extra = array();
 
         if (isset($data['main'])) {
