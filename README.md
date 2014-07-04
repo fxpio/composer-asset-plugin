@@ -1,5 +1,5 @@
-Fxp Composer Asset Plugin
-=========================
+NPM/Bower Dependency Manager for Composer
+=========================================
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce/big.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
