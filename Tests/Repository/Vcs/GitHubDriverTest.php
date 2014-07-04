@@ -382,9 +382,20 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'no-api'     => true,
         );
 
-        /* @var IOInterface $io */
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('splitLines')
+            ->will($this->returnValue(array()));
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function () {
+                        return 0;
+                    }));
 
-        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, null);
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
         $gitHubDriver->initialize();
 
         $this->assertNull($gitHubDriver->getComposerInformation($identifier));
