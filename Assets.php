@@ -14,7 +14,7 @@ namespace Fxp\Composer\AssetPlugin;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
- * Assets factory.
+ * Assets definition.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
@@ -26,6 +26,23 @@ class Assets
     protected static $typeClasses = array(
         'npm'   => 'Fxp\Composer\AssetPlugin\Type\NpmAssetType',
         'bower' => 'Fxp\Composer\AssetPlugin\Type\BowerAssetType',
+    );
+
+    /**
+     * @var array
+     */
+    protected static $registryClasses = array(
+        'npm'   => 'Fxp\Composer\AssetPlugin\Repository\NpmRepository',
+        'bower' => 'Fxp\Composer\AssetPlugin\Repository\BowerRepository',
+    );
+
+    /**
+     * @var array
+     */
+    protected static $vcsDrivers = array(
+        'vcs'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'github' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'git'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
@@ -56,5 +73,25 @@ class Assets
     public static function getTypes()
     {
         return array_keys(static::$typeClasses);
+    }
+
+    /**
+     * Gets the asset registry repositories.
+     *
+     * @return array
+     */
+    public static function getRegistries()
+    {
+        return static::$registryClasses;
+    }
+
+    /**
+     * Gets the asset vcs repository drivers.
+     *
+     * @return array
+     */
+    public static function getVcsRepositoryDrivers()
+    {
+        return static::$vcsDrivers;
     }
 }
