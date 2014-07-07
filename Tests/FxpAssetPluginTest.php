@@ -15,6 +15,7 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
+use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
 
 /**
@@ -48,6 +49,10 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
     {
         $io = $this->getMock('Composer\IO\IOInterface');
         $config = $this->getMock('Composer\Config');
+        $config->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('cache-repo-dir'))
+            ->will($this->returnValue(sys_get_temp_dir() . '/composer-test-repo-cache'));
         $this->package = $this->getMock('Composer\Package\PackageInterface');
 
         /* @var IOInterface $io */
@@ -72,6 +77,9 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin = null;
         $this->composer = null;
         $this->io = null;
+
+        $fs = new Filesystem();
+        $fs->remove(sys_get_temp_dir() . '/composer-test-repo-cache');
     }
 
     public function testAssetRepositories()
