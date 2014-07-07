@@ -66,3 +66,22 @@ Example:
     }
 }
 ```
+
+### Disable the search for an asset registry
+
+If you want to disable the search for an asset registry, you can add an extra
+option `extra.asset-registry-options.{type}-searchable` in the root project
+file `composer.json`.
+
+Example:
+
+```json
+{
+    "extra": {
+        "asset-registry-options": {
+            "npm-searchable": false,
+            "bower-searchable": false
+        }
+    }
+}
+```
