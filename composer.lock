@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62264c008d0627e1d3be8776c3cdd243",
+    "hash": "379d6809cb723d12f0104a62abdcd696",
     "packages": [],
     "packages-dev": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "745dcbce3317f7119575c39cef2cb601f9c5ffcf"
+                "reference": "e77435cd0c984e2031d915a6b42648e7b284dd5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/745dcbce3317f7119575c39cef2cb601f9c5ffcf",
-                "reference": "745dcbce3317f7119575c39cef2cb601f9c5ffcf",
+                "url": "https://api.github.com/repos/composer/composer/zipball/e77435cd0c984e2031d915a6b42648e7b284dd5c",
+                "reference": "e77435cd0c984e2031d915a6b42648e7b284dd5c",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2014-06-29 16:49:45"
+            "time": "2014-07-02 15:44:54"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -307,12 +307,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "0c367d63ab161bfc757e5e882a1d9dde8d344be3"
+                "reference": "6ce30e850357c844696411d49c4cfe7f19446f6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/0c367d63ab161bfc757e5e882a1d9dde8d344be3",
-                "reference": "0c367d63ab161bfc757e5e882a1d9dde8d344be3",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/6ce30e850357c844696411d49c4cfe7f19446f6e",
+                "reference": "6ce30e850357c844696411d49c4cfe7f19446f6e",
                 "shasum": ""
             },
             "require": {
@@ -347,7 +347,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-18 11:43:36"
+            "time": "2014-07-01 06:41:10"
         }
     ],
     "aliases": [],
