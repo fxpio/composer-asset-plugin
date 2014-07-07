@@ -106,6 +106,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             array('npm-vcs'),
             array('npm-git'),
             array('npm-github'),
+
             array('bower-vcs'),
             array('bower-git'),
             array('bower-github'),
@@ -145,8 +146,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
-                        array('type' => 'invalid_type')
-                    ))));
+                array('type' => 'invalid_type')
+            ))));
 
         $this->plugin->activate($this->composer, $this->io);
     }
@@ -156,8 +157,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
-                        array('type' => 'npm-vcs', 'url' => 'http://foo.tld')
-                    ))));
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld')
+            ))));
 
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
@@ -171,9 +172,9 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
-                        array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
-                        array('type' => 'npm-vcs', 'url' => 'http://foo.tld')
-                    ))));
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld')
+            ))));
 
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
