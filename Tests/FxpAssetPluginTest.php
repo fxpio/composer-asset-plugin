@@ -67,7 +67,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->io = $io;
     }
 
-    protected function tearnDown()
+    protected function tearDown()
     {
         $this->plugin = null;
         $this->composer = null;
