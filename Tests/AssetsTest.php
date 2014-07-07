@@ -23,9 +23,26 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
     public function testGetTypes()
     {
         $this->assertEquals(array(
-                "npm",
-                "bower"
-            ), Assets::getTypes());
+            "npm",
+            "bower"
+        ), Assets::getTypes());
+    }
+
+    public function testGetRegistries()
+    {
+        $this->assertEquals(array(
+            "npm",
+            "bower"
+        ), array_keys(Assets::getRegistries()));
+    }
+
+    public function testGetVcsRepositoryDrivers()
+    {
+        $this->assertEquals(array(
+            "vcs",
+            "github",
+            "git"
+        ), array_keys(Assets::getVcsRepositoryDrivers()));
     }
 
     public function testCreationOfInvalidType()
