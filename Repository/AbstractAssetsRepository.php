@@ -45,6 +45,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $repos;
 
     /**
+     * @var bool
+     */
+    protected $searchable;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -67,6 +72,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->hasProviders = true;
         $this->rm = $repoConfig['repository-manager'];
         $this->repos = array();
+        $this->searchable = $this->getOption($repoConfig['asset-options'], 'searchable', true);
     }
 
     /**
@@ -90,6 +96,10 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     public function search($query, $mode = 0)
     {
+        if (!$this->searchable) {
+            return array();
+        }
+
         $url = str_replace('%query%', $query, $this->searchUrl);
         $hostname = parse_url($url, PHP_URL_HOST) ?: $url;
         $json = $this->rfs->getContents($hostname, $url, false);
@@ -183,6 +193,22 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected function loadRootServerFile()
     {
         return array();
+    }
+
+    /**
+     * @param array  $options The options
+     * @param string $key     The key
+     * @param mixed  $default The default value
+     *
+     * @return mixed The option value or default value if key is not found
+     */
+    protected function getOption(array $options, $key, $default = null)
+    {
+        if (array_key_exists($key, $options)) {
+            return $options[$key];
+        }
+
+        return $default;
     }
 
     /**

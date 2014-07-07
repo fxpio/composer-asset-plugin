@@ -32,7 +32,7 @@ class FxpAssetPlugin implements PluginInterface
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
-        $this->addRegistryRepositories($rm);
+        $this->addRegistryRepositories($rm, $extra);
         $this->setVcsTypeRepositories($rm);
 
         if (isset($extra['asset-repositories']) && is_array($extra['asset-repositories'])) {
@@ -44,12 +44,22 @@ class FxpAssetPlugin implements PluginInterface
      * Adds asset registry repositories.
      *
      * @param RepositoryManager $rm
+     * @param array             $extra
      */
-    protected function addRegistryRepositories(RepositoryManager $rm)
+    protected function addRegistryRepositories(RepositoryManager $rm, array $extra)
     {
+        $opts = array_key_exists('asset-registry-options', $extra)
+            ? $extra['asset-registry-options']
+            : array();
+
         foreach (Assets::getRegistries() as $assetType => $registryClass) {
+            $config = array(
+                'repository-manager' => $rm,
+                'asset-options'      => $this->crateAssetOptions($opts, $assetType),
+            );
+
             $rm->setRepositoryClass($assetType, $registryClass);
-            $rm->addRepository($rm->createRepository($assetType, array('repository-manager' => $rm)));
+            $rm->addRepository($rm->createRepository($assetType, $config));
         }
     }
 
@@ -100,5 +110,27 @@ class FxpAssetPlugin implements PluginInterface
 
             $rm->addRepository($repos[$name]);
         }
+    }
+
+    /**
+     * Creates the asset options.
+     *
+     * @param array  $extra     The composer extra section of asset options
+     * @param string $assetType The asset type
+     *
+     * @return array The asset registry options
+     */
+    protected function crateAssetOptions(array $extra, $assetType)
+    {
+        $options = array();
+
+        foreach ($extra as $key => $value) {
+            if (0 === strpos($key, $assetType . '-')) {
+                $key = substr($key, strlen($assetType) + 1);
+                $options[$key] = $value;
+            }
+        }
+
+        return $options;
     }
 }

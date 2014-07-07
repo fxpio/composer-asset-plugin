@@ -76,6 +76,10 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
 
     public function testAssetRepositories()
     {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array()));
+
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
@@ -90,6 +94,10 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssetVcsRepositories($type)
     {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array()));
+
         $this->plugin->activate($this->composer, $this->io);
         $rm = $this->composer->getRepositoryManager();
         $repo = $rm->createRepository($type, array(
@@ -182,5 +190,17 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(4, $repos);
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[3]);
+    }
+
+    public function testOptionsForAssetRegistryRepositories()
+    {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array('asset-registry-options' => array(
+                'npm-option1'   => 'value 1',
+                'bower-option1' => 'value 2',
+            ))));
+
+        $this->plugin->activate($this->composer, $this->io);
     }
 }
