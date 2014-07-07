@@ -11,8 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
-use Fxp\Composer\AssetPlugin\Assets;
-
 /**
  * Bower repository.
  *
@@ -23,13 +21,9 @@ class BowerRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function getAssetType()
+    protected function getType()
     {
-        if (null === $this->assetType) {
-            $this->assetType = Assets::createType('bower');
-        }
-
-        return parent::getAssetType();
+        return 'bower';
     }
 
     /**
@@ -43,17 +37,17 @@ class BowerRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function getSlugOfGetPackage()
+    protected function getPackageUrl()
     {
-        return '%package%';
+        return $this->canonicalizeUrl($this->baseUrl . '/%package%');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getSlugOfSearch()
+    protected function getSearchUrl()
     {
-        return 'search/%query%';
+        return $this->canonicalizeUrl($this->baseUrl . '/search/%query%');
     }
 
     /**
@@ -62,7 +56,7 @@ class BowerRepository extends AbstractAssetsRepository
     protected function createVcsRepositoryConfig(array $data)
     {
         return array(
-            'type' => $this->getAssetType()->getName() . '-vcs',
+            'type' => $this->assetType->getName() . '-vcs',
             'url'  => $data['url'],
         );
     }

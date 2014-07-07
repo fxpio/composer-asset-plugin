@@ -11,8 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
-use Fxp\Composer\AssetPlugin\Assets;
-
 /**
  * NPM repository.
  *
@@ -23,13 +21,9 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function getAssetType()
+    protected function getType()
     {
-        if (null === $this->assetType) {
-            $this->assetType = Assets::createType('npm');
-        }
-
-        return parent::getAssetType();
+        return 'npm';
     }
 
     /**
@@ -43,17 +37,17 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function getSlugOfGetPackage()
+    protected function getPackageUrl()
     {
-        return '%package%';
+        return $this->canonicalizeUrl($this->baseUrl . '/%package%');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getSlugOfSearch()
+    protected function getSearchUrl()
     {
-        return '-/all';
+        return $this->canonicalizeUrl($this->baseUrl . '/-/all');
     }
 
     /**
@@ -70,7 +64,7 @@ class NpmRepository extends AbstractAssetsRepository
     protected function createVcsRepositoryConfig(array $data)
     {
         return array(
-            'type' => $this->getAssetType()->getName() . '-' . $data['repository']['type'],
+            'type' => $this->assetType->getName() . '-' . $data['repository']['type'],
             'url'  => $data['repository']['url'],
         );
     }

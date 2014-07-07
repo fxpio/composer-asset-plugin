@@ -19,6 +19,7 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -59,11 +60,12 @@ abstract class AbstractAssetsRepository extends ComposerRepository
 
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
 
-        $this->lazyProvidersUrl = $this->canonicalizeUrl($this->baseUrl . '/' . $this->getSlugOfGetPackage());
+        $this->assetType = Assets::createType($this->getType());
+        $this->lazyProvidersUrl = $this->getPackageUrl();
         $this->providersUrl = $this->lazyProvidersUrl;
-        $this->searchUrl = $this->canonicalizeUrl($this->baseUrl . '/' . $this->getSlugOfSearch());
+        $this->searchUrl = $this->getSearchUrl();
         $this->hasProviders = true;
-        $this->rm = $repoConfig['repositoryManager'];
+        $this->rm = $repoConfig['repository-manager'];
         $this->repos = array();
     }
 
@@ -107,7 +109,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     public function whatProvides(Pool $pool, $name)
     {
-        $assetPrefix = $this->getAssetType()->getComposerVendorName() . '/';
+        $assetPrefix = $this->assetType->getComposerVendorName() . '/';
 
         if (false === strpos($name, $assetPrefix)) {
             return array();
@@ -184,16 +186,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
-     * Gets the asset type.
-     *
-     * @return AssetTypeInterface
-     */
-    protected function getAssetType()
-    {
-        return $this->assetType;
-    }
-
-    /**
      * Creates the search result item.
      *
      * @param array $item.
@@ -203,10 +195,17 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected function createSearchItem(array $item)
     {
         return array(
-            'name'        => $this->getAssetType()->getComposerVendorName() . '/' . $item['name'],
+            'name'        => $this->assetType->getComposerVendorName() . '/' . $item['name'],
             'description' => null,
         );
     }
+
+    /**
+     * Gets the asset type name.
+     *
+     * @return string
+     */
+    abstract protected function getType();
 
     /**
      * Gets the URL of repository.
@@ -216,18 +215,18 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     abstract protected function getUrl();
 
     /**
-     * Gets the slug for get package URL.
+     * Gets the URL for get the package information.
      *
      * @return string
      */
-    abstract protected function getSlugOfGetPackage();
+    abstract protected function getPackageUrl();
 
     /**
-     * Gets the slug for seach URL.
+     * Gets the URL for get the search result.
      *
      * @return string
      */
-    abstract protected function getSlugOfSearch();
+    abstract protected function getSearchUrl();
 
     /**
      * Creates a config of vcs repository.

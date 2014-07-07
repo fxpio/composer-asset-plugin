@@ -34,10 +34,10 @@ class FxpAssetPlugin implements PluginInterface
         $rm = $composer->getRepositoryManager();
 
         $rm->setRepositoryClass('npm', 'Fxp\Composer\AssetPlugin\Repository\NpmRepository');
-        $rm->addRepository($rm->createRepository('npm', array('repositoryManager' => $rm)));
+        $rm->addRepository($rm->createRepository('npm', array('repository-manager' => $rm)));
 
         $rm->setRepositoryClass('bower', 'Fxp\Composer\AssetPlugin\Repository\BowerRepository');
-        $rm->addRepository($rm->createRepository('bower', array('repositoryManager' => $rm)));
+        $rm->addRepository($rm->createRepository('bower', array('repository-manager' => $rm)));
 
         foreach (Assets::getTypes() as $assetType) {
             $rm->setRepositoryClass($assetType . '-vcs', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
