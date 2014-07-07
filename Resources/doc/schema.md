@@ -29,10 +29,10 @@ main `composer.json`. Repository declarations of dependencies' composer.jsons ar
 
 The following repository types are supported:
 
-- npm-vcs: The version control system repository can fetch packages from git with `package.json`
-           file dedicated to NPM. The `url` property of git source code is required.
-- bower-vcs: The version control system repository can fetch packages from git with `bower.json`
-             file dedicated to Bower. The `url` property of git source code is required.
+- **npm-vcs**: The version control system repository can fetch packages from git with `package.json`
+               file dedicated to NPM. The `url` property of git source code is required.
+- **bower-vcs**: The version control system repository can fetch packages from git with `bower.json`
+                 file dedicated to Bower. The `url` property of git source code is required.
 
 ### Mapping asset file to composer package
 

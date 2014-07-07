@@ -27,7 +27,7 @@ Adding a dependency on an asset, you must add the asset to the property
 
 It must be prefixed with `{asset-type}-asset/`.
 
-Example for twitter bootstrap:
+**Example for twitter bootstrap:**
 
 ```json
 {
@@ -37,7 +37,7 @@ Example for twitter bootstrap:
 }
 ```
 
-or
+**or:**
 
 ```json
 {
@@ -50,9 +50,10 @@ or
 ### Usage with VCS repository
 
 If your asset is not listed on NPM and Bower, or that it is private, you can
-create VCS repository.
+create VCS repository. The repository must have a asset package file for NPM
+and/or Bower.
 
-Example:
+**Example:**
 
 ```json
 {
@@ -73,7 +74,7 @@ If you want to disable the search for an asset registry, you can add an extra
 option `extra.asset-registry-options.{type}-searchable` in the root project
 file `composer.json`.
 
-Example:
+**Example:**
 
 ```json
 {
