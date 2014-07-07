@@ -41,6 +41,7 @@ class FxpAssetPlugin implements PluginInterface
 
         foreach (Assets::getTypes() as $assetType) {
             $rm->setRepositoryClass($assetType . '-vcs', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
+            $rm->setRepositoryClass($assetType . '-github', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
             $rm->setRepositoryClass($assetType . '-git', 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository');
         }
 

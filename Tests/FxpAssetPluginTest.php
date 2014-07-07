@@ -105,8 +105,10 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         return array(
             array('npm-vcs'),
             array('npm-git'),
+            array('npm-github'),
             array('bower-vcs'),
             array('bower-git'),
+            array('bower-github'),
         );
     }
 
