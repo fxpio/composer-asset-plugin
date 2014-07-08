@@ -89,12 +89,16 @@ class SemverConverter implements VersionConverterInterface
         }
         $range = str_replace(' ||', '||', $range);
 
-        $pattern = '/(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
+        $pattern = '/(\ -\ )|(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
         $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
         $special = null;
 
         foreach ($matches as $i => $match) {
             switch ($match) {
+                case ' - ':
+                    $matches[$i - 1] = '>=' . $matches[$i - 1];
+                    $matches[$i] = ',<=';
+                    break;
                 case '';
                 case '<';
                 case '>';
