@@ -31,6 +31,7 @@ class BowerAssetTypeTest extends AbstractAssetTypeTest
     {
         $this->assertSame('bower', $this->type->getName());
         $this->assertSame('bower-asset', $this->type->getComposerVendorName());
+        $this->assertSame('bower-asset-library', $this->type->getComposerType());
         $this->assertSame('bower.json', $this->type->getFilename());
     }
 }

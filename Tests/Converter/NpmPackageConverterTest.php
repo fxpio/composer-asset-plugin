@@ -39,7 +39,7 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
         $this->assertSame('ASSET/'.$this->asset['name'], $composer['name']);
 
         $this->assertArrayHasKey('type', $composer);
-        $this->assertSame('npm-asset-library', $composer['type']);
+        $this->assertSame('ASSET_TYPE', $composer['type']);
 
         $this->assertArrayHasKey('description', $composer);
         $this->assertSame($this->asset['description'], $composer['description']);
