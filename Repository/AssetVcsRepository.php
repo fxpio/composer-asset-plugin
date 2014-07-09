@@ -141,6 +141,7 @@ class AssetVcsRepository extends VcsRepository
                 // broken package, version doesn't match tag
                 if ($data['version_normalized'] !== $parsedTag) {
                     $data = array_merge($data, $this->createMockOfPackageConfig($packageName, $tag));
+                    $data['version_normalized'] = $parsedTag;
                 }
 
                 if ($verbose) {
