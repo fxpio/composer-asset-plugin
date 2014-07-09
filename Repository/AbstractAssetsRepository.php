@@ -134,16 +134,16 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         }
 
         try {
-            $packageName = substr($name, strlen($assetPrefix));
+            $repoName = $this->convertAliasName($name);
+            $packageName = substr($repoName, strlen($assetPrefix));
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
-
             $data = $this->fetchFile($packageUrl, $packageName . '-package.json');
             $repo = $this->createVcsRepositoryConfig($data);
 
-            if (!isset($this->repos[$name])) {
+            if (!isset($this->repos[$repoName])) {
                 $repo = $this->rm->createRepository($repo['type'], $repo);
                 $this->rm->addRepository($repo);
-                $this->repos[$name] = $repo;
+                $this->repos[$repoName] = $repo;
                 $pool->addRepository($repo);
             }
 
@@ -193,6 +193,22 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected function loadRootServerFile()
     {
         return array();
+    }
+
+    /**
+     * Converts the alias of asset package name by the real asset package name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function convertAliasName($name)
+    {
+        if (false !== strrpos($name, ']')) {
+            $name = substr($name, 0, strrpos($name, '['));
+        }
+
+        return $name;
     }
 
     /**

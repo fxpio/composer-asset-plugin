@@ -61,15 +61,17 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
 
         $this->assertArrayHasKey('require', $composer);
         $this->assertSame(array(
-                'ASSET/library1' => 'VERSION_RANGE_CONVERTED',
-                'ASSET/library2' => 'VERSION_RANGE_CONVERTED',
-            ), $composer['require']);
+            'ASSET/library1' => 'VERSION_RANGE_CONVERTED',
+            'ASSET/library2' => 'VERSION_RANGE_CONVERTED',
+            'ASSET/library2[0.9.0]' => 'VERSION_RANGE_CONVERTED',
+        ), $composer['require']);
 
         $this->assertArrayHasKey('require-dev', $composer);
         $this->assertSame(array(
-                'ASSET/dev-library1' => 'VERSION_RANGE_CONVERTED',
-                'ASSET/dev-library2' => 'VERSION_RANGE_CONVERTED',
-            ), $composer['require-dev']);
+            'ASSET/dev-library1' => 'VERSION_RANGE_CONVERTED',
+            'ASSET/dev-library2' => 'VERSION_RANGE_CONVERTED',
+            'ASSET/dev-library2[0.9.0]' => 'VERSION_RANGE_CONVERTED',
+        ), $composer['require-dev']);
 
         $this->assertArrayHasKey('bin', $composer);
         $this->assertSame($this->asset['bin'], $composer['bin']);

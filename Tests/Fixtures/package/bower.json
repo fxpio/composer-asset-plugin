@@ -16,11 +16,13 @@
     ],
     "dependencies": {
         "library1": ">= 1.0.0",
-        "library2": ">= 1.0.0"
+        "library2": ">= 1.0.0",
+        "library2-0.9.0": "library2#0.9.0"
     },
     "devDependencies": {
         "dev-library1": ">= 1.0.0",
-        "dev-library2": ">= 1.0.0"
+        "dev-library2": ">= 1.0.0",
+        "dev-library2-0.9.0": "dev-library2#0.9.0"
     },
     "private": false
 }

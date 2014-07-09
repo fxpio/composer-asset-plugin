@@ -132,11 +132,33 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             $newDependencies = array();
 
             foreach ($asset[$assetKey] as $dependency => $version) {
+                list($dependency, $version) = $this->checkAliasVersion($dependency, $version);
                 $version = $this->assetType->getVersionConverter()->convertRange($version);
                 $newDependencies[$this->assetType->getComposerVendorName() . '/' . $dependency] = $version;
             }
 
             $composer[$composerKey] = $newDependencies;
         }
+    }
+
+    /**
+     * Checks if the version is a alias version.
+     *
+     * @param string $dependency
+     * @param string $version
+     *
+     * @return array The new dependency and the new version
+     */
+    protected function checkAliasVersion($dependency, $version)
+    {
+        $pos = strpos($version, '#');
+
+        if (false !== $pos) {
+            $dependency = substr($version, 0, $pos);
+            $version = substr($version, $pos + 1);
+            $dependency .= '[' . $version . ']';
+        }
+
+        return array($dependency, $version);
     }
 }

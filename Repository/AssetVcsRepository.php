@@ -148,7 +148,13 @@ class AssetVcsRepository extends VcsRepository
                     $this->io->write('Importing tag '.$tag.' ('.$data['version_normalized'].')');
                 }
 
-                $this->addPackage($this->loader->load($this->preProcess($driver, $data, $identifier)));
+                $packageData = $this->preProcess($driver, $data, $identifier);
+                $package = $this->loader->load($packageData);
+                $packageAlias = $this->loader->load(array_merge($packageData, array(
+                    'name' => $packageData['name'].'[' . $packageData['version'] . ']'))
+                );
+                $this->addPackage($package);
+                $this->addPackage($packageAlias);
             } catch (\Exception $e) {
                 if ($verbose) {
                     $this->io->write('<warning>Skipped tag '.$tag.', '.($e instanceof TransportException ? 'no ' . $assetType . ' file was found' : $e->getMessage()).'</warning>');
