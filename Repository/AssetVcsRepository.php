@@ -120,10 +120,7 @@ class AssetVcsRepository extends VcsRepository
 
             try {
                 if (!$data = $driver->getComposerInformation($identifier)) {
-                    if ($verbose) {
-                        $this->io->write('<warning>Skipped tag '.$tag.', no ' . $assetType . ' file</warning>');
-                    }
-                    continue;
+                    $data = $this->createMockOfPackageConfig($identifier, $tag);
                 }
 
                 // manually versioned package
@@ -142,10 +139,7 @@ class AssetVcsRepository extends VcsRepository
 
                 // broken package, version doesn't match tag
                 if ($data['version_normalized'] !== $parsedTag) {
-                    if ($verbose) {
-                        $this->io->write('<warning>Skipped tag '.$tag.', tag ('.$parsedTag.') does not match version ('.$data['version_normalized'].') in ' . $filename . '</warning>');
-                    }
-                    continue;
+                    $data = array_merge($data, $this->createMockOfPackageConfig($identifier, $tag));
                 }
 
                 if ($verbose) {
@@ -182,10 +176,7 @@ class AssetVcsRepository extends VcsRepository
 
             try {
                 if (!$data = $driver->getComposerInformation($identifier)) {
-                    if ($verbose) {
-                        $this->io->write('<warning>Skipped branch '.$branch.', no ' . $assetType . ' file</warning>');
-                    }
-                    continue;
+                    $data = $this->createMockOfPackageConfig($identifier, $branch);
                 }
 
                 // branches are always auto-versioned, read value from branch name
@@ -233,6 +224,22 @@ class AssetVcsRepository extends VcsRepository
         if (!$this->getPackages()) {
             throw new InvalidRepositoryException('No valid ' . $filename . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
         }
+    }
+
+    /**
+     * Creates the mock of package config.
+     *
+     * @param string $name    The package name
+     * @param string $version The version
+     *
+     * @return array The package config
+     */
+    protected function createMockOfPackageConfig($name, $version)
+    {
+        return array(
+            'name'    => $name,
+            'version' => $version,
+        );
     }
 
     /**
