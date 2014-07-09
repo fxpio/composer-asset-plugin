@@ -101,7 +101,8 @@ class AssetVcsRepository extends VcsRepository
         }
 
         foreach ($driver->getTags() as $tag => $identifier) {
-            $msg = 'Reading ' . $filename . ' of <info>' . $prefixPackage . ($this->packageName ?: $this->url) . '</info> (<comment>' . $tag . '</comment>)';
+            $packageName = $prefixPackage . ($this->packageName ?: $this->url);
+            $msg = 'Reading ' . $filename . ' of <info>' . $packageName . '</info> (<comment>' . $tag . '</comment>)';
             if ($verbose) {
                 $this->io->write($msg);
             } else {
@@ -120,7 +121,7 @@ class AssetVcsRepository extends VcsRepository
 
             try {
                 if (!$data = $driver->getComposerInformation($identifier)) {
-                    $data = $this->createMockOfPackageConfig($identifier, $tag);
+                    $data = $this->createMockOfPackageConfig($packageName, $tag);
                 }
 
                 // manually versioned package
@@ -139,7 +140,7 @@ class AssetVcsRepository extends VcsRepository
 
                 // broken package, version doesn't match tag
                 if ($data['version_normalized'] !== $parsedTag) {
-                    $data = array_merge($data, $this->createMockOfPackageConfig($identifier, $tag));
+                    $data = array_merge($data, $this->createMockOfPackageConfig($packageName, $tag));
                 }
 
                 if ($verbose) {
@@ -160,7 +161,8 @@ class AssetVcsRepository extends VcsRepository
         }
 
         foreach ($driver->getBranches() as $branch => $identifier) {
-            $msg = 'Reading ' . $filename . ' of <info>' . $prefixPackage . ($this->packageName ?: $this->url) . '</info> (<comment>' . $branch . '</comment>)';
+            $packageName = $prefixPackage . ($this->packageName ?: $this->url);
+            $msg = 'Reading ' . $filename . ' of <info>' . $packageName . '</info> (<comment>' . $branch . '</comment>)';
             if ($verbose) {
                 $this->io->write($msg);
             } else {
@@ -176,7 +178,7 @@ class AssetVcsRepository extends VcsRepository
 
             try {
                 if (!$data = $driver->getComposerInformation($identifier)) {
-                    $data = $this->createMockOfPackageConfig($identifier, $branch);
+                    $data = $this->createMockOfPackageConfig($packageName, $branch);
                 }
 
                 // branches are always auto-versioned, read value from branch name
