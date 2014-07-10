@@ -34,6 +34,15 @@ The following repository types are supported:
 - **bower-vcs**: The version control system repository can fetch packages from git with `bower.json`
                  file dedicated to Bower. The `url` property of git source code is required.
 
+##### extra.asset-registry-options (root-only)
+
+Options available for the asset registers:
+
+- **npm-searchable** (bool): The search in the NPM registry may be disabled with this option
+                             for the search command.
+- **bower-searchable** (bool): The search in the Bower registry may be disabled with this option
+                               for the search command.
+
 ### Mapping asset file to composer package
 
 ##### NPM mapping
