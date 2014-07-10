@@ -72,10 +72,6 @@ class SemverConverter implements VersionConverterInterface
             }
         }
 
-        // validates the version
-        $parser = new VersionParser();
-        $parser->normalize($version);
-
         return $version;
     }
 
