@@ -132,6 +132,10 @@ NPM and Bower uses [Semver](http://semver.org) for formatting the versions, whic
 the case of Composer. It is therefore necessary to perform a conversion, but it's not
 perfect because of the differences in operation between Semver and Composer.
 
+> **Note:**
+> It may be possible that Composer manages natively the Semver 2.0 soon (see
+> [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
+
 Here are the matches currently validated:
 
 | Semver version   | Composer version |
@@ -168,8 +172,37 @@ Here are the matches currently validated:
 | 1.2.3+build.2012 | 1.2.3-patch.2012 |
 | 1.2.3-build.2012 | 1.2.3-patch.2012 |
 
+##### Range verison conversion
+
+NPM and Bower uses [Semver](http://semver.org) for formatting the range versions, which is not
+the case of Composer. It is therefore necessary to perform a conversion, but it's not
+perfect because of the differences in operation between Semver and Composer.
+
 > **Note:**
-> It may be possible that Composer manages natively the Semver 2.0 soon (see composer/composer#2422).
+> It may be possible that Composer manages natively the Semver 2.0 soon (see
+> [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
+
+Here are the matches currently validated:
+
+| Semver range version | Composer range version |
+| -------------------- | ---------------------- |
+| >1.2.3               | >1.2.3                 |
+| > 1.2.3              | >1.2.3                 |
+| <1.2.3               | <1.2.3                 |
+| < 1.2.3              | <1.2.3                 |
+| >=1.2.3              | >=1.2.3                |
+| >= 1.2.3             | >=1.2.3                |
+| <=1.2.3              | <=1.2.3                |
+| <= 1.2.3             | <=1.2.3                |
+| ~1.2.3               | >=1.2.3,<1.3           |
+| ~ 1.2.3              | >=1.2.3,<1.3           |
+| ~1                   | >=1,<1.1               |
+| ~ 1                  | >=1,<1.1               |
+| ^1.2.3               | ~1.2.3                 |
+| ^ 1.2.3              | ~1.2.3                 |
+| >1.2.3 <2.0          | >1.2.3,<2.0            |
+| >=1.0 <1.1 || >=1.2  | >=1.0,<1.1|>=1.2       |
+| 1.2.3 - 2.3.4        | >=1.2.3,<=2.3.4        |
 
 ## Asset Repository
 
