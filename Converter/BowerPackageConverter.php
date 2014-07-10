@@ -21,7 +21,7 @@ class BowerPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data)
+    public function convert(array $data, array &$vcsRepos = array())
     {
         $assetType = $this->assetType;
         $keys = array(
@@ -49,6 +49,6 @@ class BowerPackageConverter extends AbstractPackageConverter
             'private' => 'bower-asset-private',
         );
 
-        return $this->convertData($data, $keys, $dependencies, $extras);
+        return $this->convertData($data, $keys, $dependencies, $extras, $vcsRepos);
     }
 }

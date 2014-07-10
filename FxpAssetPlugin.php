@@ -12,23 +12,48 @@
 namespace Fxp\Composer\AssetPlugin;
 
 use Composer\Composer;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 
 /**
  * Composer plugin.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class FxpAssetPlugin implements PluginInterface
+class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
 {
+    /**
+     * @var Composer
+     */
+    protected $composer;
+
+    /**
+     * @var RepositoryInterface[]
+     */
+    protected $repos = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            AssetEvents::ADD_VCS_REPOSITORIES => array(
+                array('onAddVcsRepositories', 0),
+            ),
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        $this->composer = $composer;
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
@@ -37,6 +62,19 @@ class FxpAssetPlugin implements PluginInterface
 
         if (isset($extra['asset-repositories']) && is_array($extra['asset-repositories'])) {
             $this->addRepositories($rm, $extra['asset-repositories']);
+        }
+    }
+
+    /**
+     * Adds vcs repositories in manager from asset dependencies with url version.
+     *
+     * @param VcsRepositoryEvent $event
+     */
+    public function onAddVcsRepositories(VcsRepositoryEvent $event)
+    {
+        if (null !== $this->composer) {
+            $rm = $this->composer->getRepositoryManager();
+            $this->addRepositories($rm, $event->getRepositories());
         }
     }
 
@@ -89,9 +127,6 @@ class FxpAssetPlugin implements PluginInterface
      */
     protected function addRepositories(RepositoryManager $rm, array $repositories)
     {
-        /* @var RepositoryInterface[] $repos */
-        $repos = array();
-
         foreach ($repositories as $index => $repo) {
             if (!is_array($repo)) {
                 throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') should be an array, '.gettype($repo).' given');
@@ -99,16 +134,18 @@ class FxpAssetPlugin implements PluginInterface
             if (!isset($repo['type'])) {
                 throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined');
             }
-            $name = is_int($index) && isset($repo['url']) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
-            while (isset($repos[$name])) {
-                $name .= '2';
-            }
             if (false === strpos($repo['type'], '-')) {
                 throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined in this way: "%asset-type%-%type%"');
             }
-            $repos[$name] = $rm->createRepository($repo['type'], $repo);
+            if (!isset($repo['url'])) {
+                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
+            }
+            $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
+            if (!isset($this->repos[$name])) {
+                $this->repos[$name] = $rm->createRepository($repo['type'], $repo);
 
-            $rm->addRepository($repos[$name]);
+                $rm->addRepository($this->repos[$name]);
+            }
         }
     }
 

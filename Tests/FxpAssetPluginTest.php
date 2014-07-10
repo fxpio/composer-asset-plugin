@@ -16,6 +16,8 @@ use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Util\Filesystem;
+use Fxp\Composer\AssetPlugin\AssetEvents;
+use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
 
 /**
@@ -168,6 +170,19 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
     }
 
+    public function testAssetRepositoryWithInvalidUrl()
+    {
+        $this->setExpectedException('UnexpectedValueException');
+
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array('asset-repositories' => array(
+                array('type' => 'npm-vcs')
+            ))));
+
+        $this->plugin->activate($this->composer, $this->io);
+    }
+
     public function testAssetRepository()
     {
         $this->package->expects($this->any())
@@ -195,9 +210,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(4, $repos);
+        $this->assertCount(3, $repos);
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[3]);
     }
 
     public function testOptionsForAssetRegistryRepositories()
@@ -210,5 +224,24 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ))));
 
         $this->plugin->activate($this->composer, $this->io);
+    }
+
+    public function testSubscribeEvents()
+    {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array()));
+
+        $this->assertCount(1, $this->plugin->getSubscribedEvents());
+        $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
+
+        $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, array(
+            array('type' => 'npm-vcs', 'url'  => 'http://foo.tld'),
+        ));
+
+        $this->plugin->activate($this->composer, $this->io);
+        $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
+        $this->plugin->onAddVcsRepositories($event);
+        $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
     }
 }

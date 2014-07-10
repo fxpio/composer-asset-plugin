@@ -45,7 +45,9 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('VERSION_CONVERTED'));
         $versionConverter->expects($this->any())
             ->method('convertRange')
-            ->will($this->returnValue('VERSION_RANGE_CONVERTED'));
+            ->will($this->returnCallback(function ($value) {
+                return $value;
+            }));
         $type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
         $type->expects($this->any())
             ->method('getComposerVendorName')

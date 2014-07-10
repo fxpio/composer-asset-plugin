@@ -22,7 +22,9 @@ use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
+use Fxp\Composer\AssetPlugin\AssetEvents;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -41,6 +43,11 @@ class AssetVcsRepository extends VcsRepository
      * @var VersionParser
      */
     protected $versionParser;
+
+    /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
 
     /**
      * Constructor.
@@ -62,6 +69,7 @@ class AssetVcsRepository extends VcsRepository
         $repoConfig['asset-type'] = $assetType->getName();
         $repoConfig['filename'] = $assetType->getFilename();
         $this->assetType = $assetType;
+        $this->dispatcher = $dispatcher;
 
         parent::__construct($repoConfig, $io, $config, $dispatcher, $drivers);
     }
@@ -262,9 +270,16 @@ class AssetVcsRepository extends VcsRepository
      */
     private function preProcess(VcsDriverInterface $driver, array $data, $identifier)
     {
+        $vcsRepos = array();
+
         // keep the name of the main identifier for all packages
         $data['name'] = $this->packageName ?: $data['name'];
-        $data = $this->assetType->getPackageConverter()->convert($data);
+        $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
+
+        if (null !== $this->dispatcher) {
+            $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
+            $this->dispatcher->dispatch($event->getName(), $event);
+        }
 
         if (!isset($data['dist'])) {
             $data['dist'] = $driver->getDist($identifier);

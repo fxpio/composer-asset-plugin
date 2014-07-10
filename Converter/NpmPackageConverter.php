@@ -21,7 +21,7 @@ class NpmPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data)
+    public function convert(array $data, array &$vcsRepos = array())
     {
         $assetType = $this->assetType;
         $keys = array(
@@ -81,6 +81,6 @@ class NpmPackageConverter extends AbstractPackageConverter
             'publishConfig'        => 'npm-asset-publish-config',
         );
 
-        return $this->convertData($data, $keys, $dependencies, $extras);
+        return $this->convertData($data, $keys, $dependencies, $extras, $vcsRepos);
     }
 }

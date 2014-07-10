@@ -23,7 +23,7 @@ class InvalidPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data)
+    public function convert(array $data, array &$vcsRepos = array())
     {
         $keys = array(
             'name' => array(null, function ($value) {
