@@ -201,8 +201,22 @@ Here are the matches currently validated:
 | ^1.2.3               | ~1.2.3                 |
 | ^ 1.2.3              | ~1.2.3                 |
 | >1.2.3 <2.0          | >1.2.3,<2.0            |
-| >=1.0 <1.1 &#124;&#124; >=1.2 | >=1.0,<1.1&#124;>=1.2 |
+| &gt;=1.0 &lt;1.1 `¦¦` &gt;=1.2 | &gt;=1.0,&lt;1.1`¦`&gt;=1.2 |
 | 1.2.3 - 2.3.4        | >=1.2.3,<=2.3.4        |
+
+
+##### URL Range verison conversion
+
+NPM and Bower can use a URL directly into the version of the dependency, which is not the
+case of Composer. It is therefore necessary to perform a conversion, but it's not perfect
+because of the differences in operation between NPM/Bower and Composer.
+
+| Asset URL version | Composer version                                    |
+| ----------------- | --------------------------------------------------- |
+| {URL}             | dev-default                                         |
+| {URL}#1.2.3       | dev-1.2.3 <code>&#124;</code> 1.2.3 (branch or tag) |
+| {URL}#{branch}    | dev-{branch}                                        |
+| {URL}#{sha}       | dev-default#{sha}                                   |
 
 ##### Multiple version of depdendency in the same project
 
