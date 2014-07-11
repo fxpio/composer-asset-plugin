@@ -59,6 +59,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
                     case 'cache-repo-dir':
                         return sys_get_temp_dir() . '/composer-test-repo-cache';
                 }
+
+                return null;
             }));
         $this->package = $this->getMock('Composer\Package\PackageInterface');
 

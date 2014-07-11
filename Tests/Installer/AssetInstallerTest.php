@@ -54,6 +54,8 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
                     case 'vendor-dir':
                         return sys_get_temp_dir() . '/composer-test/vendor';
                 }
+
+                return null;
             }));
 
         $this->package = $this->getMock('Composer\Package\PackageInterface');
