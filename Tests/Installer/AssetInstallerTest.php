@@ -17,7 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
-use Fxp\Composer\AssetPlugin\Type\BowerAssetType;
+use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
  * Tests of asset installer.
@@ -40,6 +40,11 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
      * @var PackageInterface
      */
     protected $package;
+
+    /**
+     * @var AssetTypeInterface
+     */
+    protected $type;
 
     protected function setUp()
     {
@@ -68,8 +73,29 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
+        $type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
+        $type->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $type->expects($this->any())
+            ->method('getComposerVendorName')
+            ->will($this->returnValue('foo-asset'));
+        $type->expects($this->any())
+            ->method('getComposerType')
+            ->will($this->returnValue('foo-asset-library'));
+        $type->expects($this->any())
+            ->method('getFilename')
+            ->will($this->returnValue('foo.json'));
+        $type->expects($this->any())
+            ->method('getVersionConverter')
+            ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')));
+        $type->expects($this->any())
+            ->method('getPackageConverter')
+            ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')));
+
         $this->composer = $composer;
         $this->io = $io;
+        $this->type = $type;
     }
 
     protected function tearDown()
@@ -85,23 +111,21 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultVendorDir()
     {
-        $type = new BowerAssetType();
-        $installer = new AssetInstaller($this->io, $this->composer, $type);
-        $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/vendor/'.$type->getComposerVendorName();
+        $installer = $this->createInstaller();
+        $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/vendor/'.$this->type->getComposerVendorName();
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        $installerPath = $installer->getInstallPath($this->createPackageMock('bower-asset/foo', '1.0.0'));
+        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo', '1.0.0'));
         $installerPath = str_replace('\\', '/', $installerPath);
         $this->assertEquals($vendorDir.'/foo', $installerPath);
 
-        $installerPath2 = $installer->getInstallPath($this->createPackageMock('bower-asset/foo/bar', '1.0.0'));
+        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar', '1.0.0'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
-    public function testCustomBowerDir()
+    public function testCustomFooDir()
     {
-        $type = new BowerAssetType();
         $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
@@ -111,19 +135,29 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->method('getExtra')
             ->will($this->returnValue(array(
                 'asset-installer-paths' => array(
-                    $type->getComposerType() => $vendorDir,
+                    $this->type->getComposerType() => $vendorDir,
                 )
             )));
 
-        $installer = new AssetInstaller($this->io, $this->composer, $type);
+        $installer = $this->createInstaller();
 
-        $installerPath = $installer->getInstallPath($this->createPackageMock('bower-asset/foo', '1.0.0'));
+        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo', '1.0.0'));
         $installerPath = str_replace('\\', '/', $installerPath);
         $this->assertEquals($vendorDir.'/foo', $installerPath);
 
-        $installerPath2 = $installer->getInstallPath($this->createPackageMock('bower-asset/foo/bar', '1.0.0'));
+        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar', '1.0.0'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
+    }
+
+    /**
+     * Creates the asset installer.
+     *
+     * @return AssetInstaller
+     */
+    protected function createInstaller()
+    {
+        return new AssetInstaller($this->io, $this->composer, $this->type);
     }
 
     /**
