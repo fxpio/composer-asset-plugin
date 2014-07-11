@@ -27,28 +27,28 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Composer
+     * @var Composer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $composer;
 
     /**
-     * @var IOInterface
+     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $io;
 
     /**
-     * @var PackageInterface
+     * @var PackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
 
     /**
-     * @var AssetTypeInterface
+     * @var AssetTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $type;
 
     protected function setUp()
     {
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $this->io = $this->getMock('Composer\IO\IOInterface');
         $config = $this->getMock('Composer\Config');
         $config->expects($this->any())
             ->method('get')
@@ -65,37 +65,33 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
         $this->package = $this->getMock('Composer\Package\PackageInterface');
 
-        $composer = $this->getMock('Composer\Composer');
-        $composer->expects($this->any())
+        $this->composer = $this->getMock('Composer\Composer');
+        $this->composer->expects($this->any())
             ->method('getPackage')
             ->will($this->returnValue($this->package));
-        $composer->expects($this->any())
+        $this->composer->expects($this->any())
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
-        $type->expects($this->any())
+        $this->type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
+        $this->type->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
-        $type->expects($this->any())
+        $this->type->expects($this->any())
             ->method('getComposerVendorName')
             ->will($this->returnValue('foo-asset'));
-        $type->expects($this->any())
+        $this->type->expects($this->any())
             ->method('getComposerType')
             ->will($this->returnValue('foo-asset-library'));
-        $type->expects($this->any())
+        $this->type->expects($this->any())
             ->method('getFilename')
             ->will($this->returnValue('foo.json'));
-        $type->expects($this->any())
+        $this->type->expects($this->any())
             ->method('getVersionConverter')
             ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')));
-        $type->expects($this->any())
+        $this->type->expects($this->any())
             ->method('getPackageConverter')
             ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')));
-
-        $this->composer = $composer;
-        $this->io = $io;
-        $this->type = $type;
     }
 
     protected function tearDown()
@@ -129,9 +125,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
-        $package = $this->package;
-        $package->expects($this->any())
+        $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array(
                 'asset-installer-paths' => array(
