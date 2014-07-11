@@ -171,6 +171,8 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
+     * Gets the option.
+     *
      * @param array  $options The options
      * @param string $key     The key
      * @param mixed  $default The default value

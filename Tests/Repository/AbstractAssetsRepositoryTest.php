@@ -115,6 +115,27 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     abstract protected function getMockSearchResult();
 
+    /**
+     * Replaces the Remote file system of Registry by a mock.
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function replaceRegistryRfsByMock()
+    {
+        $ref = new \ReflectionClass($this->registry);
+        $pRef = $ref->getParentClass()->getParentClass();
+        $pRfs = $pRef->getProperty('rfs');
+        $pRfs->setAccessible(true);
+
+        $rfs = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
+            ->setConstructorArgs(array($this->io, $this->config))
+            ->getMock();
+
+        $pRfs->setValue($this->registry, $rfs);
+
+        return $rfs;
+    }
+
     public function testFindPackageMustBeAlwaysNull()
     {
         $this->assertNull($this->registry->findPackage('foobar', '0'));
@@ -211,26 +232,5 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->registry = $this->getRegistry($repoConfig, $this->io, $this->config);
 
         $this->assertCount(0, $this->registry->search('query'));
-    }
-
-    /**
-     * Replaces the Remote file system of Registry by a mock.
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function replaceRegistryRfsByMock()
-    {
-        $ref = new \ReflectionClass($this->registry);
-        $pRef = $ref->getParentClass()->getParentClass();
-        $pRfs = $pRef->getProperty('rfs');
-        $pRfs->setAccessible(true);
-
-        $rfs = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
-            ->setConstructorArgs(array($this->io, $this->config))
-            ->getMock();
-
-        $pRfs->setValue($this->registry, $rfs);
-
-        return $rfs;
     }
 }

@@ -14,7 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Installer;
 use Composer\Package\PackageInterface;
 
 /**
- * Installer for bower packages
+ * Installer for bower packages.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
@@ -41,7 +41,7 @@ class BowerInstaller extends AssetInstaller
     }
 
     /**
-     * Deletes files defined in bower.json in section "ignore"
+     * Deletes files defined in bower.json in section "ignore".
      *
      * @param PackageInterface $package
      */

@@ -19,7 +19,7 @@ use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
- * Installer for asset packages
+ * Installer for asset packages.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */

@@ -21,6 +21,9 @@ use Fxp\Composer\AssetPlugin\Installer\BowerIgnoreManager;
  */
 class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var string
+     */
     private $target;
 
     protected function setUp()
@@ -33,7 +36,9 @@ class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
         $ri = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::SELF_FIRST);
         $fs->ensureDirectoryExists($target);
 
+        /* @var \SplFileInfo $file */
         foreach ($ri as $file) {
+            /* @var \RecursiveDirectoryIterator $ri */
             $targetPath = $target . DIRECTORY_SEPARATOR . $ri->getSubPathName();
             if ($file->isDir()) {
                 $fs->ensureDirectoryExists($targetPath);

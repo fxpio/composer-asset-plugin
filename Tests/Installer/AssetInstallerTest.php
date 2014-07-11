@@ -105,7 +105,9 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        $this->package->expects($this->any())
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
+        $package = $this->package;
+        $package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array(
                 'asset-installer-paths' => array(
@@ -124,6 +126,13 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
+    /**
+     * Creates the mock package.
+     *
+     * @param string $name
+     *
+     * @return PackageInterface
+     */
     private function createPackageMock($name)
     {
         return $this->getMock('Composer\Package\Package', null, array($name, '1.0.0.0', '1.0.0'));

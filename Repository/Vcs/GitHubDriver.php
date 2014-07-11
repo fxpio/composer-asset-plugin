@@ -91,6 +91,11 @@ class GitHubDriver extends BaseGitHubDriver
         return $this->infoCache[$identifier];
     }
 
+    /**
+     * Setup git driver.
+     *
+     * @param string $url
+     */
     protected function setupGitDriver($url)
     {
         $this->gitDriver = new GitDriver(

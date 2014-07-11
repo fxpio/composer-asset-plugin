@@ -59,17 +59,19 @@ class BowerIgnoreManager
         $files = null === $this->files ? array() : iterator_to_array($this->files->in($dir));
         $dirs = null === $this->dirs ? array() : iterator_to_array($this->dirs->in($dir));
 
+        /* @var \SplFileInfo $path */
         foreach ($dirs as $path) {
             $filesystem->removeDirectory($path->getRealpath());
         }
 
+        /* @var \SplFileInfo $path */
         foreach ($files as $path) {
             $filesystem->remove($path->getRealpath());
         }
     }
 
     /**
-     * Adds a pattern
+     * Adds a pattern.
      *
      * @param string $pattern The pattern
      */
@@ -83,7 +85,7 @@ class BowerIgnoreManager
     }
 
     /**
-     * Adds a pattern for only directory
+     * Adds a pattern for only directory.
      *
      * @param string $pattern The pattern
      */
@@ -97,7 +99,7 @@ class BowerIgnoreManager
     }
 
     /**
-     * Registers a pattern to finder
+     * Registers a pattern to finder.
      *
      * @param Finder $finder
      * @param string $pattern The pattern
