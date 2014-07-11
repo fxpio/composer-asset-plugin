@@ -178,7 +178,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Adds asset installers.
      *
-     * @param Composer    $composer 
+     * @param Composer    $composer
      * @param IOInterface $io
      */
     protected function addInstallers(Composer $composer, IOInterface $io)
