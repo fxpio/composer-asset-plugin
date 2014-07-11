@@ -47,7 +47,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMock('Composer\Config');
         $config->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($key) {
+            ->will($this->returnCallback(function ($key) {
                 switch ($key) {
                     case 'cache-repo-dir':
                         return sys_get_temp_dir() . '/composer-test-repo-cache';
