@@ -204,6 +204,16 @@ Here are the matches currently validated:
 | >=1.0 <1.1 &#124;&#124; >=1.2 | >=1.0,<1.1&#124;>=1.2 |
 | 1.2.3 - 2.3.4        | >=1.2.3,<=2.3.4        |
 
+##### Multiple version of depdendency in the same project
+
+NPM and Bower can add multiple versions of the same dependency, which is not the case of Composer.
+To overcome this limitation, the plugin clones the package, but changes the name to include the
+version number between `[]`.
+
+A Vcs repository will be created for each version, and the number of requests is proportional to
+the number of versions required. However, given that each version of the dependency uses the same
+URL of the VCS repository, subsequent requests will get the package information directly in the cache.
+
 ## Asset Repository
 
 Automatically, the plugin creates `Composer Repositories` to find and create
