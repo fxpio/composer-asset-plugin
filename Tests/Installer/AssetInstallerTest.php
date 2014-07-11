@@ -122,7 +122,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
-    private function createPackageMock($name, $version)
+    private function createPackageMock($name)
     {
         return $this->getMock('Composer\Package\Package', null, array($name, '1.0.0.0', '1.0.0'));
     }
