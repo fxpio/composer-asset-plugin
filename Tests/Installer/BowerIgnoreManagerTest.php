@@ -59,6 +59,7 @@ class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
         $ignorer->addPattern('tests');
         $ignorer->addPattern('doc/');
         $ignorer->addPattern('src/**/foo/*.txt');
+        $ignorer->addPattern('!lib/foo/small.txt');
 
         $ignorer->deleteInDir($this->target);
 
@@ -77,10 +78,14 @@ class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($this->target.'/src/foo/empty.html');
         $this->assertFileNotExists($this->target.'/src/foo/empty.txt');
 
+        $this->assertFileExists($this->target.'/src/lib/foo/small.txt');
+        $this->assertFileNotExists($this->target.'/src/foo/small.txt');
+
         $this->assertFileNotExists($this->target.'/.hidden');
         $this->assertFileNotExists($this->target.'/src/.hidden');
         $this->assertFileNotExists($this->target.'/src/foo/.hidden');
 
         $this->assertFileExists($this->target.'/src/doc');
+        $this->assertFileNotExists($this->target.'/src/foo/doc');
     }
 }

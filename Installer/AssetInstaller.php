@@ -60,27 +60,8 @@ class AssetInstaller extends LibraryInstaller
     {
         $this->initializeVendorDir();
 
-        $prettyName = $package->getPrettyName();
-        if (strpos($prettyName, '/') !== false) {
-            list(, $name) = explode('/', $prettyName, 2);
-        } else {
-            $name = $prettyName;
-        }
+        list(, $name) = explode('/', $package->getPrettyName(), 2);
 
         return ($this->vendorDir ? $this->vendorDir.'/' : '') . $name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function installBinaries(PackageInterface $package)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function removeBinaries(PackageInterface $package)
-    {
     }
 }
