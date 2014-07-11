@@ -36,6 +36,13 @@ interface AssetTypeInterface
     public function getComposerVendorName();
 
     /**
+     * Gets the type of the composer package.
+     *
+     * @return string
+     */
+    public function getComposerType();
+
+    /**
      * Gets the filename of asset package.
      *
      * @return string

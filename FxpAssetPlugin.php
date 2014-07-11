@@ -18,6 +18,8 @@ use Composer\Plugin\PluginInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
+use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
+use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 
 /**
  * Composer plugin.
@@ -63,6 +65,8 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         if (isset($extra['asset-repositories']) && is_array($extra['asset-repositories'])) {
             $this->addRepositories($rm, $extra['asset-repositories']);
         }
+
+        $this->addInstallers($composer, $io);
     }
 
     /**
@@ -169,5 +173,19 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         return $options;
+    }
+
+    /**
+     * Adds asset installers.
+     *
+     * @param Composer    $composer 
+     * @param IOInterface $io
+     */
+    protected function addInstallers(Composer $composer, IOInterface $io)
+    {
+        $im = $composer->getInstallationManager();
+
+        $im->addInstaller(new BowerInstaller($io, $composer, Assets::createType('bower')));
+        $im->addInstaller(new AssetInstaller($io, $composer, Assets::createType('npm')));
     }
 }
