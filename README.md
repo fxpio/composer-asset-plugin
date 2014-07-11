@@ -48,11 +48,11 @@ of keeping dependency management in Composer, with the same advantages for the m
 ##### Features include:
 
 - Works with native management system versions of VCS repository of Composer for:
-  - [NPM Package](https://www.npmjs.org) - package.json (public and private repository)
-  - [Bower Package](http://bower.io) - bower.json (public and private repository)
+  - [NPM Package](https://www.npmjs.org/doc/package.json.html) - package.json (public and private repository)
+  - [Bower Package](http://bower.io/docs/creating-packages) - bower.json (public and private repository)
 - Gets and creates automatically a Asset VCS Repository defined in:
   - [NPM Registry](https://www.npmjs.org)
-  - [Bower Registry](http://bower.io)
+  - [Bower Registry](http://bower.io/search)
 - Drivers for:
   - Git
   - GitHub
