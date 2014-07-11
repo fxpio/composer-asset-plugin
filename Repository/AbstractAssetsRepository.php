@@ -78,22 +78,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * {@inheritDoc}
      */
-    public function findPackage($name, $version)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function findPackages($name, $version = null)
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function search($query, $mode = 0)
     {
         if (!$this->searchable) {
@@ -129,10 +113,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return $this->providers[$name];
         }
 
-        if (!extension_loaded('openssl') && 'https' === substr($this->url, 0, 5)) {
-            throw new \RuntimeException('You must enable the openssl extension in your php.ini to load information from '.$this->url);
-        }
-
         try {
             $repoName = $this->convertAliasName($name);
             $packageName = substr($repoName, strlen($assetPrefix));
@@ -159,22 +139,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * {@inheritDoc}
      */
-    public function getPackages()
-    {
-        throw new \LogicException('Asset repositories can not load the complete list of packages.');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getProviderNames()
-    {
-        throw new \LogicException('Asset repositories can not get the provider names.');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getMinimalPackages()
     {
         return array();
@@ -183,16 +147,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * {@inheritDoc}
      */
-    protected function initialize()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     protected function loadRootServerFile()
     {
-        return array();
+        return array(
+            'providers' => array(),
+        );
     }
 
     /**
