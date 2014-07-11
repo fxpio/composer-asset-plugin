@@ -28,8 +28,8 @@ class BowerPackageConverter extends AbstractPackageConverter
             'name'        => array('name', function ($value) use ($assetType) {
                 return $assetType->getComposerVendorName() . '/' . $value;
             }),
-            'type'        => array('type', function () {
-                return 'bower-asset-library';
+            'type'        => array('type', function () use ($assetType) {
+                return $assetType->getComposerType();
             }),
             'version'     => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);

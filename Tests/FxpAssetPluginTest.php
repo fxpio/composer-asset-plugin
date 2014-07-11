@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Tests;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\Installer\InstallationManager;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Util\Filesystem;
@@ -53,13 +54,18 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMock('Composer\Config');
         $config->expects($this->any())
             ->method('get')
-            ->with($this->equalTo('cache-repo-dir'))
-            ->will($this->returnValue(sys_get_temp_dir() . '/composer-test-repo-cache'));
+            ->will($this->returnCallback(function($key) {
+                switch ($key) {
+                    case 'cache-repo-dir':
+                        return sys_get_temp_dir() . '/composer-test-repo-cache';
+                }
+            }));
         $this->package = $this->getMock('Composer\Package\PackageInterface');
 
         /* @var IOInterface $io */
         /* @var Config $config */
         $rm = new RepositoryManager($io, $config);
+        $im = new InstallationManager();
 
         $composer = $this->getMock('Composer\Composer');
         $composer->expects($this->any())
@@ -68,6 +74,12 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $composer->expects($this->any())
             ->method('getPackage')
             ->will($this->returnValue($this->package));
+        $composer->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($config));
+        $composer->expects($this->any())
+            ->method('getInstallationManager')
+            ->will($this->returnValue($im));
 
         $this->plugin = new FxpAssetPlugin();
         $this->composer = $composer;
@@ -243,5 +255,18 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
         $this->plugin->onAddVcsRepositories($event);
         $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
+    }
+
+    public function testAssetInstallers()
+    {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array()));
+
+        $this->plugin->activate($this->composer, $this->io);
+        $im = $this->composer->getInstallationManager();
+
+        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\BowerInstaller', $im->getInstaller('bower-asset-library'));
+        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\AssetInstaller', $im->getInstaller('npm-asset-library'));
     }
 }

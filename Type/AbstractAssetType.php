@@ -55,6 +55,14 @@ abstract class AbstractAssetType implements AssetTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function getComposerType()
+    {
+        return $this->getName() . '-asset-library';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFilename()
     {
         return $this->getName() . '.json';
