@@ -58,14 +58,10 @@ class BowerIgnoreManager
 
         $files = null === $this->files ? array() : iterator_to_array($this->files->in($dir));
         $dirs = null === $this->dirs ? array() : iterator_to_array($this->dirs->in($dir));
+        $all = array_merge($files, $dirs);
 
         /* @var \SplFileInfo $path */
-        foreach ($dirs as $path) {
-            $filesystem->removeDirectory($path->getRealpath());
-        }
-
-        /* @var \SplFileInfo $path */
-        foreach ($files as $path) {
+        foreach ($all as $path) {
             $filesystem->remove($path->getRealpath());
         }
     }
