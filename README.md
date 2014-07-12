@@ -29,22 +29,6 @@ is more difficult even impossible to add the Composer file, and this is understa
 That is why the plugin supports only transposing the package informations of NPM or Bower, to a
 compatible version for Composer, allowing a management of dependencies for a project PHP much more readily.
 
-##### Why this plugin?
-
-Currently, for manage dependencies of javascript asset in a project PHP, we have several possibilities:
-
-1. Install Node.js and use NPM or Bower command line in addition to Composer command line
-2. Do the solution 1, but add the Composer scripts to automate the process
-3. Include assets directly in the project (really not recommended)
-4. Create a repository with all assets and include the `composer.json` file (and use Packagist or an VCS Repository)
-5. Adds Package Repository in `composer.json` with the direct download link
-6. Creates a Satis or Packagist server
-7. Other?
-
-But none of these solutions can't simply manage the javascript assets with their dependencies directly
-into Composer. This plugin allows to use the main lists of javascript deposits, but with the possibility
-of keeping dependency management in Composer, with the same advantages for the management of versions.
-
 ##### Features include:
 
 - Works with native management system versions of VCS repository of composer
@@ -72,6 +56,22 @@ of keeping dependency management in Composer, with the same advantages for the m
   - `show`
   - `licenses`
   - `status`
+
+##### Why this plugin?
+
+Currently, for manage dependencies of javascript asset in a project PHP, we have several possibilities:
+
+1. Install Node.js and use NPM or Bower command line in addition to Composer command line
+2. Do the solution 1, but add the Composer scripts to automate the process
+3. Include assets directly in the project (really not recommended)
+4. Create a repository with all assets and include the `composer.json` file (and use Packagist or an VCS Repository)
+5. Adds Package Repository in `composer.json` with the direct download link
+6. Creates a Satis or Packagist server
+7. Other?
+
+But none of these solutions can't simply manage the javascript assets with their dependencies directly
+into Composer. This plugin allows to use the main lists of javascript deposits, but with the possibility
+of keeping dependency management in Composer, with the same advantages for the management of versions.
 
 Documentation
 -------------
