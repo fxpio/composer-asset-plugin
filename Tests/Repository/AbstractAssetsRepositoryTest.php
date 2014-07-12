@@ -55,8 +55,12 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         /* @var IOInterface $io */
         $io = $this->getMock('Composer\IO\IOInterface');
-        /* @var Config $config */
-        $config = $this->getMock('Composer\Config');
+        $config = new Config();
+        $config->merge(array(
+            'config' => array(
+                'home' => sys_get_temp_dir() . '/composer-test',
+            ),
+        ));
         $rm = new RepositoryManager($io, $config);
         $rm->setRepositoryClass($this->getType() . '-vcs', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\MockAssetRepository');
         $repoConfig = array(
