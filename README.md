@@ -47,27 +47,31 @@ of keeping dependency management in Composer, with the same advantages for the m
 
 ##### Features include:
 
-- Works with native management system versions of VCS repository of Composer for:
-  - [NPM Package](https://www.npmjs.org/doc/package.json.html) - package.json (public and private repository)
-  - [Bower Package](http://bower.io/docs/creating-packages) - bower.json (public and private repository)
-- Gets and creates automatically a Asset VCS Repository defined in:
+- Works with native management system versions of VCS repository of composer
+- Works with public and private VCS repository
+- Gets and creates automatically a Asset VCS repository defined in:
   - [NPM Registry](https://www.npmjs.org)
   - [Bower Registry](http://bower.io/search)
-- Drivers for:
+- Gets and creates automatically the Asset VCS repositories of dependencies defined
+  in each asset package (dev dependencies included)
+- Mapping conversion of asset package to composer package for:
+  - [NPM Package](https://www.npmjs.org/doc/package.json.html) - [package.json](Resources/doc/schema.md#npm-mapping)
+  - [Bower Package](http://bower.io/docs/creating-packages) - [bower.json](Resources/doc/schema.md#bower-mapping)
+- Conversion of [Semver version](Resources/doc/schema.md#verison-conversion) to the composer version
+- Conversion of [Semver range version](Resources/doc/schema.md#range-verison-conversion) to the composer range version
+- Conversion of [dependencies with URL](Resources/doc/schema.md#url-range-verison-conversion) to the composer dependencies with the creation of VCS repositories
+- Conversion of [multiple versions of the same dependency](Resources/doc/schema.md#multiple-version-of-depdendency-in-the-same-project) to different dependencies of composer
+- VCS drivers for:
   - Git
   - GitHub
-- Conversion of asset version to the composer version for:
-  - NPM
-  - Bower
-- Caches the package versions
-- Caches the package content
-- Compatible with:
-  - search command (bower only)
-  - show command
-  - licenses command
-  - status command
-  - dependencies (require)
-  - dev dependencies (require-dev)
+- Local cache system for:
+  - package versions
+  - package contents
+- Compatible with commands:
+  - `search` (bower only)
+  - `show`
+  - `licenses`
+  - `status`
 
 Documentation
 -------------
