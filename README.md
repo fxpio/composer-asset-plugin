@@ -51,6 +51,8 @@ compatible version for Composer, allowing a management of dependencies for a pro
 - Local cache system for:
   - package versions
   - package contents
+- Custom asset installers configurable in the root file `composer.json`
+- For Bower, all files defined in the section `ignore` will not be installed
 - Compatible with commands:
   - `search` (bower only)
   - `show`

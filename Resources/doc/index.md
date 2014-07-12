@@ -123,3 +123,27 @@ The root `composer.json` must have:
     }
 }
 ```
+
+### Define a custom directory for the assets installation
+
+By default, the plugin will install all the assets in the directory
+`vendors/{asset-type}-asset` and packages will be installed in each folder with
+their asset name.
+
+But you can change the installation directory of the assets directly in the root
+file `composer.json` of your project:
+
+```json
+{
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "web/assets/vendor",
+            "bower-asset-library": "web/assets/vendor"
+        }
+    }
+}
+```
+
+> **Note:**
+>
+> For Bower, all files defined in the section `ignore` will not be installed
