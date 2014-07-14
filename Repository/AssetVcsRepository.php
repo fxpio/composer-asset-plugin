@@ -16,15 +16,13 @@ use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\ArrayLoader;
-use Composer\Package\Loader\InvalidPackageException;
-use Composer\Package\Loader\ValidatingArrayLoader;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
-use Fxp\Composer\AssetPlugin\AssetEvents;
 use Fxp\Composer\AssetPlugin\Assets;
-use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
+use Fxp\Composer\AssetPlugin\Package\LazyCompletePackage;
+use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -85,6 +83,7 @@ class AssetVcsRepository extends VcsRepository
         $assetType = $this->assetType->getName();
         $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $filename = $this->assetType->getFilename();
+        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         /* @var VcsDriverInterface $driver */
         $driver = $this->getDriver();
@@ -110,12 +109,6 @@ class AssetVcsRepository extends VcsRepository
 
         foreach ($driver->getTags() as $tag => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
-            $msg = 'Reading ' . $filename . ' of <info>' . $packageName . '</info> (<comment>' . $tag . '</comment>)';
-            if ($verbose) {
-                $this->io->write($msg);
-            } else {
-                $this->io->overwrite($msg, false);
-            }
 
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
@@ -128,9 +121,7 @@ class AssetVcsRepository extends VcsRepository
             }
 
             try {
-                if (!$data = $driver->getComposerInformation($identifier)) {
-                    $data = $this->createMockOfPackageConfig($packageName, $tag);
-                }
+                $data = $this->createMockOfPackageConfig($packageName, $tag);
 
                 // manually versioned package
                 if (isset($data['version'])) {
@@ -148,19 +139,17 @@ class AssetVcsRepository extends VcsRepository
 
                 // broken package, version doesn't match tag
                 if ($data['version_normalized'] !== $parsedTag) {
-                    $data = array_merge($data, $this->createMockOfPackageConfig($packageName, $tag));
                     $data['version_normalized'] = $parsedTag;
                 }
 
-                if ($verbose) {
-                    $this->io->write('Importing tag '.$tag.' ('.$data['version_normalized'].')');
-                }
-
                 $packageData = $this->preProcess($driver, $data, $identifier);
-                $package = $this->loader->load($packageData);
-                $packageAlias = $this->loader->load(array_merge($packageData, array(
-                    'name' => $packageData['name'].'[' . $packageData['version'] . ']'))
-                );
+                $package = $this->loader->load($packageData, $packageClass);
+                $packageAlias = $this->loader->load($packageData, $packageClass);
+                $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
+                /* @var LazyCompletePackage $package */
+                /* @var LazyCompletePackage $packageAlias */
+                $package->setLoader($lazyLoader);
+                $packageAlias->setLoader($lazyLoader);
                 $this->addPackage($package);
                 $this->addPackage($packageAlias);
             } catch (\Exception $e) {
@@ -177,12 +166,6 @@ class AssetVcsRepository extends VcsRepository
 
         foreach ($driver->getBranches() as $branch => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
-            $msg = 'Reading ' . $filename . ' of <info>' . $packageName . '</info> (<comment>' . $branch . '</comment>)';
-            if ($verbose) {
-                $this->io->write($msg);
-            } else {
-                $this->io->overwrite($msg, false);
-            }
 
             if (!$parsedBranch = $this->validateBranch($branch)) {
                 if ($verbose) {
@@ -192,12 +175,7 @@ class AssetVcsRepository extends VcsRepository
             }
 
             try {
-                if (!$data = $driver->getComposerInformation($identifier)) {
-                    $data = $this->createMockOfPackageConfig($packageName, $branch);
-                }
-
-                // branches are always auto-versioned, read value from branch name
-                $data['version'] = $branch;
+                $data = $this->createMockOfPackageConfig($packageName, $branch);
                 $data['version_normalized'] = $parsedBranch;
 
                 // make sure branch packages have a dev flag
@@ -207,15 +185,11 @@ class AssetVcsRepository extends VcsRepository
                     $data['version'] = preg_replace('{(\.9{7})+}', '.x', $parsedBranch);
                 }
 
-                if ($verbose) {
-                    $this->io->write('Importing branch '.$branch.' ('.$data['version'].')');
-                }
-
                 $packageData = $this->preProcess($driver, $data, $identifier);
-                $package = $this->loader->load($packageData);
-                if ($this->loader instanceof ValidatingArrayLoader && $this->loader->getWarnings()) {
-                    throw new InvalidPackageException($this->loader->getErrors(), $this->loader->getWarnings(), $packageData);
-                }
+                /* @var LazyCompletePackage $package */
+                $package = $this->loader->load($packageData, $packageClass);
+                $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
+                $package->setLoader($lazyLoader);
                 $this->addPackage($package);
             } catch (TransportException $e) {
                 if ($verbose) {
@@ -256,7 +230,30 @@ class AssetVcsRepository extends VcsRepository
         return array(
             'name'    => $name,
             'version' => $version,
+            'type'    => $this->assetType->getComposerType(),
         );
+    }
+
+    /**
+     * Creates the lazy loader of package.
+     *
+     * @param string             $type
+     * @param string             $identifier
+     * @param array              $packageData
+     * @param VcsDriverInterface $driver
+     *
+     * @return LazyAssetPackageLoader
+     */
+    protected function createLazyLoader($type, $identifier, array $packageData, VcsDriverInterface $driver)
+    {
+        $lazyLoader = new LazyAssetPackageLoader($type, $identifier, $packageData);
+        $lazyLoader->setAssetType($this->assetType);
+        $lazyLoader->setLoader($this->loader);
+        $lazyLoader->setDriver(clone $driver);
+        $lazyLoader->setIO($this->io);
+        $lazyLoader->setEventDispatcher($this->dispatcher);
+
+        return $lazyLoader;
     }
 
     /**
@@ -275,18 +272,6 @@ class AssetVcsRepository extends VcsRepository
         // keep the name of the main identifier for all packages
         $data['name'] = $this->packageName ?: $data['name'];
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
-
-        if (null !== $this->dispatcher) {
-            $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
-            $this->dispatcher->dispatch($event->getName(), $event);
-        }
-
-        if (!isset($data['dist'])) {
-            $data['dist'] = $driver->getDist($identifier);
-        }
-        if (!isset($data['source'])) {
-            $data['source'] = $driver->getSource($identifier);
-        }
 
         return $data;
     }
