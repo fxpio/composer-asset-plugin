@@ -33,6 +33,7 @@ compatible version for Composer, allowing a management of dependencies for a pro
 
 - Works with native management system versions of VCS repository of composer
 - Works with public and private VCS repository
+- Lazy loader of asset package file in VCS repository for improve performances
 - Gets and creates automatically a Asset VCS repository defined in:
   - [NPM Registry](https://www.npmjs.org)
   - [Bower Registry](http://bower.io/search)
