@@ -25,27 +25,28 @@ class NpmPackageConverter extends AbstractPackageConverter
     {
         $assetType = $this->assetType;
         $keys = array(
-            'name'         => array('name', function ($value) use ($assetType) {
+            'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->getComposerVendorName() . '/' . $value;
             }),
-            'type'         => array('type', function () use ($assetType) {
+            'type'               => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
             }),
-            'version'      => array('version', function ($value) use ($assetType) {
+            'version'            => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);
             }),
-            'description'  => 'description',
-            'keywords'     => 'keywords',
-            'homepage'     => 'homepage',
-            'license'      => 'license',
-            'author'       => array('authors', function ($value) use ($assetType) {
+            'version_normalized' => 'version_normalized',
+            'description'        => 'description',
+            'keywords'           => 'keywords',
+            'homepage'           => 'homepage',
+            'license'            => 'license',
+            'author'             => array('authors', function ($value) use ($assetType) {
                 if (null !== $value) {
                     $value = array($value);
                 }
 
                 return $value;
             }),
-            'contributors' => array('authors', function ($value, $prevValue) use ($assetType) {
+            'contributors'       => array('authors', function ($value, $prevValue) use ($assetType) {
                 $mergeValue = is_array($prevValue) ? $prevValue : array();
                 $mergeValue = array_merge($mergeValue, is_array($value) ? $value : array());
 
@@ -55,7 +56,7 @@ class NpmPackageConverter extends AbstractPackageConverter
 
                 return $value;
             }),
-            'bin'          => 'bin',
+            'bin'                => 'bin',
         );
         $dependencies = array(
             'dependencies'    => 'require',

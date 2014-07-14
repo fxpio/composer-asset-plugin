@@ -25,19 +25,20 @@ class BowerPackageConverter extends AbstractPackageConverter
     {
         $assetType = $this->assetType;
         $keys = array(
-            'name'        => array('name', function ($value) use ($assetType) {
+            'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->getComposerVendorName() . '/' . $value;
             }),
-            'type'        => array('type', function () use ($assetType) {
+            'type'               => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
             }),
-            'version'     => array('version', function ($value) use ($assetType) {
+            'version'            => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);
             }),
-            'description' => 'description',
-            'keywords'    => 'keywords',
-            'license'     => 'license',
-            'bin'         => 'bin',
+            'version_normalized' => 'version_normalized',
+            'description'        => 'description',
+            'keywords'           => 'keywords',
+            'license'            => 'license',
+            'bin'                => 'bin',
         );
         $dependencies = array(
             'dependencies'    => 'require',
