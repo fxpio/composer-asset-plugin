@@ -170,7 +170,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
         $vcsRepos = array();
         $data = $this->driver->getComposerInformation($this->identifier);
-        $data = array_merge($data, $this->packageData);
 
         if (false === $data) {
             $this->driver->cleanup();
@@ -178,6 +177,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             return false;
         }
 
+        $data = array_merge($data, $this->packageData);
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
         $data = $this->preProcess($this->driver, $data, $this->identifier);
 
