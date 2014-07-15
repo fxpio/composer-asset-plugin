@@ -82,9 +82,9 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('write')
             ->will($this->returnCallback(function ($messages, $newline = true) use ($self) {
-                $pos = max(count($this->output) - 1, 0);
-                if (isset($this->output[$pos])) {
-                    $messages = $this->output[$pos] . $messages;
+                $pos = max(count($self->output) - 1, 0);
+                if (isset($self->output[$pos])) {
+                    $messages = $self->output[$pos] . $messages;
                 }
                 $self->output[$pos] = $messages;
                 if ($newline) {
@@ -95,7 +95,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('overwrite')
             ->will($this->returnCallback(function ($messages, $newline = true) use ($self) {
-                $pos = max(count($this->output) - 1, 0);
+                $pos = max(count($self->output) - 1, 0);
                 $self->output[$pos] = $messages;
                 if ($newline) {
                     $self->output[] = '';
