@@ -228,6 +228,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validOutput = array(
                 'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
+                'Importing empty TYPE ' . $this->lazyPackage->getPrettyVersion() . ' (' . $this->lazyPackage->getVersion() . ')',
                 ''
             );
         }
@@ -341,6 +342,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validOutput = array(
                 'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
+                'Importing empty ' . $type . ' ' . $this->lazyPackage->getPrettyVersion() . ' (' . $this->lazyPackage->getVersion() . ')',
                 $validTrace,
                 ''
             );

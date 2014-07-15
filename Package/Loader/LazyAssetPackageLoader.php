@@ -190,8 +190,8 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
                 $this->dispatcher->dispatch($event->getName(), $event);
             }
 
-            if ($this->verbose && $valid) {
-                $this->io->write('Importing ' . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
+            if ($this->verbose) {
+                $this->io->write('Importing ' . ($valid ? '' : 'empty ') . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
             }
 
             $realPackage = $this->loader->load($data);
