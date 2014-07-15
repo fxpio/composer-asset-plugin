@@ -12,7 +12,6 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Config;
-use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\ArrayLoader;
@@ -80,7 +79,6 @@ class AssetVcsRepository extends VcsRepository
         $this->packages = array();
 
         $verbose = $this->verbose;
-        $assetType = $this->assetType->getName();
         $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $filename = $this->assetType->getFilename();
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
@@ -120,44 +118,37 @@ class AssetVcsRepository extends VcsRepository
                 continue;
             }
 
-            try {
-                $data = $this->createMockOfPackageConfig($packageName, $tag);
+            $data = $this->createMockOfPackageConfig($packageName, $tag);
 
-                // manually versioned package
-                if (isset($data['version'])) {
-                    $data['version'] = $this->assetType->getVersionConverter()->convertVersion($data['version']);
-                    $data['version_normalized'] = $this->versionParser->normalize($data['version']);
-                } else {
-                    // auto-versioned package, read value from tag
-                    $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
-                    $data['version_normalized'] = $parsedTag;
-                }
-
-                // make sure tag packages have no -dev flag
-                $data['version'] = preg_replace('{[.-]?dev$}i', '', $data['version']);
-                $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', $data['version_normalized']);
-
-                // broken package, version doesn't match tag
-                if ($data['version_normalized'] !== $parsedTag) {
-                    $data['version_normalized'] = $parsedTag;
-                }
-
-                $packageData = $this->preProcess($driver, $data, $identifier);
-                $package = $this->loader->load($packageData, $packageClass);
-                $packageAlias = $this->loader->load($packageData, $packageClass);
-                $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
-                /* @var LazyCompletePackage $package */
-                /* @var LazyCompletePackage $packageAlias */
-                $package->setLoader($lazyLoader);
-                $packageAlias->setLoader($lazyLoader);
-                $this->addPackage($package);
-                $this->addPackage($packageAlias);
-            } catch (\Exception $e) {
-                if ($verbose) {
-                    $this->io->write('<warning>Skipped tag '.$tag.', '.($e instanceof TransportException ? 'no ' . $assetType . ' file was found' : $e->getMessage()).'</warning>');
-                }
-                continue;
+            // manually versioned package
+            if (isset($data['version'])) {
+                $data['version'] = $this->assetType->getVersionConverter()->convertVersion($data['version']);
+                $data['version_normalized'] = $this->versionParser->normalize($data['version']);
+            } else {
+                // auto-versioned package, read value from tag
+                $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
+                $data['version_normalized'] = $parsedTag;
             }
+
+            // make sure tag packages have no -dev flag
+            $data['version'] = preg_replace('{[.-]?dev$}i', '', $data['version']);
+            $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', $data['version_normalized']);
+
+            // broken package, version doesn't match tag
+            if ($data['version_normalized'] !== $parsedTag) {
+                $data['version_normalized'] = $parsedTag;
+            }
+
+            $packageData = $this->preProcess($driver, $data, $identifier);
+            $package = $this->loader->load($packageData, $packageClass);
+            $packageAlias = $this->loader->load($packageData, $packageClass);
+            $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
+            /* @var LazyCompletePackage $package */
+            /* @var LazyCompletePackage $packageAlias */
+            $package->setLoader($lazyLoader);
+            $packageAlias->setLoader($lazyLoader);
+            $this->addPackage($package);
+            $this->addPackage($packageAlias);
         }
 
         if (!$verbose) {
@@ -174,37 +165,22 @@ class AssetVcsRepository extends VcsRepository
                 continue;
             }
 
-            try {
-                $data = $this->createMockOfPackageConfig($packageName, $branch);
-                $data['version_normalized'] = $parsedBranch;
+            $data = $this->createMockOfPackageConfig($packageName, $branch);
+            $data['version_normalized'] = $parsedBranch;
 
-                // make sure branch packages have a dev flag
-                if ('dev-' === substr($parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
-                    $data['version'] = 'dev-' . $data['version'];
-                } else {
-                    $data['version'] = preg_replace('{(\.9{7})+}', '.x', $parsedBranch);
-                }
-
-                $packageData = $this->preProcess($driver, $data, $identifier);
-                /* @var LazyCompletePackage $package */
-                $package = $this->loader->load($packageData, $packageClass);
-                $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
-                $package->setLoader($lazyLoader);
-                $this->addPackage($package);
-            } catch (TransportException $e) {
-                if ($verbose) {
-                    $this->io->write('<warning>Skipped branch '.$branch.', no ' . $assetType . ' file was found</warning>');
-                }
-                continue;
-            } catch (\Exception $e) {
-                if (!$verbose) {
-                    $this->io->write('');
-                }
-                $this->branchErrorOccurred = true;
-                $this->io->write('<error>Skipped branch '.$branch.', '.$e->getMessage().'</error>');
-                $this->io->write('');
-                continue;
+            // make sure branch packages have a dev flag
+            if ('dev-' === substr($parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
+                $data['version'] = 'dev-' . $data['version'];
+            } else {
+                $data['version'] = preg_replace('{(\.9{7})+}', '.x', $parsedBranch);
             }
+
+            $packageData = $this->preProcess($driver, $data, $identifier);
+            /* @var LazyCompletePackage $package */
+            $package = $this->loader->load($packageData, $packageClass);
+            $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
+            $package->setLoader($lazyLoader);
+            $this->addPackage($package);
         }
         $driver->cleanup();
 

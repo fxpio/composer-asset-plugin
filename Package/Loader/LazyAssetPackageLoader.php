@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
+use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\LoaderInterface;
@@ -168,36 +169,40 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             $this->io->overwrite($msg, false);
         }
 
-        $vcsRepos = array();
-        $data = $this->driver->getComposerInformation($this->identifier);
+        $realPackage = false;
 
-        if (false === $data) {
-            $this->driver->cleanup();
+        try {
+            $vcsRepos = array();
+            $data = $this->driver->getComposerInformation($this->identifier);
+            $valid = true;
 
-            if (!$this->verbose) {
-                $this->io->overwrite('', false);
+            if (!is_array($data)) {
+                $data = array();
+                $valid = false;
             }
-            $this->cache[$package->getUniqueName()] = false;
 
-            return false;
-        }
+            $data = array_merge($data, $this->packageData);
+            $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
+            $data = $this->preProcess($this->driver, $data, $this->identifier);
 
-        $data = array_merge($data, $this->packageData);
-        $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
-        $data = $this->preProcess($this->driver, $data, $this->identifier);
+            if (null !== $this->dispatcher) {
+                $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
+                $this->dispatcher->dispatch($event->getName(), $event);
+            }
 
-        if (null !== $this->dispatcher) {
-            $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
-            $this->dispatcher->dispatch($event->getName(), $event);
+            if ($this->verbose && $valid) {
+                $this->io->write('Importing ' . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
+            }
+
+            $realPackage = $this->loader->load($data);
+        } catch (\Exception $e) {
+            if ($this->verbose) {
+                $debugType = 'branch' === $this->type ? 'error' : 'warning';
+                $this->io->write('<'.$debugType.'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$debugType.'>');
+            }
         }
 
         $this->driver->cleanup();
-
-        if ($this->verbose) {
-            $this->io->write('Importing ' . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
-        }
-
-        $realPackage = $this->loader->load($data);
         $this->cache[$package->getUniqueName()] = $realPackage;
 
         if (!$this->verbose) {
