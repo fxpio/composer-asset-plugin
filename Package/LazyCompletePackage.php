@@ -79,6 +79,116 @@ class LazyCompletePackage extends CompletePackage implements LazyPackageInterfac
     /**
      * {@inheritDoc}
      */
+    public function getSourceType()
+    {
+        $this->initialize();
+
+        return parent::getSourceType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSourceUrl()
+    {
+        $this->initialize();
+
+        return parent::getSourceUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSourceReference()
+    {
+        $this->initialize();
+
+        return parent::getSourceReference();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSourceMirrors()
+    {
+        $this->initialize();
+
+        return parent::getSourceMirrors();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSourceUrls()
+    {
+        $this->initialize();
+
+        return parent::getSourceUrls();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistType()
+    {
+        $this->initialize();
+
+        return parent::getDistType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistUrl()
+    {
+        $this->initialize();
+
+        return parent::getDistUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistReference()
+    {
+        $this->initialize();
+
+        return parent::getDistReference();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistSha1Checksum()
+    {
+        $this->initialize();
+
+        return parent::getDistSha1Checksum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistMirrors()
+    {
+        $this->initialize();
+
+        return parent::getDistMirrors();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDistUrls()
+    {
+        $this->initialize();
+
+        return parent::getDistUrls();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getReleaseDate()
     {
         $this->initialize();
@@ -286,6 +396,15 @@ class LazyCompletePackage extends CompletePackage implements LazyPackageInterfac
         $this->extra = $real->getExtra();
         $this->binaries = $real->getBinaries();
         $this->installationSource = $real->getInstallationSource();
+        $this->sourceType = $real->getSourceType();
+        $this->sourceUrl = $real->getSourceUrl();
+        $this->sourceReference = $real->getSourceReference();
+        $this->sourceMirrors = $real->getSourceMirrors();
+        $this->distType = $real->getDistType();
+        $this->distUrl = $real->getDistUrl();
+        $this->distReference = $real->getDistReference();
+        $this->distSha1Checksum = $real->getDistSha1Checksum();
+        $this->distMirrors = $real->getDistMirrors();
         $this->releaseDate = $real->getReleaseDate();
         $this->requires = $real->getRequires();
         $this->conflicts = $real->getConflicts();
