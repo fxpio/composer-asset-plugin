@@ -12,11 +12,11 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Package\Loader;
 
 use Composer\EventDispatcher\EventDispatcher;
-use Composer\IO\IOInterface;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Fxp\Composer\AssetPlugin\Package\LazyPackageInterface;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
+use Fxp\Composer\AssetPlugin\Tests\Fixtures\IO\MockIO;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -52,7 +52,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     protected $driver;
 
     /**
-     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MockIO
      */
     protected $io;
 
@@ -61,46 +61,14 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
      */
     protected $dispatcher;
 
-    /**
-     * @var array
-     */
-    public $output = array();
-
     protected function setUp()
     {
-        $self = $this;
-
         $this->lazyPackage = $this->getMock('Fxp\Composer\AssetPlugin\Package\LazyPackageInterface');
         $this->assetType = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
         $this->loader = $this->getMock('Composer\Package\Loader\LoaderInterface');
         $this->driver = $this->getMock('Composer\Repository\Vcs\VcsDriverInterface');
-        $this->io = $this->getMock('Composer\IO\IOInterface');
         $this->dispatcher = $this->getMockBuilder('Composer\EventDispatcher\EventDispatcher')
             ->disableOriginalConstructor()->getMock();
-
-        $this->io
-            ->expects($this->any())
-            ->method('write')
-            ->will($this->returnCallback(function ($messages, $newline = true) use ($self) {
-                $pos = max(count($self->output) - 1, 0);
-                if (isset($self->output[$pos])) {
-                    $messages = $self->output[$pos] . $messages;
-                }
-                $self->output[$pos] = $messages;
-                if ($newline) {
-                    $self->output[] = '';
-                }
-            }));
-        $this->io
-            ->expects($this->any())
-            ->method('overwrite')
-            ->will($this->returnCallback(function ($messages, $newline = true) use ($self) {
-                $pos = max(count($self->output) - 1, 0);
-                $self->output[$pos] = $messages;
-                if ($newline) {
-                    $self->output[] = '';
-                }
-            }));
 
         $this->lazyPackage
             ->expects($this->any())
@@ -184,7 +152,6 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $this->io = null;
         $this->dispatcher = null;
         $this->lazyLoader = null;
-        $this->output = array();
     }
 
     public function testMissingAssetType()
@@ -264,11 +231,11 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
                 ''
             );
         }
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
         $this->assertFalse($packageCache);
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
     }
 
     /**
@@ -326,12 +293,12 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $package);
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
         $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $packageCache);
         $this->assertSame($package, $packageCache);
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
     }
 
     public function getConfigIoForException()
@@ -378,11 +345,11 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
                 ''
             );
         }
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
         $this->assertFalse($packageCache);
-        $this->assertSame($validOutput, $this->output);
+        $this->assertSame($validOutput, $this->io->getTraces());
     }
 
     /**
@@ -395,10 +362,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
      */
     protected function createLazyLoaderConfigured($type, $verbose = false)
     {
-        $this->io
-            ->expects($this->any())
-            ->method('isVerbose')
-            ->will($this->returnValue($verbose));
+        $this->io = new MockIO($verbose);
 
         $loader = $this->createLazyLoader($type);
         $loader->setAssetType($this->assetType);
