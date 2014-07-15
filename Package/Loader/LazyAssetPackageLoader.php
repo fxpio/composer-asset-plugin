@@ -177,6 +177,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             if (!$this->verbose) {
                 $this->io->overwrite('', false);
             }
+            $this->cache[$package->getUniqueName()] = false;
 
             return false;
         }
