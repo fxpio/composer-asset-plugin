@@ -153,6 +153,12 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             return $this->cache[$package->getUniqueName()];
         }
 
+        foreach (array('assetType', 'loader', 'driver', 'io') as $property) {
+            if (null === $this->$property) {
+                throw new \InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
+            }
+        }
+
         $filename = $this->assetType->getFilename();
         $msg = 'Reading ' . $filename . ' of <info>' . $package->getName() . '</info> (<comment>' . $package->getPrettyVersion() . '</comment>)';
 
