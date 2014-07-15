@@ -174,6 +174,10 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         if (false === $data) {
             $this->driver->cleanup();
 
+            if (!$this->verbose) {
+                $this->io->overwrite('', false);
+            }
+
             return false;
         }
 
