@@ -33,7 +33,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
     protected $converter;
 
     /**
-     * @var array|null
+     * @var array
      */
     protected $asset;
 
@@ -66,7 +66,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->type = null;
         $this->converter = null;
-        $this->asset = null;
+        $this->asset = array();
     }
 
     public function testConversionWithInvalidKey()

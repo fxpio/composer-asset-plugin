@@ -131,8 +131,8 @@ class AssetVcsRepository extends VcsRepository
             }
 
             // make sure tag packages have no -dev flag
-            $data['version'] = preg_replace('{[.-]?dev$}i', '', $data['version']);
-            $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', $data['version_normalized']);
+            $data['version'] = preg_replace('{[.-]?dev$}i', '', (string) $data['version']);
+            $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', (string) $data['version_normalized']);
 
             // broken package, version doesn't match tag
             if ($data['version_normalized'] !== $parsedTag) {
@@ -169,10 +169,10 @@ class AssetVcsRepository extends VcsRepository
             $data['version_normalized'] = $parsedBranch;
 
             // make sure branch packages have a dev flag
-            if ('dev-' === substr($parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
+            if ('dev-' === substr((string) $parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
                 $data['version'] = 'dev-' . $data['version'];
             } else {
-                $data['version'] = preg_replace('{(\.9{7})+}', '.x', $parsedBranch);
+                $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
             }
 
             $packageData = $this->preProcess($driver, $data, $identifier);

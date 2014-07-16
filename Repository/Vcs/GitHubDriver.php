@@ -48,7 +48,7 @@ class GitHubDriver extends BaseGitHubDriver
             while ($notFoundRetries) {
                 try {
                     $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/' . $this->repoConfig['filename'] . '?ref='.urlencode($identifier);
-                    $composer = JsonFile::parseJson($this->getContents($resource));
+                    $composer = JsonFile::parseJson((string) $this->getContents($resource));
                     if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
                         throw new \RuntimeException('Could not retrieve ' . $this->repoConfig['filename'] . ' from '.$resource);
                     }
@@ -69,7 +69,7 @@ class GitHubDriver extends BaseGitHubDriver
 
                 if (!isset($composer['time'])) {
                     $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
-                    $commit = JsonFile::parseJson($this->getContents($resource), $resource);
+                    $commit = JsonFile::parseJson((string) $this->getContents($resource), $resource);
                     $composer['time'] = $commit['commit']['committer']['date'];
                 }
                 if (!isset($composer['support']['source'])) {
