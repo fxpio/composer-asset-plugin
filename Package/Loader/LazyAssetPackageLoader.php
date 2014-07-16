@@ -172,23 +172,9 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         $realPackage = false;
 
         try {
-            $vcsRepos = array();
             $data = $this->driver->getComposerInformation($this->identifier);
-            $valid = true;
-
-            if (!is_array($data)) {
-                $data = array();
-                $valid = false;
-            }
-
-            $data = array_merge($data, $this->packageData);
-            $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
-            $data = $this->preProcess($this->driver, $data, $this->identifier);
-
-            if (null !== $this->dispatcher) {
-                $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
-                $this->dispatcher->dispatch($event->getName(), $event);
-            }
+            $valid = is_array($data);
+            $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
 
             if ($this->verbose) {
                 $this->io->write('Importing ' . ($valid ? '' : 'empty ') . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
@@ -197,8 +183,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             $realPackage = $this->loader->load($data);
         } catch (\Exception $e) {
             if ($this->verbose) {
-                $debugType = 'branch' === $this->type ? 'error' : 'warning';
-                $this->io->write('<'.$debugType.'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$debugType.'>');
+                $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$this->getIoTag().'>');
             }
         }
 
@@ -213,6 +198,26 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     }
 
     /**
+     * @param array|bool $data
+     *
+     * @return array
+     */
+    protected function validateData($data)
+    {
+        return is_array($data) ? $data : array();
+    }
+
+    /**
+     * Gets the tag name for IO.
+     *
+     * @return string
+     */
+    protected function getIoTag()
+    {
+        return 'branch' === $this->type ? 'error' : 'warning';
+    }
+
+    /**
      * Pre process the data of package before the conversion to Package instance.
      *
      * @param VcsDriverInterface $driver
@@ -223,6 +228,12 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      */
     protected function preProcess(VcsDriverInterface $driver, array $data, $identifier)
     {
+        $vcsRepos = array();
+        $data = array_merge($data, $this->packageData);
+        $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
+
+        $this->dispatchAddVcsEvent($vcsRepos);
+
         if (!isset($data['dist'])) {
             $data['dist'] = $driver->getDist($identifier);
         }
@@ -231,5 +242,18 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         }
 
         return $data;
+    }
+
+    /**
+     * Dispatches the vcs repositories event.
+     *
+     * @param array $vcsRepos
+     */
+    protected function dispatchAddVcsEvent(array $vcsRepos)
+    {
+        if (null !== $this->dispatcher) {
+            $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
+            $this->dispatcher->dispatch($event->getName(), $event);
+        }
     }
 }
