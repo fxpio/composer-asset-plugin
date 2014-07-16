@@ -30,10 +30,12 @@ class SemverConverter implements VersionConverterInterface
             $end = substr($version, strlen($matches[1][0][0]));
             $version = $matches[1][0][0] . '-';
 
+            $matches = array();
             if (preg_match('/^(\-|\+)/', $end, $matches)) {
                 $end = substr($end, 1);
             }
 
+            $matches = array();
             preg_match('/^[a-z]+/', $end, $matches);
             $type = isset($matches[0]) ? VersionParser::normalizeStability($matches[0]) : null;
             $end = substr($end, strlen($type));
@@ -61,6 +63,7 @@ class SemverConverter implements VersionConverterInterface
 
             $version .= $type;
 
+            $matches = array();
             if (preg_match('/[0-9]+|\.[0-9]+$/', $end, $matches)) {
                 $end = $matches[0];
             } else {
