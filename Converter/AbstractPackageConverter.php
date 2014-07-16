@@ -195,7 +195,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param string $dependency The dependency
      * @param string $version    The version
      *
-     * @return array The new dependency and the new version
+     * @return string[] The new dependency and the new version
      */
     protected function checkAliasVersion($dependency, $version)
     {
