@@ -153,13 +153,9 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         if (isset($this->cache[$package->getUniqueName()])) {
             return $this->cache[$package->getUniqueName()];
         }
+        $this->validateConfig();
 
-        foreach (array('assetType', 'loader', 'driver', 'io') as $property) {
-            if (null === $this->$property) {
-                throw new \InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
-            }
-        }
-
+        $realPackage = false;
         $filename = $this->assetType->getFilename();
         $msg = 'Reading ' . $filename . ' of <info>' . $package->getName() . '</info> (<comment>' . $package->getPrettyVersion() . '</comment>)';
 
@@ -168,8 +164,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         } else {
             $this->io->overwrite($msg, false);
         }
-
-        $realPackage = false;
 
         try {
             $data = $this->driver->getComposerInformation($this->identifier);
@@ -195,6 +189,20 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         }
 
         return $realPackage;
+    }
+
+    /**
+     * Validates the class config.
+     *
+     * @throws \InvalidArgumentException When the property of this class is not defined
+     */
+    protected function validateConfig()
+    {
+        foreach (array('assetType', 'loader', 'driver', 'io') as $property) {
+            if (null === $this->$property) {
+                throw new \InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
+            }
+        }
     }
 
     /**
