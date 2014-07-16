@@ -244,6 +244,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
 
             return $versionParser->normalize($version);
         } catch (\Exception $e) {
+            // must return false
         }
 
         return false;

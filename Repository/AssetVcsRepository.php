@@ -264,6 +264,7 @@ class AssetVcsRepository extends VcsRepository
         try {
             return $this->versionParser->normalizeBranch($branch);
         } catch (\Exception $e) {
+            // must return false
         }
 
         return false;
@@ -283,6 +284,7 @@ class AssetVcsRepository extends VcsRepository
 
             return $this->versionParser->normalize($version);
         } catch (\Exception $e) {
+            // must return false
         }
 
         return false;
