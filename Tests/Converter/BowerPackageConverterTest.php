@@ -28,7 +28,7 @@ class BowerPackageConverterTest extends AbstractPackageConverterTest
         /* @var AssetTypeInterface $type */
         $type = $this->type;
         $this->converter = new BowerPackageConverter($type);
-        $this->asset = json_decode(file_get_contents(__DIR__.'/../Fixtures/package/bower.json'), true);
+        $this->asset = (array) json_decode(file_get_contents(__DIR__.'/../Fixtures/package/bower.json'), true);
     }
 
     public function testConvert()

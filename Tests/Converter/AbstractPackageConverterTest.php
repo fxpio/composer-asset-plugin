@@ -33,7 +33,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
     protected $converter;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $asset;
 

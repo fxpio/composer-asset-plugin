@@ -72,7 +72,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->hasProviders = true;
         $this->rm = $repoConfig['repository-manager'];
         $this->repos = array();
-        $this->searchable = $this->getOption($repoConfig['asset-options'], 'searchable', true);
+        $this->searchable = (bool) $this->getOption($repoConfig['asset-options'], 'searchable', true);
     }
 
     /**

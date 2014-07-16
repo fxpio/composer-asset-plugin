@@ -28,7 +28,7 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
         /* @var AssetTypeInterface $type */
         $type = $this->type;
         $this->converter = new NpmPackageConverter($type);
-        $this->asset = json_decode(file_get_contents(__DIR__.'/../Fixtures/package/npm.json'), true);
+        $this->asset = (array) json_decode(file_get_contents(__DIR__.'/../Fixtures/package/npm.json'), true);
     }
 
     public function testConvert()
