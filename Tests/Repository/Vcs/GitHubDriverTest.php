@@ -544,6 +544,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $gitHubDriver->getComposerInformation($identifier);
     }
 
+    /**
+     * @param object $object
+     * @param string $attribute
+     * @param mixed  $value
+     */
     protected function setAttribute($object, $attribute, $value)
     {
         $attr = new \ReflectionProperty($object, $attribute);

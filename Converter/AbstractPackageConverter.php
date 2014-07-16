@@ -152,7 +152,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param string $version    The version
      * @param array  $vcsRepos   The list of new vcs configs
      *
-     * @return array The new dependency and the new version
+     * @return string[] The new dependency and the new version
      */
     protected function checkUrlVersion($dependency, $version, array &$vcsRepos = array())
     {
