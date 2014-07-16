@@ -111,7 +111,7 @@ class AssetVcsRepository extends VcsRepository
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
 
-            if (!$parsedTag = $this->validateTag($tag)) {
+            if (!$parsedTag = $this->validateTagAsset($tag)) {
                 if ($verbose) {
                     $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
                 }
@@ -139,7 +139,7 @@ class AssetVcsRepository extends VcsRepository
                 $data['version_normalized'] = $parsedTag;
             }
 
-            $packageData = $this->preProcess($driver, $data, $identifier);
+            $packageData = $this->preProcessAsset($data);
             $package = $this->loader->load($packageData, $packageClass);
             $packageAlias = $this->loader->load($packageData, $packageClass);
             $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
@@ -158,7 +158,7 @@ class AssetVcsRepository extends VcsRepository
         foreach ($driver->getBranches() as $branch => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
 
-            if (!$parsedBranch = $this->validateBranch($branch)) {
+            if (!$parsedBranch = $this->validateBranchAsset($branch)) {
                 if ($verbose) {
                     $this->io->write('<warning>Skipped branch '.$branch.', invalid name</warning>');
                 }
@@ -175,7 +175,7 @@ class AssetVcsRepository extends VcsRepository
                 $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
             }
 
-            $packageData = $this->preProcess($driver, $data, $identifier);
+            $packageData = $this->preProcessAsset($data);
             /* @var LazyCompletePackage $package */
             $package = $this->loader->load($packageData, $packageClass);
             $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
@@ -235,13 +235,11 @@ class AssetVcsRepository extends VcsRepository
     /**
      * Pre process the data of package before the conversion to Package instance.
      *
-     * @param VcsDriverInterface $driver
-     * @param array              $data
-     * @param string             $identifier
+     * @param array $data
      *
      * @return array
      */
-    private function preProcess(VcsDriverInterface $driver, array $data, $identifier)
+    private function preProcessAsset(array $data)
     {
         $vcsRepos = array();
 
@@ -259,7 +257,7 @@ class AssetVcsRepository extends VcsRepository
      *
      * @return bool
      */
-    private function validateBranch($branch)
+    private function validateBranchAsset($branch)
     {
         try {
             return $this->versionParser->normalizeBranch($branch);
@@ -277,7 +275,7 @@ class AssetVcsRepository extends VcsRepository
      *
      * @return bool
      */
-    private function validateTag($version)
+    private function validateTagAsset($version)
     {
         try {
             $version = $this->assetType->getVersionConverter()->convertVersion($version);
