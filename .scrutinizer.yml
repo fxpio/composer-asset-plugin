@@ -1,4 +1,5 @@
 tools:
+    external_code_coverage: true
     php_code_sniffer: true
     php_sim: true
     php_changetracking: true
