@@ -249,7 +249,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
             $data['source'] = $driver->getSource($identifier);
         }
 
-        return $data;
+        return  (array) $data;
     }
 
     /**

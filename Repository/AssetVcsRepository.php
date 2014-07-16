@@ -247,7 +247,7 @@ class AssetVcsRepository extends VcsRepository
         $data['name'] = $this->packageName ?: $data['name'];
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
 
-        return $data;
+        return (array) $data;
     }
 
     /**
