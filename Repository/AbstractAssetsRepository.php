@@ -85,7 +85,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         }
 
         $url = str_replace('%query%', $query, $this->searchUrl);
-        $hostname = parse_url($url, PHP_URL_HOST) ?: $url;
+        $hostname = (string) parse_url($url, PHP_URL_HOST) ?: $url;
         $json = (string) $this->rfs->getContents($hostname, $url, false);
         $data = JsonFile::parseJson($json, $url);
         $results = array();
