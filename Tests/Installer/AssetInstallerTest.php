@@ -125,7 +125,9 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        $this->package->expects($this->any())
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
+        $package = $this->package;
+        $package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array(
                 'asset-installer-paths' => array(
@@ -151,7 +153,14 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createInstaller()
     {
-        return new AssetInstaller($this->io, $this->composer, $this->type);
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var Composer $composer */
+        $composer = $this->composer;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
+
+        return new AssetInstaller($io, $composer, $type);
     }
 
     /**

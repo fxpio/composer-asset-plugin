@@ -51,7 +51,7 @@ class BowerInstallerTest extends TestCase
     protected $binDir;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DownloadManager
+     * @var DownloadManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $dm;
 
@@ -135,45 +135,70 @@ class BowerInstallerTest extends TestCase
 
     public function testInstallerCreationShouldNotCreateVendorDirectory()
     {
-        $this->fs->removeDirectory($this->vendorDir);
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->fs->removeDirectory($this->vendorDir);
+        $this->composer->setPackage($rootPackage);
+
+        new BowerInstaller($io, $this->composer, $type);
         $this->assertFileNotExists($this->vendorDir);
     }
 
     public function testInstallerCreationShouldNotCreateBinDirectory()
     {
-        $this->fs->removeDirectory($this->binDir);
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->fs->removeDirectory($this->binDir);
+        $this->composer->setPackage($rootPackage);
+
+        new BowerInstaller($io, $this->composer, $type);
         $this->assertFileNotExists($this->binDir);
     }
 
     public function testIsInstalled()
     {
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        $library = new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock();
-
         $package
             ->expects($this->any())
             ->method('getPrettyName')
             ->will($this->returnValue('foo-asset/package'));
 
+        /* @var PackageInterface $package */
         $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
         mkdir($packageDir, 0777, true);
 
-        $this->repository
+        /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
+        $repository = $this->repository;
+        $repository
             ->expects($this->exactly(2))
             ->method('hasPackage')
             ->with($package)
             ->will($this->onConsecutiveCalls(true, false));
 
-        $this->assertTrue($library->isInstalled($this->repository, $package));
-        $this->assertFalse($library->isInstalled($this->repository, $package));
+        /* @var InstalledRepositoryInterface $repository */
+        $this->assertTrue($library->isInstalled($repository, $package));
+        $this->assertFalse($library->isInstalled($repository, $package));
 
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
@@ -191,30 +216,43 @@ class BowerInstallerTest extends TestCase
      */
     public function testInstall(array $ignoreFiles)
     {
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        $library = new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock($ignoreFiles);
-
         $package
             ->expects($this->any())
             ->method('getPrettyName')
             ->will($this->returnValue('foo-asset/package'));
 
+        /* @var PackageInterface $package */
         $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
         mkdir($packageDir, 0777, true);
 
-        $this->dm
+        /* @var \PHPUnit_Framework_MockObject_MockObject $dm */
+        $dm = $this->dm;
+        $dm
             ->expects($this->once())
             ->method('download')
             ->with($package, $this->vendorDir.DIRECTORY_SEPARATOR.'foo-asset/package');
 
-        $this->repository
+        /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
+        $repository = $this->repository;
+        $repository
             ->expects($this->once())
             ->method('addPackage')
             ->with($package);
 
-        $library->install($this->repository, $package);
+        /* @var InstalledRepositoryInterface $repository */
+        $library->install($repository, $package);
         $this->assertFileExists($this->vendorDir, 'Vendor dir should be created');
         $this->assertFileExists($this->binDir, 'Bin dir should be created');
 
@@ -223,46 +261,68 @@ class BowerInstallerTest extends TestCase
 
     public function testUninstall()
     {
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        $library = new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
         $package = $this->createPackageMock();
 
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
             ->expects($this->any())
             ->method('getPrettyName')
             ->will($this->returnValue('foo-asset/pkg'));
 
-        $this->repository
+        /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
+        $repository = $this->repository;
+        $repository
             ->expects($this->exactly(2))
             ->method('hasPackage')
             ->with($package)
             ->will($this->onConsecutiveCalls(true, false));
 
-        $this->dm
-            ->expects($this->once())
-            ->method('remove')
-            ->with($package, $this->vendorDir.DIRECTORY_SEPARATOR.'foo-asset/pkg');
-
-        $this->repository
+        $repository
             ->expects($this->once())
             ->method('removePackage')
             ->with($package);
 
-        $library->uninstall($this->repository, $package);
+        /* @var \PHPUnit_Framework_MockObject_MockObject $dm */
+        $dm = $this->dm;
+        $dm
+            ->expects($this->once())
+            ->method('remove')
+            ->with($package, $this->vendorDir.DIRECTORY_SEPARATOR.'foo-asset/pkg');
+
+        /* @var InstalledRepositoryInterface $repository */
+        /* @var PackageInterface $package */
+        $library->uninstall($repository, $package);
 
         $this->setExpectedException('InvalidArgumentException');
 
-        $library->uninstall($this->repository, $package);
+        $library->uninstall($repository, $package);
     }
 
     public function testGetInstallPath()
     {
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        $library = new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
         $package = $this->createPackageMock();
 
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
             ->expects($this->once())
             ->method('getTargetDir')
@@ -276,6 +336,7 @@ class BowerInstallerTest extends TestCase
             ->method('getPrettyName')
             ->will($this->returnValue('foo-asset/bar'));
 
+        /* @var PackageInterface $package */
         $exceptDir = $this->vendorDir.'/'.$package->getName();
         $exceptDir = str_replace('\\', '/', $exceptDir);
         $packageDir = $library->getInstallPath($package);
@@ -286,11 +347,19 @@ class BowerInstallerTest extends TestCase
 
     public function testGetInstallPathWithTargetDir()
     {
-        $this->composer->setPackage($this->createRootPackageMock());
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
 
-        $library = new BowerInstaller($this->io, $this->composer, $this->type);
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
         $package = $this->createPackageMock();
 
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
             ->expects($this->once())
             ->method('getTargetDir')
@@ -300,6 +369,7 @@ class BowerInstallerTest extends TestCase
             ->method('getPrettyName')
             ->will($this->returnValue('foo-asset/bar'));
 
+        /* @var PackageInterface $package */
         $exceptDir = $this->vendorDir.'/'.$package->getPrettyName().'/Some/Namespace';
         $exceptDir = str_replace('\\', '/', $exceptDir);
         $packageDir = $library->getInstallPath($package);

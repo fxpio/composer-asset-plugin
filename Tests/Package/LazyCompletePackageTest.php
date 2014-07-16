@@ -24,7 +24,7 @@ use Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface;
 class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var LazyPackageInterface
+     * @var LazyPackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
 
@@ -61,13 +61,13 @@ class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
                     $this->package->getVersion(), $this->package->getPrettyVersion())
                 : false;
 
-            /* @var LazyLoaderInterface|\PHPUnit_Framework_MockObject_MockObject $loader */
             $loader = $this->getMock('Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface');
             $loader
                 ->expects($this->any())
                 ->method('load')
                 ->will($this->returnValue($lp));
 
+            /* @var LazyLoaderInterface$loader */
             $this->package->setLoader($loader);
         }
 

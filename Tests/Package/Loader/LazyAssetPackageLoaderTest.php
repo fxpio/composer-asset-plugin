@@ -166,8 +166,10 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'The "loader" property must be defined');
 
+        /* @var AssetTypeInterface $assetType */
+        $assetType = $this->assetType;
         $loader = $this->createLazyLoader('TYPE');
-        $loader->setAssetType($this->assetType);
+        $loader->setAssetType($assetType);
         $loader->load($this->lazyPackage);
     }
 
@@ -175,20 +177,32 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'The "driver" property must be defined');
 
+        /* @var AssetTypeInterface $assetType */
+        $assetType = $this->assetType;
+        /* @var LoaderInterface $cLoader */
+        $cLoader = $this->loader;
+        /* @var LazyPackageInterface $lazyPackage */
+        $lazyPackage = $this->lazyPackage;
         $loader = $this->createLazyLoader('TYPE');
-        $loader->setAssetType($this->assetType);
-        $loader->setLoader($this->loader);
-        $loader->load($this->lazyPackage);
+        $loader->setAssetType($assetType);
+        $loader->setLoader($cLoader);
+        $loader->load($lazyPackage);
     }
 
     public function testMissingIo()
     {
         $this->setExpectedException('InvalidArgumentException', 'The "io" property must be defined');
 
+        /* @var AssetTypeInterface $assetType */
+        $assetType = $this->assetType;
+        /* @var LoaderInterface $cLoader */
+        $cLoader = $this->loader;
+        /* @var VcsDriverInterface $driver */
+        $driver = $this->driver;
         $loader = $this->createLazyLoader('TYPE');
-        $loader->setAssetType($this->assetType);
-        $loader->setLoader($this->loader);
-        $loader->setDriver($this->driver);
+        $loader->setAssetType($assetType);
+        $loader->setLoader($cLoader);
+        $loader->setDriver($driver);
         $loader->load($this->lazyPackage);
     }
 
@@ -207,12 +221,16 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithoutJsonFile($verbose)
     {
-        $this->driver
+        /* @var \PHPUnit_Framework_MockObject_MockObject $driver */
+        $driver = $this->driver;
+        $driver
             ->expects($this->any())
             ->method('getComposerInformation')
             ->will($this->returnValue(false));
 
-        $this->loader
+        /* @var \PHPUnit_Framework_MockObject_MockObject $loader */
+        $loader = $this->loader;
+        $loader
             ->expects($this->any())
             ->method('load')
             ->will($this->returnValue(false));
@@ -269,12 +287,16 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->method('getVersion')
             ->will($this->returnValue('1.0.0.0'));
 
-        $this->driver
+        /* @var \PHPUnit_Framework_MockObject_MockObject $driver */
+        $driver = $this->driver;
+        $driver
             ->expects($this->any())
             ->method('getComposerInformation')
             ->will($this->returnValue($arrayPackage));
 
-        $this->loader
+        /* @var \PHPUnit_Framework_MockObject_MockObject $loader */
+        $loader = $this->loader;
+        $loader
             ->expects($this->any())
             ->method('load')
             ->will($this->returnValue($realPackage));
@@ -326,7 +348,9 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testTagWithTransportException($type, $verbose, $exceptionClass, $validTrace)
     {
-        $this->loader
+        /* @var \PHPUnit_Framework_MockObject_MockObject $loader */
+        $loader = $this->loader;
+        $loader
             ->expects($this->any())
             ->method('load')
             ->will($this->throwException(new $exceptionClass('MESSAGE')));
@@ -366,12 +390,20 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->io = new MockIO($verbose);
 
+        /* @var AssetTypeInterface $assetType */
+        $assetType = $this->assetType;
+        /* @var LoaderInterface $cLoader */
+        $cLoader = $this->loader;
+        /* @var VcsDriverInterface $driver */
+        $driver = $this->driver;
+        /* @var EventDispatcher $dispatcher */
+        $dispatcher = $this->dispatcher;
         $loader = $this->createLazyLoader($type);
-        $loader->setAssetType($this->assetType);
-        $loader->setLoader($this->loader);
-        $loader->setDriver($this->driver);
+        $loader->setAssetType($assetType);
+        $loader->setLoader($cLoader);
+        $loader->setDriver($driver);
         $loader->setIO($this->io);
-        $loader->setEventDispatcher($this->dispatcher);
+        $loader->setEventDispatcher($dispatcher);
 
         return $loader;
     }
