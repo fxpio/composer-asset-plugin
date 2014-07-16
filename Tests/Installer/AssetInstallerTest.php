@@ -111,11 +111,11 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/vendor/'.$this->type->getComposerVendorName();
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo', '1.0.0'));
+        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo'));
         $installerPath = str_replace('\\', '/', $installerPath);
         $this->assertEquals($vendorDir.'/foo', $installerPath);
 
-        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar', '1.0.0'));
+        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
@@ -135,11 +135,11 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
         $installer = $this->createInstaller();
 
-        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo', '1.0.0'));
+        $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo'));
         $installerPath = str_replace('\\', '/', $installerPath);
         $this->assertEquals($vendorDir.'/foo', $installerPath);
 
-        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar', '1.0.0'));
+        $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
