@@ -241,12 +241,11 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         try {
             $versionParser = new VersionParser();
             $version = $this->assetType->getVersionConverter()->convertVersion($version);
-
-            return $versionParser->normalize($version);
+            $version = $versionParser->normalize($version);
         } catch (\Exception $e) {
-            // must return false
+            $version = false;
         }
 
-        return false;
+        return $version;
     }
 }

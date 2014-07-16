@@ -288,12 +288,12 @@ class AssetVcsRepository extends VcsRepository
     private function validateBranchAsset($branch)
     {
         try {
-            return $this->versionParser->normalizeBranch($branch);
+            $branch = $this->versionParser->normalizeBranch($branch);
         } catch (\Exception $e) {
-            // must return false
+            $branch = false;
         }
 
-        return false;
+        return $branch;
     }
 
     /**
@@ -307,12 +307,11 @@ class AssetVcsRepository extends VcsRepository
     {
         try {
             $version = $this->assetType->getVersionConverter()->convertVersion($version);
-
-            return $this->versionParser->normalize($version);
+            $version = $this->versionParser->normalize($version);
         } catch (\Exception $e) {
-            // must return false
+            $version = false;
         }
 
-        return false;
+        return $version;
     }
 }
