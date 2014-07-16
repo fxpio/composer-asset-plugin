@@ -24,7 +24,7 @@ use Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface;
 class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var LazyPackageInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LazyPackageInterface
      */
     protected $package;
 
