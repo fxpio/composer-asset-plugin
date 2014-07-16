@@ -15,6 +15,7 @@ use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\ArrayLoader;
+use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
@@ -45,6 +46,11 @@ class AssetVcsRepository extends VcsRepository
      * @var EventDispatcher
      */
     protected $dispatcher;
+
+    /**
+     * @var LoaderInterface
+     */
+    protected $loader;
 
     /**
      * Constructor.
@@ -78,11 +84,6 @@ class AssetVcsRepository extends VcsRepository
     {
         $this->packages = array();
 
-        $verbose = $this->verbose;
-        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
-        $filename = $this->assetType->getFilename();
-        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
-
         /* @var VcsDriverInterface $driver */
         $driver = $this->getDriver();
         if (!$driver) {
@@ -100,10 +101,30 @@ class AssetVcsRepository extends VcsRepository
                 $this->packageName = !empty($data['name']) ? $data['name'] : null;
             }
         } catch (\Exception $e) {
-            if ($verbose) {
+            if ($this->verbose) {
                 $this->io->write('<error>Skipped parsing '.$driver->getRootIdentifier().', '.$e->getMessage().'</error>');
             }
         }
+
+        $this->initTags($driver);
+        $this->initBranches($driver);
+        $driver->cleanup();
+
+        if (!$this->getPackages()) {
+            throw new InvalidRepositoryException('No valid ' . $this->assetType->getFilename() . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
+        }
+    }
+
+    /**
+     * Initializes all tags.
+     *
+     * @param VcsDriverInterface $driver
+     */
+    protected function initTags(VcsDriverInterface $driver)
+    {
+        $verbose = $this->verbose;
+        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
+        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         foreach ($driver->getTags() as $tag => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
@@ -151,9 +172,21 @@ class AssetVcsRepository extends VcsRepository
             $this->addPackage($packageAlias);
         }
 
-        if (!$verbose) {
+        if (!$this->verbose) {
             $this->io->overwrite('', false);
         }
+    }
+
+    /**
+     * Initializes all branches.
+     *
+     * @param VcsDriverInterface $driver
+     */
+    protected function initBranches(VcsDriverInterface $driver)
+    {
+        $verbose = $this->verbose;
+        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
+        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         foreach ($driver->getBranches() as $branch => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
@@ -182,14 +215,9 @@ class AssetVcsRepository extends VcsRepository
             $package->setLoader($lazyLoader);
             $this->addPackage($package);
         }
-        $driver->cleanup();
 
-        if (!$verbose) {
+        if (!$this->verbose) {
             $this->io->overwrite('', false);
-        }
-
-        if (!$this->getPackages()) {
-            throw new InvalidRepositoryException('No valid ' . $filename . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
         }
     }
 
