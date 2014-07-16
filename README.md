@@ -5,6 +5,7 @@ NPM/Bower Dependency Manager for Composer
 [![Latest Unstable Version](https://poser.pugx.org/fxp/composer-asset-plugin/v/unstable.svg)](https://packagist.org/packages/fxp/composer-asset-plugin)
 [![Build Status](https://travis-ci.org/francoispluchino/composer-asset-plugin.svg?branch=master)](https://travis-ci.org/francoispluchino/composer-asset-plugin)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/quality-score.png)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
+[![Code Coverage](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/coverage.png)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce/mini.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
 The Composer Asset Plugin allows you to manage your assets with NPM or Bower package file directly in
