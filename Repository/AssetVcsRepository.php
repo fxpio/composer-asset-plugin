@@ -140,25 +140,12 @@ class AssetVcsRepository extends VcsRepository
             }
 
             $data = $this->createMockOfPackageConfig($packageName, $tag);
-
-            // manually versioned package
-            if (isset($data['version'])) {
-                $data['version'] = $this->assetType->getVersionConverter()->convertVersion($data['version']);
-                $data['version_normalized'] = $this->versionParser->normalize($data['version']);
-            } else {
-                // auto-versioned package, read value from tag
-                $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
-                $data['version_normalized'] = $parsedTag;
-            }
+            $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
+            $data['version_normalized'] = $parsedTag;
 
             // make sure tag packages have no -dev flag
             $data['version'] = preg_replace('{[.-]?dev$}i', '', (string) $data['version']);
             $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', (string) $data['version_normalized']);
-
-            // broken package, version doesn't match tag
-            if ($data['version_normalized'] !== $parsedTag) {
-                $data['version_normalized'] = $parsedTag;
-            }
 
             $packageData = $this->preProcessAsset($data);
             $package = $this->loader->load($packageData, $packageClass);
@@ -184,20 +171,12 @@ class AssetVcsRepository extends VcsRepository
      */
     protected function initBranches(VcsDriverInterface $driver)
     {
-        $verbose = $this->verbose;
         $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         foreach ($driver->getBranches() as $branch => $identifier) {
             $packageName = $prefixPackage . ($this->packageName ?: $this->url);
-
-            if (!$parsedBranch = $this->validateBranchAsset($branch)) {
-                if ($verbose) {
-                    $this->io->write('<warning>Skipped branch '.$branch.', invalid name</warning>');
-                }
-                continue;
-            }
-
+            $parsedBranch = $this->versionParser->normalizeBranch($branch);
             $data = $this->createMockOfPackageConfig($packageName, $branch);
             $data['version_normalized'] = $parsedBranch;
 
@@ -276,24 +255,6 @@ class AssetVcsRepository extends VcsRepository
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
 
         return (array) $data;
-    }
-
-    /**
-     * Validates the branch.
-     *
-     * @param string $branch
-     *
-     * @return bool
-     */
-    private function validateBranchAsset($branch)
-    {
-        try {
-            $branch = $this->versionParser->normalizeBranch($branch);
-        } catch (\Exception $e) {
-            $branch = false;
-        }
-
-        return $branch;
     }
 
     /**
