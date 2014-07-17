@@ -1,6 +1,7 @@
 tools:
     external_code_coverage:
-        timeout: 1200
+        timeout: 1800
+        runs: 6
     php_code_sniffer: true
     php_sim: true
     php_changetracking: true
