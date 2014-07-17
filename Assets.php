@@ -57,7 +57,7 @@ class Assets
     public static function createType($type)
     {
         if (!isset(static::$typeClasses[$type])) {
-            throw new \InvalidArgumentException('The asset type "' . $type . '" does not exist, only "' . implode('", "', array_keys(static::getTypes())) . '" are accepted');
+            throw new \InvalidArgumentException('The asset type "' . $type . '" does not exist, only "' . implode('", "', static::getTypes()) . '" are accepted');
         }
 
         $class = static::$typeClasses[$type];
