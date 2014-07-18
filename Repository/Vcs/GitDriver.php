@@ -32,9 +32,7 @@ class GitDriver extends BaseGitDriver
      */
     public function getComposerInformation($identifier)
     {
-        if (preg_match('{[a-f0-9]{40}}i', $identifier) && $res = $this->cache->read($this->repoConfig['asset-type'] . '-' . $identifier)) {
-            $this->infoCache[$identifier] = JsonFile::parseJson($res);
-        }
+        $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
 
         if (!isset($this->infoCache[$identifier])) {
             $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
@@ -52,11 +50,8 @@ class GitDriver extends BaseGitDriver
                 $composer['time'] = $date->format('Y-m-d H:i:s');
             }
 
-            if (preg_match('{[a-f0-9]{40}}i', $identifier)) {
-                $this->cache->write($this->repoConfig['asset-type'] . '-' . $identifier, json_encode($composer));
-            }
-
             $this->infoCache[$identifier] = $composer;
+            Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
         }
 
         return $this->infoCache[$identifier];

@@ -37,11 +37,7 @@ class GitHubDriver extends BaseGitHubDriver
             return $this->gitDriver->getComposerInformation($identifier);
         }
 
-        $isSha = (bool) preg_match('{[a-f0-9]{40}}i', $identifier);
-
-        if ($isSha && $res = $this->cache->read($this->repoConfig['asset-type'] . '-' . $identifier)) {
-            $this->infoCache[$identifier] = JsonFile::parseJson($res);
-        }
+        $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
 
         if (!isset($this->infoCache[$identifier])) {
             $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/' . $this->repoConfig['filename'] . '?ref='.urlencode($identifier);
@@ -51,11 +47,8 @@ class GitHubDriver extends BaseGitHubDriver
                 $composer = $this->convertComposerContent($composer, $resource, $identifier);
             }
 
-            if ($isSha) {
-                $this->cache->write($this->repoConfig['asset-type'] . '-' . $identifier, json_encode($composer));
-            }
-
             $this->infoCache[$identifier] = $composer;
+            Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
         }
 
         return $this->infoCache[$identifier];
