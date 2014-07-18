@@ -15,6 +15,7 @@ use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\LoaderInterface;
+use Composer\Package\PackageInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Fxp\Composer\AssetPlugin\AssetEvents;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
@@ -155,33 +156,15 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         }
         $this->validateConfig();
 
-        $realPackage = false;
         $filename = $this->assetType->getFilename();
         $msg = 'Reading ' . $filename . ' of <info>' . $package->getName() . '</info> (<comment>' . $package->getPrettyVersion() . '</comment>)';
-
         if ($this->verbose) {
             $this->io->write($msg);
         } else {
             $this->io->overwrite($msg, false);
         }
 
-        try {
-            $data = $this->driver->getComposerInformation($this->identifier);
-            $valid = is_array($data);
-            $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
-
-            if ($this->verbose) {
-                $this->io->write('Importing ' . ($valid ? '' : 'empty ') . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
-            }
-
-            $realPackage = $this->loader->load($data);
-        } catch (\Exception $e) {
-            if ($this->verbose) {
-                $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$this->getIoTag().'>');
-            }
-        }
-
-        $this->driver->cleanup();
+        $realPackage = $this->loadRealPackage($package);
         $this->cache[$package->getUniqueName()] = $realPackage;
 
         if (!$this->verbose) {
@@ -203,6 +186,38 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
                 throw new \InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
             }
         }
+    }
+
+    /**
+     * Loads the real package.
+     *
+     * @param LazyPackageInterface $package
+     *
+     * @return false|PackageInterface
+     */
+    protected function loadRealPackage(LazyPackageInterface $package)
+    {
+        $realPackage = false;
+
+        try {
+            $data = $this->driver->getComposerInformation($this->identifier);
+            $valid = is_array($data);
+            $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
+
+            if ($this->verbose) {
+                $this->io->write('Importing ' . ($valid ? '' : 'empty ') . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
+            }
+
+            $realPackage = $this->loader->load($data);
+        } catch (\Exception $e) {
+            if ($this->verbose) {
+                $filename = $this->assetType->getFilename();
+                $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$this->getIoTag().'>');
+            }
+        }
+        $this->driver->cleanup();
+
+        return $realPackage;
     }
 
     /**
