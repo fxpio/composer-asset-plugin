@@ -24,7 +24,7 @@ class Util
     /**
      * Check if the identifier is an SHA.
      *
-     * @param bool $identifier The identifier
+     * @param string $identifier The identifier
      *
      * @return bool
      */
