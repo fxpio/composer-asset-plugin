@@ -11,8 +11,8 @@
 
 namespace Fxp\Composer\AssetPlugin\Converter;
 
-use Composer\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
+use Fxp\Composer\AssetPlugin\Util\Validator;
 
 /**
  * Abstract class for converter for asset package to composer package.
@@ -171,11 +171,11 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             // sha version or branch verison
             if (preg_match('{^[0-9a-f]{40}$}', $version)) {
                 $version = 'dev-default#' . $version;
-            } elseif (!$this->validateTag($version)) {
+            } elseif (!Validator::validateTag($version, $this->assetType)) {
                 $oldVersion = $version;
                 $version = 'dev-' . $version;
 
-                if (!$this->validateBranch($oldVersion)) {
+                if (!Validator::validateBranch($oldVersion)) {
                     $version .= ' || ' . $oldVersion;
                 }
             }
@@ -208,44 +208,5 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         }
 
         return array($dependency, $version);
-    }
-
-    /**
-     * Validates the branch.
-     *
-     * @param string $branch
-     *
-     * @return bool
-     */
-    protected function validateBranch($branch)
-    {
-        $versionParser = new VersionParser();
-        $normalize = $versionParser->normalizeBranch($branch);
-
-        if (false !== strpos($normalize, '.9999999-dev')) {
-            return false;
-        }
-
-        return $normalize;
-    }
-
-    /**
-     * Validates the tag.
-     *
-     * @param string $version
-     *
-     * @return bool
-     */
-    protected function validateTag($version)
-    {
-        try {
-            $versionParser = new VersionParser();
-            $version = $this->assetType->getVersionConverter()->convertVersion($version);
-            $version = $versionParser->normalize($version);
-        } catch (\Exception $e) {
-            $version = false;
-        }
-
-        return $version;
     }
 }

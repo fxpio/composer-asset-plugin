@@ -24,6 +24,7 @@ use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Package\LazyCompletePackage;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
+use Fxp\Composer\AssetPlugin\Util\Validator;
 
 /**
  * Asset VCS repository.
@@ -132,7 +133,7 @@ class AssetVcsRepository extends VcsRepository
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
 
-            if (!$parsedTag = $this->validateTagAsset($tag)) {
+            if (!$parsedTag = Validator::validateTag($tag, $this->assetType, $this->versionParser)) {
                 if ($verbose) {
                     $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
                 }
@@ -255,24 +256,5 @@ class AssetVcsRepository extends VcsRepository
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
 
         return (array) $data;
-    }
-
-    /**
-     * Validates the tag.
-     *
-     * @param string $version
-     *
-     * @return bool
-     */
-    private function validateTagAsset($version)
-    {
-        try {
-            $version = $this->assetType->getVersionConverter()->convertVersion($version);
-            $version = $this->versionParser->normalize($version);
-        } catch (\Exception $e) {
-            $version = false;
-        }
-
-        return $version;
     }
 }
