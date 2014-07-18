@@ -12,8 +12,6 @@
 namespace Fxp\Composer\AssetPlugin\Type;
 
 use Fxp\Composer\AssetPlugin\Converter\NpmPackageConverter;
-use Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface;
-use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 
 /**
  * NPM asset type.
@@ -22,19 +20,6 @@ use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
  */
 class NpmAssetType extends AbstractAssetType
 {
-    /**
-     * Constructor.
-     *
-     * @param PackageConverterInterface $packageConverter
-     * @param VersionConverterInterface $versionConverter
-     */
-    public function __construct(PackageConverterInterface $packageConverter = null, VersionConverterInterface $versionConverter = null)
-    {
-        $packageConverter = !$packageConverter ? new NpmPackageConverter($this) : $packageConverter;
-
-        parent::__construct($packageConverter, $versionConverter);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -49,5 +34,13 @@ class NpmAssetType extends AbstractAssetType
     public function getFilename()
     {
         return 'package.json';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createPackageConverter()
+    {
+        return new NpmPackageConverter($this);
     }
 }

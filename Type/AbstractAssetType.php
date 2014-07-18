@@ -38,9 +38,9 @@ abstract class AbstractAssetType implements AssetTypeInterface
      * @param PackageConverterInterface $packageConverter
      * @param VersionConverterInterface $versionConverter
      */
-    public function __construct(PackageConverterInterface $packageConverter, VersionConverterInterface $versionConverter = null)
+    public function __construct(PackageConverterInterface $packageConverter = null, VersionConverterInterface $versionConverter = null)
     {
-        $this->packageConverter = $packageConverter;
+        $this->packageConverter = !$packageConverter ? $this->createPackageConverter() : $packageConverter;
         $this->versionConverter = !$versionConverter ? new SemverConverter() : $versionConverter;
     }
 
@@ -83,4 +83,9 @@ abstract class AbstractAssetType implements AssetTypeInterface
     {
         return $this->versionConverter;
     }
+
+    /**
+     * @return PackageConverterInterface
+     */
+    abstract protected function createPackageConverter();
 }

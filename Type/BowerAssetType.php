@@ -12,8 +12,6 @@
 namespace Fxp\Composer\AssetPlugin\Type;
 
 use Fxp\Composer\AssetPlugin\Converter\BowerPackageConverter;
-use Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface;
-use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 
 /**
  * Bower asset type.
@@ -23,23 +21,18 @@ use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 class BowerAssetType extends AbstractAssetType
 {
     /**
-     * Constructor.
-     *
-     * @param PackageConverterInterface $packageConverter
-     * @param VersionConverterInterface $versionConverter
-     */
-    public function __construct(PackageConverterInterface $packageConverter = null, VersionConverterInterface $versionConverter = null)
-    {
-        $packageConverter = !$packageConverter ? new BowerPackageConverter($this) : $packageConverter;
-
-        parent::__construct($packageConverter, $versionConverter);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getName()
     {
         return 'bower';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createPackageConverter()
+    {
+        return new BowerPackageConverter($this);
     }
 }
