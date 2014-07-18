@@ -47,63 +47,9 @@ class SemverConverter implements VersionConverterInterface
      */
     public function convertRange($range)
     {
-        foreach (array('<', '>', '=', '~', '^', '||') as $character) {
-            $range = str_replace($character . ' ', $character, $range);
-        }
-        $range = str_replace(' ||', '||', $range);
+        $range = $this->cleanRange($range);
 
-        $pattern = '/(\ -\ )|(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
-        $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $special = null;
-
-        foreach ($matches as $i => $match) {
-            switch ($match) {
-                case ' - ':
-                    $matches[$i - 1] = '>=' . $matches[$i - 1];
-                    $matches[$i] = ',<=';
-                    break;
-                case '';
-                case '<';
-                case '>';
-                case '=';
-                case ',';
-                    break;
-                case '~';
-                    $special = $match;
-                    $matches[$i] = '';
-                    break;
-                case '^':
-                    $matches[$i] = '~';
-                    break;
-                case ' ':
-                    $matches[$i] = ',';
-                    break;
-                case '||':
-                    $matches[$i] = '|';
-                    break;
-                default:
-                    if ('~' === $special) {
-                        $newMatch = '>='.$this->convertVersion($match).',<';
-                        $exp = explode('.', $match);
-                        $upVersion = isset($exp[0]) ? $exp[0] : '0';
-
-                        if (isset($exp[1])) {
-                            $upVersion .= '.' . ($exp[1] + 1);
-                        } else {
-                            $upVersion .= '.1';
-                        }
-
-                        $newMatch .= $this->convertVersion($upVersion);
-                        $matches[$i] = $newMatch;
-                    } else {
-                        $matches[$i] = $this->convertVersion($match);
-                    }
-                    $special = null;
-                    break;
-            }
-        }
-
-        return implode('', $matches);
+        return $this->matchRange($range);
     }
 
     /**
@@ -183,5 +129,72 @@ class SemverConverter implements VersionConverterInterface
         $version .= $type;
 
         return array($version, $patchVersion);
+    }
+
+    /**
+     * Clean the raw range.
+     *
+     * @param string $range
+     *
+     * @return string
+     */
+    protected function cleanRange($range)
+    {
+        foreach (array('<', '>', '=', '~', '^', '||') as $character) {
+            $range = str_replace($character . ' ', $character, $range);
+        }
+
+        return str_replace(' ||', '||', $range);
+    }
+
+    /**
+     * Match the range.
+     *
+     * @param string $range The range cleaned
+     *
+     * @return string The range
+     */
+    protected function matchRange($range)
+    {
+        $pattern = '/(\ -\ )|(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
+        $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $special = null;
+
+        foreach ($matches as $i => $match) {
+            if (' - ' === $match) {
+                $matches[$i - 1] = '>=' . $matches[$i - 1];
+                $matches[$i] = ',<=';
+            } elseif (in_array($match, array('', '<', '>', '=', ','))) {
+                continue;
+            } elseif ('~' === $match) {
+                $special = $match;
+                $matches[$i] = '';
+            } elseif ('^' === $match) {
+                $matches[$i] = '~';
+            } elseif (' ' === $match) {
+                $matches[$i] = ',';
+            } elseif ('||' === $match) {
+                $matches[$i] = '|';
+            } elseif ('~' === $special) {
+                $newMatch = '>='.$this->convertVersion($match).',<';
+                $exp = explode('.', $match);
+                $upVersion = isset($exp[0]) ? $exp[0] : '0';
+
+                if (isset($exp[1])) {
+                    $upVersion .= '.' . ($exp[1] + 1);
+                } else {
+                    $upVersion .= '.1';
+                }
+
+                $newMatch .= $this->convertVersion($upVersion);
+                $matches[$i] = $newMatch;
+                $special = null;
+            } else {
+                $matches[$i] = $this->convertVersion($match);
+                $special = null;
+            }
+        }
+
+        return implode('', $matches);
     }
 }
