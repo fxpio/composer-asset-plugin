@@ -39,11 +39,17 @@ class BowerIgnoreManager
      */
     public function addPattern($pattern)
     {
-        if ('/' === substr($pattern, -1)) {
-            $this->addDirPattern(substr($pattern, 0, -1));
-        } else {
-            $this->addFilePattern($pattern);
+        $type = '/' === substr($pattern, -1) ? 'dirs' : 'files';
+
+        if (null === $this->$type) {
+            $this->$type = Finder::create()->ignoreDotFiles(false)->ignoreVCS(false);
+
+            if ('dirs' === $type) {
+                $this->$type = $this->$type->directories();
+            }
         }
+
+        $this->addPatternToFinder($this->$type, $pattern);
     }
 
     /**
@@ -64,34 +70,6 @@ class BowerIgnoreManager
         foreach ($all as $path) {
             $filesystem->remove($path->getRealpath());
         }
-    }
-
-    /**
-     * Adds a pattern.
-     *
-     * @param string $pattern The pattern
-     */
-    private function addFilePattern($pattern)
-    {
-        if (null === $this->files) {
-            $this->files = Finder::create()->ignoreDotFiles(false)->ignoreVCS(false);
-        }
-
-        $this->addPatternToFinder($this->files, $pattern);
-    }
-
-    /**
-     * Adds a pattern for only directory.
-     *
-     * @param string $pattern The pattern
-     */
-    private function addDirPattern($pattern)
-    {
-        if (null === $this->dirs) {
-            $this->dirs = Finder::create()->ignoreDotFiles(false)->ignoreVCS(false)->directories();
-        }
-
-        $this->addPatternToFinder($this->dirs, $pattern);
     }
 
     /**
