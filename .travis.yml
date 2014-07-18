@@ -15,15 +15,16 @@ matrix:
 before_script:
     - composer self-update
     - composer install
-    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@dev
-    - composer update phpunit/php-code-coverage
+    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@dev satooshi/php-coveralls:@dev
+    - composer update phpunit/php-code-coverage satooshi/php-coveralls
+    - mkdir -p ./build/logs
 
 script:
-    - ./vendor/bin/phpunit --coverage-clover=coverage.clover
+    - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    - 'echo ''src_dir: .'' >> ./.coveralls.yml'
+    - php ./vendor/bin/coveralls -v
 
 notifications:
     email: false
