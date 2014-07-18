@@ -42,7 +42,7 @@ class Util
      */
     public static function readCache(Cache $cache, $type, $identifier)
     {
-        if (Util::isSha($identifier)) {
+        if (self::isSha($identifier)) {
             $res = $cache->read($type . '-' . $identifier);
 
             if ($res) {
@@ -61,7 +61,7 @@ class Util
      */
     public static function writeCache(Cache $cache, $type, $identifier, array $composer)
     {
-        if (Util::isSha($identifier)) {
+        if (self::isSha($identifier)) {
             $cache->write($type . '-' . $identifier, json_encode($composer));
         }
     }
