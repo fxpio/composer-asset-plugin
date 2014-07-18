@@ -20,6 +20,7 @@ use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
+use Fxp\Composer\AssetPlugin\Repository\Util;
 
 /**
  * Composer plugin.
@@ -145,11 +146,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
                 throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
             }
             $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
-            if (!isset($this->repos[$name])) {
-                $this->repos[$name] = $rm->createRepository($repo['type'], $repo);
-
-                $rm->addRepository($this->repos[$name]);
-            }
+            Util::addRepository($rm, $this->repos, $name, $repo);
         }
     }
 

@@ -120,12 +120,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $data = $this->fetchFile($packageUrl, $packageName . '-package.json');
             $repo = $this->createVcsRepositoryConfig($data);
 
-            if (!isset($this->repos[$repoName])) {
-                $repo = $this->rm->createRepository($repo['type'], $repo);
-                $this->rm->addRepository($repo);
-                $this->repos[$repoName] = $repo;
-                $pool->addRepository($repo);
-            }
+            Util::addRepository($this->rm, $this->repos, $repoName, $repo, $pool);
 
             $this->providers[$name] = array();
 
