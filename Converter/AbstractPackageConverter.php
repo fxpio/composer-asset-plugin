@@ -78,25 +78,10 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      */
     protected function convertKey(array $asset, $assetKey, array &$composer, $composerKey)
     {
-        if (is_string($composerKey)) {
-            if (isset($asset[$assetKey])) {
-                $composer[$composerKey] = $asset[$assetKey];
-            }
-
-        } elseif (is_array($composerKey) && 2 === count($composerKey)
-                && is_string($composerKey[0]) && $composerKey[1] instanceof \Closure) {
-            $closure = $composerKey[1];
-            $composerKey = $composerKey[0];
-            $data = isset($asset[$assetKey]) ? $asset[$assetKey] : null;
-            $previousData = isset($composer[$composerKey]) ? $composer[$composerKey] : null;
-            $data = $closure($data, $previousData);
-
-            if (null !== $data) {
-                $composer[$composerKey] = $data;
-            }
-
+        if (is_array($composerKey)) {
+            $this->convertArrayKey($asset, $assetKey, $composer, $composerKey);
         } else {
-            throw new \InvalidArgumentException('The "composerKey" argument of asset packager converter must be an string or an array with the composer key and closure');
+            $this->convertStringKey($asset, $assetKey, $composer, $composerKey);
         }
     }
 
@@ -208,5 +193,48 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         }
 
         return array($dependency, $version);
+    }
+
+    /**
+     * Converts the simple key of package.
+     *
+     * @param array  $asset       The asset data
+     * @param string $assetKey    The asset key
+     * @param array  $composer    The composer data
+     * @param string $composerKey The composer key
+     */
+    private function convertStringKey(array $asset, $assetKey, array &$composer, $composerKey)
+    {
+        if (isset($asset[$assetKey])) {
+            $composer[$composerKey] = $asset[$assetKey];
+        }
+    }
+
+    /**
+     * Converts the simple key of package.
+     *
+     * @param array  $asset       The asset data
+     * @param string $assetKey    The asset key
+     * @param array  $composer    The composer data
+     * @param array  $composerKey The array with composer key name and closure
+     *
+     * @throws \InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
+     */
+    private function convertArrayKey(array $asset, $assetKey, array &$composer, $composerKey)
+    {
+        if (2 !== count($composerKey)
+            || !is_string($composerKey[0]) || !$composerKey[1] instanceof \Closure) {
+            throw new \InvalidArgumentException('The "composerKey" argument of asset packager converter must be an string or an array with the composer key and closure');
+        }
+
+        $closure = $composerKey[1];
+        $composerKey = $composerKey[0];
+        $data = isset($asset[$assetKey]) ? $asset[$assetKey] : null;
+        $previousData = isset($composer[$composerKey]) ? $composer[$composerKey] : null;
+        $data = $closure($data, $previousData);
+
+        if (null !== $data) {
+            $composer[$composerKey] = $data;
+        }
     }
 }
