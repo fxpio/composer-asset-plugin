@@ -84,18 +84,55 @@ class AssetVcsRepository extends VcsRepository
     protected function initialize()
     {
         $this->packages = array();
+        $driver = $this->initDriver();
 
-        /* @var VcsDriverInterface $driver */
+        $this->initLoader();
+        $this->initRootIdentifier($driver);
+        $this->initTags($driver);
+        $this->initBranches($driver);
+        $driver->cleanup();
+
+        if (!$this->getPackages()) {
+            throw new InvalidRepositoryException('No valid ' . $this->assetType->getFilename() . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
+        }
+    }
+
+    /**
+     * Initializes the driver.
+     *
+     * @return VcsDriverInterface
+     *
+     * @throws \InvalidArgumentException When not driver found.
+     */
+    protected function initDriver()
+    {
         $driver = $this->getDriver();
         if (!$driver) {
             throw new \InvalidArgumentException('No driver found to handle Asset VCS repository '.$this->url);
         }
 
+        return $driver;
+    }
+
+    /**
+     * Initializes the version parser and loader.
+     */
+    protected function initLoader()
+    {
         $this->versionParser = new VersionParser();
+
         if (!$this->loader) {
             $this->loader = new ArrayLoader($this->versionParser);
         }
+    }
 
+    /**
+     * Initializes the root identifier.
+     *
+     * @param VcsDriverInterface $driver
+     */
+    protected function initRootIdentifier(VcsDriverInterface $driver)
+    {
         try {
             if ($driver->hasComposerFile($driver->getRootIdentifier())) {
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
@@ -105,14 +142,6 @@ class AssetVcsRepository extends VcsRepository
             if ($this->verbose) {
                 $this->io->write('<error>Skipped parsing '.$driver->getRootIdentifier().', '.$e->getMessage().'</error>');
             }
-        }
-
-        $this->initTags($driver);
-        $this->initBranches($driver);
-        $driver->cleanup();
-
-        if (!$this->getPackages()) {
-            throw new InvalidRepositoryException('No valid ' . $this->assetType->getFilename() . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
         }
     }
 
