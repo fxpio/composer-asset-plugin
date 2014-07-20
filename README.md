@@ -69,15 +69,14 @@ language, which front-end developers know well. However, in the case of a comple
 shouldn't be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
 these assets in your project.
 
-It is in this context that this plugin was created: Not all (or many) will add a composer.json file to their
+It is in this context that this plugin was created: Most developers will not a composer.json file to their
 projects simply to support php based projects, especially when npm and/or bower already exist and are
 widely used.
 
 Documentation
 -------------
 
-The bulk of the documentation is stored in the `Resources/doc/index.md`
-file in this bundle:
+The bulk of the documentation is located in `Resources/doc/index.md`:
 
 [Read the Documentation](Resources/doc/index.md)
 
@@ -89,7 +88,7 @@ All the installation instructions are located in [documentation](Resources/doc/i
 License
 -------
 
-This project is under the MIT license. See the complete license in:
+This composer plugin is under the MIT license. See the complete license in:
 
 [Resources/meta/LICENSE](Resources/meta/LICENSE)
 
