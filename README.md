@@ -12,7 +12,7 @@ The Composer Asset Plugin allows you to manage project assets (css,js, etc) in y
 without installing NPM or Bower.
 
 This plugin works by transposing package information from NPM or Bower to a compatible version for Composer.
-This allows you to manage asset dependencies in a PHP based project much more easily.
+This allows you to manage asset dependencies in a PHP based project very easily.
 
 > **Warning!**
 >
@@ -53,24 +53,23 @@ This allows you to manage asset dependencies in a PHP based project much more ea
 
 ##### Why this plugin?
 
-Currently, for
-manage dependencies of javascript asset in a project PHP, we have several possibilities:
+Currently, for managing dependencies of assets in a PHP project, we have several possibilities:
 
 1. Install Node.js and use NPM or Bower command line in addition to Composer command line
-2. Do the solution 1, but add the Composer scripts to automate the process
-3. Include assets directly in the project (really not recommended)
+2. Do  $1, but add Composer scripts to automate the process
+3. Include assets directly in the project (not recommended)
 4. Create a repository with all assets and include the `composer.json` file (and use Packagist or an VCS Repository)
-5. Adds Package Repository in `composer.json` with the direct download link
-6. Creates a Satis or Packagist server
+5. Add a package repository in `composer.json` with a direct download link
+6. Create a Satis or Packagist server
 7. Other?
 
 It goes without saying that each javascript, css, etc library should be developed with the usual tools for that
-language, which front-end developers know well. However, in the case of a complete project in PHP, it is
-shouldn't be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
+language, which front-end developers know well. However, in the case of a complete project in PHP, it shouldn't 
+be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
 these assets in your project.
 
-It is in this context that this plugin was created: Most developers will not a composer.json file to their
-projects simply to support php based projects, especially when npm and/or bower already exist and are
+It is in this context that this plugin was created: Most developers will not a add a composer.json file to their
+projects just to support php based projects, especially when npm and/or bower already exist and are
 widely used.
 
 Documentation
