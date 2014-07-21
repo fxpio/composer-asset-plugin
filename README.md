@@ -8,7 +8,7 @@ NPM/Bower Dependency Manager for Composer
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/quality-score.png)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce/mini.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
-The Composer Asset Plugin allows you to manage project assets (css,js, etc) in your composer.json
+The Composer Asset Plugin allows you to manage project assets (css, js, etc.) in your `composer.json`
 without installing NPM or Bower.
 
 This plugin works by transposing package information from NPM or Bower to a compatible version for Composer.
@@ -63,12 +63,12 @@ There already are several possibilities for managing assets in a PHP project:
 6. Create a Satis or Packagist server
 7. Other?
 
-It goes without saying that each javascript, css, etc library should be developed with the usual tools for that
+It goes without saying that each javascript, CSS, etc. library should be developed with the usual tools for that
 language, which front-end developers know well. However, in the case of a complete project in PHP, it shouldn't 
-be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
+be necessary to use several tools (PHP, Nodejs, Composer, NPM, Bower, Grunt, etc.) to simply install
 these assets in your project.
 
-This plugin has been created to address these issues. Additionally, most developers will not a add a composer.json 
+This plugin has been created to address these issues. Additionally, most developers will not a add a `composer.json`
 file to their projects just to support php based projects, especially when npm and/or bower already exist and are
 widely used.
 
