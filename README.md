@@ -8,38 +8,27 @@ NPM/Bower Dependency Manager for Composer
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/quality-score.png)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce/mini.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
-The Composer Asset Plugin allows you to manage your assets with NPM or Bower package file directly in
-the Composer.
+The Composer Asset Plugin allows you to manage project assets (css,js, etc) in your composer.json
+without installing NPM or Bower.
+
+This plugin works by transposing package information from NPM or Bower to a compatible version for Composer.
+This allows you to manage asset dependencies in a PHP based project very easily.
 
 > **Warning!**
 >
 > Currently the plugin only works in "global" mode, the PR [#3082](https://github.com/composer/composer/pull/3082)
-> will work the plugin in "project" mode
+> will allow the plugin to work in "project" mode
 
-This plugin is not intended to circumvent dependency managers, that are NPM or Bower, but to provide a
-simple solution to include assets managed by a PHP project with Composer.
-
-It goes without saying that each library javascript must be developed with his usual tools for this
-language, that front-end developers know well. However, in the case of a complete project PHP, it is
-not necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to be installed.
-
-It is in this context that this plugin was created: it's not necessary to add an `composer.json`
-file and save the library on [Packagist.org](https://packagist.org/), in addition to do this for NPM or
-Bower. In addition, third party libraries used regularly only supports NPM and/or Bower, and therefore it
-is more difficult even impossible to add the Composer file, and this is understandable.
-
-That is why the plugin supports only transposing the package informations of NPM or Bower, to a
-compatible version for Composer, allowing a management of dependencies for a project PHP much more readily.
 
 ##### Features include:
 
 - Works with native management system versions of VCS repository of composer
-- Works with public and private VCS repository
-- Lazy loader of asset package file in VCS repository for improve performances
-- Gets and creates automatically a Asset VCS repository defined in:
+- Works with public and private VCS repositories
+- Lazy load asset package files in VCS repositories to improve performance
+- Automatically get and create an Asset VCS repository defined in:
   - [NPM Registry](https://www.npmjs.org)
   - [Bower Registry](http://bower.io/search)
-- Gets and creates automatically the Asset VCS repositories of dependencies defined
+- Automatically get and create the Asset VCS repositories of dependencies defined
   in each asset package (dev dependencies included)
 - Mapping conversion of asset package to composer package for:
   - [NPM Package](https://www.npmjs.org/doc/package.json.html) - [package.json](Resources/doc/schema.md#npm-mapping)
@@ -64,25 +53,29 @@ compatible version for Composer, allowing a management of dependencies for a pro
 
 ##### Why this plugin?
 
-Currently, for manage dependencies of javascript asset in a project PHP, we have several possibilities:
+There already are several possibilities for managing assets in a PHP project:
 
 1. Install Node.js and use NPM or Bower command line in addition to Composer command line
-2. Do the solution 1, but add the Composer scripts to automate the process
-3. Include assets directly in the project (really not recommended)
+2. Do #1, but add Composer scripts to automate the process
+3. Include assets directly in the project (not recommended)
 4. Create a repository with all assets and include the `composer.json` file (and use Packagist or an VCS Repository)
-5. Adds Package Repository in `composer.json` with the direct download link
-6. Creates a Satis or Packagist server
+5. Add a package repository in `composer.json` with a direct download link
+6. Create a Satis or Packagist server
 7. Other?
 
-But none of these solutions can't simply manage the javascript assets with their dependencies directly
-into Composer. This plugin allows to use the main lists of javascript deposits, but with the possibility
-of keeping dependency management in Composer, with the same advantages for the management of versions.
+It goes without saying that each javascript, css, etc library should be developed with the usual tools for that
+language, which front-end developers know well. However, in the case of a complete project in PHP, it shouldn't 
+be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
+these assets in your project.
+
+This plugin has been created to address these issues. Additionally, most developers will not a add a composer.json 
+file to their projects just to support php based projects, especially when npm and/or bower already exist and are
+widely used.
 
 Documentation
 -------------
 
-The bulk of the documentation is stored in the `Resources/doc/index.md`
-file in this bundle:
+The bulk of the documentation is located in `Resources/doc/index.md`:
 
 [Read the Documentation](Resources/doc/index.md)
 
@@ -94,7 +87,7 @@ All the installation instructions are located in [documentation](Resources/doc/i
 License
 -------
 
-This bundle is under the MIT license. See the complete license in the bundle:
+This composer plugin is under the MIT license. See the complete license in:
 
 [Resources/meta/LICENSE](Resources/meta/LICENSE)
 
