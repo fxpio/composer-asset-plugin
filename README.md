@@ -17,7 +17,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 > **Warning!**
 >
 > Currently the plugin only works in "global" mode, the PR [#3082](https://github.com/composer/composer/pull/3082)
-> will allow the plugin in "project" mode
+> will allow the plugin to work in "project" mode
 
 
 ##### Features include:
@@ -53,10 +53,10 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 
 ##### Why this plugin?
 
-Currently, for managing dependencies of assets in a PHP project, we have several possibilities:
+There already are several possibilities for managing assets in a PHP project:
 
 1. Install Node.js and use NPM or Bower command line in addition to Composer command line
-2. Do  $1, but add Composer scripts to automate the process
+2. Do #1, but add Composer scripts to automate the process
 3. Include assets directly in the project (not recommended)
 4. Create a repository with all assets and include the `composer.json` file (and use Packagist or an VCS Repository)
 5. Add a package repository in `composer.json` with a direct download link
@@ -68,8 +68,8 @@ language, which front-end developers know well. However, in the case of a comple
 be necessary to use several tools (php, nodejs, composer, npm, bower, grunt, etc...) to simply install
 these assets in your project.
 
-It is in this context that this plugin was created: Most developers will not a add a composer.json file to their
-projects just to support php based projects, especially when npm and/or bower already exist and are
+This plugin has been created to address these issues. Additionally, most developers will not a add a composer.json 
+file to their projects just to support php based projects, especially when npm and/or bower already exist and are
 widely used.
 
 Documentation
