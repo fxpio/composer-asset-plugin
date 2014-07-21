@@ -61,9 +61,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateRepository($type, $filename)
     {
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
-        $repoSshUrl = 'git@github.com:francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $repoSshUrl = 'git@github.com:composer-test/repo-name.git';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -113,7 +113,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master", "private": true}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master', 'private' => true))));
 
         $configSource = $this->getMock('Composer\Config\ConfigSourceInterface');
         $authConfigSource = $this->getMock('Composer\Config\ConfigSourceInterface');
@@ -141,7 +141,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $dist = $gitHubDriver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals('https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/SOMESHA', $dist['url']);
+        $this->assertEquals('https://api.github.com/repos/composer-test/repo-name/zipball/SOMESHA', $dist['url']);
         $this->assertEquals('SOMESHA', $dist['reference']);
 
         $source = $gitHubDriver->getSource($sha);
@@ -155,8 +155,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPublicRepository($type, $filename)
     {
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -172,14 +172,14 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master"}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
 
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
             'filename'   => $filename,
         );
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
         /* @var IOInterface $io */
         /* @var RemoteFilesystem $remoteFilesystem */
@@ -192,7 +192,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $dist = $gitHubDriver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals('https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/SOMESHA', $dist['url']);
+        $this->assertEquals('https://api.github.com/repos/composer-test/repo-name/zipball/SOMESHA', $dist['url']);
         $this->assertEquals($sha, $dist['reference']);
 
         $source = $gitHubDriver->getSource($sha);
@@ -206,8 +206,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPublicRepository2($type, $filename)
     {
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'feature/3.2-foo';
         $sha = 'SOMESHA';
 
@@ -223,16 +223,16 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master"}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/contents/'.$filename.'?ref=feature%2F3.2-foo'), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref=feature%2F3.2-foo'), $this->equalTo(false))
             ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {"source": "'.$repoUrl.'" }}').'"}'));
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/commits/feature%2F3.2-foo'), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/feature%2F3.2-foo'), $this->equalTo(false))
             ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
 
         $repoConfig = array(
@@ -240,7 +240,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'asset-type' => $type,
             'filename'   => $filename,
         );
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
         /* @var IOInterface $io */
         /* @var RemoteFilesystem $remoteFilesystem */
@@ -253,7 +253,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $dist = $gitHubDriver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals('https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/SOMESHA', $dist['url']);
+        $this->assertEquals('https://api.github.com/repos/composer-test/repo-name/zipball/SOMESHA', $dist['url']);
         $this->assertEquals($sha, $dist['reference']);
 
         $source = $gitHubDriver->getSource($sha);
@@ -269,9 +269,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateRepositoryNoInteraction($type, $filename)
     {
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
-        $repoSshUrl = 'git@github.com:francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $repoSshUrl = 'git@github.com:composer-test/repo-name.git';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -348,7 +348,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $dist = $gitHubDriver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals('https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/SOMESHA', $dist['url']);
+        $this->assertEquals('https://api.github.com/repos/composer-test/repo-name/zipball/SOMESHA', $dist['url']);
         $this->assertEquals($sha, $dist['reference']);
 
         $source = $gitHubDriver->getSource($identifier);
@@ -367,7 +367,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetComposerInformationWithGitDriver($type, $filename)
     {
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'https://github.com/composer-test/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -406,8 +406,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetComposerInformationInCache($type, $filename)
     {
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'dev-master';
         $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
 
@@ -423,16 +423,16 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master"}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/contents/'.$filename.'?ref='.$sha), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$sha), $this->equalTo(false))
             ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {}}').'"}'));
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/commits/'.$sha), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/'.$sha), $this->equalTo(false))
             ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
 
         $repoConfig = array(
@@ -462,8 +462,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('RuntimeException');
 
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -475,11 +475,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master"}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
             ->will($this->returnValue('{"encoding":"base64","content":""}'));
 
         $repoConfig = array(
@@ -504,8 +504,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('RuntimeException');
 
-        $repoUrl = 'http://github.com/francoispluchino/composer-asset-plugin';
-        $repoApiUrl = 'https://api.github.com/repos/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -517,16 +517,16 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue('{"master_branch": "test_master"}'));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
             ->will($this->throwException(new TransportException('Mock exception code 404', 404)));
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/francoispluchino/composer-asset-plugin/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
             ->will($this->throwException(new TransportException('Mock exception code 400', 400)));
 
         $repoConfig = array(
@@ -554,5 +554,24 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $attr = new \ReflectionProperty($object, $attribute);
         $attr->setAccessible(true);
         $attr->setValue($object, $value);
+    }
+
+    /**
+     * Creates the json composer content.
+     *
+     * @param array  $content The composer content
+     * @param string $name    The name of repository
+     * @param string $login   The username /organization of repository
+     *
+     * @return string The json content
+     */
+    protected function createJsonComposer(array $content, $name = 'repo-name', $login = 'composer-test')
+    {
+        return json_encode(array_merge_recursive($content, array(
+            'name'  => $name,
+            'owner' => array(
+                'login' => $login,
+            ),
+        )));
     }
 }
