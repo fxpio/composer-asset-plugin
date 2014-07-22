@@ -157,11 +157,10 @@ class AssetVcsRepository extends VcsRepository
     protected function initTags(VcsDriverInterface $driver)
     {
         $verbose = $this->verbose;
-        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         foreach ($driver->getTags() as $tag => $identifier) {
-            $packageName = $prefixPackage . ($this->packageName ?: $this->url);
+            $packageName = $this->createPackageName();
 
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
@@ -205,11 +204,10 @@ class AssetVcsRepository extends VcsRepository
      */
     protected function initBranches(VcsDriverInterface $driver)
     {
-        $prefixPackage = $this->assetType->getComposerVendorName() . '/';
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
 
         foreach ($driver->getBranches() as $branch => $identifier) {
-            $packageName = $prefixPackage . ($this->packageName ?: $this->url);
+            $packageName = $this->createPackageName();
             $parsedBranch = $this->versionParser->normalizeBranch($branch);
             $data = $this->createMockOfPackageConfig($packageName, $branch);
             $data['version_normalized'] = $parsedBranch;
@@ -232,6 +230,21 @@ class AssetVcsRepository extends VcsRepository
         if (!$this->verbose) {
             $this->io->overwrite('', false);
         }
+    }
+
+    /**
+     * Creates the package name with the composer prefix and the asset package name,
+     * or only with the URL.
+     *
+     * @return string The package name
+     */
+    protected function createPackageName()
+    {
+        if (null === $this->packageName) {
+            return $this->url;
+        }
+
+        return sprintf('%s/%s', $this->assetType->getComposerVendorName(), $this->packageName);
     }
 
     /**

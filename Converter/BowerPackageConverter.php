@@ -26,7 +26,11 @@ class BowerPackageConverter extends AbstractPackageConverter
         $assetType = $this->assetType;
         $keys = array(
             'name'               => array('name', function ($value) use ($assetType) {
-                return $assetType->getComposerVendorName() . '/' . $value;
+                if (preg_match('/(\:\/\/)|\@/', $value)) {
+                    return $value;
+                }
+
+                return $this->assetType->getComposerVendorName() . '/' . $value;
             }),
             'type'               => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();

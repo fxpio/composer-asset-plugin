@@ -205,6 +205,50 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider.
+     *
+     * @return array
+     */
+    public function getMockDriversWithVersionsAndWithoutName()
+    {
+        return array(
+            array('npm-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithUrlPackages', false),
+            array('bower-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithUrlPackages', false),
+            array('npm-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithUrlPackages', true),
+            array('bower-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithUrlPackages', true),
+        );
+    }
+
+    /**
+     * @dataProvider getMockDriversWithVersionsAndWithoutName
+     * @group fxp
+     */
+    public function testWithTagsAndBranchsWithoutPackageName($type, $url, $class, $verbose)
+    {
+        $validPackageName = $url;
+        $validTraces = array('');
+        if ($verbose) {
+            $validTraces = array(
+                '<warning>Skipped tag invalid, invalid tag name</warning>',
+                '',
+            );
+        }
+
+        $this->init(true, $type, $url, $class, $verbose);
+
+        /* @var PackageInterface[] $packages */
+        $packages = $this->repository->getPackages();
+        $this->assertCount(6, $packages);
+
+        foreach ($packages as $package) {
+            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
+            $this->assertSame($validPackageName,  $package->getName());
+        }
+
+        $this->assertSame($validTraces, $this->io->getTraces());
+    }
+
+    /**
      * @dataProvider getMockDriversWithVersions
      */
     public function testWithTagsAndBranchsWithRegistryPackageName($type, $url, $class, $verbose)
