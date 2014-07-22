@@ -45,10 +45,10 @@ class GitHubDriver extends BaseGitHubDriver
 
             if ($composer) {
                 $composer = $this->convertComposerContent($composer, $resource, $identifier);
+                Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
             }
 
             $this->infoCache[$identifier] = $composer;
-            Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
         }
 
         return $this->infoCache[$identifier];
