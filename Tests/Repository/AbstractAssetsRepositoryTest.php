@@ -225,6 +225,17 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($this->getMockSearchResult()), $result);
     }
 
+    public function testSearchWithAssetComposerPrefix()
+    {
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode($this->getMockSearchResult())));
+
+        $result = $this->registry->search($this->getType() . '-asset/query');
+        $this->assertCount(count($this->getMockSearchResult()), $result);
+    }
+
     public function testSearchWithSearchDisabled()
     {
         $repoConfig = array(

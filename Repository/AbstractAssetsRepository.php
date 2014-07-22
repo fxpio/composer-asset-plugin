@@ -84,6 +84,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return array();
         }
 
+        $prefix = $this->assetType->getComposerVendorName() . '/';
+        if (0 === strpos($query, $prefix)) {
+            $query = substr($query, strlen($prefix));
+        }
+
         $url = str_replace('%query%', urlencode($query), $this->searchUrl);
         $hostname = (string) parse_url($url, PHP_URL_HOST) ?: $url;
         $json = (string) $this->rfs->getContents($hostname, $url, false);
