@@ -66,7 +66,7 @@ class NpmRepository extends AbstractAssetsRepository
         return array(
             'type' => $this->assetType->getName() . '-' . $data['repository']['type'],
             'url'  => $data['repository']['url'],
-            'registry-package-name' => $registryName,
+            'name' => $registryName,
         );
     }
 }

@@ -84,6 +84,7 @@ class AssetVcsRepository extends VcsRepository
     protected function initialize()
     {
         $this->packages = array();
+        $this->packageName = isset($this->repoConfig['name']) ? $this->repoConfig['name'] : null;
         $driver = $this->initDriver();
 
         $this->initLoader();
@@ -136,10 +137,10 @@ class AssetVcsRepository extends VcsRepository
         try {
             if ($driver->hasComposerFile($driver->getRootIdentifier())) {
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
-                if (isset($this->repoConfig['registry-package-name'])) {
-                    $data['name'] = $this->repoConfig['registry-package-name'];
+
+                if (null === $this->packageName) {
+                    $this->packageName = !empty($data['name']) ? $data['name'] : null;
                 }
-                $this->packageName = !empty($data['name']) ? $data['name'] : null;
             }
         } catch (\Exception $e) {
             if ($this->verbose) {

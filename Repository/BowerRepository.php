@@ -58,7 +58,7 @@ class BowerRepository extends AbstractAssetsRepository
         return array(
             'type' => $this->assetType->getName() . '-vcs',
             'url'  => $data['url'],
-            'registry-package-name' => $registryName,
+            'name' => $registryName,
         );
     }
 }

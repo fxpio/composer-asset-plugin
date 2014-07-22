@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Config;
+use Composer\Package\PackageInterface;
 use Composer\Repository\InvalidRepositoryException;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
 use Fxp\Composer\AssetPlugin\Tests\Fixtures\IO\MockIO;
@@ -177,10 +178,10 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersions
-     * @group fxp
      */
     public function testWithTagsAndBranchs($type, $url, $class, $verbose)
     {
+        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/foobar';
         $validTraces = array('');
         if ($verbose) {
             $validTraces = array(
@@ -191,11 +192,41 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->init(true, $type, $url, $class, $verbose);
 
+        /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(6, $packages);
 
         foreach ($packages as $package) {
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
+            $this->assertSame($validPackageName,  $package->getName());
+        }
+
+        $this->assertSame($validTraces, $this->io->getTraces());
+    }
+
+    /**
+     * @dataProvider getMockDriversWithVersions
+     */
+    public function testWithTagsAndBranchsWithRegistryPackageName($type, $url, $class, $verbose)
+    {
+        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/registry-foobar';
+        $validTraces = array('');
+        if ($verbose) {
+            $validTraces = array(
+                '<warning>Skipped tag invalid, invalid tag name</warning>',
+                '',
+            );
+        }
+
+        $this->init(true, $type, $url, $class, $verbose, null, 'registry-foobar');
+
+        /* @var PackageInterface[] $packages */
+        $packages = $this->repository->getPackages();
+        $this->assertCount(6, $packages);
+
+        foreach ($packages as $package) {
+            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
+            $this->assertSame($validPackageName,  $package->getName());
         }
 
         $this->assertSame($validTraces, $this->io->getTraces());
@@ -204,18 +235,19 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Init the test.
      *
-     * @param bool       $supported
-     * @param string     $type
-     * @param string     $url
-     * @param string     $class
-     * @param bool       $verbose
-     * @param array|null $drivers
+     * @param bool        $supported
+     * @param string      $type
+     * @param string      $url
+     * @param string      $class
+     * @param bool        $verbose
+     * @param array|null  $drivers
+     * @param string|null $registryName
      */
-    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null)
+    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null)
     {
         MockVcsDriver::$supported = $supported;
         $driverType = substr($type, strpos($type, '-') + 1);
-        $repoConfig = array('type' => $type, 'url' => $url, 'registry-package-name' => 'test');
+        $repoConfig = array('type' => $type, 'url' => $url, 'name' => $registryName);
 
         if (null === $drivers) {
             $drivers = array(
