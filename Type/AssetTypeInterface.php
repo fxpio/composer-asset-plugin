@@ -62,4 +62,13 @@ interface AssetTypeInterface
      * @return PackageConverterInterface
      */
     public function getPackageConverter();
+
+    /**
+     * Formats the package name with composer vendor if the name is not an URL.
+     *
+     * @param string $name The package name
+     *
+     * @return string
+     */
+    public function formatComposerName($name);
 }

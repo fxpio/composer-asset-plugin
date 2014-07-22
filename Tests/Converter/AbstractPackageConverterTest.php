@@ -58,6 +58,11 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
         $type->expects($this->any())
             ->method('getVersionConverter')
             ->will($this->returnValue($versionConverter));
+        $type->expects($this->any())
+            ->method('formatComposerName')
+            ->will($this->returnCallback(function ($value) {
+                return 'ASSET/' . $value;
+            }));
 
         $this->type = $type;
     }

@@ -85,6 +85,18 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function formatComposerName($name)
+    {
+        if (preg_match('/(\:\/\/)|\@/', $name)) {
+            return $name;
+        }
+
+        return $this->getComposerVendorName() . '/' . $name;
+    }
+
+    /**
      * @return PackageConverterInterface
      */
     abstract protected function createPackageConverter();
