@@ -12,7 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs;
 
 /**
- * Mock vcs driver for skip parsing test.
+ * Mock vcs driver for packages test.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
