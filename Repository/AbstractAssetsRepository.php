@@ -84,12 +84,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return array();
         }
 
-        $prefix = $this->assetType->getComposerVendorName() . '/';
-        if (0 === strpos($query, $prefix)) {
-            $query = substr($query, strlen($prefix));
-        }
-
-        $url = str_replace('%query%', urlencode($query), $this->searchUrl);
+        $url = str_replace('%query%', urlencode($this->cleanPackageName($query)), $this->searchUrl);
         $hostname = (string) parse_url($url, PHP_URL_HOST) ?: $url;
         $json = (string) $this->rfs->getContents($hostname, $url, false);
         $data = JsonFile::parseJson($json, $url);
@@ -120,7 +115,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
 
         try {
             $repoName = $this->convertAliasName($name);
-            $packageName = substr($repoName, strlen($assetPrefix));
+            $packageName = $this->cleanPackageName($repoName);
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
             $data = $this->fetchFile($packageUrl, $packageName . '-package.json');
             $repo = $this->createVcsRepositoryConfig($data);
@@ -152,6 +147,24 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         return array(
             'providers' => array(),
         );
+    }
+
+    /**
+     * Cleans the package name, removing the Composer prefix if present.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function cleanPackageName($name)
+    {
+        $prefix = $this->assetType->getComposerVendorName() . '/';
+
+        if (0 === strpos($name, $prefix)) {
+            $name = substr($name, strlen($prefix));
+        }
+
+        return $name;
     }
 
     /**
