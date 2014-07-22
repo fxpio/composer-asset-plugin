@@ -118,7 +118,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $packageName = $this->cleanPackageName($repoName);
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
             $data = $this->fetchFile($packageUrl, $packageName . '-package.json');
-            $repo = $this->createVcsRepositoryConfig($data);
+            $repo = $this->createVcsRepositoryConfig($data, $packageName);
 
             Util::addRepository($this->rm, $this->repos, $repoName, $repo, $pool);
 
@@ -247,9 +247,10 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * Creates a config of vcs repository.
      *
-     * @param array $data
+     * @param array  $data         The repository config
+     * @param string $registryName The package name in asset registry
      *
      * @return array An array('type' => '...', 'url' => '...')
      */
-    abstract protected function createVcsRepositoryConfig(array $data);
+    abstract protected function createVcsRepositoryConfig(array $data, $registryName = null);
 }

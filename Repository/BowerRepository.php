@@ -53,11 +53,12 @@ class BowerRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function createVcsRepositoryConfig(array $data)
+    protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         return array(
             'type' => $this->assetType->getName() . '-vcs',
             'url'  => $data['url'],
+            'registry-package-name' => $registryName,
         );
     }
 }

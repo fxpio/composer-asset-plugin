@@ -215,7 +215,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         MockVcsDriver::$supported = $supported;
         $driverType = substr($type, strpos($type, '-') + 1);
-        $repoConfig = array('type' => $type, 'url' => $url);
+        $repoConfig = array('type' => $type, 'url' => $url, 'registry-package-name' => 'test');
 
         if (null === $drivers) {
             $drivers = array(

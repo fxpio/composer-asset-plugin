@@ -136,6 +136,9 @@ class AssetVcsRepository extends VcsRepository
         try {
             if ($driver->hasComposerFile($driver->getRootIdentifier())) {
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
+                if (isset($this->repoConfig['registry-package-name'])) {
+                    $data['name'] = $this->repoConfig['registry-package-name'];
+                }
                 $this->packageName = !empty($data['name']) ? $data['name'] : null;
             }
         } catch (\Exception $e) {

@@ -61,11 +61,12 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    protected function createVcsRepositoryConfig(array $data)
+    protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         return array(
             'type' => $this->assetType->getName() . '-' . $data['repository']['type'],
             'url'  => $data['repository']['url'],
+            'registry-package-name' => $registryName,
         );
     }
 }
