@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "cec1627acf7ea66799ec43116b460fb52cf0ce75"
+                "reference": "904f2830e7e6eaf3a78124c10b71cf476325cd8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/cec1627acf7ea66799ec43116b460fb52cf0ce75",
-                "reference": "cec1627acf7ea66799ec43116b460fb52cf0ce75",
+                "url": "https://api.github.com/repos/composer/composer/zipball/904f2830e7e6eaf3a78124c10b71cf476325cd8c",
+                "reference": "904f2830e7e6eaf3a78124c10b71cf476325cd8c",
                 "shasum": ""
             },
             "require": {
@@ -73,7 +73,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2014-07-20 19:55:24"
+            "time": "2014-07-23 17:03:55"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "06d8f2a22d4801cc2d80d5697d35860e073077bb"
+                "reference": "a61d4fb086e33c3b45c80b638fb915c62eac58a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/06d8f2a22d4801cc2d80d5697d35860e073077bb",
-                "reference": "06d8f2a22d4801cc2d80d5697d35860e073077bb",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/a61d4fb086e33c3b45c80b638fb915c62eac58a3",
+                "reference": "a61d4fb086e33c3b45c80b638fb915c62eac58a3",
                 "shasum": ""
             },
             "require": {
@@ -234,19 +234,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-15 14:15:21"
+            "time": "2014-07-20 19:24:23"
         },
         {
             "name": "symfony/finder",
@@ -304,12 +302,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "b3bb3b0e31de92bfe994389a841564aae73b1d23"
+                "reference": "c34ccf171135afc4d212accce2e09132bb3437a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/b3bb3b0e31de92bfe994389a841564aae73b1d23",
-                "reference": "b3bb3b0e31de92bfe994389a841564aae73b1d23",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/c34ccf171135afc4d212accce2e09132bb3437a4",
+                "reference": "c34ccf171135afc4d212accce2e09132bb3437a4",
                 "shasum": ""
             },
             "require": {
@@ -332,19 +330,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-09 09:06:26"
+            "time": "2014-07-16 13:48:12"
         }
     ],
     "aliases": [],
