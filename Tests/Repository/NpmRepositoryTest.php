@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\Config;
+use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Fxp\Composer\AssetPlugin\Repository\NpmRepository;
@@ -55,8 +56,22 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     /**
      * {@inheritdoc}
      */
-    protected function getMockSearchResult()
+    protected function getMockSearchResult($name = 'mock-package')
     {
         return array();
+    }
+
+    public function testWhatProvidesWithCamelcasePackageName()
+    {
+        $name = $this->getType().'-asset/CamelCasePackage';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->throwException(new TransportException('Package not found', 404)));
+
+        $this->assertCount(0, $this->rm->getRepositories());
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(0, $this->rm->getRepositories());
     }
 }

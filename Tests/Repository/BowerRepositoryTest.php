@@ -52,11 +52,11 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     /**
      * {@inheritdoc}
      */
-    protected function getMockSearchResult()
+    protected function getMockSearchResult($name = 'mock-package')
     {
         return array(
             array(
-                'name' => 'mock-package'
+                'name' => $name
             ),
         );
     }

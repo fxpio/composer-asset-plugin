@@ -59,6 +59,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $config->merge(array(
             'config' => array(
                 'home' => sys_get_temp_dir() . '/composer-test',
+                'cache-repo-dir' => sys_get_temp_dir() . '/composer-test-cache-repo',
             ),
         ));
         $rm = new RepositoryManager($io, $config);
@@ -115,9 +116,11 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Gets the mock search result.
      *
+     * @param string $name
+     *
      * @return array
      */
-    abstract protected function getMockSearchResult();
+    abstract protected function getMockSearchResult($name = 'mock-package');
 
     /**
      * Replaces the Remote file system of Registry by a mock.
@@ -205,6 +208,33 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $name = $this->getType().'-asset/existing[1.0]';
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())));
+
+        $this->assertCount(0, $this->rm->getRepositories());
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(1, $this->rm->getRepositories());
+    }
+
+    public function testWhatProvidesWithCamelcasePackageName()
+    {
+        $assetName = 'CamelCasePackage';
+        $name = $this->getType().'-asset/' . strtolower($assetName);
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->at(0))
+            ->method('getContents')
+            ->will($this->throwException(new TransportException('Package not found', 404)));
+        $rfs->expects($this->at(1))
+            ->method('getContents')
+            ->will($this->throwException(new TransportException('Package not found', 404)));
+        $rfs->expects($this->at(2))
+            ->method('getContents')
+            ->will($this->throwException(new TransportException('Package not found', 404)));
+        $rfs->expects($this->at(3))
+            ->method('getContents')
+            ->will($this->returnValue(json_encode($this->getMockSearchResult($assetName))));
+        $rfs->expects($this->at(4))
             ->method('getContents')
             ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())));
 

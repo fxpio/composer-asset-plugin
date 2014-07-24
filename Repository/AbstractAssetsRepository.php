@@ -50,6 +50,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $searchable;
 
     /**
+     * @var bool
+     */
+    protected $fallbackProviders;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -73,6 +78,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->rm = $repoConfig['repository-manager'];
         $this->repos = array();
         $this->searchable = (bool) $this->getOption($repoConfig['asset-options'], 'searchable', true);
+        $this->fallbackProviders = false;
     }
 
     /**
@@ -117,7 +123,8 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $repoName = $this->convertAliasName($name);
             $packageName = $this->cleanPackageName($repoName);
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
-            $data = $this->fetchFile($packageUrl, $packageName . '-package.json');
+            $cacheName = $packageName . '-' . sha1($packageName) . '-package.json';
+            $data = $this->fetchFile($packageUrl, $cacheName);
             $repo = $this->createVcsRepositoryConfig($data, $packageName);
 
             Util::addRepository($this->rm, $this->repos, $repoName, $repo, $pool);
@@ -125,7 +132,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $this->providers[$name] = array();
 
         } catch (TransportException $ex) {
-            $this->providers[$name] = array();
+            $this->fallbackWathProvides($pool, $name, $ex);
         }
 
         return $this->providers[$name];
@@ -214,6 +221,35 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             'name'        => $this->assetType->getComposerVendorName() . '/' . $item['name'],
             'description' => null,
         );
+    }
+
+    /**
+     * Searchs if the registry has a package with the same name exists with a
+     * different camelcase.
+     *
+     * @param Pool               $pool
+     * @param string             $name
+     * @param TransportException $ex
+     */
+    protected function fallbackWathProvides(Pool $pool, $name, TransportException $ex)
+    {
+        $providers = array();
+
+        if (404 === $ex->getCode() && !$this->fallbackProviders) {
+            $this->fallbackProviders = true;
+            $repoName = $this->convertAliasName($name);
+            $results = $this->search($repoName);
+
+            foreach ($results as $item) {
+                if ($name === strtolower($item['name'])) {
+                    $providers = $this->whatProvides($pool, $item['name']);
+                    break;
+                }
+            }
+        }
+
+        $this->fallbackProviders = false;
+        $this->providers[$name] = $providers;
     }
 
     /**
