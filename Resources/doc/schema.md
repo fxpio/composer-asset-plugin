@@ -171,6 +171,7 @@ Here are the matches currently validated:
 | 1.2.3-build2012  | 1.2.3-patch2012  |
 | 1.2.3+build.2012 | 1.2.3-patch.2012 |
 | 1.2.3-build.2012 | 1.2.3-patch.2012 |
+| latest           | default          |
 
 ##### Range verison conversion
 
