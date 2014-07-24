@@ -25,7 +25,9 @@ class SemverConverter implements VersionConverterInterface
      */
     public function convertVersion($version)
     {
-        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
+        if ('latest' === $version) {
+            $version = 'default';
+        } elseif (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
                 $version, $matches, PREG_OFFSET_CAPTURE)) {
             list($type, $version, $end) = $this->cleanVersion($version, $matches);
             list($version, $patchVersion) = $this->matchVersion($version, $type);

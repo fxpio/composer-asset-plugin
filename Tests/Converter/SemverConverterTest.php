@@ -78,6 +78,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
             array('1.2.3-build2012', '1.2.3-patch2012'),
             array('1.2.3+build.2012', '1.2.3-patch.2012'),
             array('1.2.3-build.2012', '1.2.3-patch.2012'),
+            array('latest', 'default'),
         );
     }
 
