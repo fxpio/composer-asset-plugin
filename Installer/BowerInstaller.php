@@ -42,11 +42,11 @@ class BowerInstaller extends AssetInstaller
             return;
         }
 
-        $ignorer = new BowerIgnoreManager();
+        $ignorer = new BowerIgnoreManager($this->filesystem);
         foreach ($extra['bower-asset-ignore'] as $pattern) {
             $ignorer->addPattern($pattern);
         }
 
-        $ignorer->deleteInDir($this->getInstallPath($package), $this->filesystem);
+        $ignorer->deleteInDir($this->getInstallPath($package));
     }
 }
