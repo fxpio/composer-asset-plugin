@@ -39,14 +39,14 @@ class NpmPackageConverter extends AbstractPackageConverter
             'keywords'           => 'keywords',
             'homepage'           => 'homepage',
             'license'            => 'license',
-            'author'             => array('authors', function ($value) use ($assetType) {
+            'author'             => array('authors', function ($value) {
                 if (null !== $value) {
                     $value = array($value);
                 }
 
                 return $value;
             }),
-            'contributors'       => array('authors', function ($value, $prevValue) use ($assetType) {
+            'contributors'       => array('authors', function ($value, $prevValue) {
                 $mergeValue = is_array($prevValue) ? $prevValue : array();
                 $mergeValue = array_merge($mergeValue, is_array($value) ? $value : array());
 
