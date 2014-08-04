@@ -51,7 +51,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('npm', 'package.json'),
-            //array('bower', 'bower.json'),
+            array('bower', 'bower.json'),
         );
     }
 
