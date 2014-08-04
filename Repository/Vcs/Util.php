@@ -34,14 +34,19 @@ class Util
     }
 
     /**
-     * @param Cache  $cache      The cache
+     * @param array  $cacheCode  The cache code
+     * @param Cache  $cache      The cache filesystem
      * @param string $type       The asset type
      * @param string $identifier The identifier
      *
      * @return array|null
      */
-    public static function readCache(Cache $cache, $type, $identifier)
+    public static function readCache(array $cacheCode, Cache $cache, $type, $identifier)
     {
+        if (array_key_exists($identifier, $cacheCode)) {
+            return $cacheCode[$identifier];
+        }
+
         if (self::isSha($identifier)) {
             $res = $cache->read($type . '-' . $identifier);
 
