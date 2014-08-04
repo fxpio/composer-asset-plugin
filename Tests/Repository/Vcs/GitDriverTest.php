@@ -57,6 +57,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     * @group bug
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename)
     {
@@ -92,7 +93,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAssetTypes
      */
-    public function testPublicRepository($type, $filename)
+    public function testPublicRepositoryWithCodeCache($type, $filename)
     {
         $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
         $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
@@ -126,6 +127,51 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $gitDriver->initialize();
         $composer1 = $gitDriver->getComposerInformation($identifier);
         $composer2 = $gitDriver->getComposerInformation($identifier);
+
+        $this->assertNotNull($composer1);
+        $this->assertNotNull($composer2);
+        $this->assertSame($composer1, $composer2);
+    }
+
+    /**
+     * @dataProvider getAssetTypes
+     */
+    public function testPublicRepositoryWithFilesystemCache($type, $filename)
+    {
+        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
+        $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
+        $repoConfig = array(
+            'url'        => $repoUrl,
+            'asset-type' => $type,
+            'filename'   => $filename
+        );
+        $io = $this->getMock('Composer\IO\IOInterface');
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('splitLines')
+            ->will($this->returnValue(array()));
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+                        if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
+                            $output = '{"name": "foo"}';
+                        } elseif (false !== strpos($command, 'git log')) {
+                            $date = new \DateTime(null, new \DateTimeZone('UTC'));
+                            $output = $date->getTimestamp();
+                        }
+
+                        return 0;
+                    }));
+
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $gitDriver1 = new GitDriver($repoConfig, $io, $this->config, $process, null);
+        $gitDriver2 = new GitDriver($repoConfig, $io, $this->config, $process, null);
+        $gitDriver1->initialize();
+        $gitDriver2->initialize();
+        $composer1 = $gitDriver1->getComposerInformation($identifier);
+        $composer2 = $gitDriver2->getComposerInformation($identifier);
 
         $this->assertNotNull($composer1);
         $this->assertNotNull($composer2);

@@ -37,7 +37,9 @@ class GitHubDriver extends BaseGitHubDriver
             return $this->gitDriver->getComposerInformation($identifier);
         }
 
-        $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
+        if (!isset($this->infoCache[$identifier])) {
+            $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
+        }
 
         if (!isset($this->infoCache[$identifier])) {
             $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/' . $this->repoConfig['filename'] . '?ref='.urlencode($identifier);

@@ -404,7 +404,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAssetTypes
      */
-    public function testGetComposerInformationInCache($type, $filename)
+    public function testGetComposerInformationWithCodeCache($type, $filename)
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
@@ -416,33 +416,14 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->method('isInteractive')
             ->will($this->returnValue(true));
 
-        $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
-            ->setConstructorArgs(array($io))
-            ->getMock();
-
-        $remoteFilesystem->expects($this->at(0))
-            ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
-
-        $remoteFilesystem->expects($this->at(1))
-            ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$sha), $this->equalTo(false))
-            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {}}').'"}'));
-
-        $remoteFilesystem->expects($this->at(2))
-            ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/'.$sha), $this->equalTo(false))
-            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
-
+        /* @var IOInterface $io */
+        /* @var RemoteFilesystem $remoteFilesystem */
+        $remoteFilesystem = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, false);
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
             'filename'   => $filename,
         );
-
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
 
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
@@ -451,6 +432,47 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $composer1 = $gitHubDriver->getComposerInformation($sha);
         $composer2 = $gitHubDriver->getComposerInformation($sha);
+
+        $this->assertSame($composer1, $composer2);
+    }
+
+    /**
+     * @dataProvider getAssetTypes
+     */
+    public function testGetComposerInformationWithFilesystemCache($type, $filename)
+    {
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $identifier = 'dev-master';
+        $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
+
+        $io = $this->getMock('Composer\IO\IOInterface');
+        $io->expects($this->any())
+            ->method('isInteractive')
+            ->will($this->returnValue(true));
+
+        /* @var IOInterface $io */
+        /* @var RemoteFilesystem $remoteFilesystem1 */
+        $remoteFilesystem1 = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, false);
+        /* @var RemoteFilesystem $remoteFilesystem2 */
+        $remoteFilesystem2 = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, true);
+        $repoConfig = array(
+            'url'        => $repoUrl,
+            'asset-type' => $type,
+            'filename'   => $filename,
+        );
+
+        $gitHubDriver1 = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem1);
+        $gitHubDriver2 = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem2);
+        $gitHubDriver1->initialize();
+        $gitHubDriver2->initialize();
+        $this->setAttribute($gitHubDriver1, 'tags', array($identifier => $sha));
+        $this->setAttribute($gitHubDriver1, 'hasIssues', true);
+        $this->setAttribute($gitHubDriver2, 'tags', array($identifier => $sha));
+        $this->setAttribute($gitHubDriver2, 'hasIssues', true);
+
+        $composer1 = $gitHubDriver1->getComposerInformation($sha);
+        $composer2 = $gitHubDriver2->getComposerInformation($sha);
 
         $this->assertSame($composer1, $composer2);
     }
@@ -573,5 +595,42 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
                 'login' => $login,
             ),
         )));
+    }
+
+    /**
+     * @param IOInterface $io
+     * @param string      $repoApiUrl
+     * @param string      $filename
+     * @param string      $sha
+     * @param bool        $forCache
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, $forCache)
+    {
+        $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
+            ->setConstructorArgs(array($io))
+            ->getMock();
+
+        $remoteFilesystem->expects($this->at(0))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+
+        if ($forCache) {
+            return $remoteFilesystem;
+        }
+
+        $remoteFilesystem->expects($this->at(1))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$sha), $this->equalTo(false))
+            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {}}').'"}'));
+
+        $remoteFilesystem->expects($this->at(2))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/'.$sha), $this->equalTo(false))
+            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
+
+        return $remoteFilesystem;
     }
 }

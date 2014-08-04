@@ -32,7 +32,9 @@ class GitDriver extends BaseGitDriver
      */
     public function getComposerInformation($identifier)
     {
-        $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
+        if (!isset($this->infoCache[$identifier])) {
+            $this->infoCache[$identifier] = Util::readCache($this->cache, $this->repoConfig['asset-type'], $identifier);
+        }
 
         if (!isset($this->infoCache[$identifier])) {
             $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
