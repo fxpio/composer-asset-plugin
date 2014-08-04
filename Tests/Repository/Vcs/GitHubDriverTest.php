@@ -398,7 +398,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
         $gitHubDriver->initialize();
 
-        $this->assertNull($gitHubDriver->getComposerInformation($identifier));
+        $validEmpty = array(
+            '_nonexistent_package' => true,
+        );
+
+        $this->assertSame($validEmpty, $gitHubDriver->getComposerInformation($identifier));
     }
 
     /**
@@ -481,6 +485,54 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      * @dataProvider getAssetTypes
      */
     public function testGetComposerInformationWithEmptyContent($type, $filename)
+    {
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $identifier = 'v0.0.0';
+
+        $io = $this->getMock('Composer\IO\IOInterface');
+
+        $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
+            ->setConstructorArgs(array($io))
+            ->getMock();
+
+        $remoteFilesystem->expects($this->at(0))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+
+        $remoteFilesystem->expects($this->at(1))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
+            ->will($this->throwException(new TransportException('Not Found', 404)));
+        $remoteFilesystem->expects($this->at(2))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
+            ->will($this->throwException(new TransportException('Not Found', 404)));
+
+        $repoConfig = array(
+            'url'        => $repoUrl,
+            'asset-type' => $type,
+            'filename'   => $filename,
+        );
+
+        /* @var IOInterface $io */
+        /* @var RemoteFilesystem $remoteFilesystem */
+
+        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
+        $gitHubDriver->initialize();
+
+        $validEmpty = array(
+            '_nonexistent_package' => true,
+        );
+
+        $this->assertSame($validEmpty, $gitHubDriver->getComposerInformation($identifier));
+    }
+
+    /**
+     * @dataProvider getAssetTypes
+     */
+    public function testGetComposerInformationWithRuntimeException($type, $filename)
     {
         $this->setExpectedException('RuntimeException');
 

@@ -39,19 +39,19 @@ class GitDriver extends BaseGitDriver
             $this->process->execute(sprintf('git show %s', $resource), $composer, $this->repoDir);
 
             if (!trim($composer)) {
-                return null;
+                $composer = array('_nonexistent_package' => true);
+            } else {
+                $composer = JsonFile::parseJson($composer, $resource);
+
+                if (!isset($composer['time'])) {
+                    $this->process->execute(sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)), $output, $this->repoDir);
+                    $date = new \DateTime('@'.trim($output), new \DateTimeZone('UTC'));
+                    $composer['time'] = $date->format('Y-m-d H:i:s');
+                }
             }
 
-            $composer = JsonFile::parseJson($composer, $resource);
-
-            if (!isset($composer['time'])) {
-                $this->process->execute(sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)), $output, $this->repoDir);
-                $date = new \DateTime('@'.trim($output), new \DateTimeZone('UTC'));
-                $composer['time'] = $date->format('Y-m-d H:i:s');
-            }
-
-            $this->infoCache[$identifier] = $composer;
             Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
+            $this->infoCache[$identifier] = $composer;
         }
 
         return $this->infoCache[$identifier];

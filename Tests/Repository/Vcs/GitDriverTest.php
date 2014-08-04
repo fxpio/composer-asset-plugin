@@ -87,7 +87,11 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $gitDriver = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver->initialize();
 
-        $this->assertNull($gitDriver->getComposerInformation($identifier));
+        $validEmpty = array(
+            '_nonexistent_package' => true,
+        );
+
+        $this->assertSame($validEmpty, $gitDriver->getComposerInformation($identifier));
     }
 
     /**
