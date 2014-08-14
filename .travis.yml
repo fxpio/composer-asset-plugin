@@ -15,7 +15,7 @@ matrix:
 before_script:
     - composer self-update
     - composer install
-    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@dev satooshi/php-coveralls:@dev
+    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
     - composer update phpunit/php-code-coverage satooshi/php-coveralls
     - mkdir -p ./build/logs
 
