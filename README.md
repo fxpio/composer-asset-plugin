@@ -68,7 +68,7 @@ language, which front-end developers know well. However, in the case of a comple
 be necessary to use several tools (PHP, Nodejs, Composer, NPM, Bower, Grunt, etc.) to simply install
 these assets in your project.
 
-This plugin has been created to address these issues. Additionally, most developers will not a add a `composer.json`
+This plugin has been created to address these issues. Additionally, most developers will not add a `composer.json`
 file to their projects just to support php based projects, especially when npm and/or bower already exist and are
 widely used.
 
