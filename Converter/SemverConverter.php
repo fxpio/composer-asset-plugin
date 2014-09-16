@@ -11,8 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin\Converter;
 
-use Composer\Package\Version\VersionParser;
-
 /**
  * Converter for Semver syntax version to composer syntax version.
  *
@@ -31,7 +29,7 @@ class SemverConverter implements VersionConverterInterface
 
         $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';
         $version = substr($version, strlen($prefix));
-        $version = $this->convertVersionMetadata($version);
+        $version = SemverUtil::convertVersionMetadata($version);
 
         return $prefix . $version;
     }
@@ -44,111 +42,6 @@ class SemverConverter implements VersionConverterInterface
         $range = $this->cleanRange($range);
 
         return $this->matchRange($range);
-    }
-
-    /**
-     * Creates a pattern with the version prefix pattern.
-     *
-     * @param string $pattern The pattern without '/'
-     *
-     * @return string The full pattern with '/'
-     */
-    protected function createPattern($pattern)
-    {
-        $numVer = '([0-9]+|x|\*)';
-        $numVer2 = '(' . $numVer . '\.' . $numVer . ')';
-        $numVer3 = '(' . $numVer . '\.' . $numVer . '\.' . $numVer . ')';
-
-        return '/^' . '(' . $numVer . '|' . $numVer2 . '|' . $numVer3 . ')' . $pattern . '/';
-    }
-
-    /**
-     * Converts the version metadata.
-     *
-     * @param string $version
-     *
-     * @return string
-     */
-    protected function convertVersionMetadata($version)
-    {
-        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
-            $version, $matches, PREG_OFFSET_CAPTURE)) {
-            list($type, $version, $end) = $this->cleanVersion($version, $matches);
-            list($version, $patchVersion) = $this->matchVersion($version, $type);
-
-            $matches = array();
-            $hasPatchNumber = preg_match('/[0-9]+|\.[0-9]+$/', $end, $matches);
-            $end = $hasPatchNumber ? $matches[0] : '1';
-
-            if ($patchVersion) {
-                $version .= $end;
-            }
-        }
-
-        return $version;
-    }
-
-    /**
-     * Clean the raw version.
-     *
-     * @param string $version The version
-     * @param array  $matches The match of pattern asset version
-     *
-     * @return array The list of $type, $version and $end
-     */
-    protected function cleanVersion($version, array $matches)
-    {
-        $end = substr($version, strlen($matches[1][0][0]));
-        $version = $matches[1][0][0] . '-';
-
-        $matches = array();
-        if (preg_match('/^(\-|\+)/', $end, $matches)) {
-            $end = substr($end, 1);
-        }
-
-        $matches = array();
-        preg_match('/^[a-z]+/', $end, $matches);
-        $type = isset($matches[0]) ? VersionParser::normalizeStability($matches[0]) : null;
-        $end = substr($end, strlen($type));
-
-        return array($type, $version, $end);
-    }
-
-    /**
-     * Match the version.
-     *
-     * @param string $version
-     * @param string $type
-     *
-     * @return array The list of $version and $patchVersion
-     */
-    protected function matchVersion($version, $type)
-    {
-        $patchVersion = true;
-
-        switch ($type) {
-            case 'alpha':
-            case 'beta':
-            case 'RC':
-                break;
-            case 'dev':
-                $patchVersion = false;
-                break;
-            case 'a':
-                $type = 'alpha';
-                break;
-            case 'b':
-            case 'pre':
-                $type = 'beta';
-                break;
-            default:
-                $type = 'patch';
-                break;
-        }
-
-        $version .= $type;
-
-        return array($version, $patchVersion);
     }
 
     /**
@@ -203,7 +96,7 @@ class SemverConverter implements VersionConverterInterface
             } else {
                 $matches[$i] = $this->convertVersion($match);
                 $matches[$i] = $replace
-                    ? $this->replaceAlias($matches[$i], $replace)
+                    ? SemverUtil::replaceAlias($matches[$i], $replace)
                     : $matches[$i];
                 $special = null;
                 $replace = null;
@@ -223,7 +116,7 @@ class SemverConverter implements VersionConverterInterface
     protected function replaceSpecialRange($match)
     {
         $newMatch = $this->convertVersion($match);
-        $newMatch = '>='.$this->replaceAlias($newMatch, '>').',<';
+        $newMatch = '>='.SemverUtil::replaceAlias($newMatch, '>').',<';
         $exp = explode('.', $match);
         $upVersion = isset($exp[0]) ? $exp[0] : '0';
 
@@ -236,20 +129,5 @@ class SemverConverter implements VersionConverterInterface
         $newMatch .= $this->convertVersion($upVersion);
 
         return $newMatch;
-    }
-
-    /**
-     * Replace the alias version (x or *) by integer.
-     *
-     * @param string $version
-     * @param string $type
-     *
-     * @return string
-     */
-    protected function replaceAlias($version, $type)
-    {
-        $value = '>' === $type ? '0' : '9999999';
-
-        return str_replace(array('x', '*'), $value, $version);
     }
 }
