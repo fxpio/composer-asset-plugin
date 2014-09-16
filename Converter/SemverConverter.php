@@ -31,20 +31,7 @@ class SemverConverter implements VersionConverterInterface
 
         $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';
         $version = substr($version, strlen($prefix));
-
-        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
-                $version, $matches, PREG_OFFSET_CAPTURE)) {
-            list($type, $version, $end) = $this->cleanVersion($version, $matches);
-            list($version, $patchVersion) = $this->matchVersion($version, $type);
-
-            $matches = array();
-            $hasPatchNumber = preg_match('/[0-9]+|\.[0-9]+$/', $end, $matches);
-            $end = $hasPatchNumber ? $matches[0] : '1';
-
-            if ($patchVersion) {
-                $version .= $end;
-            }
-        }
+        $version = $this->convertVersionMetadata($version);
 
         return $prefix . $version;
     }
@@ -73,6 +60,32 @@ class SemverConverter implements VersionConverterInterface
         $numVer3 = '(' . $numVer . '\.' . $numVer . '\.' . $numVer . ')';
 
         return '/^' . '(' . $numVer . '|' . $numVer2 . '|' . $numVer3 . ')' . $pattern . '/';
+    }
+
+    /**
+     * Converts the version metadata.
+     *
+     * @param string $version
+     *
+     * @return string
+     */
+    protected function convertVersionMetadata($version)
+    {
+        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
+            $version, $matches, PREG_OFFSET_CAPTURE)) {
+            list($type, $version, $end) = $this->cleanVersion($version, $matches);
+            list($version, $patchVersion) = $this->matchVersion($version, $type);
+
+            $matches = array();
+            $hasPatchNumber = preg_match('/[0-9]+|\.[0-9]+$/', $end, $matches);
+            $end = $hasPatchNumber ? $matches[0] : '1';
+
+            if ($patchVersion) {
+                $version .= $end;
+            }
+        }
+
+        return $version;
     }
 
     /**
