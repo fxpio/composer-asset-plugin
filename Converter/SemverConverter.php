@@ -73,8 +73,14 @@ class SemverConverter implements VersionConverterInterface
         $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
         $special = null;
         $replace = null;
+        $first = true;
 
         foreach ($matches as $i => $match) {
+            if ($first && '' !== $match) {
+                $first = false;
+                $match = '=' === $match ? '~' : $match;
+            }
+
             if (' - ' === $match) {
                 $matches[$i - 1] = '>=' . $matches[$i - 1];
                 $matches[$i] = ',<=';
