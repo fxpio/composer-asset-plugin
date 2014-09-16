@@ -179,12 +179,14 @@ class SemverConverter implements VersionConverterInterface
         $pattern = '/(\ -\ )|(<)|(>)|(=)|(\|\|)|(\ )|(,)|(\~)|(\^)/';
         $matches = preg_split($pattern, $range, -1, PREG_SPLIT_DELIM_CAPTURE);
         $special = null;
+        $replace = null;
 
         foreach ($matches as $i => $match) {
             if (' - ' === $match) {
                 $matches[$i - 1] = '>=' . $matches[$i - 1];
                 $matches[$i] = ',<=';
             } elseif (in_array($match, array('', '<', '>', '=', ','))) {
+                $replace = in_array($match, array('<', '>')) ? $match : $replace;
                 continue;
             } elseif ('~' === $match) {
                 $special = $match;
@@ -196,25 +198,58 @@ class SemverConverter implements VersionConverterInterface
             } elseif ('||' === $match) {
                 $matches[$i] = '|';
             } elseif ('~' === $special) {
-                $newMatch = '>='.$this->convertVersion($match).',<';
-                $exp = explode('.', $match);
-                $upVersion = isset($exp[0]) ? $exp[0] : '0';
-
-                if (isset($exp[1])) {
-                    $upVersion .= '.' . ($exp[1] + 1);
-                } else {
-                    $upVersion .= '.1';
-                }
-
-                $newMatch .= $this->convertVersion($upVersion);
-                $matches[$i] = $newMatch;
+                $matches[$i] = $this->replaceSpecialRange($match);
                 $special = null;
             } else {
                 $matches[$i] = $this->convertVersion($match);
+                $matches[$i] = $replace
+                    ? $this->replaceAlias($matches[$i], $replace)
+                    : $matches[$i];
                 $special = null;
+                $replace = null;
             }
         }
 
         return implode('', $matches);
+    }
+
+    /**
+     * Replaces the special range "~".
+     *
+     * @param string $match The match version
+     *
+     * @return string the new match version
+     */
+    protected function replaceSpecialRange($match)
+    {
+        $newMatch = $this->convertVersion($match);
+        $newMatch = '>='.$this->replaceAlias($newMatch, '>').',<';
+        $exp = explode('.', $match);
+        $upVersion = isset($exp[0]) ? $exp[0] : '0';
+
+        if (isset($exp[1])) {
+            $upVersion .= '.' . ($exp[1] + 1);
+        } else {
+            $upVersion .= '.1';
+        }
+
+        $newMatch .= $this->convertVersion($upVersion);
+
+        return $newMatch;
+    }
+
+    /**
+     * Replace the alias version (x or *) by integer.
+     *
+     * @param string $version
+     * @param string $type
+     *
+     * @return string
+     */
+    protected function replaceAlias($version, $type)
+    {
+        $value = '>' === $type ? '0' : '9999999';
+
+        return str_replace(array('x', '*'), $value, $version);
     }
 }
