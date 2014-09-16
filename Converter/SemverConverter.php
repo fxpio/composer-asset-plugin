@@ -55,7 +55,7 @@ class SemverConverter implements VersionConverterInterface
      */
     protected function createPattern($pattern)
     {
-        $numVer = '([0-9]+|\x|\*)';
+        $numVer = '([0-9]+|x|\*)';
         $numVer2 = '(' . $numVer . '\.' . $numVer . ')';
         $numVer3 = '(' . $numVer . '\.' . $numVer . '\.' . $numVer . ')';
 
