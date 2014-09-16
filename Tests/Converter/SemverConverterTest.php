@@ -42,6 +42,10 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
     public function testConverter($semver, $composer)
     {
         $this->assertEquals($composer, $this->converter->convertVersion($semver));
+
+        if (!ctype_alpha($semver)) {
+            $this->assertEquals('v' . $composer, $this->converter->convertVersion('v' . $semver));
+        }
     }
 
     public function getTestVersions()

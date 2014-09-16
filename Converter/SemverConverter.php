@@ -26,8 +26,13 @@ class SemverConverter implements VersionConverterInterface
     public function convertVersion($version)
     {
         if ('latest' === $version) {
-            $version = 'default';
-        } elseif (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
+            return 'default';
+        }
+
+        $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';
+        $version = substr($version, strlen($prefix));
+
+        if (preg_match_all($this->createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
                 $version, $matches, PREG_OFFSET_CAPTURE)) {
             list($type, $version, $end) = $this->cleanVersion($version, $matches);
             list($version, $patchVersion) = $this->matchVersion($version, $type);
@@ -41,7 +46,7 @@ class SemverConverter implements VersionConverterInterface
             }
         }
 
-        return $version;
+        return $prefix . $version;
     }
 
     /**
