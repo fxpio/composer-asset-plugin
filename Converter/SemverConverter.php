@@ -98,6 +98,28 @@ class SemverConverter implements VersionConverterInterface
      */
     protected function matchRangeToken($i, $match, array &$matches, &$special, &$replace)
     {
+        $matched = $this->matchRangeTokenStep1($i, $match, $matches, $special, $replace);
+
+        if (!$matched) {
+            $this->matchRangeTokenStep2($i, $match, $matches, $special, $replace);
+        }
+    }
+
+    /**
+     * Step1: Converts the token of the matched range.
+     *
+     * @param int         $i
+     * @param string      $match
+     * @param array       $matches
+     * @param string|null $special
+     * @param string|null $replace
+     *
+     * @return bool
+     */
+    protected function matchRangeTokenStep1($i, $match, array &$matches, &$special, &$replace)
+    {
+        $matched = true;
+
         if (' - ' === $match) {
             $matches[$i - 1] = '>=' . $matches[$i - 1];
             $matches[$i] = ',<=';
@@ -107,6 +129,26 @@ class SemverConverter implements VersionConverterInterface
             $special = $match;
             $matches[$i] = '';
         } elseif ('^' === $match) {
+            $matches[$i] = '~';
+        } else {
+            $matched = false;
+        }
+
+        return $matched;
+    }
+
+    /**
+     * Step2: Converts the token of the matched range.
+     *
+     * @param int         $i
+     * @param string      $match
+     * @param array       $matches
+     * @param string|null $special
+     * @param string|null $replace
+     */
+    protected function matchRangeTokenStep2($i, $match, array &$matches, &$special, &$replace)
+    {
+        if ('^' === $match) {
             $matches[$i] = '~';
         } elseif (' ' === $match) {
             $matches[$i] = ',';
