@@ -81,35 +81,48 @@ class SemverConverter implements VersionConverterInterface
                 $match = '=' === $match ? '~' : $match;
             }
 
-            if (' - ' === $match) {
-                $matches[$i - 1] = '>=' . $matches[$i - 1];
-                $matches[$i] = ',<=';
-            } elseif (in_array($match, array('', '<', '>', '=', ','))) {
-                $replace = in_array($match, array('<', '>')) ? $match : $replace;
-                continue;
-            } elseif ('~' === $match) {
-                $special = $match;
-                $matches[$i] = '';
-            } elseif ('^' === $match) {
-                $matches[$i] = '~';
-            } elseif (' ' === $match) {
-                $matches[$i] = ',';
-            } elseif ('||' === $match) {
-                $matches[$i] = '|';
-            } elseif ('~' === $special) {
-                $matches[$i] = $this->replaceSpecialRange($match);
-                $special = null;
-            } else {
-                $matches[$i] = $this->convertVersion($match);
-                $matches[$i] = $replace
-                    ? SemverUtil::replaceAlias($matches[$i], $replace)
-                    : $matches[$i];
-                $special = null;
-                $replace = null;
-            }
+            $this->matchRangeToken($i, $match, $matches, $special, $replace);
         }
 
         return implode('', $matches);
+    }
+
+    /**
+     * Converts the token of the matched range.
+     *
+     * @param int         $i
+     * @param string      $match
+     * @param array       $matches
+     * @param string|null $special
+     * @param string|null $replace
+     */
+    protected function matchRangeToken($i, $match, array &$matches, &$special, &$replace)
+    {
+        if (' - ' === $match) {
+            $matches[$i - 1] = '>=' . $matches[$i - 1];
+            $matches[$i] = ',<=';
+        } elseif (in_array($match, array('', '<', '>', '=', ','))) {
+            $replace = in_array($match, array('<', '>')) ? $match : $replace;
+        } elseif ('~' === $match) {
+            $special = $match;
+            $matches[$i] = '';
+        } elseif ('^' === $match) {
+            $matches[$i] = '~';
+        } elseif (' ' === $match) {
+            $matches[$i] = ',';
+        } elseif ('||' === $match) {
+            $matches[$i] = '|';
+        } elseif ('~' === $special) {
+            $matches[$i] = $this->replaceSpecialRange($match);
+            $special = null;
+        } else {
+            $matches[$i] = $this->convertVersion($match);
+            $matches[$i] = $replace
+                ? SemverUtil::replaceAlias($matches[$i], $replace)
+                : $matches[$i];
+            $special = null;
+            $replace = null;
+        }
     }
 
     /**
