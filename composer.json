@@ -16,7 +16,7 @@
         "composer-plugin-api": "1.0.0"
     },
     "require-dev": {
-        "composer/composer": "~1.0"
+        "composer/composer": "~1.0@dev"
     },
     "autoload": {
         "psr-4": {
@@ -31,6 +31,5 @@
     },
     "scripts": {
         "test": "phpunit"
-    },
-    "minimum-stability": "dev"
+    }
 }
