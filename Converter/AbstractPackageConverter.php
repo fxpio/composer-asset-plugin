@@ -189,7 +189,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         if (false !== $pos && !preg_match('{[0-9a-f]{40}$}', $version)) {
             $dependency = substr($version, 0, $pos);
             $version = substr($version, $pos + 1);
-            $dependency .= '[' . $version . ']';
+            $dependency .= '-' . $version;
         }
 
         return array($dependency, $version);

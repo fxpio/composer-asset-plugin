@@ -68,6 +68,30 @@ and/or Bower.
 }
 ```
 
+### Usage with multiple version of a same dependency
+
+If you need to use multiple version of the same asset, You can do this by
+simply adding a version number after the package name, separated by the "-"
+character.
+
+**Example with Jquery:**
+
+```json
+{
+    "require": {
+        "bower-asset/jquery": "1.11.*",
+        "bower-asset/jquery-2.0.x": "2.0.x",
+        "bower-asset/jquery-2.1.0": "2.1.0"
+    }
+}
+```
+
+The dependencies will be placed by default in:
+
+- `vendor/bower-asset/jquery` for `1.11.*`
+- `vendor/bower-asset/jquery-2.0.x` for `2.0.x`
+- `vendor/bower-asset/jquery-2.1.0` for `2.1.0`
+
 ### Disable the search for an asset registry
 
 If you want to disable the search for an asset registry, you can add an extra

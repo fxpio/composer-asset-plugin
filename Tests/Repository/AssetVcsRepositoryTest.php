@@ -194,7 +194,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(6, $packages);
+        $this->assertCount(4, $packages);
 
         foreach ($packages as $package) {
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
@@ -221,7 +221,6 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersionsAndWithoutName
-     * @group fxp
      */
     public function testWithTagsAndBranchsWithoutPackageName($type, $url, $class, $verbose)
     {
@@ -238,7 +237,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(6, $packages);
+        $this->assertCount(4, $packages);
 
         foreach ($packages as $package) {
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
@@ -266,7 +265,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(6, $packages);
+        $this->assertCount(4, $packages);
 
         foreach ($packages as $package) {
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);

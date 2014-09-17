@@ -205,7 +205,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testWhatProvidesWithExistingAliasPackage()
     {
-        $name = $this->getType().'-asset/existing[1.0]';
+        $name = $this->getType().'-asset/existing-1.0';
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())
             ->method('getContents')

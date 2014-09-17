@@ -182,14 +182,10 @@ class AssetVcsRepository extends VcsRepository
 
             $packageData = $this->preProcessAsset($data);
             $package = $this->loader->load($packageData, $packageClass);
-            $packageAlias = $this->loader->load($packageData, $packageClass);
             $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
             /* @var LazyCompletePackage $package */
-            /* @var LazyCompletePackage $packageAlias */
             $package->setLoader($lazyLoader);
-            $packageAlias->setLoader($lazyLoader);
             $this->addPackage($package);
-            $this->addPackage($packageAlias);
         }
 
         if (!$this->verbose) {

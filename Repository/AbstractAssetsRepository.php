@@ -20,6 +20,7 @@ use Composer\Json\JsonFile;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -125,9 +126,9 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
             $cacheName = $packageName . '-' . sha1($packageName) . '-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
-            $repo = $this->createVcsRepositoryConfig($data, $packageName);
+            $repo = $this->createVcsRepositoryConfig($data, $this->cleanPackageName($name));
 
-            Util::addRepository($this->rm, $this->repos, $repoName, $repo, $pool);
+            Util::addRepository($this->rm, $this->repos, $name, $repo, $pool);
 
             $this->providers[$name] = array();
 
@@ -183,8 +184,14 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     protected function convertAliasName($name)
     {
-        if (false !== strrpos($name, ']')) {
-            $name = substr($name, 0, strrpos($name, '['));
+        $pos = strrpos($name, '-');
+
+        if (false !== $pos) {
+            $version = substr($name, $pos + 1);
+
+            if (preg_match(SemverUtil::createPattern(''), $version)) {
+                return substr($name, 0, $pos);
+            }
         }
 
         return $name;

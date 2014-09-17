@@ -68,7 +68,7 @@ abstract class SemverUtil
      *
      * @return string The full pattern with '/'
      */
-    protected static function createPattern($pattern)
+    public static function createPattern($pattern)
     {
         $numVer = '([0-9]+|x|\*)';
         $numVer2 = '(' . $numVer . '\.' . $numVer . ')';

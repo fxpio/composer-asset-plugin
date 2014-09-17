@@ -222,12 +222,14 @@ because of the differences in operation between NPM/Bower and Composer.
 ##### Multiple version of depdendency in the same project
 
 NPM and Bower can add multiple versions of the same dependency, which is not the case of Composer.
-To overcome this limitation, the plugin clones the package, but changes the name to include the
-version number between `[]`.
+To overcome this limitation, the plugin adds a VCS repository for each required version, with the
+name including the version number after the character `-`
+(`{ASSET-TYPE}-asset/{PACKAGE-NAME}-X.Y.Z`).
 
 A Vcs repository will be created for each version, and the number of requests is proportional to
 the number of versions required. However, given that each version of the dependency uses the same
 URL of the VCS repository, subsequent requests will get the package information directly in the cache.
+However, a cache of files is created for each version (included in require section) of a same dependency.
 
 ## Asset Repository
 
