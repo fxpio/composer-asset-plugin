@@ -37,6 +37,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - Conversion of [Semver range version](Resources/doc/schema.md#range-verison-conversion) to the composer range version
 - Conversion of [dependencies with URL](Resources/doc/schema.md#url-range-verison-conversion) to the composer dependencies with the creation of VCS repositories
 - Conversion of [multiple versions of the same dependency](Resources/doc/schema.md#multiple-version-of-depdendency-in-the-same-project) to different dependencies of composer
+- Add manually the [multiple versions of a same dependency in the project](Resources/doc/index.md#usage-with-multiple-version-of-a-same-dependency)
 - VCS drivers for:
   - Git
   - GitHub
