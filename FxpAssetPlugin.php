@@ -133,22 +133,35 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     protected function addRepositories(RepositoryManager $rm, array $repositories)
     {
         foreach ($repositories as $index => $repo) {
-            if (!is_array($repo)) {
-                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') should be an array, '.gettype($repo).' given');
-            }
-            if (!isset($repo['type'])) {
-                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined');
-            }
-            if (false === strpos($repo['type'], '-')) {
-                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined in this way: "%asset-type%-%type%"');
-            }
-            if (!isset($repo['url'])) {
-                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
-            }
+            $this->validateRepositories($index, $repo);
             $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
             $name = isset($repo['name']) ? $repo['name'] : $name;
 
             Util::addRepository($rm, $this->repos, $name, $repo);
+        }
+    }
+
+    /**
+     * Validates the config of vcs repository.
+     *
+     * @param int|string  $index The index
+     * @param mixed|array $repo  The config repo
+     *
+     * @throws \UnexpectedValueException
+     */
+    protected function validateRepositories($index, $repo)
+    {
+        if (!is_array($repo)) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') should be an array, '.gettype($repo).' given');
+        }
+        if (!isset($repo['type'])) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined');
+        }
+        if (false === strpos($repo['type'], '-')) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined in this way: "%asset-type%-%type%"');
+        }
+        if (!isset($repo['url'])) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
         }
     }
 
