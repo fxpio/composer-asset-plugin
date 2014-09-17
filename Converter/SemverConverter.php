@@ -148,9 +148,7 @@ class SemverConverter implements VersionConverterInterface
      */
     protected function matchRangeTokenStep2($i, $match, array &$matches, &$special, &$replace)
     {
-        if ('^' === $match) {
-            $matches[$i] = '~';
-        } elseif (' ' === $match) {
+        if (' ' === $match) {
             $matches[$i] = ',';
         } elseif ('||' === $match) {
             $matches[$i] = '|';
