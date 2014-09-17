@@ -146,6 +146,8 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
                 throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
             }
             $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
+            $name = isset($repo['name']) ? $repo['name'] : $name;
+
             Util::addRepository($rm, $this->repos, $name, $repo);
         }
     }

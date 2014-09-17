@@ -79,12 +79,26 @@ class AssetVcsRepository extends VcsRepository
     }
 
     /**
+     * Gets the package name of this repository.
+     *
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (null === $this->packages) {
+            $this->initialize();
+        }
+
+        return $this->assetType->formatComposerName($this->packageName);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function initialize()
     {
         $this->packages = array();
-        $this->packageName = isset($this->repoConfig['name']) ? $this->repoConfig['name'] : null;
+        $this->packageName = isset($this->repoConfig['name']) ? Util::cleanPackageName($this->repoConfig['name']) : null;
         $driver = $this->initDriver();
 
         $this->initLoader();

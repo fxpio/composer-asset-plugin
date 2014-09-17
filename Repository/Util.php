@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\DependencyResolver\Pool;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 
 /**
  * Helper for Repository.
@@ -39,5 +40,43 @@ class Util
                 $pool->addRepository($repo);
             }
         }
+    }
+
+    /**
+     * Cleans the package name, removing the Composer prefix if present.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function cleanPackageName($name)
+    {
+        if (preg_match('/^[a-z]+\-asset\//', $name, $matches)) {
+            $name = substr($name, strlen($matches[0]));
+        }
+
+        return $name;
+    }
+
+    /**
+     * Converts the alias of asset package name by the real asset package name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function convertAliasName($name)
+    {
+        $pos = strrpos($name, '-');
+
+        if (false !== $pos) {
+            $version = substr($name, $pos + 1);
+
+            if (preg_match(SemverUtil::createPattern(''), $version)) {
+                return substr($name, 0, $pos);
+            }
+        }
+
+        return $name;
     }
 }

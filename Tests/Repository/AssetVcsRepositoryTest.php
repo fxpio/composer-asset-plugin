@@ -179,6 +179,19 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getMockDriversWithVersions
      */
+    public function testRepositoryPackageName($type, $url, $class, $verbose)
+    {
+        $packageName = 'asset-package-name';
+        $valid = str_replace('-mock', '-asset', $type) . '/' . $packageName;
+
+        $this->init(true, $type, $url, $class, $verbose, null, $packageName);
+
+        $this->assertEquals($valid, $this->repository->getComposerPackageName());
+    }
+
+    /**
+     * @dataProvider getMockDriversWithVersions
+     */
     public function testWithTagsAndBranchs($type, $url, $class, $verbose)
     {
         $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/foobar';

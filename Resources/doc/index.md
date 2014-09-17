@@ -68,6 +68,43 @@ and/or Bower.
 }
 ```
 
+### Override the config of VCS Repository
+
+If you must use a repository other than that indicated by the registry of NPM or Bower,
+you must specify the name of the package with the asset prefix in the config of the VCS
+Repository.
+
+**Example:**
+
+```json
+{
+    "extra": {
+        "asset-repositories": [
+            {
+                "type": "bower-vcs",
+                "url": "https://github.com/vendor/exemple-asset-name.git",
+                "name": "bower-asset/exemple-asset-name"
+            }
+        ]
+    }
+}
+```
+
+You can also use the standard format of Composer for naming your VCS Repository:
+
+```json
+{
+    "extra": {
+        "asset-repositories": {
+            "bower-asset/exemple-asset-name": {
+                "type": "bower-vcs",
+                "url": "https://github.com/vendor/exemple-asset-name.git"
+            }
+        }
+    }
+}
+```
+
 ### Usage with multiple version of a same dependency
 
 If you need to use multiple version of the same asset, You can do this by

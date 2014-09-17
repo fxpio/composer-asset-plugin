@@ -57,7 +57,6 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
-     * @group bug
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename)
     {

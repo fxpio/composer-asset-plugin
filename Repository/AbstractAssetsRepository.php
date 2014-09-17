@@ -20,7 +20,6 @@ use Composer\Json\JsonFile;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
-use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -56,6 +55,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $fallbackProviders;
 
     /**
+     * @var RepositoryManager
+     */
+    protected $repositoryManager;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -68,6 +72,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $repoConfig = array_merge($repoConfig, array(
             'url' => $this->getUrl(),
         ));
+        $this->repositoryManager = $repoConfig['repository-manager'];
 
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
 
@@ -91,7 +96,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return array();
         }
 
-        $url = str_replace('%query%', urlencode($this->cleanPackageName($query)), $this->searchUrl);
+        $url = str_replace('%query%', urlencode(Util::cleanPackageName($query)), $this->searchUrl);
         $hostname = (string) parse_url($url, PHP_URL_HOST) ?: $url;
         $json = (string) $this->rfs->getContents($hostname, $url, false);
         $data = JsonFile::parseJson($json, $url);
@@ -110,23 +115,17 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     public function whatProvides(Pool $pool, $name)
     {
-        $assetPrefix = $this->assetType->getComposerVendorName() . '/';
-
-        if (false === strpos($name, $assetPrefix)) {
-            return array();
-        }
-
-        if (isset($this->providers[$name])) {
-            return $this->providers[$name];
+        if (null !== $provides = $this->findWhatProvides($name)) {
+            return $provides;
         }
 
         try {
-            $repoName = $this->convertAliasName($name);
-            $packageName = $this->cleanPackageName($repoName);
+            $repoName = Util::convertAliasName($name);
+            $packageName = Util::cleanPackageName($repoName);
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
             $cacheName = $packageName . '-' . sha1($packageName) . '-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
-            $repo = $this->createVcsRepositoryConfig($data, $this->cleanPackageName($name));
+            $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
 
             Util::addRepository($this->rm, $this->repos, $name, $repo, $pool);
 
@@ -148,6 +147,54 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
+     * Finds what provides in cache or return empty array if the
+     * name is not a asset package.
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
+    protected function findWhatProvides($name)
+    {
+        $assetPrefix = $this->assetType->getComposerVendorName() . '/';
+
+        if (false === strpos($name, $assetPrefix)) {
+            return array();
+        }
+
+        if (isset($this->providers[$name])) {
+            return $this->providers[$name];
+        }
+
+        if ($this->hasVcsRepository($name)) {
+            $this->providers[$name] = array();
+
+            return $this->providers[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Checks if the package vcs repository is already include in repository manager.
+     *
+     * @param string $name The package name of the vcs repository
+     *
+     * @return bool
+     */
+    protected function hasVcsRepository($name)
+    {
+        foreach ($this->repositoryManager->getRepositories() as $mRepo) {
+            if ($mRepo instanceof AssetVcsRepository
+                    && $name === $mRepo->getComposerPackageName()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function loadRootServerFile()
@@ -155,46 +202,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         return array(
             'providers' => array(),
         );
-    }
-
-    /**
-     * Cleans the package name, removing the Composer prefix if present.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function cleanPackageName($name)
-    {
-        $prefix = $this->assetType->getComposerVendorName() . '/';
-
-        if (0 === strpos($name, $prefix)) {
-            $name = substr($name, strlen($prefix));
-        }
-
-        return $name;
-    }
-
-    /**
-     * Converts the alias of asset package name by the real asset package name.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function convertAliasName($name)
-    {
-        $pos = strrpos($name, '-');
-
-        if (false !== $pos) {
-            $version = substr($name, $pos + 1);
-
-            if (preg_match(SemverUtil::createPattern(''), $version)) {
-                return substr($name, 0, $pos);
-            }
-        }
-
-        return $name;
     }
 
     /**
@@ -244,7 +251,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
 
         if (404 === $ex->getCode() && !$this->fallbackProviders) {
             $this->fallbackProviders = true;
-            $repoName = $this->convertAliasName($name);
+            $repoName = Util::convertAliasName($name);
             $results = $this->search($repoName);
 
             foreach ($results as $item) {

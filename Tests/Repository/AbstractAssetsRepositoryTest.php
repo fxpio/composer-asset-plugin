@@ -278,4 +278,25 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $this->registry->search('query'));
     }
+
+    public function testOverridingVcsRepositoryConfig()
+    {
+        $name = $this->getType() . '-asset/foobar';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())));
+
+        $repo = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repo->expects($this->any())
+            ->method('getComposerPackageName')
+            ->will($this->returnValue($name));
+
+        $this->rm->addRepository($repo);
+
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+    }
 }
