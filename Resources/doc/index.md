@@ -49,11 +49,13 @@ It must be prefixed with `{asset-type}-asset/`.
 
 ### Usage with VCS repository
 
-If your asset is not listed on NPM and Bower, or that it is private, you can
-create VCS repository. The repository must have a asset package file for NPM
-and/or Bower.
+If your asset is not listed on the NPM- or Bower-Repository, or it is a private package, you can
+create a VCS repository for it. The repository must have an asset package file for NPM (`package.json`)
+or Bower (`bower.json`).
 
 **Example:**
+
+Add the following to your `composer.json`:
 
 ```json
 {
@@ -68,7 +70,7 @@ and/or Bower.
 }
 ```
 
-### Override the config of VCS Repository
+### Overriding the config of a VCS Repository
 
 If you must use a repository other than that indicated by the registry of NPM or Bower,
 you must specify the name of the package with the asset prefix in the config of the VCS
@@ -105,10 +107,10 @@ You can also use the standard format of Composer for naming your VCS Repository:
 }
 ```
 
-### Usage with multiple version of a same dependency
+### Usage with multiple versions of the same dependency
 
-If you need to use multiple version of the same asset, You can do this by
-simply adding a version number after the package name, separated by the "-"
+If you need to use multiple versions of the same asset, you can do this by
+simply adding a version number after the package name, separated with the "-"
 character.
 
 **Example with Jquery:**
@@ -123,7 +125,7 @@ character.
 }
 ```
 
-The dependencies will be placed by default in:
+The dependencies will then be placed in the following directories:
 
 - `vendor/bower-asset/jquery` for `1.11.*`
 - `vendor/bower-asset/jquery-2.0.x` for `2.0.x`
@@ -133,7 +135,7 @@ The dependencies will be placed by default in:
 
 If you want to disable the search for an asset registry, you can add an extra
 option `extra.asset-registry-options.{type}-searchable` in the root project
-file `composer.json`.
+`composer.json`-file.
 
 **Example:**
 
@@ -150,10 +152,10 @@ file `composer.json`.
 
 ### Include dependencies using URL in versions
 
-Currently, the plugin can not add automatically the VCS repositories to the `Pool`
-for the dependency resolution, because the plugin system of Composer does not allow
-for the moment (see [composer/composer#3116](https://github.com/composer/composer/issues/3116)).
-It is therefore necessary to add manually the VCS Repositories in the root file `composer.json`.
+Currently, the plugin can not add the VCS repositories to the `Pool`
+for the dependency resolution automatically, because the plugin system of Composer does not allow
+this (see [composer/composer#3116](https://github.com/composer/composer/issues/3116)).
+It is therefore necessary to manually add the VCS Repositories in the root `composer.json`-file.
 
 **For example:**
 
@@ -169,6 +171,7 @@ The asset package:
 ```
 
 The root `composer.json` must have:
+
 ```json
 {
     "require": {
@@ -192,7 +195,7 @@ By default, the plugin will install all the assets in the directory
 their asset name.
 
 But you can change the installation directory of the assets directly in the root
-file `composer.json` of your project:
+`composer.json`-file of your project:
 
 ```json
 {
