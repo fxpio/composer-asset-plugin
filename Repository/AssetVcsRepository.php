@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
+use Composer\Package\AliasPackage;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\Version\VersionParser;
@@ -21,6 +22,7 @@ use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
 use Fxp\Composer\AssetPlugin\Package\LazyCompletePackage;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -52,6 +54,11 @@ class AssetVcsRepository extends VcsRepository
      * @var LoaderInterface
      */
     protected $loader;
+
+    /**
+     * @var string
+     */
+    protected $rootPackageVersion;
 
     /**
      * Constructor.
@@ -151,6 +158,8 @@ class AssetVcsRepository extends VcsRepository
         try {
             if ($driver->hasComposerFile($driver->getRootIdentifier())) {
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
+                $sc = new SemverConverter();
+                $this->rootPackageVersion = !empty($data['version']) ? $sc->convertVersion($data['version']) : null;
 
                 if (null === $this->packageName) {
                     $this->packageName = !empty($data['name']) ? $data['name'] : null;
@@ -214,8 +223,6 @@ class AssetVcsRepository extends VcsRepository
      */
     protected function initBranches(VcsDriverInterface $driver)
     {
-        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
-
         foreach ($driver->getBranches() as $branch => $identifier) {
             $packageName = $this->createPackageName();
             $parsedBranch = $this->versionParser->normalizeBranch($branch);
@@ -229,17 +236,53 @@ class AssetVcsRepository extends VcsRepository
                 $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
             }
 
-            $packageData = $this->preProcessAsset($data);
-            /* @var LazyCompletePackage $package */
-            $package = $this->loader->load($packageData, $packageClass);
-            $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
-            $package->setLoader($lazyLoader);
-            $this->addPackage($package);
+            $this->iniBranchPackage($driver, $data, $branch, $identifier);
         }
 
         if (!$this->verbose) {
             $this->io->overwrite('', false);
         }
+    }
+
+    /**
+     * Inits the branch package.
+     *
+     * @param VcsDriverInterface $driver     The vcs driver
+     * @param array              $data       The package data
+     * @param string             $branch     The branch name
+     * @param string             $identifier The branch identifier
+     */
+    protected function iniBranchPackage(VcsDriverInterface $driver, array $data, $branch, $identifier)
+    {
+        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
+        $packageData = $this->preProcessAsset($data);
+        /* @var LazyCompletePackage $package */
+        $package = $this->loader->load($packageData, $packageClass);
+        $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
+        $package->setLoader($lazyLoader);
+        $package = $this->includeBranchAlias($driver, $package, $branch);
+
+        $this->addPackage($package);
+    }
+
+    /**
+     * Include the package in the alias package if the branch is a root branch
+     * identifier and having a package version.
+     *
+     * @param VcsDriverInterface  $driver  The vcs driver
+     * @param LazyCompletePackage $package The package instance
+     * @param string              $branch  The branch name
+     *
+     * @return LazyCompletePackage|AliasPackage
+     */
+    protected function includeBranchAlias(VcsDriverInterface $driver, LazyCompletePackage $package, $branch)
+    {
+        if (null !== $this->rootPackageVersion && $branch === $driver->getRootIdentifier()) {
+            $aliasNormalized = $this->versionParser->normalize($this->rootPackageVersion);
+            $package = new AliasPackage($package, $aliasNormalized, $this->rootPackageVersion);
+        }
+
+        return $package;
     }
 
     /**

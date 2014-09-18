@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Config;
+use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InvalidRepositoryException;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
@@ -199,6 +200,8 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
+                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
+                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }
@@ -207,9 +210,13 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(4, $packages);
+        $this->assertCount(5, $packages);
 
         foreach ($packages as $package) {
+            if ($package instanceof AliasPackage) {
+                $package =  $package->getAliasOf();
+            }
+
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
             $this->assertSame($validPackageName,  $package->getName());
         }
@@ -242,6 +249,8 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
+                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
+                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }
@@ -250,9 +259,13 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(4, $packages);
+        $this->assertCount(5, $packages);
 
         foreach ($packages as $package) {
+            if ($package instanceof AliasPackage) {
+                $package =  $package->getAliasOf();
+            }
+
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
             $this->assertSame($validPackageName,  $package->getName());
         }
@@ -270,6 +283,8 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
+                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
+                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }
@@ -278,9 +293,13 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(4, $packages);
+        $this->assertCount(5, $packages);
 
         foreach ($packages as $package) {
+            if ($package instanceof AliasPackage) {
+                $package =  $package->getAliasOf();
+            }
+
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
             $this->assertSame($validPackageName,  $package->getName());
         }
