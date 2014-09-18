@@ -200,8 +200,6 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
-                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
-                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }
@@ -249,8 +247,6 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
-                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
-                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }
@@ -283,8 +279,6 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
         if ($verbose) {
             $validTraces = array(
                 '<warning>Skipped tag invalid, invalid tag name</warning>',
-                sprintf('Reading %s.json of <info>%s</info> (<comment>dev-master</comment>)', 'npm-mock' === $type ? 'package' : 'bower', $validPackageName),
-                '<error>Skipped branch dev-master, Array to string conversion</error>',
                 '',
             );
         }

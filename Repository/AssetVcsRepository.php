@@ -15,6 +15,7 @@ use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\AliasPackage;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\Version\VersionParser;
@@ -59,6 +60,11 @@ class AssetVcsRepository extends VcsRepository
      * @var string
      */
     protected $rootPackageVersion;
+
+    /**
+     * @var array|null
+     */
+    protected $rootData;
 
     /**
      * Constructor.
@@ -160,6 +166,7 @@ class AssetVcsRepository extends VcsRepository
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
                 $sc = new SemverConverter();
                 $this->rootPackageVersion = !empty($data['version']) ? $sc->convertVersion($data['version']) : null;
+                $this->rootData = $data;
 
                 if (null === $this->packageName) {
                     $this->packageName = !empty($data['name']) ? $data['name'] : null;
@@ -224,19 +231,12 @@ class AssetVcsRepository extends VcsRepository
     protected function initBranches(VcsDriverInterface $driver)
     {
         foreach ($driver->getBranches() as $branch => $identifier) {
-            $packageName = $this->createPackageName();
-            $parsedBranch = $this->versionParser->normalizeBranch($branch);
-            $data = $this->createMockOfPackageConfig($packageName, $branch);
-            $data['version_normalized'] = $parsedBranch;
-
-            // make sure branch packages have a dev flag
-            if ('dev-' === substr((string) $parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
-                $data['version'] = 'dev-' . $data['version'];
-            } else {
-                $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
+            if (is_array($this->rootData) && $branch === $driver->getRootIdentifier()) {
+                $this->preInitBranchPackage($driver, $this->rootData, $branch, $identifier);
+                continue;
             }
 
-            $this->iniBranchPackage($driver, $data, $branch, $identifier);
+            $this->preInitBranchLazyPackage($driver, $branch, $identifier);
         }
 
         if (!$this->verbose) {
@@ -245,14 +245,83 @@ class AssetVcsRepository extends VcsRepository
     }
 
     /**
-     * Inits the branch package.
+     * Pre inits the branch of complete package.
+     *
+     * @param VcsDriverInterface $driver     The vcs driver
+     * @param array              $data       The asset package data
+     * @param string             $branch     The branch name
+     * @param string             $identifier The branch identifier
+     */
+    protected function preInitBranchPackage(VcsDriverInterface $driver, array $data, $branch, $identifier)
+    {
+        $packageName = $this->createPackageName();
+        $data = array_merge($this->createMockOfPackageConfig($packageName, $branch), $data);
+        $data = $this->preProcessAsset($data);
+        $data['version'] = $branch;
+        $data = $this->configureBranchPackage($branch, $data);
+
+        if (!isset($data['dist'])) {
+            $data['dist'] = $driver->getDist($identifier);
+        }
+        if (!isset($data['source'])) {
+            $data['source'] = $driver->getSource($identifier);
+        }
+
+        $loader = new ArrayLoader();
+        $package = $loader->load($data);
+        $package = $this->includeBranchAlias($driver, $package, $branch);
+        $this->addPackage($package);
+
+    }
+
+    /**
+     * Pre inits the branch of lazy package.
+     *
+     * @param VcsDriverInterface $driver     The vcs driver
+     * @param string             $branch     The branch name
+     * @param string             $identifier The branch identifier
+     */
+    protected function preInitBranchLazyPackage(VcsDriverInterface $driver, $branch, $identifier)
+    {
+        $packageName = $this->createPackageName();
+        $data = $this->createMockOfPackageConfig($packageName, $branch);
+        $data = $this->configureBranchPackage($branch, $data);
+
+        $this->initBranchLazyPackage($driver, $data, $branch, $identifier);
+    }
+
+    /**
+     * Configures the package of branch.
+     *
+     * @param string $branch The branch name
+     * @param array  $data   The data
+     *
+     * @return array
+     */
+    protected function configureBranchPackage($branch, array $data)
+    {
+        $parsedBranch = $this->versionParser->normalizeBranch($branch);
+        $data['version_normalized'] = $parsedBranch;
+
+        // make sure branch packages have a dev flag
+        if ('dev-' === substr((string) $parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
+            $data['version'] = 'dev-' . $data['version'];
+        } else {
+            $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Inits the branch of lazy package.
      *
      * @param VcsDriverInterface $driver     The vcs driver
      * @param array              $data       The package data
      * @param string             $branch     The branch name
      * @param string             $identifier The branch identifier
      */
-    protected function iniBranchPackage(VcsDriverInterface $driver, array $data, $branch, $identifier)
+    protected function initBranchLazyPackage(VcsDriverInterface $driver, array $data, $branch, $identifier)
     {
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
         $packageData = $this->preProcessAsset($data);
@@ -269,13 +338,13 @@ class AssetVcsRepository extends VcsRepository
      * Include the package in the alias package if the branch is a root branch
      * identifier and having a package version.
      *
-     * @param VcsDriverInterface  $driver  The vcs driver
-     * @param LazyCompletePackage $package The package instance
-     * @param string              $branch  The branch name
+     * @param VcsDriverInterface       $driver  The vcs driver
+     * @param CompletePackageInterface $package The package instance
+     * @param string                   $branch  The branch name
      *
-     * @return LazyCompletePackage|AliasPackage
+     * @return CompletePackageInterface|AliasPackage
      */
-    protected function includeBranchAlias(VcsDriverInterface $driver, LazyCompletePackage $package, $branch)
+    protected function includeBranchAlias(VcsDriverInterface $driver, CompletePackageInterface $package, $branch)
     {
         if (null !== $this->rootPackageVersion && $branch === $driver->getRootIdentifier()) {
             $aliasNormalized = $this->versionParser->normalize($this->rootPackageVersion);
