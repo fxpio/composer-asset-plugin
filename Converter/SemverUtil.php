@@ -115,24 +115,17 @@ abstract class SemverUtil
     {
         $patchVersion = true;
 
-        switch ($type) {
-            case 'alpha':
-            case 'beta':
-            case 'RC':
-                break;
-            case 'dev':
-                $patchVersion = false;
-                break;
-            case 'a':
-                $type = 'alpha';
-                break;
-            case 'b':
-            case 'pre':
-                $type = 'beta';
-                break;
-            default:
-                $type = 'patch';
-                break;
+        if ('dev' === $type) {
+            $patchVersion = false;
+
+        } elseif ('a' === $type) {
+            $type = 'alpha';
+
+        } elseif (in_array($type, array('b', 'pre'))) {
+            $type = 'beta';
+
+        } elseif (!in_array($type, array('alpha', 'beta', 'RC'))) {
+            $type = 'patch';
         }
 
         $version .= $type;
