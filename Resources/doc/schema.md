@@ -128,12 +128,12 @@ The `bower.json` of asset repository is automatically converted to a Complete Pa
 
 ##### Verison conversion
 
-NPM and Bower uses [Semver](http://semver.org) for formatting the versions, which is not
-the case of Composer. It is therefore necessary to perform a conversion, but it's not
+NPM and Bower use [Semver](http://semver.org) for formatting the versions, which is not
+the case for Composer. It is therefore necessary to perform a conversion, but it's not
 perfect because of the differences in operation between Semver and Composer.
 
 > **Note:**
-> It may be possible that Composer manages natively the Semver 2.0 soon (see
+> It may be possible that Composer will manage Semver 2.0 natively soon (see
 > [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
 
 Here are the matches currently validated:
@@ -175,12 +175,12 @@ Here are the matches currently validated:
 
 ##### Range verison conversion
 
-NPM and Bower uses [Semver](http://semver.org) for formatting the range versions, which is not
-the case of Composer. It is therefore necessary to perform a conversion, but it's not
+NPM and Bower use [Semver](http://semver.org) for formatting the range versions, which is not
+the case for Composer. It is therefore necessary to perform a conversion, but it's not
 perfect because of the differences in operation between Semver and Composer.
 
 > **Note:**
-> It may be possible that Composer manages natively the Semver 2.0 soon (see
+> It may be possible that Composer will manage Semver 2.0 natively soon (see
 > [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
 
 Here are the matches currently validated:
@@ -208,8 +208,8 @@ Here are the matches currently validated:
 
 ##### URL Range verison conversion
 
-NPM and Bower can use a URL directly into the version of the dependency, which is not the
-case of Composer. It is therefore necessary to perform a conversion, but it's not perfect
+NPM and Bower can use a URL directly as the version of the dependency, which is not the
+case for Composer. It is therefore necessary to perform a conversion, but it's not perfect
 because of the differences in operation between NPM/Bower and Composer.
 
 | Asset URL version | Composer version                                    |
@@ -219,9 +219,9 @@ because of the differences in operation between NPM/Bower and Composer.
 | {URL}#{branch}    | dev-{branch}                                        |
 | {URL}#{sha}       | dev-default#{sha}                                   |
 
-##### Multiple version of depdendency in the same project
+##### Multiple versions of a depdendency in the same project
 
-NPM and Bower can add multiple versions of the same dependency, which is not the case of Composer.
+NPM and Bower can add multiple versions of the same dependency, which is not the case for Composer.
 To overcome this limitation, the plugin adds a VCS repository for each required version, with the
 name including the version number after the character `-`
 (`{ASSET-TYPE}-asset/{PACKAGE-NAME}-X.Y.Z`).
@@ -233,27 +233,27 @@ However, a cache of files is created for each version (included in require secti
 
 ## Asset Repository
 
-Automatically, the plugin creates `Composer Repositories` to find and create
-automatically the VCS repository of the asset defined in the `require` and `require-dev`.
+The plugin creates `Composer Repositories` to find and create
+the VCS repository of the asset defined in the `require` and `require-dev` automatically.
 
 ### NPM Composer Repository
 
 [NPM Package](https://www.npmjs.org) is the main NPM repository. A NPM Composer repository
-is basically a package source: a place where you can get packages from. NPM Package aims to
+is basically a package source, i.e. a place where you can get packages from. NPM Package aims to
 be the central repository that everybody uses. This means that you can automatically `require`
 any package that is available there.
 
 If you go to the [NPM website](https://www.npmjs.org), you can browse and search for packages.
 
-All packages are automatically prefixed with `npm-asset/`.
+All package names are automatically prefixed with `npm-asset/`.
 
 ### Bower Composer Repository
 
 [Bower Package](http://bower.io) is the main Bower repository. A Bower Composer repository
-is basically a package source: a place where you can get packages from. Bower Package aims to
+is basically a package source, i.e. a place where you can get packages from. Bower Package aims to
 be the central repository that everybody uses. This means that you can automatically `require`
 any package that is available there.
 
 If you go to the [Bower website](http://bower.io/search/), you can browse and search for packages.
 
-All packages are automatically prefixed with `bower-asset/`.
+All package names are automatically prefixed with `bower-asset/`.
