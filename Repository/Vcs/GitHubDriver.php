@@ -74,10 +74,7 @@ class GitHubDriver extends BaseGitHubDriver
 
         while ($notFoundRetries) {
             try {
-                $composer = JsonFile::parseJson((string) $this->getContents($resource));
-                if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
-                    throw new \RuntimeException('Could not retrieve ' . $this->repoConfig['filename'] . ' from '.$resource);
-                }
+                $composer = $this->parseComposerContent($resource);
                 break;
             } catch (TransportException $e) {
                 if (404 !== $e->getCode()) {
@@ -88,6 +85,24 @@ class GitHubDriver extends BaseGitHubDriver
                 $notFoundRetries--;
                 $composer = false;
             }
+        }
+
+        return $composer;
+    }
+
+    /**
+     * Parse the composer content.
+     *
+     * @param string $resource
+     * @return array
+     *
+     * @throws \RuntimeException When the resource could not be retrieved
+     */
+    protected function parseComposerContent($resource)
+    {
+        $composer = (array) JsonFile::parseJson((string) $this->getContents($resource));
+        if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
+            throw new \RuntimeException('Could not retrieve ' . $this->repoConfig['filename'] . ' from '.$resource);
         }
 
         return $composer;
