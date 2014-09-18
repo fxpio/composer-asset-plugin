@@ -94,6 +94,7 @@ class GitHubDriver extends BaseGitHubDriver
      * Parse the composer content.
      *
      * @param string $resource
+     *
      * @return array
      *
      * @throws \RuntimeException When the resource could not be retrieved
