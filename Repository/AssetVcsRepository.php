@@ -216,17 +216,30 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     protected function includeBranchAlias(VcsDriverInterface $driver, CompletePackageInterface $package, $branch)
     {
         if (null !== $this->rootPackageVersion && $branch === $driver->getRootIdentifier()) {
-            $stability = VersionParser::parseStability($this->versionParser->normalize($this->rootPackageVersion));
-            $aliasNormalized = 'dev-' . $this->rootPackageVersion;
-
-            if (BasePackage::STABILITY_STABLE === BasePackage::$stabilities[$stability]
-                    && null === $this->findPackage($package->getName(), $this->rootPackageVersion)) {
-                $aliasNormalized = $this->versionParser->normalize($this->rootPackageVersion);
-            }
-
+            $aliasNormalized = $this->normalizeBranchAlias($package);
             $package = new AliasPackage($package, $aliasNormalized, $this->rootPackageVersion);
         }
 
         return $package;
+    }
+
+    /**
+     * Normalize the alias of branch.
+     *
+     * @param CompletePackageInterface $package The package instance
+     *
+     * @return string The alias branch name
+     */
+    protected function normalizeBranchAlias(CompletePackageInterface $package)
+    {
+        $stability = VersionParser::parseStability($this->versionParser->normalize($this->rootPackageVersion));
+        $aliasNormalized = 'dev-' . $this->rootPackageVersion;
+
+        if (BasePackage::STABILITY_STABLE === BasePackage::$stabilities[$stability]
+            && null === $this->findPackage($package->getName(), $this->rootPackageVersion)) {
+            $aliasNormalized = $this->versionParser->normalize($this->rootPackageVersion);
+        }
+
+        return $aliasNormalized;
     }
 }
