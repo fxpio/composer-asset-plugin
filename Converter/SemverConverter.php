@@ -186,7 +186,6 @@ class SemverConverter implements VersionConverterInterface
             $upVersion = ((int) $upVersion + 1) . '.0';
         }
 
-
         $newMatch .= $this->convertVersion($upVersion);
 
         return $newMatch;
