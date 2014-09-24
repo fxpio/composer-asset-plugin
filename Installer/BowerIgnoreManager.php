@@ -52,11 +52,7 @@ class BowerIgnoreManager
      */
     public function addPattern($pattern)
     {
-        if (0 === strpos($pattern, '!')) {
-            $this->finder->notPath(Glob::toRegex(substr($pattern, 1), true, false));
-        } else {
-            $this->finder->path(Glob::toRegex($pattern, true, false));
-        }
+        $this->doAddPattern($this->convertPattern($pattern));
     }
 
     /**
@@ -72,5 +68,41 @@ class BowerIgnoreManager
         foreach ($paths as $path) {
             $this->filesystem->remove($path);
         }
+    }
+
+    /**
+     * Action for Add an ignore pattern.
+     *
+     * @param string $pattern The pattern
+     */
+    public function doAddPattern($pattern)
+    {
+        if (0 === strpos($pattern, '!')) {
+            $this->finder->notPath(Glob::toRegex(substr($pattern, 1), true, false));
+        } else {
+            $this->finder->path(Glob::toRegex($pattern, true, false));
+        }
+    }
+
+    /**
+     * Converter pattern to glob.
+     *
+     * @param string $pattern The pattern
+     *
+     * @return string The pattern converted
+     */
+    protected function convertPattern($pattern)
+    {
+        $pattern = trim($pattern, '/');
+        $prefix = 0 === strpos($pattern, '!') ? '!' : '';
+        $searchPattern = ltrim($pattern, '!');
+
+        if ('**/.*' === $searchPattern) {
+            $this->doAddPattern($prefix . '.*');
+        } elseif ('.*' === $searchPattern) {
+            $this->doAddPattern($prefix . '**/.*');
+        }
+
+        return $pattern;
     }
 }
