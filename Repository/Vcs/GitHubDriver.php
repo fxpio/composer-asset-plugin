@@ -29,7 +29,7 @@ class GitHubDriver extends BaseGitHubDriver
     protected $cache;
 
     /**
-     * @var string|null
+     * @var string|null|false
      */
     protected $redirectApi;
 
