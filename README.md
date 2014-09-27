@@ -41,10 +41,11 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - Override the config of VCS Repository defined by the asset registry directly in extra section of root composer
 - VCS drivers for:
   - Git
-  - GitHub
+  - GitHub (compatible with repository redirects)
 - Local cache system for:
   - package versions
   - package contents
+  - repository redirects
 - Custom asset installers configurable in the root file `composer.json`
 - For Bower, all files defined in the section `ignore` will not be installed
 - Compatible with commands:

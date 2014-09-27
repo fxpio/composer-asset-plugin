@@ -29,6 +29,11 @@ class GitHubDriver extends BaseGitHubDriver
     protected $cache;
 
     /**
+     * @var string|null
+     */
+    protected $redirectApi;
+
+    /**
      * {@inheritDoc}
      */
     public function getComposerInformation($identifier)
@@ -157,5 +162,148 @@ class GitHubDriver extends BaseGitHubDriver
             $this->remoteFilesystem
         );
         $this->gitDriver->initialize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getContents($url, $fetchingRepoData = false)
+    {
+        $url = $this->getValidContentUrl($url);
+
+        if (null !== $this->redirectApi) {
+            return parent::getContents($url, $fetchingRepoData);
+        }
+
+        try {
+            $contents = $this->getRemoteContents($url);
+            $this->redirectApi = false;
+
+            return $contents;
+
+        } catch (TransportException $e) {
+            if ($this->hasRedirectUrl($url)) {
+                $url = $this->getValidContentUrl($url);
+            }
+
+            return parent::getContents($url, $fetchingRepoData);
+        }
+    }
+
+    /**
+     * @param string $url The url
+     *
+     * @return string The url redirected
+     */
+    protected function getValidContentUrl($url)
+    {
+        if (null === $this->redirectApi && false !== $redirectApi = $this->cache->read('redirect-api')) {
+            $this->redirectApi = $redirectApi;
+        }
+
+        if (is_string($this->redirectApi) && 0 === strpos($url, $this->getRepositoryApiUrl())) {
+            $url = $this->redirectApi . substr($url, strlen($this->getRepositoryApiUrl()));
+        }
+
+        return $url;
+    }
+
+    /**
+     * Check if the driver must find the new url.
+     *
+     * @param string $url The url
+     *
+     * @return bool
+     */
+    protected function hasRedirectUrl($url)
+    {
+        if (null === $this->redirectApi && 0 === strpos($url, $this->getRepositoryApiUrl())) {
+            $this->redirectApi = $this->getNewRepositoryUrl();
+
+            if (is_string($this->redirectApi)) {
+                $this->cache->write('redirect-api', $this->redirectApi);
+            }
+        }
+
+        return is_string($this->redirectApi);
+    }
+
+    /**
+     * Get the new url of repository.
+     *
+     * @return string|false The new url or false if there is not a new url
+     */
+    protected function getNewRepositoryUrl()
+    {
+        try {
+            $this->getRemoteContents($this->getRepositoryUrl());
+            $headers = $this->remoteFilesystem->getLastHeaders();
+
+            if (!empty($headers[0]) && preg_match('{^HTTP/\S+ (30[1278])}i', $headers[0], $match)) {
+                array_shift($headers);
+
+                return $this->findNewLocationInHeader($headers);
+            }
+
+            return false;
+
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Find the new url api in the header.
+     *
+     * @param array $headers The http header
+     *
+     * @return string|false
+     */
+    protected function findNewLocationInHeader(array $headers)
+    {
+        $url = false;
+
+        foreach ($headers as $header) {
+            if (0 === strpos($header, 'Location:')) {
+                $newUrl = trim(substr($header, 9));
+                preg_match('#^(?:(?:https?|git)://([^/]+)/|git@([^:]+):)([^/]+)/(.+?)(?:\.git|/)?$#', $newUrl, $match);
+                $owner = $match[3];
+                $repository = $match[4];
+                $paramPos = strpos($repository, '?');
+                $repository = is_int($paramPos) ? substr($match[4], 0, $paramPos) : $repository;
+                $url = $this->getRepositoryApiUrl($owner, $repository);
+                break;
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get the url API of the repository.
+     *
+     * @param string $owner
+     * @param string $repository
+     *
+     * @return string
+     */
+    protected function getRepositoryApiUrl($owner = null, $repository = null)
+    {
+        $owner = null !== $owner ? $owner : $this->owner;
+        $repository = null !== $repository ? $repository : $this->repository;
+
+        return $this->getApiUrl() . '/repos/'.$owner.'/'.$repository;
+    }
+
+    /**
+     * Get the remote content.
+     *
+     * @param string $url
+     *
+     * @return bool|string
+     */
+    protected function getRemoteContents($url)
+    {
+        return $this->remoteFilesystem->getContents($this->originUrl, $url, false);
     }
 }
