@@ -27,7 +27,7 @@ class Validator
      * @param string             $branch
      * @param VersionParser|null $parser
      *
-     * @return bool
+     * @return false|string
      */
     public static function validateBranch($branch, VersionParser $parser = null)
     {
@@ -51,7 +51,7 @@ class Validator
      * @param AssetTypeInterface $assetType
      * @param VersionParser|null $parser
      *
-     * @return bool
+     * @return false|string
      */
     public static function validateTag($tag, AssetTypeInterface $assetType, VersionParser $parser = null)
     {

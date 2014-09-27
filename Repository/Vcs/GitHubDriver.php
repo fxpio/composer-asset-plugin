@@ -66,7 +66,7 @@ class GitHubDriver extends BaseGitHubDriver
      *
      * @param string $resource
      *
-     * @return bool|null|string
+     * @return null|false|array
      *
      * @throws \RuntimeException
      * @throws \Composer\Downloader\TransportException
@@ -165,7 +165,12 @@ class GitHubDriver extends BaseGitHubDriver
     }
 
     /**
-     * {@inheritDoc}
+     * Get the remote content.
+     *
+     * @param string $url              The URL of content
+     * @param bool   $fetchingRepoData The URL of content
+     *
+     * @return mixed The result
      */
     protected function getContents($url, $fetchingRepoData = false)
     {
