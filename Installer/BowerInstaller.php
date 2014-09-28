@@ -31,6 +31,16 @@ class BowerInstaller extends AssetInstaller
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function updateCode(PackageInterface $initial, PackageInterface $target)
+    {
+        parent::updateCode($initial, $target);
+
+        $this->deleteIgnoredFiles($target);
+    }
+
+    /**
      * Deletes files defined in bower.json in section "ignore".
      *
      * @param PackageInterface $package
