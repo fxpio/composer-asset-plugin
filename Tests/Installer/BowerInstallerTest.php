@@ -259,6 +259,50 @@ class BowerInstallerTest extends TestCase
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
 
+    /**
+     * @dataProvider getAssetIgnoreFiles
+     * @group fxp
+     */
+    public function testUpdate(array $ignoreFiles)
+    {
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
+
+        $this->composer->setPackage($rootPackage);
+
+        $library = new BowerInstaller($io, $this->composer, $type);
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
+        $package = $this->createPackageMock($ignoreFiles);
+        $package
+            ->expects($this->any())
+            ->method('getPrettyName')
+            ->will($this->returnValue('foo-asset/package'));
+
+        /* @var PackageInterface $package */
+        $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
+        mkdir($packageDir, 0777, true);
+
+        /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
+        $repository = $this->repository;
+
+        $repository
+            ->expects($this->exactly(2))
+            ->method('hasPackage')
+            ->with($package)
+            ->will($this->returnValue(true));
+
+        /* @var InstalledRepositoryInterface $repository */
+        $library->update($repository, $package, $package);
+        $this->assertFileExists($this->vendorDir, 'Vendor dir should be created');
+        $this->assertFileExists($this->binDir, 'Bin dir should be created');
+
+        $this->ensureDirectoryExistsAndClear($packageDir);
+    }
+
     public function testUninstall()
     {
         /* @var RootPackageInterface $rootPackage */
