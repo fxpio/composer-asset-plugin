@@ -36,6 +36,7 @@ class VcsRepositoryEvent extends Event
         parent::__construct($name);
 
         $this->repositories = $repos;
+        $this->repositories = array();
     }
 
     /**

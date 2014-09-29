@@ -256,7 +256,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
         $this->plugin->onAddVcsRepositories($event);
-        $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
+        $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
     }
 
     public function testAssetInstallers()
