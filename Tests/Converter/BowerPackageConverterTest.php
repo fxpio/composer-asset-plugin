@@ -52,16 +52,17 @@ class BowerPackageConverterTest extends AbstractPackageConverterTest
 
         $this->assertArrayHasKey('require', $composer);
         $this->assertSame(array(
-            'ASSET/library1' => '>= 1.0.0',
-            'ASSET/library2' => '>= 1.0.0',
+            'ASSET/library1'  => '>= 1.0.0',
+            'ASSET/library2'  => '>= 1.0.0',
             'ASSET/library2-0.9.0' => '0.9.0',
-            'ASSET/library3' => 'dev-default',
-            'ASSET/library4' => 'dev-1.2.3 || 1.2.3',
-            'ASSET/library5' => 'dev-default#0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
-            'ASSET/library6' => 'dev-branch',
-            'ASSET/library7' => 'dev-1.2.* || 1.2.*',
-            'ASSET/library8' => 'dev-1.2.x || 1.2.x',
-            'ASSET/library9' => 'dev-master',
+            'ASSET/library3'  => 'dev-default',
+            'ASSET/library4'  => 'dev-1.2.3 || 1.2.3',
+            'ASSET/library5'  => 'dev-default#0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+            'ASSET/library6'  => 'dev-branch',
+            'ASSET/library7'  => 'dev-1.2.* || 1.2.*',
+            'ASSET/library8'  => 'dev-1.2.x || 1.2.x',
+            'ASSET/library9'  => 'dev-master',
+            'ASSET/library10' => 'dev-1.0.0 || 1.0.0'
         ), $composer['require']);
 
         $this->assertArrayHasKey('require-dev', $composer);

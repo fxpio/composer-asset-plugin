@@ -24,7 +24,8 @@
         "library6": "git@foobar.tld:user/repository6.git#branch",
         "library7": "git@foobar.tld:user/repository7.git#1.2.*",
         "library8": "git@foobar.tld:user/repository8.git#1.2.x",
-        "library9": "git@foobar.tld:user/repository9.git#master"
+        "library9": "git@foobar.tld:user/repository9.git#master",
+        "library10": "user/repository10#1.0.0"
     },
     "devDependencies": {
         "dev-library1": ">= 1.0.0",
