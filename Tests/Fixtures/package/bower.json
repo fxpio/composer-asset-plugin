@@ -25,7 +25,13 @@
         "library7": "git@foobar.tld:user/repository7.git#1.2.*",
         "library8": "git@foobar.tld:user/repository8.git#1.2.x",
         "library9": "git@foobar.tld:user/repository9.git#master",
-        "library10": "user/repository10#1.0.0"
+        "library10": "user/repository10#1.0.0",
+        "library11": "user/repository11",
+        "library12": "user/repository11#>=1 <2",
+        "library13": ">=1 <2",
+        "library14": "*",
+        "library15": "library15#*",
+        "library16": "library16#>=1 <2"
     },
     "devDependencies": {
         "dev-library1": ">= 1.0.0",

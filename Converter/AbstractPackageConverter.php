@@ -142,6 +142,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     {
         list($dependency, $version) = $this->checkUrlVersion($dependency, $version, $vcsRepos);
         list($dependency, $version) = $this->checkAliasVersion($dependency, $version);
+        list($dependency, $version) = $this->convertDependencyVersion($dependency, $version);
 
         return array($dependency, $version);
     }
@@ -163,22 +164,10 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             // number version or empty version
             if (false !== $pos) {
                 $url = substr($version, 0, $pos);
-                $version = substr($version, $pos + 1);
+                $version = substr($version, $pos);
             } else {
                 $url = $version;
-                $version = 'default';
-            }
-
-            // sha version or branch verison
-            if (preg_match('{^[0-9a-f]{40}$}', $version)) {
-                $version = 'dev-default#' . $version;
-            } elseif (!Validator::validateTag($version, $this->assetType)) {
-                $oldVersion = $version;
-                $version = 'dev-' . $version;
-
-                if (!Validator::validateBranch($oldVersion)) {
-                    $version .= ' || ' . $oldVersion;
-                }
+                $version = '#';
             }
 
             $vcsRepos[] = array(
@@ -202,10 +191,43 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     {
         $pos = strpos($version, '#');
 
-        if (false !== $pos && !preg_match('{[0-9a-f]{40}$}', $version)) {
+        if ($pos > 0 && !preg_match('{[0-9a-f]{40}$}', $version)) {
             $dependency = substr($version, 0, $pos);
-            $version = substr($version, $pos + 1);
-            $dependency .= '-' . $version;
+            $version = substr($version, $pos);
+            $searchVerion = substr($version, 1);
+
+            if (false === strpos($version, '*') && Validator::validateTag($searchVerion, $this->assetType)) {
+                $dependency .= '-' . str_replace('#', '', $version);
+            }
+        }
+
+        return array($dependency, $version);
+    }
+
+    /**
+     * Convert the dependency version.
+     *
+     * @param string $dependency The dependency
+     * @param string $version    The version
+     *
+     * @return string[] The new dependency and the new version
+     */
+    protected function convertDependencyVersion($dependency, $version)
+    {
+        $version = str_replace('#', '', $version);
+        $version = empty($version) ? '*' : $version;
+        $searchVersion = str_replace(array(' ', '<', '>', '=', '^', '~'), '', $version);
+
+        // sha version or branch verison
+        if (preg_match('{^[0-9a-f]{40}$}', $version)) {
+            $version = 'dev-default#' . $version;
+        } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $this->assetType)) {
+            $oldVersion = $version;
+            $version = 'dev-' . $version;
+
+            if (!Validator::validateBranch($oldVersion)) {
+                $version .= ' || ' . $oldVersion;
+            }
         }
 
         return array($dependency, $version);

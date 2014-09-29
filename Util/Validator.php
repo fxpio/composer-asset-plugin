@@ -55,6 +55,10 @@ class Validator
      */
     public static function validateTag($tag, AssetTypeInterface $assetType, VersionParser $parser = null)
     {
+        if (in_array($tag, array('master', 'trunk', 'default'))) {
+            return false;
+        }
+
         if (null === $parser) {
             $parser = new VersionParser();
         }
