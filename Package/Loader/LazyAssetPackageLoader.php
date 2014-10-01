@@ -13,7 +13,6 @@ namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
-use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
@@ -193,7 +192,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      *
      * @param LazyPackageInterface $package
      *
-     * @return false|CompletePackageInterface
+     * @return false|PackageInterface
      */
     protected function loadRealPackage(LazyPackageInterface $package)
     {

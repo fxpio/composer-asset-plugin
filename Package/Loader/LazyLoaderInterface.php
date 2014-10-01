@@ -11,7 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
-use Composer\Package\CompletePackageInterface;
+use Composer\Package\PackageInterface;
 use Fxp\Composer\AssetPlugin\Package\LazyPackageInterface;
 
 /**
@@ -26,7 +26,7 @@ interface LazyLoaderInterface
      *
      * @param LazyPackageInterface $package
      *
-     * @return CompletePackageInterface|false
+     * @return PackageInterface|false
      */
     public function load(LazyPackageInterface $package);
 }
