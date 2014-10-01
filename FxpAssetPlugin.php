@@ -12,7 +12,10 @@
 namespace Fxp\Composer\AssetPlugin;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Pool;
 use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Installer\InstallerEvent;
+use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Repository\RepositoryInterface;
@@ -40,6 +43,11 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     protected $repos = array();
 
     /**
+     * @var Pool
+     */
+    protected $pool;
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -47,6 +55,9 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         return array(
             AssetEvents::ADD_VCS_REPOSITORIES => array(
                 array('onAddVcsRepositories', 0),
+            ),
+            InstallerEvents::PRE_DEPENDENCIES_SOLVING => array(
+                array('onPreDependenciesSolving', 0),
             ),
         );
     }
@@ -79,8 +90,18 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     {
         if (null !== $this->composer) {
             $rm = $this->composer->getRepositoryManager();
-            $this->addRepositories($rm, $event->getRepositories());
+            $this->addRepositories($rm, $event->getRepositories(), $this->pool);
         }
+    }
+
+    /**
+     * Add pool in plugin.
+     *
+     * @param InstallerEvent $event
+     */
+    public function onPreDependenciesSolving(InstallerEvent $event)
+    {
+        $this->pool = $event->getPool();
     }
 
     /**
@@ -125,19 +146,20 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @param RepositoryManager $rm
      * @param array             $repositories
+     * @param Pool|null         $pool
      *
      * @throws \UnexpectedValueException When config of repository is not an array
      * @throws \UnexpectedValueException When the config of repository has not a type defined
      * @throws \UnexpectedValueException When the config of repository has an invalid type
      */
-    protected function addRepositories(RepositoryManager $rm, array $repositories)
+    protected function addRepositories(RepositoryManager $rm, array $repositories, Pool $pool = null)
     {
         foreach ($repositories as $index => $repo) {
             $this->validateRepositories($index, $repo);
             $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
             $name = isset($repo['name']) ? $repo['name'] : $name;
 
-            Util::addRepository($rm, $this->repos, $name, $repo);
+            Util::addRepository($rm, $this->repos, $name, $repo, $pool);
         }
     }
 

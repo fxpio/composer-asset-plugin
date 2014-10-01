@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests;
 use Composer\Composer;
 use Composer\Config;
 use Composer\Installer\InstallationManager;
+use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Util\Filesystem;
@@ -246,16 +247,21 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->method('getExtra')
             ->will($this->returnValue(array()));
 
-        $this->assertCount(1, $this->plugin->getSubscribedEvents());
+        $this->assertCount(2, $this->plugin->getSubscribedEvents());
         $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
 
         $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, array(
             array('type' => 'npm-vcs', 'url'  => 'http://foo.tld'),
         ));
+        /* @var InstallerEvent $eventInstaller */
+        $eventInstaller = $this->getMockBuilder('Composer\Installer\InstallerEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->plugin->activate($this->composer, $this->io);
         $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
         $this->plugin->onAddVcsRepositories($event);
+        $this->plugin->onPreDependenciesSolving($eventInstaller);
         $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
     }
 
