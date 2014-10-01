@@ -261,7 +261,6 @@ class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetIgnoreFiles
-     * @group fxp
      */
     public function testUpdate(array $ignoreFiles)
     {

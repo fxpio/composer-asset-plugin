@@ -345,7 +345,6 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
      * @param string $validTrace
      *
      * @dataProvider getConfigIoForException
-     * @group fxp
      */
     public function testTagWithTransportException($type, $verbose, $exceptionClass, $validTrace)
     {
