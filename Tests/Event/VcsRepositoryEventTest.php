@@ -30,7 +30,7 @@ class VcsRepositoryEventTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($eventName, $event->getName());
         $this->assertSame(array(
-            //array('type' => 'TYPE', 'url'  => 'URL'),
+            array('type' => 'TYPE', 'url'  => 'URL'),
         ), $event->getRepositories());
     }
 
