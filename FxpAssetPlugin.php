@@ -23,6 +23,7 @@ use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
+use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Repository\Util;
 
 /**
@@ -48,6 +49,11 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     protected $pool;
 
     /**
+     * @var VcsPackageFilter
+     */
+    protected $packageFilter;
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -68,6 +74,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
+        $this->packageFilter = new VcsPackageFilter($composer->getPackage());
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
@@ -119,6 +126,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         foreach (Assets::getRegistries() as $assetType => $registryClass) {
             $config = array(
                 'repository-manager' => $rm,
+                'vcs-package-filter' => $this->packageFilter,
                 'asset-options'      => $this->crateAssetOptions($opts, $assetType),
             );
 
@@ -158,6 +166,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
             $this->validateRepositories($index, $repo);
             $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
             $name = isset($repo['name']) ? $repo['name'] : $name;
+            $repo['vcs-package-filter'] = $this->packageFilter;
 
             Util::addRepository($rm, $this->repos, $name, $repo, $pool);
         }

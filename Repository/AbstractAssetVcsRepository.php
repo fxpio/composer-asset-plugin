@@ -62,6 +62,11 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     protected $rootData;
 
     /**
+     * @var VcsPackageFilter
+     */
+    protected $filter;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -82,6 +87,9 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $repoConfig['filename'] = $assetType->getFilename();
         $this->assetType = $assetType;
         $this->dispatcher = $dispatcher;
+        $this->filter = isset($repoConfig['vcs-package-filter'])
+            ? $repoConfig['vcs-package-filter']
+            : null;
 
         parent::__construct($repoConfig, $io, $config, $dispatcher, $drivers);
     }

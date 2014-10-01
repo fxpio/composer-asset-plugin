@@ -55,41 +55,57 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
      */
     protected function initTags(VcsDriverInterface $driver)
     {
-        $verbose = $this->verbose;
-        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
-
         foreach ($driver->getTags() as $tag => $identifier) {
             $packageName = $this->createPackageName();
 
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
 
+            if (null !== $this->filter && $this->filter->skip($this->assetType, $packageName, $tag)) {
+                continue;
+            }
+
             if (!$parsedTag = Validator::validateTag($tag, $this->assetType, $this->versionParser)) {
-                if ($verbose) {
+                if ($this->verbose) {
                     $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
                 }
                 continue;
             }
 
-            $data = $this->createMockOfPackageConfig($packageName, $tag);
-            $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
-            $data['version_normalized'] = $parsedTag;
-
-            // make sure tag packages have no -dev flag
-            $data['version'] = preg_replace('{[.-]?dev$}i', '', (string) $data['version']);
-            $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', (string) $data['version_normalized']);
-
-            $packageData = $this->preProcessAsset($data);
-            $package = $this->loader->load($packageData, $packageClass);
-            $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
-            /* @var LazyCompletePackage $package */
-            $package->setLoader($lazyLoader);
-            $this->addPackage($package);
+            $this->initTag($driver, $packageName, $tag, $identifier, $parsedTag);
         }
 
         if (!$this->verbose) {
             $this->io->overwrite('', false);
         }
+    }
+
+    /**
+     * Initializes the tag.
+     *
+     * @param VcsDriverInterface $driver
+     * @param string             $packageName
+     * @param string             $tag
+     * @param string             $identifier
+     * @param string             $parsedTag
+     */
+    protected function initTag(VcsDriverInterface $driver, $packageName, $tag, $identifier, $parsedTag)
+    {
+        $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
+        $data = $this->createMockOfPackageConfig($packageName, $tag);
+        $data['version'] = $this->assetType->getVersionConverter()->convertVersion($tag);
+        $data['version_normalized'] = $parsedTag;
+
+        // make sure tag packages have no -dev flag
+        $data['version'] = preg_replace('{[.-]?dev$}i', '', (string) $data['version']);
+        $data['version_normalized'] = preg_replace('{(^dev-|[.-]?dev$)}i', '', (string) $data['version_normalized']);
+
+        $packageData = $this->preProcessAsset($data);
+        $package = $this->loader->load($packageData, $packageClass);
+        $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
+        /* @var LazyCompletePackage $package */
+        $package->setLoader($lazyLoader);
+        $this->addPackage($package);
     }
 
     /**

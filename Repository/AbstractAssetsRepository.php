@@ -60,6 +60,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $repositoryManager;
 
     /**
+     * @var VcsPackageFilter
+     */
+    protected $packageFilter;
+
+    /**
      * Constructor.
      *
      * @param array           $repoConfig
@@ -82,6 +87,9 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->searchUrl = $this->getSearchUrl();
         $this->hasProviders = true;
         $this->rm = $repoConfig['repository-manager'];
+        $this->packageFilter = isset($repoConfig['vcs-package-filter'])
+            ? $repoConfig['vcs-package-filter']
+            : null;
         $this->repos = array();
         $this->searchable = (bool) $this->getOption($repoConfig['asset-options'], 'searchable', true);
         $this->fallbackProviders = false;
@@ -126,6 +134,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $cacheName = $packageName . '-' . sha1($packageName) . '-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
             $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
+            $repo['vcs-package-filter'] = $this->packageFilter;
 
             Util::addRepository($this->rm, $this->repos, $name, $repo, $pool);
 

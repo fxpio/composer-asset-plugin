@@ -17,6 +17,7 @@ use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InvalidRepositoryException;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
+use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Tests\Fixtures\IO\MockIO;
 use Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriver;
 
@@ -302,21 +303,60 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getMockDriversWithVersions
+     */
+    public function testWithFilterTags($type, $url, $class, $verbose)
+    {
+        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/registry-foobar';
+        $validTraces = array('');
+        if ($verbose) {
+            $validTraces = array();
+        }
+
+        $filter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $filter->expects($this->any())
+            ->method('skip')
+            ->will($this->returnValue(true));
+
+        /* @var VcsPackageFilter $filter */
+        $this->init(true, $type, $url, $class, $verbose, null, 'registry-foobar', $filter);
+
+        /* @var PackageInterface[] $packages */
+        $packages = $this->repository->getPackages();
+        $this->assertCount(3, $packages);
+
+        foreach ($packages as $package) {
+            if ($package instanceof AliasPackage) {
+                $package =  $package->getAliasOf();
+            }
+
+            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
+            $this->assertSame($validPackageName,  $package->getName());
+        }
+
+        $this->assertSame($validTraces, $this->io->getTraces());
+    }
+
+    /**
      * Init the test.
      *
-     * @param bool        $supported
-     * @param string      $type
-     * @param string      $url
-     * @param string      $class
-     * @param bool        $verbose
-     * @param array|null  $drivers
-     * @param string|null $registryName
+     * @param bool                  $supported
+     * @param string                $type
+     * @param string                $url
+     * @param string                $class
+     * @param bool                  $verbose
+     * @param array|null            $drivers
+     * @param string|null           $registryName
+     * @param VcsPackageFilter|null $vcsPackageFilter
      */
-    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null)
+    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null, VcsPackageFilter $vcsPackageFilter = null)
     {
         MockVcsDriver::$supported = $supported;
         $driverType = substr($type, strpos($type, '-') + 1);
-        $repoConfig = array('type' => $type, 'url' => $url, 'name' => $registryName);
+        $repoConfig = array('type' => $type, 'url' => $url, 'name' => $registryName, 'vcs-package-filter' => $vcsPackageFilter);
 
         if (null === $drivers) {
             $drivers = array(
