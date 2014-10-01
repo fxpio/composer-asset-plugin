@@ -26,7 +26,7 @@ interface LazyLoaderInterface
      *
      * @param LazyPackageInterface $package
      *
-     * @return CompletePackageInterface
+     * @return CompletePackageInterface|false
      */
     public function load(LazyPackageInterface $package);
 }
