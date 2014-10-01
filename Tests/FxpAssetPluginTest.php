@@ -63,7 +63,13 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
 
                 return null;
             }));
-        $this->package = $this->getMock('Composer\Package\PackageInterface');
+        $this->package = $this->getMock('Composer\Package\RootPackageInterface');
+        $this->package->expects($this->any())
+            ->method('getRequires')
+            ->will($this->returnValue(array()));
+        $this->package->expects($this->any())
+            ->method('getDevRequires')
+            ->will($this->returnValue(array()));
 
         /* @var IOInterface $io */
         /* @var Config $config */
