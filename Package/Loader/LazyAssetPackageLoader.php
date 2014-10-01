@@ -192,7 +192,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      *
      * @param LazyPackageInterface $package
      *
-     * @return false|PackageInterface
+     * @return PackageInterface|false
      */
     protected function loadRealPackage(LazyPackageInterface $package)
     {
@@ -213,7 +213,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      * @param LazyPackageInterface $package
      * @param false|array          $data
      *
-     * @return false|PackageInterface
+     * @return PackageInterface|false
      */
     protected function convertRealPackage(LazyPackageInterface $package, $data)
     {
