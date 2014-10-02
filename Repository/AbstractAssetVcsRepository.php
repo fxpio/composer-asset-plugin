@@ -62,7 +62,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     protected $rootData;
 
     /**
-     * @var VcsPackageFilter
+     * @var VcsPackageFilter|null
      */
     protected $filter;
 
