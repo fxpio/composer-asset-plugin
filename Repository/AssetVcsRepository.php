@@ -57,22 +57,10 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     {
         foreach ($driver->getTags() as $tag => $identifier) {
             $packageName = $this->createPackageName();
-
             // strip the release- prefix from tags if present
             $tag = str_replace('release-', '', $tag);
 
-            if (null !== $this->filter && $this->filter->skip($this->assetType, $packageName, $tag)) {
-                continue;
-            }
-
-            if (!$parsedTag = Validator::validateTag($tag, $this->assetType, $this->versionParser)) {
-                if ($this->verbose) {
-                    $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
-                }
-                continue;
-            }
-
-            $this->initTag($driver, $packageName, $tag, $identifier, $parsedTag);
+            $this->initTag($driver, $packageName, $tag, $identifier);
         }
 
         if (!$this->verbose) {
@@ -81,7 +69,32 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     }
 
     /**
-     * Initializes the tag.
+     * Initializes the tag: check if tag must be skipped and validate the tag.
+     *
+     * @param VcsDriverInterface $driver
+     * @param string             $packageName
+     * @param string             $tag
+     * @param string             $identifier
+     */
+    protected function initTag(VcsDriverInterface $driver, $packageName, $tag, $identifier)
+    {
+        if (null !== $this->filter && $this->filter->skip($this->assetType, $packageName, $tag)) {
+            return;
+        }
+
+        if (!$parsedTag = Validator::validateTag($tag, $this->assetType, $this->versionParser)) {
+            if ($this->verbose) {
+                $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
+            }
+
+            return;
+        }
+
+        $this->initTagAddPackage($driver, $packageName, $tag, $identifier, $parsedTag);
+    }
+
+    /**
+     * Initializes the tag: convert data and create package.
      *
      * @param VcsDriverInterface $driver
      * @param string             $packageName
@@ -89,7 +102,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
      * @param string             $identifier
      * @param string             $parsedTag
      */
-    protected function initTag(VcsDriverInterface $driver, $packageName, $tag, $identifier, $parsedTag)
+    protected function initTagAddPackage(VcsDriverInterface $driver, $packageName, $tag, $identifier, $parsedTag)
     {
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
         $data = $this->createMockOfPackageConfig($packageName, $tag);
