@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
+use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
@@ -196,28 +197,10 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      */
     protected function loadRealPackage(LazyPackageInterface $package)
     {
+        $realPackage = false;
+
         try {
             $data = $this->driver->getComposerInformation($this->identifier);
-            $realPackage = $this->convertRealPackage($package, $data);
-        } catch (\Exception $e) {
-            $realPackage = $this->convertRealPackage($package, false);
-        }
-        $this->driver->cleanup();
-
-        return $realPackage;
-    }
-
-    /**
-     * Convert the data of real package to package instance.
-     *
-     * @param LazyPackageInterface $package
-     * @param false|array          $data
-     *
-     * @return CompletePackageInterface|false
-     */
-    protected function convertRealPackage(LazyPackageInterface $package, $data)
-    {
-        try {
             $valid = is_array($data);
             $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
 
@@ -227,15 +210,15 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
             /* @var CompletePackageInterface $realPackage */
             $realPackage = $this->loader->load($data);
-
-            return $realPackage;
         } catch (\Exception $e) {
             if ($this->verbose) {
-                $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.$e->getMessage().'</'.$this->getIoTag().'>');
+                $filename = $this->assetType->getFilename();
+                $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.($e instanceof TransportException ? 'no ' . $filename . ' file was found' : $e->getMessage()).'</'.$this->getIoTag().'>');
             }
-
-            return false;
         }
+        $this->driver->cleanup();
+
+        return $realPackage;
     }
 
     /**

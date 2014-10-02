@@ -331,10 +331,10 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             array('tag', true, 'Exception', '<warning>Skipped tag 1.0, MESSAGE</warning>'),
             array('branch', false, 'Exception', '<error>Skipped branch 1.0, MESSAGE</error>'),
             array('branch', true, 'Exception', '<error>Skipped branch 1.0, MESSAGE</error>'),
-            array('tag', false, 'Composer\Downloader\TransportException', null),
-            array('tag', true, 'Composer\Downloader\TransportException', null),
-            array('branch', false, 'Composer\Downloader\TransportException', null),
-            array('branch', true, 'Composer\Downloader\TransportException', null),
+            array('tag', false, 'Composer\Downloader\TransportException', '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
+            array('tag', true, 'Composer\Downloader\TransportException', '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
+            array('branch', false, 'Composer\Downloader\TransportException', '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
+            array('branch', true, 'Composer\Downloader\TransportException', '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
         );
     }
 
@@ -350,35 +350,15 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         /* @var \PHPUnit_Framework_MockObject_MockObject $loader */
         $loader = $this->loader;
-        /* @var \PHPUnit_Framework_MockObject_MockObject $driver */
-        $driver = $this->driver;
-
-        if ('Composer\Downloader\TransportException' === $exceptionClass) {
-            $driver
-                ->expects($this->any())
-                ->method('getComposerInformation')
-                ->will($this->throwException(new $exceptionClass('MESSAGE TRANSPORT')));
-
-            $realPackage = $this->getMock('Composer\Package\CompletePackageInterface');
-            $loader
-                ->expects($this->any())
-                ->method('load')
-                ->will($this->returnValue($realPackage));
-        } else {
-            $loader
-                ->expects($this->any())
-                ->method('load')
-                ->will($this->throwException(new $exceptionClass('MESSAGE')));
-        }
+        $loader
+            ->expects($this->any())
+            ->method('load')
+            ->will($this->throwException(new $exceptionClass('MESSAGE')));
 
         $this->lazyLoader = $this->createLazyLoaderConfigured($type, $verbose);
         $package = $this->lazyLoader->load($this->lazyPackage);
 
-        if ('Composer\Downloader\TransportException' === $exceptionClass) {
-            $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $package);
-        } else {
-            $this->assertFalse($package);
-        }
+        $this->assertFalse($package);
 
         $filename = $this->assetType->getFilename();
         $validOutput = array('');
@@ -387,22 +367,14 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             $validOutput = array(
                 'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
                 'Importing empty ' . $type . ' ' . $this->lazyPackage->getPrettyVersion() . ' (' . $this->lazyPackage->getVersion() . ')',
+                $validTrace,
+                '',
             );
-
-            if (null !== $validTrace) {
-                $validOutput = array_merge($validOutput, array($validTrace));
-            }
-
-            $validOutput = array_merge($validOutput, array(''));
         }
         $this->assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
-        if ('Composer\Downloader\TransportException' === $exceptionClass) {
-            $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $packageCache);
-        } else {
-            $this->assertFalse($packageCache);
-        }
+        $this->assertFalse($packageCache);
         $this->assertSame($validOutput, $this->io->getTraces());
     }
 
