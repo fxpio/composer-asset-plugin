@@ -88,6 +88,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $this->assetType = $assetType;
         $this->dispatcher = $dispatcher;
         $this->filter = isset($repoConfig['vcs-package-filter'])
+                && $repoConfig['vcs-package-filter'] instanceof VcsPackageFilter
             ? $repoConfig['vcs-package-filter']
             : null;
 
