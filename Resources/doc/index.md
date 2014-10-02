@@ -131,25 +131,6 @@ The dependencies will then be placed in the following directories:
 - `vendor/bower-asset/jquery-2.0.x` for `2.0.x`
 - `vendor/bower-asset/jquery-2.1.0` for `2.1.0`
 
-### Disable the search for an asset registry
-
-If you want to disable the search for an asset registry, you can add an extra
-option `extra.asset-registry-options.{type}-searchable` in the root project
-`composer.json`-file.
-
-**Example:**
-
-```json
-{
-    "extra": {
-        "asset-registry-options": {
-            "npm-searchable": false,
-            "bower-searchable": false
-        }
-    }
-}
-```
-
 ### Include dependencies using URL in versions
 
 Currently, the plugin can not add the VCS repositories to the `Pool`
@@ -211,3 +192,22 @@ But you can change the installation directory of the assets directly in the root
 > **Note:**
 >
 > For Bower, all files defined in the section `ignore` will not be installed
+
+### Disable the search for an asset registry
+
+If you want to disable the search for an asset registry, you can add an extra
+option `extra.asset-registry-options.{type}-searchable` in the root project
+`composer.json`-file.
+
+**Example:**
+
+```json
+{
+    "extra": {
+        "asset-registry-options": {
+            "npm-searchable": false,
+            "bower-searchable": false
+        }
+    }
+}
+```
