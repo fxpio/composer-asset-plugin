@@ -66,7 +66,7 @@ class VcsPackageFilter
     public function skip(AssetTypeInterface $assetType, $name, $version)
     {
         if (!isset($this->requires[$name])) {
-            return true;
+            return false;
         }
 
         /* @var Link $require */

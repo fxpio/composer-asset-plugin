@@ -64,7 +64,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
     public function getDataProvider()
     {
         return array(
-            array('acme/foobar', 'v1.0.0',        'stable', array(),                                    true),
+            array('acme/foobar', 'v1.0.0',        'stable', array(),                                    false),
 
             array('acme/foobar', 'v1.0.0',        'stable', array('acme/foobar' => '>=1.0'),            false),
             array('acme/foobar', 'v1.0.0-RC1',    'stable', array('acme/foobar' => '>=1.0'),            true),
