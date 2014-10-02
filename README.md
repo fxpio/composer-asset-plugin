@@ -81,6 +81,7 @@ Documentation
 The bulk of the documentation is located in `Resources/doc/index.md`:
 
 [Read the Documentation](Resources/doc/index.md)
+[Read the FAQs](Resources/doc/faqs.md)
 
 Installation
 ------------

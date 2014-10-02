@@ -3,6 +3,7 @@ Basic Usage
 
 1. [Installation](index.md)
 2. [Composer Schema of Asset](schema.md)
+3. [FAQs](faqs.md)
 
 ## Installation
 
