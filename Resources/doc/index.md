@@ -169,6 +169,37 @@ The root `composer.json` must have:
 }
 ```
 
+### Reduce the number of requests for getting the package definitions
+
+The root Composer package has a feature: all asset dependencies added will have automatically
+a filter applied, before the importation of the branches and the tags.
+
+In this way, all versions are not accepted by the constraint of version and they will be
+skipped to the importation, and will not be injected in the `Pool`. Of course, all constraints
+of versions are functional (exact version, range, wildcard, tilde operator).
+
+**For example:**
+
+The root `composer.json`:
+
+```json
+{
+    "minimum-stability": "dev",
+    "require": {
+        "npm-asset/example-asset1": ">=1.0@stable",
+        "npm-asset/example-asset2": ">=2.3@RC",
+        "npm-asset/example-asset3": ">=1.3@beta",
+        "npm-asset/example-asset4": "~0.9@alpha",
+        "npm-asset/example-asset4": "2.1.*",
+    }
+}
+```
+
+In case you have an dependency that that requires a sub asset dependency, and given that this
+optimization cannot be performed with the sub dependencies, you can add this asset dependency
+directly to the root Composer package, in the same way that if you wanted to use a
+well-defined version of this dependency.
+
 ### Define a custom directory for the assets installation
 
 By default, the plugin will install all the assets in the directory
