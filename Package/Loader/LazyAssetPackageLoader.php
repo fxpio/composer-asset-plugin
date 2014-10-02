@@ -13,8 +13,8 @@ namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\LoaderInterface;
-use Composer\Package\PackageInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Fxp\Composer\AssetPlugin\AssetEvents;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
@@ -192,7 +192,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      *
      * @param LazyPackageInterface $package
      *
-     * @return PackageInterface|false
+     * @return CompletePackageInterface|false
      */
     protected function loadRealPackage(LazyPackageInterface $package)
     {
@@ -213,7 +213,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      * @param LazyPackageInterface $package
      * @param false|array          $data
      *
-     * @return PackageInterface|false
+     * @return CompletePackageInterface|false
      */
     protected function convertRealPackage(LazyPackageInterface $package, $data)
     {
@@ -225,7 +225,10 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
                 $this->io->write('Importing ' . ($valid ? '' : 'empty ') . $this->type . ' '.$data['version'].' ('.$data['version_normalized'].')');
             }
 
-            return $this->loader->load($data);
+            /* @var CompletePackageInterface $realPackage */
+            $realPackage = $this->loader->load($data);
+
+            return $realPackage;
         } catch (\Exception $e) {
             if ($this->verbose) {
                 $this->io->write('<'.$this->getIoTag().'>Skipped ' . $this->type . ' '.$package->getPrettyVersion().', '.$e->getMessage().'</'.$this->getIoTag().'>');

@@ -18,6 +18,7 @@ use Composer\IO\IOInterface;
 use Composer\Config;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
+use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
 
 /**
  * Abstract class for Tests of assets repository.
@@ -295,6 +296,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('getComposerPackageName')
             ->will($this->returnValue($name));
 
+        /* @var AssetVcsRepository $repo */
         $this->rm->addRepository($repo);
 
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
