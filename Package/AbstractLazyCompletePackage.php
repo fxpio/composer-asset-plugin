@@ -178,6 +178,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
 
         if (false === $real) {
             $this->version = '-9999999.9999999.9999999.9999999';
+
             return;
         }
 
