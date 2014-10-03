@@ -235,6 +235,60 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
     }
 
+    public function testAssetPackageWithoutPackage()
+    {
+        $this->setExpectedException('UnexpectedValueException');
+
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array('asset-repositories' => array(
+                array('type' => 'package')
+            ))));
+
+        $this->plugin->activate($this->composer, $this->io);
+    }
+
+    public function testAssetPackageWithInvalidPackage()
+    {
+        $this->setExpectedException('UnexpectedValueException');
+
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array('asset-repositories' => array(
+                array('type' => 'package', 'package' => array('key' => 'value'))
+            ))));
+
+        $this->plugin->activate($this->composer, $this->io);
+    }
+
+    public function testAssetPackageRepositories()
+    {
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array('asset-repositories' => array(
+                array(
+                    'type'    => 'package',
+                    'package' => array(
+                        'name'    => 'foo',
+                        'type'    => 'ASSET-asset-library',
+                        'version' => '0.0.0.0',
+                        'dist'    => array(
+                            'url'  => 'foo.tld/bar',
+                            'type' => 'file',
+                        ),
+                    ),
+                ),
+            ))));
+
+        $rm = $this->composer->getRepositoryManager();
+        $rm->setRepositoryClass('package', 'Composer\Repository\PackageRepository');
+        $this->plugin->activate($this->composer, $this->io);
+        $repos = $this->composer->getRepositoryManager()->getRepositories();
+
+        $this->assertCount(3, $repos);
+        $this->assertInstanceOf('Composer\Repository\PackageRepository', $repos[2]);
+    }
+
     public function testOptionsForAssetRegistryRepositories()
     {
         $this->package->expects($this->any())

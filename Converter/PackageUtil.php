@@ -11,6 +11,10 @@
 
 namespace Fxp\Composer\AssetPlugin\Converter;
 
+use Composer\Config;
+use Composer\IO\NullIO;
+use Composer\Repository\Vcs\VcsDriverInterface;
+use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\Validator;
 
@@ -28,27 +32,36 @@ abstract class PackageUtil
      * @param string             $dependency The dependency
      * @param string             $version    The version
      * @param array              $vcsRepos   The list of new vcs configs
+     * @param array              $composer   The partial composer data
      *
      * @return string[] The new dependency and the new version
      */
-    public static function checkUrlVersion(AssetTypeInterface $assetType, $dependency, $version, array &$vcsRepos = array())
+    public static function checkUrlVersion(AssetTypeInterface $assetType, $dependency, $version, array &$vcsRepos = array(), array $composer)
     {
         if (preg_match('/(\:\/\/)|\@/', $version)) {
-            $pos = strpos($version, '#');
+            list($url, $version) = static::splitUrlVersion($version);
 
-            // number version or empty version
-            if (false !== $pos) {
-                $url = substr($version, 0, $pos);
-                $version = substr($version, $pos);
+            if (static::hasUrlDependencySupported($url)) {
+                $vcsRepos[] = array(
+                    'type' => sprintf('%s-vcs', $assetType->getName()),
+                    'url'  => $url,
+                );
             } else {
-                $url = $version;
-                $version = '#';
+                $dependency = static::getUrlFileDependencyName($assetType, $composer, $dependency);
+                $vcsRepos[] = array(
+                    'type'    => 'package',
+                    'package' => array(
+                        'name'    => $assetType->formatComposerName($dependency),
+                        'type'    => $assetType->getComposerType(),
+                        'version' => static::getUrlFileDependencyVersion($assetType, $url, $version),
+                        'dist'    => array(
+                            'url'  => $url,
+                            'type' => 'file',
+                        ),
+                    ),
+                );
             }
 
-            $vcsRepos[] = array(
-                'type' => sprintf('%s-vcs', $assetType->getName()),
-                'url'  => $url,
-            );
         }
 
         return array($dependency, $version);
@@ -151,5 +164,92 @@ abstract class PackageUtil
         if (null !== $data) {
             $composer[$composerKey] = $data;
         }
+    }
+
+    /**
+     * Split the URL and version.
+     *
+     * @param string $version The url and version (in the same string)
+     *
+     * @return array The url and version
+     */
+    protected static function splitUrlVersion($version)
+    {
+        $pos = strpos($version, '#');
+
+        // number version or empty version
+        if (false !== $pos) {
+            $url = substr($version, 0, $pos);
+            $version = substr($version, $pos);
+        } else {
+            $url = $version;
+            $version = '#';
+        }
+
+        return array($url, $version);
+    }
+
+    /**
+     * Get the name of url file dependency.
+     *
+     * @param AssetTypeInterface $assetType  The asset type
+     * @param array              $composer   The partial composer
+     * @param string             $dependency The dependency name
+     *
+     * @return string The dependency name
+     */
+    protected static function getUrlFileDependencyName(AssetTypeInterface $assetType, array $composer, $dependency)
+    {
+        $prefix = isset($composer['name'])
+            ? substr($composer['name'], strlen($assetType->getComposerVendorName()) + 1) . '-'
+            : '';
+
+        return $prefix . $dependency . '-file';
+    }
+
+    /**
+     * Get the version of url file dependency.
+     *
+     * @param AssetTypeInterface $assetType The asset type
+     * @param string             $url       The url
+     * @param string             $version   The version
+     *
+     * @return string The version
+     */
+    protected static function getUrlFileDependencyVersion(AssetTypeInterface $assetType, $url, $version)
+    {
+        if ('#' !== $version) {
+            return substr($version, 1);
+        }
+
+        if (preg_match('/(\d+)(\.\d+)(\.\d+)?(\.\d+)?/', $url, $match)) {
+            return $assetType->getVersionConverter()->convertVersion($match[0]);
+        }
+
+        return '0.0.0.0';
+    }
+
+    /**
+     * Check if url is supported by vcs drivers.
+     *
+     * @param string $url The url
+     *
+     * @return bool
+     */
+    protected static function hasUrlDependencySupported($url)
+    {
+        $io = new NullIO();
+        $config = new Config();
+
+        /* @var VcsDriverInterface $driver */
+        foreach (Assets::getVcsDrivers() as $driver) {
+            $supported = $driver::supports($io, $config, $url);
+
+            if ($supported) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

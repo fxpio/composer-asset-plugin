@@ -77,10 +77,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
      */
     public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $dispatcher = null, array $drivers = null)
     {
-        $drivers = $drivers ?: array(
-            'github' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
-            'git'    => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
-        );
+        $drivers = $drivers ?: Assets::getVcsDrivers();
         $assetType = substr($repoConfig['type'], 0, strpos($repoConfig['type'], '-'));
         $assetType = Assets::createType($assetType);
         $repoConfig['asset-type'] = $assetType->getName();

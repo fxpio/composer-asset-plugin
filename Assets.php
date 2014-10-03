@@ -39,10 +39,18 @@ class Assets
     /**
      * @var array
      */
-    protected static $vcsDrivers = array(
+    protected static $vcsRepositoryDrivers = array(
         'vcs'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'github' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+    );
+
+    /**
+     * @var array
+     */
+    protected static $vcsDrivers = array(
+        'github' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
+        'git'    => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
     );
 
     /**
@@ -91,6 +99,16 @@ class Assets
      * @return array
      */
     public static function getVcsRepositoryDrivers()
+    {
+        return static::$vcsRepositoryDrivers;
+    }
+
+    /**
+     * Gets the asset vcs drivers.
+     *
+     * @return array
+     */
+    public static function getVcsDrivers()
     {
         return static::$vcsDrivers;
     }

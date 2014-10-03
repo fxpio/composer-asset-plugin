@@ -119,7 +119,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             $newDependencies = array();
 
             foreach ($asset[$assetKey] as $dependency => $version) {
-                list($dependency, $version) = $this->convertDependency($dependency, $version, $vcsRepos);
+                list($dependency, $version) = $this->convertDependency($dependency, $version, $vcsRepos, $composer);
                 $version = $this->assetType->getVersionConverter()->convertRange($version);
                 $newDependencies[$this->assetType->getComposerVendorName() . '/' . $dependency] = $version;
             }
@@ -134,12 +134,13 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param string $dependency The dependency
      * @param string $version    The version
      * @param array  $vcsRepos   The list of new vcs configs
+     * @param array  $composer   The partial composer data
      *
      * @return string[] The new dependency and the new version
      */
-    protected function convertDependency($dependency, $version, array &$vcsRepos = array())
+    protected function convertDependency($dependency, $version, array &$vcsRepos = array(), array $composer)
     {
-        list($dependency, $version) = PackageUtil::checkUrlVersion($this->assetType, $dependency, $version, $vcsRepos);
+        list($dependency, $version) = PackageUtil::checkUrlVersion($this->assetType, $dependency, $version, $vcsRepos, $composer);
         list($dependency, $version) = PackageUtil::checkAliasVersion($this->assetType, $dependency, $version);
         list($dependency, $version) = PackageUtil::convertDependencyVersion($this->assetType, $dependency, $version);
 

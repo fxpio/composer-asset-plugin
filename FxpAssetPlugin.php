@@ -164,16 +164,22 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     {
         foreach ($repositories as $index => $repo) {
             $this->validateRepositories($index, $repo);
-            $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
-            $name = isset($repo['name']) ? $repo['name'] : $name;
-            $repo['vcs-package-filter'] = $this->packageFilter;
+
+            if ('package' === $repo['type']) {
+                $name = $repo['package']['name'];
+
+            } else {
+                $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
+                $name = isset($repo['name']) ? $repo['name'] : $name;
+                $repo['vcs-package-filter'] = $this->packageFilter;
+            }
 
             Util::addRepository($rm, $this->repos, $name, $repo, $pool);
         }
     }
 
     /**
-     * Validates the config of vcs repository.
+     * Validates the config of repositories.
      *
      * @param int|string  $index The index
      * @param mixed|array $repo  The config repo
@@ -188,6 +194,50 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         if (!isset($repo['type'])) {
             throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined');
         }
+
+        $this->validatePackageRepositories($index, $repo);
+        $this->validateVcsRepositories($index, $repo);
+    }
+
+    /**
+     * Validates the config of package repositories.
+     *
+     * @param int|string  $index The index
+     * @param mixed|array $repo  The config repo
+     *
+     * @throws \UnexpectedValueException
+     */
+    protected function validatePackageRepositories($index, $repo)
+    {
+        if ('package' !== $repo['type']) {
+            return;
+        }
+
+        if (!isset($repo['package'])) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a package definition"');
+        }
+
+        foreach (array('name', 'type', 'version', 'dist') as $key) {
+            if (!isset($repo['package'][$key])) {
+                throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have the "'.$key.'" key  in the package definition"');
+            }
+        }
+    }
+
+    /**
+     * Validates the config of vcs repositories.
+     *
+     * @param int|string  $index The index
+     * @param mixed|array $repo  The config repo
+     *
+     * @throws \UnexpectedValueException
+     */
+    protected function validateVcsRepositories($index, $repo)
+    {
+        if ('package' === $repo['type']) {
+            return;
+        }
+
         if (false === strpos($repo['type'], '-')) {
             throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined in this way: "%asset-type%-%type%"');
         }

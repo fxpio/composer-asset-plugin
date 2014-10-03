@@ -45,6 +45,14 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
         ), array_keys(Assets::getVcsRepositoryDrivers()));
     }
 
+    public function testGetVcsDrivers()
+    {
+        $this->assertEquals(array(
+                "github",
+                "git"
+            ), array_keys(Assets::getVcsDrivers()));
+    }
+
     public function testCreationOfInvalidType()
     {
         $this->setExpectedException('InvalidArgumentException');
