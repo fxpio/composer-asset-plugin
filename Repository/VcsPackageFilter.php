@@ -142,12 +142,36 @@ class VcsPackageFilter
     protected function getRequireStability(Link $require)
     {
         $prettyConstraint = $require->getPrettyConstraint();
+        $stabilities = Package::$stabilities;
 
-        if (false !== strpos($prettyConstraint, '@')) {
-            return $this->versionParser->parseStability($prettyConstraint);
+        if (preg_match_all('/@('.implode('|', array_keys($stabilities)).')/', $prettyConstraint, $matches)) {
+            return $this->findInlineStabilities($matches[1]);
         }
 
         return $this->package->getMinimumStability();
+    }
+
+    /**
+     * Find the lowest stability.
+     *
+     * @param array $stabilities The list of stability
+     *
+     * @return string The lowest stability
+     */
+    protected function findInlineStabilities(array $stabilities)
+    {
+        $lowestStability = 'stable';
+
+        foreach ($stabilities as $stability) {
+            $stability = $this->versionParser->normalizeStability($stability);
+            $stability = $this->versionParser->parseStability($stability);
+
+            if (Package::$stabilities[$stability] > Package::$stabilities[$lowestStability]) {
+                $lowestStability = $stability;
+            }
+        }
+
+        return $lowestStability;
     }
 
     /**
