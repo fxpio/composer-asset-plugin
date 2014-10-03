@@ -34,5 +34,6 @@ class NpmAssetTypeTest extends AbstractAssetTypeTest
         $this->assertSame('npm-asset-library', $this->type->getComposerType());
         $this->assertSame('package.json', $this->type->getFilename());
         $this->assertSame('npm-asset/foobar', $this->type->formatComposerName('foobar'));
+        $this->assertSame('npm-asset/foobar', $this->type->formatComposerName('npm-asset/foobar'));
     }
 }

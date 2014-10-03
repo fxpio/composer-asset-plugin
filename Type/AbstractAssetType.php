@@ -89,11 +89,13 @@ abstract class AbstractAssetType implements AssetTypeInterface
      */
     public function formatComposerName($name)
     {
-        if (preg_match('/(\:\/\/)|\@/', $name)) {
+        $prefix = $this->getComposerVendorName() . '/';
+
+        if (preg_match('/(\:\/\/)|\@/', $name) || 0 === strpos($name, $prefix)) {
             return $name;
         }
 
-        return $this->getComposerVendorName() . '/' . $name;
+        return $prefix . $name;
     }
 
     /**
