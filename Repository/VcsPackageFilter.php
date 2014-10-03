@@ -71,10 +71,15 @@ class VcsPackageFilter
 
         /* @var Link $require */
         $require = $this->requires[$name];
-        $cVersion = $assetType->getVersionConverter()->convertVersion($version);
-        $normalizedVersion = $this->versionParser->normalize($cVersion);
 
-        return !$this->satisfy($require, $normalizedVersion);
+        try {
+            $cVersion = $assetType->getVersionConverter()->convertVersion($version);
+            $normalizedVersion = $this->versionParser->normalize($cVersion);
+
+            return !$this->satisfy($require, $normalizedVersion);
+        } catch (\Exception $ex) {
+            return true;
+        }
     }
 
     /**
