@@ -42,6 +42,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - VCS drivers for:
   - Git
   - GitHub (compatible with repository redirects)
+  - Git Bitbucket
 - Local cache system for:
   - package versions
   - package contents
