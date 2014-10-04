@@ -114,12 +114,12 @@ class GitHubDriver extends AbstractGitHubDriver
     protected function convertComposerContent($composer, $resource, $identifier)
     {
         $composer = JsonFile::parseJson($composer, $resource);
+        $self = $this;
+        $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
+        $composer = Util::addComposerTime($composer, 'commit.committer.date', $resource, function ($resource) use ($self) {
+            return (string) $self->getContents($resource);
+        });
 
-        if (!isset($composer['time'])) {
-            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
-            $commit = JsonFile::parseJson((string) $this->getContents($resource), $resource);
-            $composer['time'] = $commit['commit']['committer']['date'];
-        }
         if (!isset($composer['support']['source'])) {
             $label = array_search($identifier, $this->getTags()) ?: array_search($identifier, $this->getBranches()) ?: $identifier;
             $composer['support']['source'] = sprintf('https://%s/%s/%s/tree/%s', $this->originUrl, $this->owner, $this->repository, $label);

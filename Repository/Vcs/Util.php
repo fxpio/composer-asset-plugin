@@ -70,4 +70,31 @@ class Util
             $cache->write($type . '-' . $identifier, json_encode($composer));
         }
     }
+
+    /**
+     * Add time in composer.
+     *
+     * @param array    $composer    The composer
+     * @param string   $resourceKey The composer key
+     * @param string   $resource    The resource url
+     * @param \Closure $getContent  The closure for get the content (must return a string)
+     *
+     * @return array The composer
+     */
+    public static function addComposerTime(array $composer, $resourceKey, $resource, \Closure $getContent)
+    {
+        if (!isset($composer['time'])) {
+            $commit = JsonFile::parseJson((string) $getContent($resource), $resource);
+            $keys = explode('.', $resourceKey);
+
+            while (!empty($keys)) {
+                $commit = $commit[$keys[0]];
+                array_shift($keys);
+            }
+
+            $composer['time'] = $commit;
+        }
+
+        return $composer;
+    }
 }

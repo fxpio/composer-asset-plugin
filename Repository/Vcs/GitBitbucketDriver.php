@@ -46,8 +46,7 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
 
         if (!isset($this->infoCache[$identifier])) {
             $resource = $this->getScheme() . '://bitbucket.org/'.$this->owner.'/'.$this->repository.'/raw/'.$identifier.'/'.$this->repoConfig['filename'];
-            $composer = $this->getComposerContent($resource);
-            $composer = $this->formatComposerContent($composer, $identifier);
+            $composer = $this->getComposerContent($resource, $identifier);
 
             Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
             $this->infoCache[$identifier] = $composer;
@@ -60,10 +59,11 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
      * Gets content of composer information.
      *
      * @param string $resource
+     * @param string $identifier
      *
      * @return array
      */
-    protected function getComposerContent($resource)
+    protected function getComposerContent($resource, $identifier)
     {
         try {
             $composer = $this->getContents($resource);
@@ -72,7 +72,10 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
         }
 
         if ($composer) {
-            return (array) JsonFile::parseJson((string) $composer, $resource);
+            $composer = (array) JsonFile::parseJson((string) $composer, $resource);
+            $composer = $this->formatComposerContent($composer, $identifier);
+
+            return $composer;
         }
 
         return array('_nonexistent_package' => true);
@@ -88,11 +91,11 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
      */
     protected function formatComposerContent(array $composer, $identifier)
     {
-        if (!isset($composer['time']) && !array_key_exists('_nonexistent_package', $composer)) {
-            $resource = $this->getScheme() . '://api.bitbucket.org/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
-            $changeset = JsonFile::parseJson((string) $this->getContents($resource), $resource);
-            $composer['time'] = $changeset['timestamp'];
-        }
+        $self = $this;
+        $resource = $this->getScheme() . '://api.bitbucket.org/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
+        $composer = Util::addComposerTime($composer, 'timestamp', $resource, function ($resource) use ($self) {
+            return (string) $self->getContents($resource);
+        });
 
         return $composer;
     }
