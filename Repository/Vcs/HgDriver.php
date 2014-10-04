@@ -48,17 +48,16 @@ class HgDriver extends BaseHgDriver
     public function getComposerInformation($identifier)
     {
         $resource = sprintf('%s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']);
-        $config = array(
-            'cache'           => $this->cache,
-            'asset-type'      => $this->repoConfig['asset-type'],
-            'resource'        => $resource,
-            'process'         => $this->process,
-            'cmd-get'         => sprintf('hg cat -r %s', $resource),
-            'cmd-log'         => sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier)),
-            'repo-dir'        => $this->repoDir,
-            'datetime-prefix' => '',
-        );
 
-        return Util::getComposerInformationProcess($identifier, $config, $this->infoCache);
+        return Util::getComposerInformationProcess(
+            $this->cache,
+            $this->infoCache,
+            $this->repoConfig['asset-type'],
+            $this->process, $identifier,
+            $resource,
+            sprintf('hg cat -r %s', $resource),
+            sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier)),
+            $this->repoDir
+        );
     }
 }

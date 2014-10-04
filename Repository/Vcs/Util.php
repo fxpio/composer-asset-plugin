@@ -105,19 +105,29 @@ class Util
         return $composer;
     }
 
-    public static function getComposerInformationProcess($identifier, array $config, array &$infoCache)
+    /**
+     * Get composer information with Process Executor.
+     *
+     * @param Cache           $cache
+     * @param array           $infoCache
+     * @param string          $assetType
+     * @param ProcessExecutor $process
+     * @param string          $identifier
+     * @param string          $resource
+     * @param string          $cmdGet
+     * @param string          $cmdLog
+     * @param string          $repoDir
+     * @param string          $datetimePrefix
+     *
+     * @return array The composer
+     */
+    public static function getComposerInformationProcess(Cache $cache, array &$infoCache,
+        $assetType, ProcessExecutor $process, $identifier, $resource, $cmdGet,
+        $cmdLog, $repoDir, $datetimePrefix = '')
     {
-        $cache = $config['cache'];
-        $assetType = $config['asset-type'];
         $infoCache[$identifier] = static::readCache($infoCache, $cache, $assetType, $identifier);
 
         if (!isset($infoCache[$identifier])) {
-            $resource = $config['resource'];
-            $process = $config['process'];
-            $cmdGet = $config['cmd-get'];
-            $cmdLog = $config['cmd-log'];
-            $repoDir = $config['repo-dir'];
-            $datetimePrefix = $config['datetime-prefix'];
             $composer = static::doGetComposerInformationProcess($resource, $process, $cmdGet, $cmdLog, $repoDir, $datetimePrefix);
 
             static::writeCache($cache, $assetType, $identifier, $composer);

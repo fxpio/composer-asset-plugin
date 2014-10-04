@@ -32,17 +32,17 @@ class GitDriver extends BaseGitDriver
     public function getComposerInformation($identifier)
     {
         $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
-        $config = array(
-            'cache'           => $this->cache,
-            'asset-type'      => $this->repoConfig['asset-type'],
-            'resource'        => $resource,
-            'process'         => $this->process,
-            'cmd-get'         => sprintf('git show %s', $resource),
-            'cmd-log'         => sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)),
-            'repo-dir'        => $this->repoDir,
-            'datetime-prefix' => '@',
-        );
 
-        return Util::getComposerInformationProcess($identifier, $config, $this->infoCache);
+        return Util::getComposerInformationProcess(
+            $this->cache,
+            $this->infoCache,
+            $this->repoConfig['asset-type'],
+            $this->process, $identifier,
+            $resource,
+            sprintf('git show %s', $resource),
+            sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)),
+            $this->repoDir,
+            '@'
+        );
     }
 }
