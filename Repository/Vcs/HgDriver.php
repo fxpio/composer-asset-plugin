@@ -12,7 +12,6 @@
 namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
 use Composer\Cache;
-use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\HgDriver as BaseHgDriver;
 use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
@@ -51,14 +50,10 @@ class HgDriver extends BaseHgDriver
         $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], $identifier);
 
         if (!isset($this->infoCache[$identifier])) {
-            $this->process->execute(sprintf('hg cat -r %s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']), $composer, $this->repoDir);
-
-            if (!trim($composer)) {
-                $composer = array('_nonexistent_package' => true);
-            } else {
-                $composer = JsonFile::parseJson($composer, $identifier);
-                $composer = Util::addComposerTimeProcessor($composer, $this->process, sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier)), $this->repoDir);
-            }
+            $resource = sprintf('%s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']);
+            $cmdGet = sprintf('hg cat -r %s', $resource);
+            $cmdLog = sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier));
+            $composer = Util::getComposerInformationProcess($resource, $this->process, $cmdGet, $cmdLog, $this->repoDir);
 
             Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
             $this->infoCache[$identifier] = $composer;

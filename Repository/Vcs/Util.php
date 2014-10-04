@@ -106,6 +106,31 @@ class Util
     }
 
     /**
+     * Get composer information with Process Executor.
+     *
+     * @param string          $resource
+     * @param ProcessExecutor $process
+     * @param string          $cmdGet
+     * @param string          $cmdLog
+     * @param string          $repoDir
+     * @param string          $datetimePrefix
+     *
+     * @return array The composer
+     */
+    public static function getComposerInformationProcess($resource, ProcessExecutor $process, $cmdGet, $cmdLog, $repoDir, $datetimePrefix = '')
+    {
+        $process->execute($cmdGet, $composer, $repoDir);
+
+        if (!trim($composer)) {
+            return array('_nonexistent_package' => true);
+        }
+
+        $composer = JsonFile::parseJson($composer, $resource);
+
+        return static::addComposerTimeProcess($composer, $process, $cmdLog, $repoDir, $datetimePrefix);
+    }
+
+    /**
      * Add time in composer with Process Executor.
      *
      * @param array           $composer
@@ -116,7 +141,7 @@ class Util
      *
      * @return array The composer
      */
-    public static function addComposerTimeProcessor(array $composer, ProcessExecutor $process, $cmd, $repoDir, $datetimePrefix = '')
+    protected static function addComposerTimeProcess(array $composer, ProcessExecutor $process, $cmd, $repoDir, $datetimePrefix = '')
     {
         if (!isset($composer['time'])) {
             $process->execute($cmd, $output, $repoDir);
