@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 use Composer\Cache;
 use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\VcsDriverInterface;
+use Composer\Util\ProcessExecutor;
 
 /**
  * Helper for VCS driver.
@@ -99,6 +100,28 @@ class Util
             }
 
             $composer['time'] = $commit;
+        }
+
+        return $composer;
+    }
+
+    /**
+     * Add time in composer with Process Executor.
+     *
+     * @param array           $composer
+     * @param ProcessExecutor $process
+     * @param string          $cmd
+     * @param string          $repoDir
+     * @param string          $datetimePrefix
+     *
+     * @return array The composer
+     */
+    public static function addComposerTimeProcessor(array $composer, ProcessExecutor $process, $cmd, $repoDir, $datetimePrefix = '')
+    {
+        if (!isset($composer['time'])) {
+            $process->execute($cmd, $output, $repoDir);
+            $date = new \DateTime($datetimePrefix.trim($output), new \DateTimeZone('UTC'));
+            $composer['time'] = $date->format('Y-m-d H:i:s');
         }
 
         return $composer;

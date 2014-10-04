@@ -44,15 +44,17 @@ class Assets
         'github'        => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'hg'            => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
      * @var array
      */
     protected static $vcsDrivers = array(
-        'github'         => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
-        'git-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitBitbucketDriver',
-        'git'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
+        'github'        => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
+        'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitBitbucketDriver',
+        'git'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
+        'hg'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
     );
 
     /**
