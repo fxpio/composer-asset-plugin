@@ -103,7 +103,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
         $dist = $driver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals($repoBaseUrl.'/get/SOMESHA.zip', $dist['url']);
+        $this->assertEquals($this->getScheme($repoBaseUrl).'/get/SOMESHA.zip', $dist['url']);
         $this->assertEquals($sha, $dist['reference']);
 
         $source = $driver->getSource($sha);
