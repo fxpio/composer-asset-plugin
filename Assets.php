@@ -40,17 +40,19 @@ class Assets
      * @var array
      */
     protected static $vcsRepositoryDrivers = array(
-        'vcs'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'github' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'git'    => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'vcs'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'github'        => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'git'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
      * @var array
      */
     protected static $vcsDrivers = array(
-        'github' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
-        'git'    => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
+        'github'         => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
+        'git-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitBitbucketDriver',
+        'git'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
     );
 
     /**

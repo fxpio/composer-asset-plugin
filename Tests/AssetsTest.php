@@ -23,34 +23,36 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
     public function testGetTypes()
     {
         $this->assertEquals(array(
-            "npm",
-            "bower"
+            'npm',
+            'bower',
         ), Assets::getTypes());
     }
 
     public function testGetRegistries()
     {
         $this->assertEquals(array(
-            "npm",
-            "bower"
+            'npm',
+            'bower',
         ), array_keys(Assets::getRegistries()));
     }
 
     public function testGetVcsRepositoryDrivers()
     {
         $this->assertEquals(array(
-            "vcs",
-            "github",
-            "git"
+            'vcs',
+            'github',
+            'git-bitbucket',
+            'git',
         ), array_keys(Assets::getVcsRepositoryDrivers()));
     }
 
     public function testGetVcsDrivers()
     {
         $this->assertEquals(array(
-                "github",
-                "git"
-            ), array_keys(Assets::getVcsDrivers()));
+            'github',
+            'git-bitbucket',
+            'git',
+        ), array_keys(Assets::getVcsDrivers()));
     }
 
     public function testCreationOfInvalidType()
