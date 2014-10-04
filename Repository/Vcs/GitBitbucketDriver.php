@@ -90,7 +90,7 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
     {
         if (!isset($composer['time']) && !array_key_exists('_nonexistent_package', $composer)) {
             $resource = $this->getScheme() . '://api.bitbucket.org/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
-            $changeset = JsonFile::parseJson($this->getContents($resource), $resource);
+            $changeset = JsonFile::parseJson((string) $this->getContents($resource), $resource);
             $composer['time'] = $changeset['timestamp'];
         }
 
