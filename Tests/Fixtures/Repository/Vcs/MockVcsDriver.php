@@ -28,6 +28,11 @@ class MockVcsDriver implements VcsDriverInterface
     public static $supported = true;
 
     /**
+     * @var mixed
+     */
+    public $contents = null;
+
+    /**
      * {@inheritdoc}
      */
     public function initialize()
@@ -113,5 +118,13 @@ class MockVcsDriver implements VcsDriverInterface
     public static function supports(IOInterface $io, Config $config, $url, $deep = false)
     {
         return static::$supported;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getContents()
+    {
+        return $this->contents;
     }
 }

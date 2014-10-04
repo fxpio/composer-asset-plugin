@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Repository\Vcs;
 
 use Fxp\Composer\AssetPlugin\Repository\Vcs\Util;
+use Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriver;
 
 /**
  * Tests of util.
@@ -37,6 +38,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $composer = array(
             'name' => 'test',
         );
+        $driver = new MockVcsDriver();
 
         $value = null;
         $keys = explode('.', $resourceKey);
@@ -50,12 +52,12 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             $value = array($keys[$i] => $value);
         }
 
+        $driver->contents = json_encode($value);
         $composerValid = array_merge($composer, array(
             'time' => 'level ' . (count($keys) - 1),
         ));
-        $composer = Util::addComposerTime($composer, $resourceKey, 'http://example.tld', function () use ($value) {
-            return json_encode($value);
-        });
+
+        $composer = Util::addComposerTime($composer, $resourceKey, 'http://example.tld', $driver);
 
         $this->assertSame($composerValid, $composer);
     }

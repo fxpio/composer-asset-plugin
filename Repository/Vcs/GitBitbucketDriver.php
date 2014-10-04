@@ -91,11 +91,8 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
      */
     protected function formatComposerContent(array $composer, $identifier)
     {
-        $self = $this;
         $resource = $this->getScheme() . '://api.bitbucket.org/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
-        $composer = Util::addComposerTime($composer, 'timestamp', $resource, function ($resource) use ($self) {
-            return (string) $self->getContents($resource);
-        });
+        $composer = Util::addComposerTime($composer, 'timestamp', $resource, $this);
 
         return $composer;
     }

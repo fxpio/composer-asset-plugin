@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
 use Composer\Cache;
 use Composer\Json\JsonFile;
+use Composer\Repository\Vcs\VcsDriverInterface;
 
 /**
  * Helper for VCS driver.
@@ -74,17 +75,22 @@ class Util
     /**
      * Add time in composer.
      *
-     * @param array    $composer    The composer
-     * @param string   $resourceKey The composer key
-     * @param string   $resource    The resource url
-     * @param \Closure $getContent  The closure for get the content (must return a string)
+     * @param array              $composer    The composer
+     * @param string             $resourceKey The composer key
+     * @param string             $resource    The resource url
+     * @param VcsDriverInterface $driver      The vcs driver
+     * @param string             $method      The method for get content
      *
      * @return array The composer
      */
-    public static function addComposerTime(array $composer, $resourceKey, $resource, \Closure $getContent)
+    public static function addComposerTime(array $composer, $resourceKey, $resource, VcsDriverInterface $driver, $method = 'getContents')
     {
         if (!isset($composer['time'])) {
-            $commit = JsonFile::parseJson((string) $getContent($resource), $resource);
+            $ref = new \ReflectionClass($driver);
+            $meth = $ref->getMethod($method);
+            $meth->setAccessible(true);
+
+            $commit = JsonFile::parseJson((string) $meth->invoke($driver, $resource), $resource);
             $keys = explode('.', $resourceKey);
 
             while (!empty($keys)) {
