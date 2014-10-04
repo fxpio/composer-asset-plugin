@@ -78,12 +78,12 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($repoApiUrl), $this->equalTo(false))
+            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoApiUrl)), $this->equalTo(false))
             ->will($this->returnValue($this->createJsonComposer(array('main_branch' => 'test_master'))));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($repoBaseUrl.'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
+            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoBaseUrl).'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
             ->will($this->returnValue($this->createJsonComposer(array())));
 
         $repoConfig = array(
@@ -130,7 +130,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($repoBaseUrl.'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
+            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoBaseUrl).'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
             ->will($this->throwException(new TransportException('Not Found', 404)));
 
         $repoConfig = array(
@@ -177,5 +177,21 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         return json_encode(array_merge_recursive($content, array(
             'name'  => $name,
         )));
+    }
+
+    /**
+     * Get the url with https or http protocol depending on SSL support.
+     *
+     * @param string $url
+     *
+     * @return string The correct url
+     */
+    protected function getScheme($url)
+    {
+        if (extension_loaded('openssl')) {
+            return $url;
+        }
+
+        return str_replace('https:', 'http:', $url);
     }
 }
