@@ -171,7 +171,7 @@ abstract class PackageUtil
      *
      * @param string $version The url and version (in the same string)
      *
-     * @return array The url and version
+     * @return string[] The url and version
      */
     protected static function splitUrlVersion($version)
     {

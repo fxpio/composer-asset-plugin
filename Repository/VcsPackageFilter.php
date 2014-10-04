@@ -154,7 +154,7 @@ class VcsPackageFilter
     /**
      * Find the lowest stability.
      *
-     * @param array $stabilities The list of stability
+     * @param string[] $stabilities The list of stability
      *
      * @return string The lowest stability
      */
