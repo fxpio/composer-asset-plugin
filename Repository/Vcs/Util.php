@@ -109,7 +109,7 @@ class Util
     {
         $cache = $config['cache'];
         $assetType = $config['asset-type'];
-        $infoCache[$identifier] = Util::readCache($infoCache, $cache, $assetType, $identifier);
+        $infoCache[$identifier] = static::readCache($infoCache, $cache, $assetType, $identifier);
 
         if (!isset($infoCache[$identifier])) {
             $resource = $config['resource'];
@@ -120,7 +120,7 @@ class Util
             $datetimePrefix = $config['datetime-prefix'];
             $composer = static::doGetComposerInformationProcess($resource, $process, $cmdGet, $cmdLog, $repoDir, $datetimePrefix);
 
-            Util::writeCache($cache, $assetType, $identifier, $composer);
+            static::writeCache($cache, $assetType, $identifier, $composer);
             $infoCache[$identifier] = $composer;
         }
 
