@@ -31,18 +31,18 @@ class GitDriver extends BaseGitDriver
      */
     public function getComposerInformation($identifier)
     {
-        $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], $identifier);
+        $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
+        $config = array(
+            'cache'           => $this->cache,
+            'asset-type'      => $this->repoConfig['asset-type'],
+            'resource'        => $resource,
+            'process'         => $this->process,
+            'cmd-get'         => sprintf('git show %s', $resource),
+            'cmd-log'         => sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)),
+            'repo-dir'        => $this->repoDir,
+            'datetime-prefix' => '@',
+        );
 
-        if (!isset($this->infoCache[$identifier])) {
-            $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
-            $cmdGet = sprintf('git show %s', $resource);
-            $cmdLog = sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier));
-            $composer = Util::getComposerInformationProcess($resource, $this->process, $cmdGet, $cmdLog, $this->repoDir, '@');
-
-            Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
-            $this->infoCache[$identifier] = $composer;
-        }
-
-        return $this->infoCache[$identifier];
+        return Util::getComposerInformationProcess($identifier, $config, $this->infoCache);
     }
 }

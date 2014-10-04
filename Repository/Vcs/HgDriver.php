@@ -47,18 +47,18 @@ class HgDriver extends BaseHgDriver
      */
     public function getComposerInformation($identifier)
     {
-        $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], $identifier);
+        $resource = sprintf('%s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']);
+        $config = array(
+            'cache'           => $this->cache,
+            'asset-type'      => $this->repoConfig['asset-type'],
+            'resource'        => $resource,
+            'process'         => $this->process,
+            'cmd-get'         => sprintf('hg cat -r %s', $resource),
+            'cmd-log'         => sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier)),
+            'repo-dir'        => $this->repoDir,
+            'datetime-prefix' => '',
+        );
 
-        if (!isset($this->infoCache[$identifier])) {
-            $resource = sprintf('%s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']);
-            $cmdGet = sprintf('hg cat -r %s', $resource);
-            $cmdLog = sprintf('hg log --template "{date|rfc3339date}" -r %s', ProcessExecutor::escape($identifier));
-            $composer = Util::getComposerInformationProcess($resource, $this->process, $cmdGet, $cmdLog, $this->repoDir);
-
-            Util::writeCache($this->cache, $this->repoConfig['asset-type'], $identifier, $composer);
-            $this->infoCache[$identifier] = $composer;
-        }
-
-        return $this->infoCache[$identifier];
+        return Util::getComposerInformationProcess($identifier, $config, $this->infoCache);
     }
 }
