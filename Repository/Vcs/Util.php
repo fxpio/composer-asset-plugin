@@ -39,16 +39,17 @@ class Util
      * @param Cache  $cache      The cache filesystem
      * @param string $type       The asset type
      * @param string $identifier The identifier
+     * @param bool   $force      Force the read
      *
      * @return array|null
      */
-    public static function readCache(array $cacheCode, Cache $cache, $type, $identifier)
+    public static function readCache(array $cacheCode, Cache $cache, $type, $identifier, $force = false)
     {
         if (array_key_exists($identifier, $cacheCode)) {
             return $cacheCode[$identifier];
         }
 
-        if (self::isSha($identifier)) {
+        if (self::isSha($identifier) || $force) {
             $res = $cache->read($type . '-' . $identifier);
 
             if ($res) {
@@ -64,10 +65,11 @@ class Util
      * @param string $type       The asset type
      * @param string $identifier The identifier
      * @param array  $composer   The data composer
+     * @param bool   $force      Force the write
      */
-    public static function writeCache(Cache $cache, $type, $identifier, array $composer)
+    public static function writeCache(Cache $cache, $type, $identifier, array $composer, $force = false)
     {
-        if (self::isSha($identifier)) {
+        if (self::isSha($identifier) || $force) {
             $cache->write($type . '-' . $identifier, json_encode($composer));
         }
     }

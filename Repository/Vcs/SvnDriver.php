@@ -30,7 +30,7 @@ class SvnDriver extends BaseSvnDriver
     public function getComposerInformation($identifier)
     {
         $identifier = '/' . trim($identifier, '/') . '/';
-        $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], trim($identifier, '/'));
+        $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], trim($identifier, '/'), true);
 
         if (!isset($this->infoCache[$identifier])) {
             list($path, $rev) = $this->getPathRev($identifier);
@@ -38,7 +38,7 @@ class SvnDriver extends BaseSvnDriver
             $output = $this->getComposerContent($resource, $rev);
             $composer = $this->parseComposerContent($output, $resource, $path, $rev);
 
-            Util::writeCache($this->cache, $this->repoConfig['asset-type'], trim($identifier, '/'), $composer);
+            Util::writeCache($this->cache, $this->repoConfig['asset-type'], trim($identifier, '/'), $composer, true);
             $this->infoCache[$identifier] = $composer;
         }
 
