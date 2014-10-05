@@ -12,7 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
 use Composer\Cache;
-use Composer\Repository\Vcs\HGBitbucketDriver as BaseHgBitbucketDriver;
+use Composer\Repository\Vcs\HgBitbucketDriver as BaseHgBitbucketDriver;
 
 /**
  * Mercurial Bitbucket Bitbucket vcs driver.
