@@ -116,11 +116,11 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
-                if ($command === sprintf('svn cat --non-interactive  "%s/%s/%s"', $repoBaseUrl, $identifier, $repoConfig['filename'])
-                        || $command === sprintf('svn cat --non-interactive  "%s/%s%s"', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))) {
+                if ($command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/%s', $repoBaseUrl, $identifier, $repoConfig['filename'])))
+                        || $command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s%s', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))))) {
                     $output('out', '{"name": "foo"}');
-                } elseif ($command === sprintf('svn info --non-interactive  "%s/%s/"', $repoBaseUrl, $identifier)
-                        || $command === sprintf('svn info --non-interactive  "%s/%s"', $repoBaseUrl, trim($identifier, '/'))) {
+                } elseif ($command === sprintf('svn info --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/', $repoBaseUrl, $identifier)))
+                        || $command === sprintf('svn info --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s', $repoBaseUrl, trim($identifier, '/'))))) {
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
                     $value = array(
                         'Last Changed Rev: '.$identifier,
@@ -169,11 +169,11 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
-                if ($command === sprintf('svn cat --non-interactive  "%s/%s/%s"', $repoBaseUrl, $identifier, $repoConfig['filename'])
-                        || $command === sprintf('svn cat --non-interactive  "%s/%s%s"', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))) {
+                if ($command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/%s', $repoBaseUrl, $identifier, $repoConfig['filename'])))
+                        || $command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s%s', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))))) {
                     $output('out', '{"name": "foo"}');
-                } elseif ($command === sprintf('svn info --non-interactive  "%s/%s/"', $repoBaseUrl, $identifier)
-                        || $command === sprintf('svn info --non-interactive  "%s/%s"', $repoBaseUrl, trim($identifier, '/'))) {
+                } elseif ($command === sprintf('svn info --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/', $repoBaseUrl, $identifier)))
+                        || $command === sprintf('svn info --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s', $repoBaseUrl, trim($identifier, '/'))))) {
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
                     $value = array(
                         'Last Changed Rev: '.$identifier,
