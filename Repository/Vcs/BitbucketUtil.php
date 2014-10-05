@@ -22,6 +22,21 @@ use Composer\Repository\Vcs\VcsDriverInterface;
  */
 class BitbucketUtil
 {
+    /**
+     * Get composer information.
+     *
+     * @param Cache              $cache      The cache
+     * @param array              $infoCache  The code cache
+     * @param string             $scheme     The scheme
+     * @param array              $repoConfig The repository config
+     * @param string             $identifier The identifier
+     * @param string             $owner      The owner of repository
+     * @param string             $repository The repository name
+     * @param VcsDriverInterface $driver     The vcs driver
+     * @param string             $method     The method of vcs driver for get contents
+     *
+     * @return array The composer
+     */
     public static function getComposerInformation(Cache $cache, array &$infoCache, $scheme,
         array $repoConfig, $identifier, $owner, $repository, VcsDriverInterface $driver, $method = 'getContents')
     {
