@@ -43,6 +43,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
   - Git
   - GitHub (compatible with repository redirects)
   - Git Bitbucket
+  - Mercurial
 - Local cache system for:
   - package versions
   - package contents
