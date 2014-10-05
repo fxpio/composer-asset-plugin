@@ -46,6 +46,7 @@ class Assets
         'git'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'hg'            => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'svn'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
@@ -57,6 +58,8 @@ class Assets
         'git'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
         'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver',
         'hg'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
+        // svn must be last because identifying a subversion server for sure is practically impossible
+        'svn'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\SvnDriver',
     );
 
     /**
