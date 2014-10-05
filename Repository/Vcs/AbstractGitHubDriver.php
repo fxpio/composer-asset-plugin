@@ -36,7 +36,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
      * Get the remote content.
      *
      * @param string $url              The URL of content
-     * @param bool   $fetchingRepoData The URL of content
+     * @param bool   $fetchingRepoData Fetching the repo data or not
      *
      * @return mixed The result
      */
