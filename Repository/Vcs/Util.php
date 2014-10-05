@@ -14,7 +14,6 @@ namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 use Composer\Cache;
 use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\VcsDriverInterface;
-use Composer\Util\ProcessExecutor;
 
 /**
  * Helper for VCS driver.
@@ -100,85 +99,6 @@ class Util
             }
 
             $composer['time'] = $commit;
-        }
-
-        return $composer;
-    }
-
-    /**
-     * Get composer information with Process Executor.
-     *
-     * @param Cache           $cache
-     * @param array           $infoCache
-     * @param string          $assetType
-     * @param ProcessExecutor $process
-     * @param string          $identifier
-     * @param string          $resource
-     * @param string          $cmdGet
-     * @param string          $cmdLog
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
-     *
-     * @return array The composer
-     */
-    public static function getComposerInformationProcess(Cache $cache, array &$infoCache,
-        $assetType, ProcessExecutor $process, $identifier, $resource, $cmdGet,
-        $cmdLog, $repoDir, $datetimePrefix = '')
-    {
-        $infoCache[$identifier] = static::readCache($infoCache, $cache, $assetType, $identifier);
-
-        if (!isset($infoCache[$identifier])) {
-            $composer = static::doGetComposerInformationProcess($resource, $process, $cmdGet, $cmdLog, $repoDir, $datetimePrefix);
-
-            static::writeCache($cache, $assetType, $identifier, $composer);
-            $infoCache[$identifier] = $composer;
-        }
-
-        return $infoCache[$identifier];
-    }
-
-    /**
-     * Get composer information with Process Executor.
-     *
-     * @param string          $resource
-     * @param ProcessExecutor $process
-     * @param string          $cmdGet
-     * @param string          $cmdLog
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
-     *
-     * @return array The composer
-     */
-    protected static function doGetComposerInformationProcess($resource, ProcessExecutor $process, $cmdGet, $cmdLog, $repoDir, $datetimePrefix = '')
-    {
-        $process->execute($cmdGet, $composer, $repoDir);
-
-        if (!trim($composer)) {
-            return array('_nonexistent_package' => true);
-        }
-
-        $composer = JsonFile::parseJson($composer, $resource);
-
-        return static::addComposerTimeProcess($composer, $process, $cmdLog, $repoDir, $datetimePrefix);
-    }
-
-    /**
-     * Add time in composer with Process Executor.
-     *
-     * @param array           $composer
-     * @param ProcessExecutor $process
-     * @param string          $cmd
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
-     *
-     * @return array The composer
-     */
-    protected static function addComposerTimeProcess(array $composer, ProcessExecutor $process, $cmd, $repoDir, $datetimePrefix = '')
-    {
-        if (!isset($composer['time'])) {
-            $process->execute($cmd, $output, $repoDir);
-            $date = new \DateTime($datetimePrefix.trim($output), new \DateTimeZone('UTC'));
-            $composer['time'] = $date->format('Y-m-d H:i:s');
         }
 
         return $composer;

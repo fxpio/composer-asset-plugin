@@ -33,16 +33,6 @@ class GitDriver extends BaseGitDriver
     {
         $resource = sprintf('%s:%s', escapeshellarg($identifier), $this->repoConfig['filename']);
 
-        return Util::getComposerInformationProcess(
-            $this->cache,
-            $this->infoCache,
-            $this->repoConfig['asset-type'],
-            $this->process, $identifier,
-            $resource,
-            sprintf('git show %s', $resource),
-            sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)),
-            $this->repoDir,
-            '@'
-        );
+        return ProcessUtil::getComposerInformation($this->cache, $this->infoCache, $this->repoConfig['asset-type'], $this->process, $identifier, $resource, sprintf('git show %s', $resource), sprintf('git log -1 --format=%%at %s', escapeshellarg($identifier)), $this->repoDir, '@');
     }
 }
