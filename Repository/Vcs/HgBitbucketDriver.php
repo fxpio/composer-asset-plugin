@@ -12,14 +12,14 @@
 namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
 use Composer\Cache;
-use Composer\Repository\Vcs\GitBitbucketDriver as BaseGitBitbucketDriver;
+use Composer\Repository\Vcs\HGBitbucketDriver as BaseHgBitbucketDriver;
 
 /**
- * Git Bitbucket vcs driver.
+ * Mercurial Bitbucket Bitbucket vcs driver.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class GitBitbucketDriver extends BaseGitBitbucketDriver
+class HgBitbucketDriver extends BaseHgBitbucketDriver
 {
     /**
      * @var Cache

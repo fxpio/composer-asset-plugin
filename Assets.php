@@ -44,6 +44,7 @@ class Assets
         'github'        => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'hg'            => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
@@ -54,6 +55,7 @@ class Assets
         'github'        => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
         'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitBitbucketDriver',
         'git'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
+        'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver',
         'hg'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
     );
 

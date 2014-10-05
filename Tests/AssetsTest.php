@@ -43,6 +43,7 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
             'github',
             'git-bitbucket',
             'git',
+            'hg-bitbucket',
             'hg',
         ), array_keys(Assets::getVcsRepositoryDrivers()));
     }
@@ -53,6 +54,7 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
             'github',
             'git-bitbucket',
             'git',
+            'hg-bitbucket',
             'hg',
         ), array_keys(Assets::getVcsDrivers()));
     }
