@@ -63,6 +63,15 @@ class PerforceDriverTest extends BasePerforceDriverTest
         $this->assertFalse(PerforceDriver::supports($this->io, $this->config, 'existing.url'));
     }
 
+    public function testInitializeLogsInAndConnectsClient()
+    {
+        $this->perforce->expects($this->at(0))->method('p4Login');
+        $this->perforce->expects($this->at(1))->method('checkStream');
+        $this->perforce->expects($this->at(2))->method('writeP4ClientSpec');
+        $this->perforce->expects($this->at(3))->method('connectClient');
+        $this->driver->initialize();
+    }
+
     public function testPublicRepositoryWithEmptyComposer()
     {
         $identifier = 'TEST_IDENTIFIER';
