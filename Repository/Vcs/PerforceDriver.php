@@ -49,8 +49,8 @@ class PerforceDriver extends BasePerforceDriver
         }
 
         $this->initAssetPerforce($this->repoConfig);
-        $this->perforce->p4Login($this->io);
-        $this->perforce->checkStream($this->depot);
+        $this->perforce->p4Login();
+        $this->perforce->checkStream();
 
         $this->perforce->writeP4ClientSpec();
         $this->perforce->connectClient();
