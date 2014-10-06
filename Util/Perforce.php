@@ -11,7 +11,9 @@
 
 namespace Fxp\Composer\AssetPlugin\Util;
 
+use Composer\IO\IOInterface;
 use Composer\Util\Perforce as BasePerforce;
+use Composer\Util\ProcessExecutor;
 
 /**
  * Helper for perforce driver.
@@ -81,5 +83,24 @@ class Perforce extends BasePerforce
         }
 
         return '';
+    }
+
+    /**
+     * Create perforce helper.
+     *
+     * @param array           $repoConfig
+     * @param int|string      $port
+     * @param string          $path
+     * @param ProcessExecutor $process
+     * @param IOInterface     $io
+     *
+     * @return Perforce
+     */
+    public static function create($repoConfig, $port, $path, ProcessExecutor $process, IOInterface $io)
+    {
+        $isWindows = defined('PHP_WINDOWS_VERSION_BUILD');
+        $perforce = new Perforce($repoConfig, $port, $path, $process, $isWindows, $io);
+
+        return $perforce;
     }
 }
