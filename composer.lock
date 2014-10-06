@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "17c278dff1f23eb119a5f39ecaa59ccb",
+    "hash": "a1097c8d445fdde50ddf0aa0c2d4cffb",
     "packages": [],
     "packages-dev": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "1e4229e22aefe50582734964d027fc1bfec16b1d"
+                "reference": "6c0afd3fc0c2577fb747cb708eabd1f3a14fecbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/1e4229e22aefe50582734964d027fc1bfec16b1d",
-                "reference": "1e4229e22aefe50582734964d027fc1bfec16b1d",
+                "url": "https://api.github.com/repos/composer/composer/zipball/6c0afd3fc0c2577fb747cb708eabd1f3a14fecbb",
+                "reference": "6c0afd3fc0c2577fb747cb708eabd1f3a14fecbb",
                 "shasum": ""
             },
             "require": {
@@ -73,7 +73,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2014-10-02 11:34:17"
+            "time": "2014-10-04 16:55:03"
         },
         {
             "name": "justinrainbow/json-schema",
