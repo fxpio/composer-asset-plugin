@@ -71,27 +71,18 @@ Add the following to your `composer.json`:
 }
 ```
 
-**Availables drivers for NPM:**
+**Availables drivers:**
 
-- `npm-vcs` (choice automatically)
-- `npm-git` (Git)
-- `npm-github` (GitHub)
-- `npm-git-bitbucket` (Git Bitbucket)
-- `npm-hg` (Mercurial)
-- `npm-hg-bitbucket` (Mercurial Bitbucket)
-- `npm-svn` (SVN)
-- `npm-perforce` (Perforce)
-
-**Availables drivers for Bower:**
-
-- `bower-vcs` (choice automatically)
-- `bower-git` (Git)
-- `bower-github` (GitHub)
-- `bower-git-bitbucket` (Git Bitbucket)
-- `bower-hg` (Mercurial)
-- `bower-hg-bitbucket` (Mercurial Bitbucket)
-- `bower-svn` (SVN)
-- `bower-perforce` (Perforce)
+| Drivers             | NPM                 | Bower                 |
+|---------------------|---------------------|-----------------------|
+| **auto**            | `npm-vcs`           | `bower-vcs`           |
+| Git                 | `npm-git`           | `bower-git`           |
+| GitHub              | `npm-github`        | `bower-github`        |
+| Git Bitbucket       | `npm-git-bitbucket` | `bower-git-bitbucket` |
+| Mercurial           | `npm-hg`            | `bower-hg`            |
+| Mercurial Bitbucket | `npm-hg-bitbucket`  | `bower-hg-bitbucket`  |
+| SVN                 | `npm-svn`           | `bower-svn`           |
+| Perforce            | `npm-perforce`      | `bower-perforce`      |
 
 ### Overriding the config of a VCS Repository
 
