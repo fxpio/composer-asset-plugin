@@ -71,6 +71,28 @@ Add the following to your `composer.json`:
 }
 ```
 
+**Availables drivers for NPM:**
+
+- `npm-vcs` (choice automatically)
+- `npm-git` (Git)
+- `npm-github` (GitHub)
+- `npm-git-bitbucket` (Git Bitbucket)
+- `npm-hg` (Mercurial)
+- `npm-hg-bitbucket` (Mercurial Bitbucket)
+- `npm-svn` (SVN)
+- `npm-perforce` (Perforce)
+
+**Availables drivers for Bower:**
+
+- `bower-vcs` (choice automatically)
+- `bower-git` (Git)
+- `bower-github` (GitHub)
+- `bower-git-bitbucket` (Git Bitbucket)
+- `bower-hg` (Mercurial)
+- `bower-hg-bitbucket` (Mercurial Bitbucket)
+- `bower-svn` (SVN)
+- `bower-perforce` (Perforce)
+
 ### Overriding the config of a VCS Repository
 
 If you must use a repository other than that indicated by the registry of NPM or Bower,
