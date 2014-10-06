@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Util;
 
 use Composer\Test\Util\PerforceTest as BasePerforceTest;
+use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
 use Fxp\Composer\AssetPlugin\Util\Perforce;
 
@@ -36,6 +37,14 @@ class PerforceTest extends BasePerforceTest
      * @var array
      */
     protected $repoConfig;
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $fs = new Filesystem();
+        $fs->remove($this::TEST_PATH);
+    }
 
     public function testQueryP4PasswordWithPasswordAlreadySet()
     {
