@@ -46,6 +46,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
   - Mercurial
   - Mercurial Bitbucket
   - SVN
+  - Perforce
 - Local cache system for:
   - package versions
   - package contents
