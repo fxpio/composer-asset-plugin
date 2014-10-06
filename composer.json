@@ -23,6 +23,9 @@
             "Fxp\\Composer\\AssetPlugin\\": ""
         }
     },
+    "autoload-dev": {
+        "psr-0": { "Composer\\Test": "vendor/composer/composer/tests/" }
+    },
     "extra": {
         "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
         "branch-alias": {
