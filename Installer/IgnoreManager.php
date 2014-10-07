@@ -16,12 +16,12 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Glob;
 
 /**
- * Manager of ignore patterns for bower.
+ * Manager of ignore patterns.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class BowerIgnoreManager
+class IgnoreManager
 {
     /**
      * @var Filesystem

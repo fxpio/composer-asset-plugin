@@ -12,14 +12,14 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Installer;
 
 use Composer\Util\Filesystem;
-use Fxp\Composer\AssetPlugin\Installer\BowerIgnoreManager;
+use Fxp\Composer\AssetPlugin\Installer\IgnoreManager;
 
 /**
  * Tests of manager of ignore patterns.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
+class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var string
@@ -56,7 +56,7 @@ class BowerIgnoreManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteIgnoredFiles()
     {
-        $ignorer = new BowerIgnoreManager();
+        $ignorer = new IgnoreManager();
         $ignorer->addPattern('.*');
         $ignorer->addPattern('**/.*');
         $ignorer->addPattern('README');

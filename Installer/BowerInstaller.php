@@ -52,7 +52,7 @@ class BowerInstaller extends AssetInstaller
             return;
         }
 
-        $ignorer = new BowerIgnoreManager($this->filesystem);
+        $ignorer = new IgnoreManager($this->filesystem);
         foreach ($extra['bower-asset-ignore'] as $pattern) {
             $ignorer->addPattern($pattern);
         }
