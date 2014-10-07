@@ -56,6 +56,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - For Bower, all files defined in the section `ignore` will not be installed
 - Disable or replace the deleting of the ignore files for Bower
 - Enable manually the deleting of the ignore files for NPM
+- Use the Ignore Files Manager in the Composer scripts
 - Compatible with commands:
   - `search` (bower only)
   - `show`

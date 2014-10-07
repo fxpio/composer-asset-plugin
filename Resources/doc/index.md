@@ -290,6 +290,37 @@ delete the files:
 }
 ```
 
+### Use the Ignore Files Manager in the Composer scripts
+
+Sometimes you need to clean a package that is not considered an NPM/Bower Asset
+Package. To do this, you can use the script helper
+`Fxp\Composer\AssetPlugin\Composer\ScriptHandler::deleteIgnoredFiles` for the
+`post-package-install` or `post-package-update` script events.
+
+**Example:**
+
+```json
+{
+    "scripts": {
+        "post-package-install": [
+            "Fxp\\Composer\\AssetPlugin\\Composer\\ScriptHandler::deleteIgnoredFiles"
+        ],
+        "post-package-update": [
+            "Fxp\\Composer\\AssetPlugin\\Composer\\ScriptHandler::deleteIgnoredFiles"
+        ]
+    },
+    "extra": {
+        "asset-ignore-files": {
+            "acme/other-asset": [
+                ".*",
+                "*.md",
+                "test"
+            ]
+        }
+    }
+}
+```
+
 ### Disable the search for an asset registry
 
 If you want to disable the search for an asset registry, you can add an extra
