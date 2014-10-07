@@ -117,7 +117,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'hg log')) {
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
-                    $output = $date->getTimestamp();
+                    $output = $date->format(\DateTime::RFC3339);
                 }
 
                 return 0;
@@ -160,7 +160,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'hg log')) {
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
-                    $output = $date->getTimestamp();
+                    $output = $date->format(\DateTime::RFC3339);
                 }
 
                 return 0;
