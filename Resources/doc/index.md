@@ -238,6 +238,58 @@ But you can change the installation directory of the assets directly in the root
 >
 > For Bower, all files defined in the section `ignore` will not be installed
 
+### Disable or replace the deleting of the ignore files for Bower
+
+For Bower, all files defined in the section `ignore` will be delete just after the
+installation of each package. Of course, this behavior can be disabled or replaced.
+
+**Example for disable the list of ignored files:**
+
+```json
+{
+    "extra": {
+        "asset-ignore-files": {
+            "bower-asset/example-asset1": false
+        }
+    }
+}
+```
+
+**Example for replace the list of ignored files:**
+
+```json
+{
+    "extra": {
+        "asset-ignore-files": {
+            "bower-asset/example-asset1": [
+                ".*",
+                "*.md",
+                "test"
+            ]
+        }
+    }
+}
+```
+
+### Enable manually the deleting of the ignore files for NPM
+
+For NPM, there is no section `ignore`, but you can manually add the patterns for
+delete the files:
+
+```json
+{
+    "extra": {
+        "asset-ignore-files": {
+            "npm-asset/example-asset1": [
+                ".*",
+                "*.md",
+                "test"
+            ]
+        }
+    }
+}
+```
+
 ### Disable the search for an asset registry
 
 If you want to disable the search for an asset registry, you can add an extra
