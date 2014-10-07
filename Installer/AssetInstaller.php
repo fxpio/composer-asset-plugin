@@ -22,6 +22,7 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  * Installer for asset packages.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class AssetInstaller extends LibraryInstaller
 {
@@ -63,5 +64,52 @@ class AssetInstaller extends LibraryInstaller
         list(, $name) = explode('/', $package->getPrettyName(), 2);
 
         return ($this->vendorDir ? $this->vendorDir.'/' : '') . $name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function installCode(PackageInterface $package)
+    {
+        parent::installCode($package);
+
+        $this->deleteIgnoredFiles($package);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function updateCode(PackageInterface $initial, PackageInterface $target)
+    {
+        parent::updateCode($initial, $target);
+
+        $this->deleteIgnoredFiles($target);
+    }
+
+    /**
+     * Deletes files defined in bower.json in section "ignore".
+     *
+     * @param PackageInterface $package
+     */
+    protected function deleteIgnoredFiles(PackageInterface $package)
+    {
+        $manager = IgnoreFactory::create($this->composer, $package, $this->getInstallPath($package));
+
+        if ($manager->isEnabled() && !$manager->hasPattern()) {
+            $this->addIgnorePatterns($manager, $package);
+        }
+
+        $manager->cleanup();
+    }
+
+    /**
+     * Add ignore patterns in the manager.
+     *
+     * @param IgnoreManager    $manager The ignore manager instance
+     * @param PackageInterface $package The package instance
+     */
+    protected function addIgnorePatterns(IgnoreManager $manager, PackageInterface $package)
+    {
+        // override this method
     }
 }

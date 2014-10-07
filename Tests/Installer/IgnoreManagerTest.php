@@ -56,7 +56,7 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteIgnoredFiles()
     {
-        $ignorer = new IgnoreManager();
+        $ignorer = new IgnoreManager($this->target);
         $ignorer->addPattern('.*');
         $ignorer->addPattern('**/.*');
         $ignorer->addPattern('README');
@@ -67,7 +67,7 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
         $ignorer->addPattern('src/foo/*.txt');
         $ignorer->addPattern('!src/foo/small.txt');
 
-        $ignorer->deleteInDir($this->target);
+        $ignorer->cleanup();
 
         $this->assertFileNotExists($this->target.'/.hidden');
         $this->assertFileExists($this->target.'/CHANGELOG');
@@ -99,5 +99,53 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFileNotExists($this->target.'/tests/bootstrap.php');
         $this->assertFileNotExists($this->target.'/tests');
+    }
+
+    public function testDeleteIgnoredFilesWithDisabledManager()
+    {
+        $ignorer = new IgnoreManager($this->target);
+        $ignorer->setEnabled(false);
+        $ignorer->addPattern('.*');
+        $ignorer->addPattern('**/.*');
+        $ignorer->addPattern('README');
+        $ignorer->addPattern('**/*.md');
+        $ignorer->addPattern('lib');
+        $ignorer->addPattern('tests');
+        $ignorer->addPattern('**/doc');
+        $ignorer->addPattern('src/foo/*.txt');
+        $ignorer->addPattern('!src/foo/small.txt');
+
+        $ignorer->cleanup();
+
+        $this->assertFileExists($this->target.'/.hidden');
+        $this->assertFileExists($this->target.'/CHANGELOG');
+        $this->assertFileExists($this->target.'/README');
+
+        $this->assertFileExists($this->target.'/lib/autoload.php');
+        $this->assertFileExists($this->target.'/lib');
+
+        $this->assertFileExists($this->target.'/src/.hidden');
+        $this->assertFileExists($this->target.'/src/doc');
+        $this->assertFileExists($this->target.'/src');
+
+        $this->assertFileExists($this->target.'/src/foo/.hidden');
+        $this->assertFileExists($this->target.'/src/foo/empty.html');
+        $this->assertFileExists($this->target.'/src/foo/empty.md');
+        $this->assertFileExists($this->target.'/src/foo/empty.txt');
+        $this->assertFileExists($this->target.'/src/foo/small.txt');
+        $this->assertFileExists($this->target.'/src/foo');
+
+        $this->assertFileExists($this->target.'/src/lib/empty.txt');
+        $this->assertFileExists($this->target.'/src/lib');
+
+        $this->assertFileExists($this->target.'/src/lib/foo/empty.txt');
+        $this->assertFileExists($this->target.'/src/lib/foo/small.txt');
+        $this->assertFileExists($this->target.'/src/lib/foo');
+
+        $this->assertFileExists($this->target.'/src/tests/empty.html');
+        $this->assertFileExists($this->target.'/src/tests');
+
+        $this->assertFileExists($this->target.'/tests/bootstrap.php');
+        $this->assertFileExists($this->target.'/tests');
     }
 }

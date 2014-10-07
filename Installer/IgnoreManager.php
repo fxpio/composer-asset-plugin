@@ -24,9 +24,24 @@ use Symfony\Component\Finder\Glob;
 class IgnoreManager
 {
     /**
+     * @var string
+     */
+    protected $installDir;
+
+    /**
      * @var Filesystem
      */
     private $filesystem;
+
+    /**
+     * @var bool
+     */
+    protected $enabled;
+
+    /**
+     * @var bool
+     */
+    protected $hasPattern;
 
     /**
      * @var Finder
@@ -36,13 +51,51 @@ class IgnoreManager
     /**
      * Constructor.
      *
+     * @param string          $installDir The install dir
      * @param Filesystem|null $filesystem The filesystem
      */
-    public function __construct(Filesystem $filesystem = null)
+    public function __construct($installDir, Filesystem $filesystem = null)
     {
+        $this->installDir = $installDir;
         $this->filesystem = $filesystem ?: new Filesystem();
+        $this->enabled = true;
+        $this->hasPattern = false;
         $this->finder = Finder::create()->ignoreVCS(true)->ignoreDotFiles(false);
         $this->finder->path('/^\//');
+    }
+
+    /**
+     * Enable or not this ignore files manager.
+     *
+     * @param bool $enabled
+     *
+     * @return self
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool) $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Check if this ignore files manager is enabled.
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Check if a pattern is added.
+     *
+     * @return bool
+     */
+    public function hasPattern()
+    {
+        return $this->hasPattern;
     }
 
     /**
@@ -53,20 +106,21 @@ class IgnoreManager
     public function addPattern($pattern)
     {
         $this->doAddPattern($this->convertPattern($pattern));
+        $this->hasPattern = true;
     }
 
     /**
-     * Deletes all files and directories that matches patterns in specified directory.
-     *
-     * @param string $dir The path to the directory
+     * Deletes all files and directories that matches patterns.
      */
-    public function deleteInDir($dir)
+    public function cleanup()
     {
-        $paths = iterator_to_array($this->finder->in($dir));
+        if ($this->isEnabled() && $this->hasPattern() && realpath($this->installDir)) {
+            $paths = iterator_to_array($this->finder->in($this->installDir));
 
-        /* @var \SplFileInfo $path */
-        foreach ($paths as $path) {
-            $this->filesystem->remove($path);
+            /* @var \SplFileInfo $path */
+            foreach ($paths as $path) {
+                $this->filesystem->remove($path);
+            }
         }
     }
 

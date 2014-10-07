@@ -15,6 +15,8 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -23,6 +25,7 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  * Tests of asset installer.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 {
@@ -146,6 +149,49 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
+    public function testInstall()
+    {
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock();
+        /* @var IOInterface $io */
+        $io = $this->io;
+        /* @var AssetTypeInterface $type */
+        $type = $this->type;
+        $vendorDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test'.DIRECTORY_SEPARATOR.'vendor';
+
+        $this->composer->setPackage($rootPackage);
+
+        $dm = $this->getMockBuilder('Composer\Downloader\DownloadManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->composer->expects($this->any())
+            ->method('getDownloadManager')
+            ->will($this->returnValue($dm));
+
+        $library = new AssetInstaller($io, $this->composer, $type);
+        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
+        $package = $this->createPackageMock('foo-asset/package');
+
+        /* @var PackageInterface $package */
+        $packageDir = $vendorDir . '/' . $package->getPrettyName();
+
+        $dm->expects($this->once())
+            ->method('download')
+            ->with($package, $vendorDir.DIRECTORY_SEPARATOR.'foo-asset/package');
+
+        $repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
+        $repository->expects($this->once())
+            ->method('addPackage')
+            ->with($package);
+
+        /* @var InstalledRepositoryInterface $repository */
+        $library->install($repository, $package);
+        $this->assertFileExists($vendorDir, 'Vendor dir should be created');
+
+        $this->ensureDirectoryExistsAndClear($packageDir);
+    }
+
     /**
      * Creates the asset installer.
      *
@@ -173,5 +219,30 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
     private function createPackageMock($name)
     {
         return $this->getMock('Composer\Package\Package', null, array($name, '1.0.0.0', '1.0.0'));
+    }
+
+    /**
+     * @return RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createRootPackageMock()
+    {
+        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')
+            ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
+            ->getMock();
+
+        $package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue(array()));
+
+        return $package;
+    }
+
+    protected function ensureDirectoryExistsAndClear($directory)
+    {
+        $fs = new Filesystem();
+        if (is_dir($directory)) {
+            $fs->removeDirectory($directory);
+        }
+        mkdir($directory, 0777, true);
     }
 }
