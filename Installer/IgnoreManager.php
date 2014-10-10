@@ -151,11 +151,16 @@ class IgnoreManager
         $prefix = 0 === strpos($pattern, '!') ? '!' : '';
         $searchPattern = ltrim($pattern, '!');
 
-        if ('**/.*' === $searchPattern) {
+        if ('*' === $searchPattern) {
+            $this->doAddPattern($this->convertPattern($prefix . '.*'));
+        } elseif ('**/.*' === $searchPattern) {
             $this->doAddPattern($prefix . '.*');
         } elseif ('.*' === $searchPattern) {
             $this->doAddPattern($prefix . '**/.*');
+        } elseif ((strlen($pattern) - 2) === strrpos($pattern, '/*')) {
+            $this->doAddPattern(substr($pattern, 0, strlen($pattern) - 2));
         }
+        $this->doAddPattern($pattern . '/*');
 
         return $pattern;
     }
