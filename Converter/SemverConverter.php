@@ -23,8 +23,8 @@ class SemverConverter implements VersionConverterInterface
      */
     public function convertVersion($version)
     {
-        if ('latest' === $version) {
-            return 'default';
+        if (in_array($version, array(null, '', 'latest'))) {
+            return '*';
         }
 
         $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';

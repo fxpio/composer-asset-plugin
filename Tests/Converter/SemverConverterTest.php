@@ -43,7 +43,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($composer, $this->converter->convertVersion($semver));
 
-        if (!ctype_alpha($semver)) {
+        if (!ctype_alpha($semver) && !in_array($semver, array(null, ''))) {
             $this->assertEquals('v' . $composer, $this->converter->convertVersion('v' . $semver));
         }
     }
@@ -82,7 +82,9 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
             array('1.2.3-build2012', '1.2.3-patch2012'),
             array('1.2.3+build.2012', '1.2.3-patch.2012'),
             array('1.2.3-build.2012', '1.2.3-patch.2012'),
-            array('latest', 'default'),
+            array('latest', '*'),
+            array(null, '*'),
+            array('', '*'),
         );
     }
 
