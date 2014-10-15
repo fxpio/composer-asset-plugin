@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\Package\RootPackageInterface;
 use Composer\Package\Version\VersionParser;
+use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
@@ -27,6 +28,11 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
+
+    /**
+     * @var InstalledFilesystemRepository|\PHPUnit_Framework_MockObject_MockObject|null
+     */
+    protected $installedRepository;
 
     /**
      * @var AssetTypeInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -57,6 +63,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->package = null;
+        $this->installedRepository = null;
         $this->assetType = null;
         $this->filter = null;
     }
@@ -335,6 +342,85 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
     }
 
+    public function getDataForInstalledTests()
+    {
+        $optn = 'asset-optimize-with-installed-packages';
+
+        return array(
+            array(array(),               'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
+            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
+            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
+            array(array(),               'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
+            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
+            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
+
+            array(array(),               'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array(array(),               'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+
+            array(array(),               'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
+            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
+            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
+            array(array(),               'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
+            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
+            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', false),
+
+            array(array(),               'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array(array(),               'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+        );
+    }
+
+    /**
+     * @dataProvider getDataForInstalledTests
+     *
+     * @param array       $extra
+     * @param string      $packageName
+     * @param string      $version
+     * @param string      $minimumStability
+     * @param string|null $rootRequireVersion
+     * @param string|null $installedVersion
+     * @param bool        $validSkip
+     */
+    public function testFilterWithInstalledPackage(array $extra, $packageName, $version, $minimumStability, $rootRequireVersion, $installedVersion, $validSkip)
+    {
+        $installed = null === $installedVersion
+            ? array()
+            : array($packageName => $installedVersion);
+
+        $require = null === $rootRequireVersion
+            ? array()
+            : array($packageName => $rootRequireVersion);
+
+        $this->installedRepository = $this->getMockBuilder('Composer\Repository\InstalledFilesystemRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->installedRepository->expects($this->any())
+            ->method('getPackages')
+            ->will($this->returnValue($this->convertInstalled($installed)));
+
+        $this->package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue($extra));
+
+        $this->init($require, $minimumStability);
+
+        $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
+    }
+
+    /**
+     * Init test.
+     *
+     * @param array  $requires
+     * @param string $minimumStability
+     */
     protected function init(array $requires = array(), $minimumStability = 'stable')
     {
         $parser = new VersionParser();
@@ -352,6 +438,39 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
         /* @var RootPackageInterface $package */
         $package = $this->package;
-        $this->filter = new VcsPackageFilter($package);
+        $this->filter = new VcsPackageFilter($package, $this->installedRepository);
+    }
+
+    /**
+     * Convert the installed package data tests to mock package instance.
+     *
+     * @param array $installed The config of installed packages
+     *
+     * @return array The package instance of installed packages
+     */
+    protected function convertInstalled(array $installed)
+    {
+        $packages = array();
+        $parser = new VersionParser();
+
+        foreach ($installed as $name => $version) {
+            $package = $this->getMock('Composer\Package\PackageInterface');
+
+            $package->expects($this->any())
+                ->method('getName')
+                ->will($this->returnValue($name));
+
+            $package->expects($this->any())
+                ->method('getVersion')
+                ->will($this->returnValue($parser->normalize($version)));
+
+            $package->expects($this->any())
+                ->method('getPrettyVersion')
+                ->will($this->returnValue($version));
+
+            $packages[] = $package;
+        }
+
+        return $packages;
     }
 }

@@ -18,6 +18,7 @@ use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Repository\InstalledFilesystemRepository;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
@@ -73,8 +74,10 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        /* @var InstalledFilesystemRepository $installedRepository */
+        $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
         $this->composer = $composer;
-        $this->packageFilter = new VcsPackageFilter($composer->getPackage());
+        $this->packageFilter = new VcsPackageFilter($composer->getPackage(), $installedRepository);
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 

@@ -13,9 +13,12 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Package\Link;
 use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Package\LinkConstraint\LinkConstraintInterface;
+use Composer\Package\LinkConstraint\MultiConstraint;
+use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -32,6 +35,11 @@ class VcsPackageFilter
     protected $package;
 
     /**
+     * @var InstalledFilesystemRepository
+     */
+    protected $installedRepository;
+
+    /**
      * @var VersionParser
      */
     protected $versionParser;
@@ -44,11 +52,13 @@ class VcsPackageFilter
     /**
      * Constructor.
      *
-     * @param RootPackageInterface $package The root package
+     * @param RootPackageInterface               $package             The root package
+     * @param InstalledFilesystemRepository|null $installedRepository The installed repository
      */
-    public function __construct(RootPackageInterface $package)
+    public function __construct(RootPackageInterface $package, InstalledFilesystemRepository $installedRepository = null)
     {
         $this->package = $package;
+        $this->installedRepository = $installedRepository;
         $this->versionParser = new VersionParser();
 
         $this->initialize();
@@ -85,7 +95,7 @@ class VcsPackageFilter
     /**
      * Check if the require dependency has a satisfactory version and stability.
      *
-     * @param Link   $require           The require link defined in root package.
+     * @param Link   $require           The require link defined in root package
      * @param string $normalizedVersion The normalized version
      *
      * @return bool
@@ -99,7 +109,7 @@ class VcsPackageFilter
     /**
      * Check if the require dependency has a satisfactory version.
      *
-     * @param Link   $require           The require link defined in root package.
+     * @param Link   $require           The require link defined in root package
      * @param string $normalizedVersion The normalized version
      *
      * @return bool
@@ -118,7 +128,7 @@ class VcsPackageFilter
     /**
      * Check if the require dependency has a satisfactory stability.
      *
-     * @param Link   $require           The require link defined in root package.
+     * @param Link   $require           The require link defined in root package
      * @param string $normalizedVersion The normalized version
      *
      * @return bool
@@ -135,7 +145,7 @@ class VcsPackageFilter
     /**
      * Get the minimum stability for the require dependency defined in root package.
      *
-     * @param Link $require The require link defined in root package.
+     * @param Link $require The require link defined in root package
      *
      * @return string The minimum stability
      */
@@ -199,5 +209,59 @@ class VcsPackageFilter
             $this->package->getRequires(),
             $this->package->getDevRequires()
         );
+
+        if (null !== $this->installedRepository && $this->filterInstalledPackages()) {
+            $this->initInstalledPackages();
+        }
+    }
+
+    /**
+     * Check if the filter must filtering with the installed packages.
+     *
+     * @return bool
+     */
+    private function filterInstalledPackages()
+    {
+        $optName = 'asset-optimize-with-installed-packages';
+        $extra = $this->package->getExtra();
+
+        return !array_key_exists($optName, $extra)
+            || true === $extra[$optName];
+    }
+
+    /**
+     * Initialize the installed package.
+     */
+    private function initInstalledPackages()
+    {
+        /* @var PackageInterface $package */
+        foreach ($this->installedRepository->getPackages() as $package) {
+            /* @var Link $link */
+            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>=' . $package->getPrettyVersion())));
+            $link = $this->includeRootConstraint($package, $link);
+
+            $this->requires[$package->getName()] = $link;
+        }
+    }
+
+    /**
+     * Include the constraint of root dependency version in the constraint
+     * of installed package.
+     *
+     * @param PackageInterface $package The installed package
+     * @param Link             $link    The link contained installed constraint
+     *
+     * @return Link The link with root and installed version constraint
+     */
+    private function includeRootConstraint(PackageInterface $package, Link $link)
+    {
+        if (isset($this->requires[$package->getName()])) {
+            /* @var Link $rLink */
+            $rLink = $this->requires[$package->getName()];
+            $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), false);
+            $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
+        }
+
+        return $link;
     }
 }
