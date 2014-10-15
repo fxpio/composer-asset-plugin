@@ -214,6 +214,32 @@ optimization cannot be performed with the sub dependencies, you can add this ass
 directly to the root Composer package, in the same way that if you wanted to use a
 well-defined version of this dependency.
 
+### Disable the import filter using the installed packages
+
+By default, and for dramatically optimize performance for the `update`, the plugin filters the
+imports of definitions packages. In addition to filter with the dependencies in the root
+Composer package, the plugin filters the imports of packages definitions with the previous
+versions of the packages installed.
+
+However it may happen that Composer throws an exception, indicating that it can not find a
+compatible version. This happens if a dependency uses a new version lower than the installed
+version.
+
+Of course, several solutions can work around the problem (see the [FAQs]
+(faqs.md#composer-throws-an-exception-stating-that-the-version-does-not-exist)), but the
+solution below may be used in another use case.
+
+You can disable the import filter using the versions of installed packages with the option
+`extra.asset-optimize-with-installed-packages` in the root Composer package:
+
+```json
+{
+    "extra": {
+        "asset-optimize-with-installed-packages": false
+    }
+}
+```
+
 ### Define a custom directory for the assets installation
 
 By default, the plugin will install all the assets in the directory

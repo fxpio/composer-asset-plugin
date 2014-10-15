@@ -24,7 +24,8 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 
 - Works with native management system versions of VCS repository of composer
 - Works with public and private VCS repositories
-- Lazy load asset package files in VCS repositories to improve performance
+- Lazy loader of asset package definitions to improve performance
+- Import filter with the dependencies of the root package and the installed packages, for increased dramatically the performance for the update
 - Automatically get and create an Asset VCS repository defined in:
   - [NPM Registry](https://www.npmjs.org)
   - [Bower Registry](http://bower.io/search)

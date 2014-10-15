@@ -88,6 +88,29 @@ The plugin uses the system of VCS repository, and this can significantly slow th
 retrieving of the definitions of packages. Fortunately, a caching system avoids to
 download every time all versions.
 
+With the version `>1.0.0-beta3` of the plugin, a new import filter lets you import only
+package definitions greater than or equal to the installed versions. In this way, the
+performances are dramatically improved.
+
+Composer throws an exception stating that the version does not exist
+--------------------------------------------------------------------
+
+If Composer throws an exception stating that the version does not exist, whereas the
+version exists, but it isn't imported: is that this new package version is lesser than
+the installed version.
+
+Of course, 3 solutions can work around the problem:
+
+1. delete the `vendor` directory, do the `update`
+2. disable temporarily the import filter in the `extra` section
+3. add the dependency in the root Composer package with the required version (the version
+not found), do the `update`, and remove the dependency in the root Composer package
+
+> The solution 1 is the easiest and fastest.
+
+See the documentation: [Disable the import filter using the installed packages]
+(index.md#disable-the-import-filter-using-the-installed-packages)
+
 How to reduce the number of requests for getting the package definitions?
 -------------------------------------------------------------------------
 
