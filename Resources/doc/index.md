@@ -7,6 +7,8 @@ Basic Usage
 
 ## Installation
 
+The plugin require the Composer with the version: `1.0.0@dev` after the date of `10/1/2014`.
+
 ### Global scope (per user) installation
 
 ```shell

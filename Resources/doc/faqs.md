@@ -4,8 +4,7 @@ FAQs
 What version required of Composer?
 ----------------------------------
 
-The required version is the `dev` after the date of `10/1/2014`, because the last `Alpha8`
-version is too old.
+See the documentation: [Installation](index.md#installation).
 
 How does work the plugin?
 -------------------------
