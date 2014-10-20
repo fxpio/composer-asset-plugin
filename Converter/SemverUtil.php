@@ -58,7 +58,7 @@ abstract class SemverUtil
             }
         }
 
-        return $version;
+        return static::cleanWildcard($version);
     }
 
     /**
@@ -75,6 +75,22 @@ abstract class SemverUtil
         $numVer3 = '(' . $numVer . '\.' . $numVer . '\.' . $numVer . ')';
 
         return '/^' . '(' . $numVer . '|' . $numVer2 . '|' . $numVer3 . ')' . $pattern . '/';
+    }
+
+    /**
+     * Clean the wildcard in version.
+     *
+     * @param string $version The version
+     *
+     * @return string The cleaned version
+     */
+    protected static function cleanWildcard($version)
+    {
+        while (false !== strpos($version, '.x.x')) {
+            $version = str_replace('.x.x', '.x', $version);
+        }
+
+        return $version;
     }
 
     /**
