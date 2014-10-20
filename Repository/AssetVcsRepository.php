@@ -13,8 +13,8 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
-use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
+use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
@@ -236,13 +236,13 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
      * Include the package in the alias package if the branch is a root branch
      * identifier and having a package version.
      *
-     * @param VcsDriverInterface       $driver  The vcs driver
-     * @param CompletePackageInterface $package The package instance
-     * @param string                   $branch  The branch name
+     * @param VcsDriverInterface $driver  The vcs driver
+     * @param PackageInterface   $package The package instance
+     * @param string             $branch  The branch name
      *
-     * @return CompletePackageInterface|AliasPackage
+     * @return PackageInterface|AliasPackage
      */
-    protected function includeBranchAlias(VcsDriverInterface $driver, CompletePackageInterface $package, $branch)
+    protected function includeBranchAlias(VcsDriverInterface $driver, PackageInterface $package, $branch)
     {
         if (null !== $this->rootPackageVersion && $branch === $driver->getRootIdentifier()) {
             $aliasNormalized = $this->normalizeBranchAlias($package);
@@ -255,11 +255,11 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     /**
      * Normalize the alias of branch.
      *
-     * @param CompletePackageInterface $package The package instance
+     * @param PackageInterface $package The package instance
      *
      * @return string The alias branch name
      */
-    protected function normalizeBranchAlias(CompletePackageInterface $package)
+    protected function normalizeBranchAlias(PackageInterface $package)
     {
         $stability = VersionParser::parseStability($this->versionParser->normalize($this->rootPackageVersion));
         $aliasNormalized = 'dev-' . $this->rootPackageVersion;
