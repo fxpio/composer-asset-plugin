@@ -91,7 +91,8 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
         ), $composer['require-dev']);
 
         $this->assertArrayHasKey('bin', $composer);
-        $this->assertSame($this->asset['bin'], $composer['bin']);
+        $this->assertTrue(is_array($composer['bin']));
+        $this->assertSame($this->asset['bin'], $composer['bin'][0]);
 
         $this->assertArrayHasKey('extra', $composer);
 

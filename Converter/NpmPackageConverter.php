@@ -56,7 +56,9 @@ class NpmPackageConverter extends AbstractPackageConverter
 
                 return $value;
             }),
-            'bin'                => 'bin',
+            'bin'                => array('bin', function ($value) {
+                return (array) $value;
+            }),
         );
         $dependencies = array(
             'dependencies'    => 'require',
