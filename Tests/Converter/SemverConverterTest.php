@@ -130,6 +130,8 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
             array('=1.2.x', '>=1.2.0,<1.3'),
             array('1.x.x', '1.x'),
             array('1.x.x.x', '1.x'),
+            array('2.X.X.X', '2.x'),
+            array('2.X.x.x', '2.x'),
         );
     }
 }
