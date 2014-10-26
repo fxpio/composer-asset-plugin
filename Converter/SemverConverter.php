@@ -39,7 +39,7 @@ class SemverConverter implements VersionConverterInterface
      */
     public function convertRange($range)
     {
-        $range = $this->cleanRange($range);
+        $range = $this->cleanRange(strtolower($range));
 
         return $this->matchRange($range);
     }
