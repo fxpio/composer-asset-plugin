@@ -29,6 +29,8 @@ class BowerInstaller extends AssetInstaller
         $extra = $package->getExtra();
 
         if (!empty($extra['bower-asset-ignore'])) {
+            $manager->doAddPattern('!bower.json');
+
             foreach ($extra['bower-asset-ignore'] as $pattern) {
                 $manager->addPattern($pattern);
             }

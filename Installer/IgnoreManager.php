@@ -61,7 +61,6 @@ class IgnoreManager
         $this->enabled = true;
         $this->hasPattern = false;
         $this->finder = Finder::create()->ignoreVCS(true)->ignoreDotFiles(false);
-        $this->finder->path('/^\//');
     }
 
     /**
@@ -132,9 +131,9 @@ class IgnoreManager
     public function doAddPattern($pattern)
     {
         if (0 === strpos($pattern, '!')) {
-            $this->finder->notPath(Glob::toRegex(substr($pattern, 1), true, false));
+            $this->finder->notPath(Glob::toRegex(substr($pattern, 1), true, true));
         } else {
-            $this->finder->path(Glob::toRegex($pattern, true, false));
+            $this->finder->path(Glob::toRegex($pattern, true, true));
         }
     }
 
@@ -147,20 +146,20 @@ class IgnoreManager
      */
     protected function convertPattern($pattern)
     {
-        $pattern = trim($pattern, '/');
         $prefix = 0 === strpos($pattern, '!') ? '!' : '';
-        $searchPattern = ltrim($pattern, '!');
+        $searchPattern = trim(ltrim($pattern, '!'), '/');
+        $pattern = $prefix . $searchPattern;
 
-        if ('*' === $searchPattern) {
-            $this->doAddPattern($this->convertPattern($prefix . '.*'));
-        } elseif ('**/.*' === $searchPattern) {
+        if (in_array($searchPattern, array('*', '*.*'))) {
             $this->doAddPattern($prefix . '.*');
+        } elseif (0 === strpos($searchPattern, '**/')) {
+            $this->doAddPattern($prefix . '**/' . $searchPattern);
+            $this->doAddPattern($prefix . substr($searchPattern, 3));
         } elseif ('.*' === $searchPattern) {
             $this->doAddPattern($prefix . '**/.*');
         } elseif ((strlen($pattern) - 2) === strrpos($pattern, '/*')) {
             $this->doAddPattern(substr($pattern, 0, strlen($pattern) - 2));
         }
-        $this->doAddPattern($pattern . '/*');
 
         return $pattern;
     }
