@@ -74,4 +74,23 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
         $this->assertCount(0, $this->rm->getRepositories());
     }
+
+    public function testWatProvidesWithoutRepositoryUrl()
+    {
+        $this->setExpectedException('Composer\Repository\InvalidRepositoryException', '"repository.url" parameter of "existing-1.0"');
+
+        $name = $this->getType().'-asset/existing-1.0';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode(array(
+                'repository' => array(
+                    'type' => 'vcs',
+                ),
+            ))));
+
+        $this->assertCount(0, $this->rm->getRepositories());
+
+        $this->registry->whatProvides($this->pool, $name);
+    }
 }

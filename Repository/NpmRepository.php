@@ -11,6 +11,8 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
+use Composer\Repository\InvalidRepositoryException;
+
 /**
  * NPM repository.
  *
@@ -67,8 +69,30 @@ class NpmRepository extends AbstractAssetsRepository
 
         return array(
             'type' => $this->assetType->getName() . '-' . $type,
-            'url'  => $data['repository']['url'],
+            'url'  => $this->getVcsRepositoryUrl($data, $registryName),
             'name' => $registryName,
         );
+    }
+
+    /**
+     * Get the URL of VCS repository.
+     *
+     * @param array  $data         The repository config
+     * @param string $registryName The package name in asset registry
+     *
+     * @return string
+     *
+     * @throws InvalidRepositoryException When the repository.url parameter does not exist
+     */
+    protected function getVcsRepositoryUrl(array $data, $registryName = null)
+    {
+        if (!isset($data['repository']['url'])) {
+            $msg = sprintf('The "repository.url" parameter of "%s" %s asset package must be present for create a VCS Repository', $registryName, $this->assetType->getName());
+            $msg .= PHP_EOL . 'If the config comes from the NPM Registry, override the config with a custom Asset VCS Repository';
+
+            throw new InvalidRepositoryException($msg);
+        }
+
+        return (string) $data['repository']['url'];
     }
 }
