@@ -63,8 +63,10 @@ class NpmRepository extends AbstractAssetsRepository
      */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
+        $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
+
         return array(
-            'type' => $this->assetType->getName() . '-' . $data['repository']['type'],
+            'type' => $this->assetType->getName() . '-' . $type,
             'url'  => $data['repository']['url'],
             'name' => $registryName,
         );
