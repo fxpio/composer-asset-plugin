@@ -21,10 +21,11 @@ class NpmPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data, array &$vcsRepos = array())
+    protected function getMapKeys()
     {
         $assetType = $this->assetType;
-        $keys = array(
+
+        return array(
             'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->formatComposerName($value);
             }),
@@ -40,48 +41,26 @@ class NpmPackageConverter extends AbstractPackageConverter
             'homepage'           => 'homepage',
             'license'            => 'license',
             'author'             => array('authors', function ($value) {
-                if (null !== $value) {
-                    $value = array($value);
-                }
-
-                return $value;
+                return NpmPackageUtil::convertAuthor($value);
             }),
             'contributors'       => array('authors', function ($value, $prevValue) {
-                $mergeValue = is_array($prevValue) ? $prevValue : array();
-                $mergeValue = array_merge($mergeValue, is_array($value) ? $value : array());
-
-                if (count($mergeValue) > 0) {
-                    $value = $mergeValue;
-                }
-
-                return $value;
+                return NpmPackageUtil::convertContributors($value, $prevValue);
             }),
             'bin'                => array('bin', function ($value) {
                 return (array) $value;
             }),
             'dist'               => array('dist', function ($value) {
-                if (is_array($value)) {
-                    $data = (array) $value;
-                    $value = array();
-
-                    foreach ($data as $type => $url) {
-                        if ('shasum' === $type) {
-                            $value[$type] = $url;
-                        } else {
-                            $value['type'] = 'tarball' === $type ? 'tar' : $type;
-                            $value['url'] = $url;
-                        }
-                    }
-                }
-
-                return $value;
+                return NpmPackageUtil::convertDist($value);
             }),
         );
-        $dependencies = array(
-            'dependencies'    => 'require',
-            'devDependencies' => 'require-dev',
-        );
-        $extras = array(
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapExtras()
+    {
+        return array(
             'bugs'                 => 'npm-asset-bugs',
             'files'                => 'npm-asset-files',
             'main'                 => 'npm-asset-main',
@@ -100,7 +79,5 @@ class NpmPackageConverter extends AbstractPackageConverter
             'private'              => 'npm-asset-private',
             'publishConfig'        => 'npm-asset-publish-config',
         );
-
-        return $this->convertData($data, $keys, $dependencies, $extras, $vcsRepos);
     }
 }

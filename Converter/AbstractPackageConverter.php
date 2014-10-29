@@ -36,6 +36,18 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function convert(array $data, array &$vcsRepos = array())
+    {
+        $keys = $this->getMapKeys();
+        $dependencies = $this->getMapDependencies();
+        $extras = $this->getMapExtras();
+
+        return $this->convertData($data, $keys, $dependencies, $extras, $vcsRepos);
+    }
+
+    /**
      * Converts the all keys (keys, dependencies and extra keys).
      *
      * @param array $asset        The asset data
@@ -145,5 +157,34 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         list($dependency, $version) = PackageUtil::convertDependencyVersion($this->assetType, $dependency, $version);
 
         return array($dependency, $version);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapKeys()
+    {
+        return array();
+    }
+
+    /**
+     * Get the map conversion of dependencies.
+     *
+     * @return array
+     */
+    protected function getMapDependencies()
+    {
+        return array(
+            'dependencies'    => 'require',
+            'devDependencies' => 'require-dev',
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapExtras()
+    {
+        return array();
     }
 }

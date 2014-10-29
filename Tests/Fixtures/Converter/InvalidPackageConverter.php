@@ -23,14 +23,12 @@ class InvalidPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data, array &$vcsRepos = array())
+    protected function getMapKeys()
     {
-        $keys = array(
+        return array_merge(parent::getMapKeys(), array(
             'name' => array(null, function ($value) {
                 return $value;
             }),
-        );
-
-        return $this->convertData($data, $keys, array(), array());
+        ));
     }
 }

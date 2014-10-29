@@ -21,10 +21,11 @@ class BowerPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $data, array &$vcsRepos = array())
+    protected function getMapKeys()
     {
         $assetType = $this->assetType;
-        $keys = array(
+
+        return array(
             'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->formatComposerName($value);
             }),
@@ -40,17 +41,18 @@ class BowerPackageConverter extends AbstractPackageConverter
             'license'            => 'license',
             'bin'                => 'bin',
         );
-        $dependencies = array(
-            'dependencies'    => 'require',
-            'devDependencies' => 'require-dev',
-        );
-        $extras = array(
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapExtras()
+    {
+        return array(
             'main'    => 'bower-asset-main',
             'ignore'  => 'bower-asset-ignore',
             'private' => 'bower-asset-private',
         );
-
-        return $this->convertData($data, $keys, $dependencies, $extras, $vcsRepos);
     }
 
     /**
