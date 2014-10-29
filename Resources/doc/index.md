@@ -7,7 +7,8 @@ Basic Usage
 
 ## Installation
 
-The plugin require the Composer with the version: `1.0.0@dev` after the date of `10/1/2014`.
+See the [Release Notes](https://github.com/francoispluchino/composer-asset-plugin/releases)
+to know the Composer version required.
 
 ### Global scope (per user) installation
 
@@ -15,7 +16,7 @@ The plugin require the Composer with the version: `1.0.0@dev` after the date of 
 $ composer global require "fxp/composer-asset-plugin:~1.0"
 ```
 
-### Project scope installation (will work with the PR [#3082](https://github.com/composer/composer/pull/3082))
+### Project scope installation
 
 ```shell
 $ composer require "fxp/composer-asset-plugin:~1.0"
@@ -146,44 +147,6 @@ The dependencies will then be placed in the following directories:
 - `vendor/bower-asset/jquery` for `1.11.*`
 - `vendor/bower-asset/jquery-2.0.x` for `2.0.x`
 - `vendor/bower-asset/jquery-2.1.0` for `2.1.0`
-
-### Include dependencies using URL in versions
-
-Currently, the plugin can not add the VCS repositories to the `Pool`
-for the dependency resolution automatically, because the plugin system of Composer does not allow
-this (see [composer/composer#3116](https://github.com/composer/composer/issues/3116)).
-It is therefore necessary to manually add the VCS Repositories in the root `composer.json`-file.
-
-**For example:**
-
-The asset package:
-```json
-{
-  "name": "example-asset1",
-  "version": "1.0.0",
-  "dependencies": {
-    "asset2": "git@github.com:vendor/example-asset2.git#2.3.0"
-  }
-}
-```
-
-The root `composer.json` must have:
-
-```json
-{
-    "require": {
-        "npm-asset/example-asset1": "1.0"
-    },
-    "extra": {
-        "asset-repositories": [
-            {
-                "type": "npm-vcs",
-                "url": "git@github.com:vendor/example-asset2.git"
-            }
-        ]
-    }
-}
-```
 
 ### Reduce the number of requests for getting the package definitions
 

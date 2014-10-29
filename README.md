@@ -14,11 +14,6 @@ without installing NPM or Bower.
 This plugin works by transposing package information from NPM or Bower to a compatible version for Composer.
 This allows you to manage asset dependencies in a PHP based project very easily.
 
-> **Warning!**
->
-> Currently the plugin only works in "global" mode, the PR [#3082](https://github.com/composer/composer/pull/3082)
-> will allow the plugin to work in "project" mode
-
 
 ##### Features include:
 
@@ -93,6 +88,8 @@ The bulk of the documentation is located in `Resources/doc/index.md`:
 [Read the Documentation](Resources/doc/index.md)
 
 [Read the FAQs](Resources/doc/faqs.md)
+
+[Read the Release Notes](https://github.com/francoispluchino/composer-asset-plugin/releases)
 
 Installation
 ------------

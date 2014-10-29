@@ -132,10 +132,6 @@ NPM and Bower use [Semver](http://semver.org) for formatting the versions, which
 the case for Composer. It is therefore necessary to perform a conversion, but it's not
 perfect because of the differences in operation between Semver and Composer.
 
-> **Note:**
-> It may be possible that Composer will manage Semver 2.0 natively soon (see
-> [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
-
 Here are the matches currently validated:
 
 | Semver version   | Composer version |
@@ -178,10 +174,6 @@ Here are the matches currently validated:
 NPM and Bower use [Semver](http://semver.org) for formatting the range versions, which is not
 the case for Composer. It is therefore necessary to perform a conversion, but it's not
 perfect because of the differences in operation between Semver and Composer.
-
-> **Note:**
-> It may be possible that Composer will manage Semver 2.0 natively soon (see
-> [composer/composer#2422](https://github.com/composer/composer/issues/2422)).
 
 Here are the matches currently validated:
 
