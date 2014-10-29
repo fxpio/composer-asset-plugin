@@ -11,7 +11,10 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
-use Composer\Repository\InvalidRepositoryException;
+use Composer\DependencyResolver\Pool;
+use Composer\Package\Loader\ArrayLoader;
+use Composer\Repository\ArrayRepository;
+use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
 
 /**
  * NPM repository.
@@ -75,6 +78,48 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function whatProvidesManageException(Pool $pool, $name, \Exception $exception)
+    {
+        if ($exception instanceof InvalidCreateRepositoryException) {
+            $data = $exception->getData();
+
+            if (isset($data['versions']) && !empty($data['versions'])) {
+                $this->createArrayRepositoryConfig($data['versions'], $name, $pool);
+
+                return;
+            }
+        }
+
+        parent::whatProvidesManageException($pool, $name, $exception);
+    }
+
+    /**
+     * Create the array repository with the asset configs.
+     *
+     * @param array  $packageConfigs The configs of assets package versions
+     * @param string $name           The asset package name
+     * @param Pool   $pool           The pool
+     */
+    protected function createArrayRepositoryConfig(array $packageConfigs, $name, Pool $pool)
+    {
+        $packages = array();
+        $loader = new ArrayLoader();
+
+        foreach ($packageConfigs as $version => $config) {
+            $config['version'] = $version;
+            $config = $this->assetType->getPackageConverter()->convert($config);
+            $packages[] = $loader->load($config);
+        }
+
+        $repo = new ArrayRepository($packages);
+        Util::addRepositoryInstance($this->rm, $this->repos, $name, $repo, $pool);
+
+        $this->providers[$name] = array();
+    }
+
+    /**
      * Get the URL of VCS repository.
      *
      * @param array  $data         The repository config
@@ -82,15 +127,17 @@ class NpmRepository extends AbstractAssetsRepository
      *
      * @return string
      *
-     * @throws InvalidRepositoryException When the repository.url parameter does not exist
+     * @throws InvalidCreateRepositoryException When the repository.url parameter does not exist
      */
     protected function getVcsRepositoryUrl(array $data, $registryName = null)
     {
         if (!isset($data['repository']['url'])) {
             $msg = sprintf('The "repository.url" parameter of "%s" %s asset package must be present for create a VCS Repository', $registryName, $this->assetType->getName());
             $msg .= PHP_EOL . 'If the config comes from the NPM Registry, override the config with a custom Asset VCS Repository';
+            $ex = new InvalidCreateRepositoryException($msg);
+            $ex->setData($data);
 
-            throw new InvalidRepositoryException($msg);
+            throw $ex;
         }
 
         return (string) $data['repository']['url'];

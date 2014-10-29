@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\DependencyResolver\Pool;
+use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 
@@ -23,6 +24,8 @@ use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 class Util
 {
     /**
+     * Add repository config.
+     *
      * @param RepositoryManager $rm         The repository mamanger
      * @param array             $repos      The list of already repository added (passed by reference)
      * @param string            $name       The name of the new repository
@@ -33,12 +36,26 @@ class Util
     {
         if (!isset($repos[$name])) {
             $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
-            $repos[$name] = $repo;
-            $rm->addRepository($repo);
+            static::addRepositoryInstance($rm, $repos, $name, $repo, $pool);
+        }
+    }
 
-            if (null !== $pool) {
-                $pool->addRepository($repo);
-            }
+    /**
+     * Add repository instance.
+     *
+     * @param RepositoryManager   $rm    The repository mamanger
+     * @param array               $repos The list of already repository added (passed by reference)
+     * @param string              $name  The name of the new repository
+     * @param RepositoryInterface $repo  The repository instance
+     * @param Pool|null           $pool  The pool
+     */
+    public static function addRepositoryInstance(RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
+    {
+        $repos[$name] = $repo;
+        $rm->addRepository($repo);
+
+        if (null !== $pool) {
+            $pool->addRepository($repo);
         }
     }
 

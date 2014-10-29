@@ -59,6 +59,23 @@ class NpmPackageConverter extends AbstractPackageConverter
             'bin'                => array('bin', function ($value) {
                 return (array) $value;
             }),
+            'dist'               => array('dist', function ($value) {
+                if (is_array($value)) {
+                    $data = (array) $value;
+                    $value = array();
+
+                    foreach ($data as $type => $url) {
+                        if ('shasum' === $type) {
+                            $value[$type] = $url;
+                        } else {
+                            $value['type'] = 'tarball' === $type ? 'tar' : $type;
+                            $value['url'] = $url;
+                        }
+                    }
+                }
+
+                return $value;
+            }),
         );
         $dependencies = array(
             'dependencies'    => 'require',

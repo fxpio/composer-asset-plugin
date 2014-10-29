@@ -77,9 +77,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
 
     public function testWatProvidesWithoutRepositoryUrl()
     {
-        $this->setExpectedException('Composer\Repository\InvalidRepositoryException', '"repository.url" parameter of "existing-1.0"');
-
-        $name = $this->getType().'-asset/existing-1.0';
+        $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())
             ->method('getContents')
@@ -87,7 +85,34 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 'repository' => array(
                     'type' => 'vcs',
                 ),
+                'versions' => array(
+                    '1.0.0' => array(
+                        'name'    => 'foobar',
+                        'version' => '0.0.1',
+                        'dependencies' => array(),
+                        'dist' => array(
+                            'shasum' => '1d408b3fdb76923b9543d96fb4c9dfd535d9cb5d',
+                            'tarball' => 'http://registry.tld/foobar/-/foobar-1.0.0.tgz',
+                        ),
+                    ),
+                ),
             ))));
+
+        $this->assertCount(0, $this->rm->getRepositories());
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(1, $this->rm->getRepositories());
+    }
+
+    public function testWatProvidesWithoutRepositoryUrlAndWithoutVersions()
+    {
+        $this->setExpectedException('Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException', '"repository.url" parameter of "foobar"');
+
+        $name = $this->getType().'-asset/foobar';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode(array())));
 
         $this->assertCount(0, $this->rm->getRepositories());
 

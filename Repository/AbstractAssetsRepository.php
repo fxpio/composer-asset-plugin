@@ -140,8 +140,8 @@ abstract class AbstractAssetsRepository extends ComposerRepository
 
             $this->providers[$name] = array();
 
-        } catch (TransportException $ex) {
-            $this->fallbackWathProvides($pool, $name, $ex);
+        } catch (\Exception $ex) {
+            $this->whatProvidesManageException($pool, $name, $ex);
         }
 
         return $this->providers[$name];
@@ -244,6 +244,26 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             'name'        => $this->assetType->getComposerVendorName() . '/' . $item['name'],
             'description' => null,
         );
+    }
+
+    /**
+     * Manage exception for "whatProvides" method.
+     *
+     * @param Pool       $pool
+     * @param string     $name
+     * @param \Exception $exception
+     *
+     * @throws \Exception When exception is not a TransportException instance
+     */
+    protected function whatProvidesManageException(Pool $pool, $name, \Exception $exception)
+    {
+        if ($exception instanceof TransportException) {
+            $this->fallbackWathProvides($pool, $name, $exception);
+
+            return;
+        }
+
+        throw $exception;
     }
 
     /**
