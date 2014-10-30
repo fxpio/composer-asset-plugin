@@ -24,10 +24,9 @@ use Composer\Repository\InstalledFilesystemRepository;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
-use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
-use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Repository\Util;
+use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
 /**
  * Composer plugin.
@@ -86,14 +85,14 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 
-        $this->addRegistryRepositories($rm, $extra);
-        $this->setVcsTypeRepositories($rm);
+        AssetPlugin::addRegistryRepositories($rm, $this->packageFilter, $extra);
+        AssetPlugin::setVcsTypeRepositories($rm);
 
         if (isset($extra['asset-repositories']) && is_array($extra['asset-repositories'])) {
             $this->addRepositories($rm, $extra['asset-repositories']);
         }
 
-        $this->addInstallers($composer, $io);
+        AssetPlugin::addInstallers($composer, $io);
     }
 
     /**
@@ -129,44 +128,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     public function onPreDependenciesSolving(InstallerEvent $event)
     {
         $this->pool = $event->getPool();
-    }
-
-    /**
-     * Adds asset registry repositories.
-     *
-     * @param RepositoryManager $rm
-     * @param array             $extra
-     */
-    protected function addRegistryRepositories(RepositoryManager $rm, array $extra)
-    {
-        $opts = array_key_exists('asset-registry-options', $extra)
-            ? $extra['asset-registry-options']
-            : array();
-
-        foreach (Assets::getRegistries() as $assetType => $registryClass) {
-            $config = array(
-                'repository-manager' => $rm,
-                'vcs-package-filter' => $this->packageFilter,
-                'asset-options'      => $this->crateAssetOptions($opts, $assetType),
-            );
-
-            $rm->setRepositoryClass($assetType, $registryClass);
-            $rm->addRepository($rm->createRepository($assetType, $config));
-        }
-    }
-
-    /**
-     * Sets vcs type repositories.
-     *
-     * @param RepositoryManager $rm
-     */
-    protected function setVcsTypeRepositories(RepositoryManager $rm)
-    {
-        foreach (Assets::getTypes() as $assetType) {
-            foreach (Assets::getVcsRepositoryDrivers() as $driverType => $repositoryClass) {
-                $rm->setRepositoryClass($assetType . '-' . $driverType, $repositoryClass);
-            }
-        }
     }
 
     /**
@@ -264,41 +225,5 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         if (!isset($repo['url'])) {
             throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a url defined');
         }
-    }
-
-    /**
-     * Creates the asset options.
-     *
-     * @param array  $extra     The composer extra section of asset options
-     * @param string $assetType The asset type
-     *
-     * @return array The asset registry options
-     */
-    protected function crateAssetOptions(array $extra, $assetType)
-    {
-        $options = array();
-
-        foreach ($extra as $key => $value) {
-            if (0 === strpos($key, $assetType . '-')) {
-                $key = substr($key, strlen($assetType) + 1);
-                $options[$key] = $value;
-            }
-        }
-
-        return $options;
-    }
-
-    /**
-     * Adds asset installers.
-     *
-     * @param Composer    $composer
-     * @param IOInterface $io
-     */
-    protected function addInstallers(Composer $composer, IOInterface $io)
-    {
-        $im = $composer->getInstallationManager();
-
-        $im->addInstaller(new BowerInstaller($io, $composer, Assets::createType('bower')));
-        $im->addInstaller(new AssetInstaller($io, $composer, Assets::createType('npm')));
     }
 }
