@@ -102,8 +102,13 @@ Of course, 3 solutions can work around the problem:
 
 1. delete the `vendor` directory, do the `update`
 2. disable temporarily the import filter in the `extra` section
-3. add the dependency in the root Composer package with the required version (the version
-not found), do the `update`, and remove the dependency in the root Composer package
+3. add the dependency in the root Composer package:
+  - add the dependency in the root Composer package with the required version (the version not found)
+  - put the option `extra.asset-optimize-with-conjunctive` to `false`,
+  - do the `update`,
+  - remove the dependency in the root Composer package
+  - remove the option `extra.asset-optimize-with-conjunctive`
+  - do the `update` for sync the lock file,
 
 > The solution 1 is the easiest and fastest.
 

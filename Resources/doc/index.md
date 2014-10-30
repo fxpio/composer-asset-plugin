@@ -205,6 +205,23 @@ You can disable the import filter using the versions of installed packages with 
 }
 ```
 
+#### Disable the conjunctive option of the import filter
+
+You can disable the `conjunctive` mode of the import filter with the option
+`extra.asset-optimize-with-conjunctive` in the root Composer package:
+
+```json
+{
+    "extra": {
+        "asset-optimize-with-conjunctive": false
+    }
+}
+```
+
+> **Note:**
+>
+> This option is used only if the optimization with the installed packages is enabled
+
 ### Define a custom directory for the assets installation
 
 By default, the plugin will install all the assets in the directory
