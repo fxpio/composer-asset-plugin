@@ -238,23 +238,25 @@ class VcsPackageFilter
             $this->package->getDevRequires()
         );
 
-        if (null !== $this->installedRepository && $this->filterInstalledPackages()) {
+        if (null !== $this->installedRepository
+                && $this->checkExtraOption('asset-optimize-with-installed-packages')) {
             $this->initInstalledPackages();
         }
     }
 
     /**
-     * Check if the filter must filtering with the installed packages.
+     * Check the extra option.
+     *
+     * @param string $name The extra option name
      *
      * @return bool
      */
-    private function filterInstalledPackages()
+    private function checkExtraOption($name)
     {
-        $optName = 'asset-optimize-with-installed-packages';
         $extra = $this->package->getExtra();
 
-        return !array_key_exists($optName, $extra)
-            || true === $extra[$optName];
+        return !array_key_exists($name, $extra)
+            || true === $extra[$name];
     }
 
     /**
@@ -265,7 +267,7 @@ class VcsPackageFilter
         /* @var PackageInterface $package */
         foreach ($this->installedRepository->getPackages() as $package) {
             /* @var Link $link */
-            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>=' . $package->getPrettyVersion())));
+            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>' . $package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 
             $this->requires[$package->getName()] = $link;
@@ -286,7 +288,8 @@ class VcsPackageFilter
         if (isset($this->requires[$package->getName()])) {
             /* @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
-            $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), false);
+            $useConjunctive = $this->checkExtraOption('asset-optimize-with-conjunctive');
+            $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
             $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
         }
 

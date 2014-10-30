@@ -369,35 +369,49 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
     public function getDataForInstalledTests()
     {
         $optn = 'asset-optimize-with-installed-packages';
+        $optn2 = 'asset-optimize-with-conjunctive';
+
+        $opt1 = array();
+        $opt2 = array($optn => true, $optn2 => true);
+        $opt3 = array($optn => false, $optn2 => true);
+        $opt4 = array($optn => true, $optn2 => false);
 
         return array(
-            array(array(),               'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
-            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
-            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
-            array(array(),               'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
-            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
-            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
+            array($opt1, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', '1.0.0', false),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', '1.0.0', false),
 
-            array(array(),               'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
-            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
-            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
-            array(array(),               'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
-            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
-            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array($opt1, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'stable', '>=0.9', null,    false),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'stable', '>=0.9', null,    false),
 
-            array(array(),               'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
-            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
-            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
-            array(array(),               'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
-            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
-            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', false),
+            array($opt1, 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'stable', null,    '1.0.0', true),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'stable', null,    '1.0.0', true),
 
-            array(array(),               'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
-            array(array($optn => true),  'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
-            array(array($optn => false), 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
-            array(array(),               'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
-            array(array($optn => true),  'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
-            array(array($optn => false), 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array($opt1, 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'stable', null,    null,    false),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
         );
     }
 
