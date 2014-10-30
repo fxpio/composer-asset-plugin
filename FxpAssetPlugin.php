@@ -17,6 +17,8 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
+use Composer\Plugin\CommandEvent;
+use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\Repository\InstalledFilesystemRepository;
 use Composer\Repository\RepositoryInterface;
@@ -63,6 +65,9 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
             AssetEvents::ADD_VCS_REPOSITORIES => array(
                 array('onAddVcsRepositories', 0),
             ),
+            PluginEvents::COMMAND => array(
+                array('onPluginCommand', 0),
+            ),
             InstallerEvents::PRE_DEPENDENCIES_SOLVING => array(
                 array('onPreDependenciesSolving', 0),
             ),
@@ -101,6 +106,18 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         if (null !== $this->composer) {
             $rm = $this->composer->getRepositoryManager();
             $this->addRepositories($rm, $event->getRepositories(), $this->pool);
+        }
+    }
+
+    /**
+     * Disable the package filter for all command, but for install and update command.
+     *
+     * @param CommandEvent $event
+     */
+    public function onPluginCommand(CommandEvent $event)
+    {
+        if (!in_array($event->getCommandName(), array('install', 'update'))) {
+            $this->packageFilter->setEnabled(false);
         }
     }
 

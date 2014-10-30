@@ -45,6 +45,11 @@ class VcsPackageFilter
     protected $versionParser;
 
     /**
+     * @var bool
+     */
+    protected $enabled;
+
+    /**
      * @var array
      */
     protected $requires;
@@ -60,8 +65,31 @@ class VcsPackageFilter
         $this->package = $package;
         $this->installedRepository = $installedRepository;
         $this->versionParser = new VersionParser();
+        $this->enabled = true;
 
         $this->initialize();
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return self
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool) $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Check if the filter is enabled.
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 
     /**
@@ -86,7 +114,7 @@ class VcsPackageFilter
             $cVersion = $assetType->getVersionConverter()->convertVersion($version);
             $normalizedVersion = $this->versionParser->normalize($cVersion);
 
-            return !$this->satisfy($require, $normalizedVersion);
+            return !$this->satisfy($require, $normalizedVersion) && $this->isEnabled();
         } catch (\Exception $ex) {
             return true;
         }

@@ -342,6 +342,30 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
     }
 
+    public function getDataProviderForDisableTest()
+    {
+        return array(
+            array('acme/foobar', 'v1.0.0',        'stable', array(),                         false),
+
+            array('acme/foobar', 'v1.0.0',        'stable', array('acme/foobar' => '>=1.0'), false),
+            array('acme/foobar', 'v1.0.0-RC1',    'stable', array('acme/foobar' => '>=1.0'), false),
+            array('acme/foobar', 'v1.0.0-beta1',  'stable', array('acme/foobar' => '>=1.0'), false),
+            array('acme/foobar', 'v1.0.0-alpha1', 'stable', array('acme/foobar' => '>=1.0'), false),
+            array('acme/foobar', 'v1.0.0-patch1', 'stable', array('acme/foobar' => '>=1.0'), false),
+        );
+    }
+
+    /**
+     * @dataProvider getDataProviderForDisableTest
+     */
+    public function testDisabledFilterWithInstalledPackage($packageName, $version, $minimumStability, array $rootRequires, $validSkip)
+    {
+        $this->init($rootRequires, $minimumStability);
+        $this->filter->setEnabled(false);
+
+        $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
+    }
+
     public function getDataForInstalledTests()
     {
         $optn = 'asset-optimize-with-installed-packages';
