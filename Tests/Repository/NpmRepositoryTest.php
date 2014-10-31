@@ -25,7 +25,7 @@ use Fxp\Composer\AssetPlugin\Repository\NpmRepository;
 class NpmRepositoryTest extends AbstractAssetsRepositoryTest
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getType()
     {
@@ -33,7 +33,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
@@ -41,7 +41,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMockPackageForVcsConfig()
     {
@@ -54,7 +54,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMockSearchResult($name = 'mock-package')
     {

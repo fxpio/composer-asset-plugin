@@ -22,7 +22,7 @@ use Composer\Repository\RepositoryInterface;
 class MockAssetRepository implements RepositoryInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function hasPackage(PackageInterface $package)
     {
@@ -30,7 +30,7 @@ class MockAssetRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findPackage($name, $version)
     {
@@ -38,7 +38,7 @@ class MockAssetRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function findPackages($name, $version = null)
     {
@@ -46,7 +46,7 @@ class MockAssetRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getPackages()
     {
@@ -54,7 +54,7 @@ class MockAssetRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function search($query, $mode = 0)
     {
@@ -62,7 +62,7 @@ class MockAssetRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function count()
     {

@@ -24,7 +24,7 @@ use Fxp\Composer\AssetPlugin\Repository\BowerRepository;
 class BowerRepositoryTest extends AbstractAssetsRepositoryTest
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getType()
     {
@@ -32,7 +32,7 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
@@ -40,7 +40,7 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMockPackageForVcsConfig()
     {
@@ -50,7 +50,7 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMockSearchResult($name = 'mock-package')
     {

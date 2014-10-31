@@ -21,7 +21,7 @@ use Fxp\Composer\AssetPlugin\Converter\NpmPackageConverter;
 class NpmAssetType extends AbstractAssetType
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -29,7 +29,7 @@ class NpmAssetType extends AbstractAssetType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFilename()
     {
@@ -37,7 +37,7 @@ class NpmAssetType extends AbstractAssetType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createPackageConverter()
     {

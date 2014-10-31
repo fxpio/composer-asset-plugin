@@ -56,7 +56,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     protected $packageFilter;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getSubscribedEvents()
     {
@@ -74,7 +74,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function activate(Composer $composer, IOInterface $io)
     {

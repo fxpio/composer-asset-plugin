@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Converter;
 class BowerPackageConverter extends AbstractPackageConverter
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMapKeys()
     {
@@ -44,7 +44,7 @@ class BowerPackageConverter extends AbstractPackageConverter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getMapExtras()
     {
@@ -56,7 +56,7 @@ class BowerPackageConverter extends AbstractPackageConverter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function convertDependency($dependency, $version, array &$vcsRepos = array(), array $composer)
     {

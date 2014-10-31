@@ -24,7 +24,7 @@ use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
 class NpmRepository extends AbstractAssetsRepository
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getType()
     {
@@ -32,7 +32,7 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getUrl()
     {
@@ -40,7 +40,7 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getPackageUrl()
     {
@@ -48,7 +48,7 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getSearchUrl()
     {
@@ -64,7 +64,7 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
@@ -78,7 +78,7 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function whatProvidesManageException(Pool $pool, $name, \Exception $exception)
     {

@@ -29,7 +29,7 @@ use Fxp\Composer\AssetPlugin\Util\Validator;
 class AssetVcsRepository extends AbstractAssetVcsRepository
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function initialize()
     {

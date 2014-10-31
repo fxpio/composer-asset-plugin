@@ -33,7 +33,7 @@ class MockVcsDriver implements VcsDriverInterface
     public $contents = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function initialize()
     {
@@ -41,7 +41,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getComposerInformation($identifier)
     {
@@ -49,7 +49,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getRootIdentifier()
     {
@@ -57,7 +57,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getBranches()
     {
@@ -65,7 +65,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTags()
     {
@@ -73,7 +73,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDist($identifier)
     {
@@ -81,7 +81,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getSource($identifier)
     {
@@ -89,7 +89,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getUrl()
     {
@@ -97,7 +97,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function hasComposerFile($identifier)
     {
@@ -105,7 +105,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function cleanup()
     {
@@ -113,7 +113,7 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function supports(IOInterface $io, Config $config, $url, $deep = false)
     {

@@ -22,7 +22,7 @@ use Composer\Package\PackageInterface;
 class BowerInstaller extends AssetInstaller
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function addIgnorePatterns(IgnoreManager $manager, PackageInterface $package)
     {

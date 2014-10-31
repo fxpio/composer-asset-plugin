@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 class BowerRepository extends AbstractAssetsRepository
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getType()
     {
@@ -27,7 +27,7 @@ class BowerRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getUrl()
     {
@@ -35,7 +35,7 @@ class BowerRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getPackageUrl()
     {
@@ -43,7 +43,7 @@ class BowerRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getSearchUrl()
     {
@@ -51,7 +51,7 @@ class BowerRepository extends AbstractAssetsRepository
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {

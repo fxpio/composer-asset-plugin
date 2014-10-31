@@ -45,7 +45,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getComposerVendorName()
     {
@@ -53,7 +53,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getComposerType()
     {
@@ -61,7 +61,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFilename()
     {
@@ -69,7 +69,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getPackageConverter()
     {
@@ -77,7 +77,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getVersionConverter()
     {
@@ -85,7 +85,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function formatComposerName($name)
     {
