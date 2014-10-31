@@ -877,6 +877,140 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($sha, $source['reference']);
     }
 
+    public function getDataBranches()
+    {
+        $valid1 = array();
+        $git1 = array();
+        $valid2 = array(
+            'master' => '0123456789abcdef0123456789abcdef01234567'
+        );
+        $git2 = array(
+            'master 0123456789abcdef0123456789abcdef01234567 Comment'
+        );
+        $valid3 = array(
+            'gh-pages' => '0123456789abcdef0123456789abcdef01234567'
+        );
+        $git3 = array(
+            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment'
+        );
+        $valid4 = array(
+            'master' => '0123456789abcdef0123456789abcdef01234567',
+            'gh-pages' => '0123456789abcdef0123456789abcdef01234567'
+        );
+        $git4 = array(
+            'master 0123456789abcdef0123456789abcdef01234567 Comment',
+            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment'
+        );
+
+        return array(
+            array('npm', 'package.json', $valid1, $git1),
+            array('npm', 'package.json', $valid2, $git2),
+            array('npm', 'package.json', $valid3, $git3),
+            array('npm', 'package.json', $valid4, $git4),
+            array('bower', 'bower.json', $valid1, $git1),
+            array('bower', 'bower.json', $valid2, $git2),
+            array('bower', 'bower.json', $valid3, $git3),
+            array('bower', 'bower.json', $valid4, $git4),
+        );
+    }
+
+    /**
+     * @dataProvider getDataBranches
+     */
+    public function testGetBranchesWithGitDriver($type, $filename, array $branches, array $gitBranches)
+    {
+        $repoUrl = 'https://github.com/composer-test/repo-name';
+
+        $io = $this->getMock('Composer\IO\IOInterface');
+        $io->expects($this->any())
+            ->method('isInteractive')
+            ->will($this->returnValue(true));
+
+        $repoConfig = array(
+            'url'        => $repoUrl,
+            'asset-type' => $type,
+            'filename'   => $filename,
+            'no-api'     => true,
+        );
+
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('splitLines')
+            ->will($this->returnValue($gitBranches));
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function () {
+                return 0;
+            }));
+
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
+        $gitHubDriver->initialize();
+
+        $this->assertSame($branches, $gitHubDriver->getBranches());
+    }
+
+    /**
+     * @dataProvider getDataBranches
+     */
+    public function testGetBranches($type, $filename, array $branches)
+    {
+        $repoUrl = 'http://github.com/composer-test/repo-name';
+        $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $identifier = 'v0.0.0';
+        $sha = 'SOMESHA';
+
+        $io = $this->getMock('Composer\IO\IOInterface');
+        $io->expects($this->any())
+            ->method('isInteractive')
+            ->will($this->returnValue(true));
+
+        $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
+            ->setConstructorArgs(array($io))
+            ->getMock();
+
+        $remoteFilesystem->expects($this->at(0))
+            ->method('getContents')
+            ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'gh-pages'))));
+
+        $remoteFilesystem->expects($this->any())
+            ->method('getLastHeaders')
+            ->will($this->returnValue(array()));
+
+        $githubBranches = array();
+        foreach ($branches as $branch => $sha) {
+            $githubBranches[] = array(
+                'ref' => 'refs/heads/'.$branch,
+                'object' => array(
+                    'sha' => $sha,
+                ),
+            );
+        }
+
+        $remoteFilesystem->expects($this->at(1))
+            ->method('getContents')
+            ->will($this->returnValue(json_encode($githubBranches)));
+
+        $repoConfig = array(
+            'url'        => $repoUrl,
+            'asset-type' => $type,
+            'filename'   => $filename,
+        );
+
+        /* @var IOInterface $io */
+        /* @var RemoteFilesystem $remoteFilesystem */
+
+        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
+        $gitHubDriver->initialize();
+        $this->setAttribute($gitHubDriver, 'tags', array($identifier => $sha));
+
+        $this->assertEquals('gh-pages', $gitHubDriver->getRootIdentifier());
+        $this->assertSame($branches, $gitHubDriver->getBranches());
+    }
+
     /**
      * @param object $object
      * @param string $attribute

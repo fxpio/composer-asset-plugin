@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Repository\Vcs;
 
 use Composer\Cache;
 use Composer\Downloader\TransportException;
+use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\GitHubDriver as BaseGitHubDriver;
 
 /**
@@ -178,5 +179,49 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
     protected function getRemoteContents($url)
     {
         return $this->remoteFilesystem->getContents($this->originUrl, $url, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBranches()
+    {
+        if ($this->gitDriver) {
+            return $this->gitDriver->getBranches();
+        }
+
+        if (null === $this->branches) {
+            $this->branches = array();
+            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
+            $branchBlacklist = 'gh-pages' === $this->getRootIdentifier() ? array() : array('gh-pages');
+
+            $this->doAddBranches($resource, $branchBlacklist);
+        }
+
+        return $this->branches;
+    }
+
+    /**
+     * Push the list of all branch.
+     *
+     * @param string $resource
+     * @param array  $branchBlacklist
+     */
+    protected function doAddBranches($resource, array $branchBlacklist)
+    {
+        do {
+            $branchData = JsonFile::parseJson($this->getContents($resource), $resource);
+
+            foreach ($branchData as $branch) {
+                $name = substr($branch['ref'], 11);
+
+                if (!in_array($name, $branchBlacklist)) {
+                    $this->branches[$name] = $branch['object']['sha'];
+                }
+            }
+
+            $resource = $this->getNextPage();
+
+        } while ($resource);
     }
 }
