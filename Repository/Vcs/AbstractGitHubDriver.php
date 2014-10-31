@@ -210,7 +210,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
     protected function doAddBranches($resource, array $branchBlacklist)
     {
         do {
-            $branchData = JsonFile::parseJson($this->getContents($resource), $resource);
+            $branchData = JsonFile::parseJson((string) $this->getContents($resource), $resource);
 
             foreach ($branchData as $branch) {
                 $name = substr($branch['ref'], 11);
