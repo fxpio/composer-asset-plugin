@@ -53,10 +53,14 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - Disable or replace the deleting of the ignore files for Bower
 - Enable manually the deleting of the ignore files for NPM
 - Use the Ignore Files Manager in the Composer scripts
-- Compatible with commands:
+- Compatible with all commands, including:
+  - `depends`
+  - `diagnose`
+  - `licenses`
+  - `remove`
+  - `require`
   - `search` (bower only)
   - `show`
-  - `licenses`
   - `status`
 
 ##### Why this plugin?
