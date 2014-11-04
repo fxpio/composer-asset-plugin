@@ -29,22 +29,12 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $fs = new Filesystem();
-        $source = __DIR__.'/../Fixtures/foo';
-        $this->target = $target = sys_get_temp_dir() . '/composer-foo';
+        $this->target = sys_get_temp_dir() . '/composer-foo';
 
-        $it = new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS);
-        $ri = new \RecursiveIteratorIterator($it, \RecursiveIteratorIterator::SELF_FIRST);
-        $fs->ensureDirectoryExists($target);
-
-        /* @var \SplFileInfo $file */
-        foreach ($ri as $file) {
-            /* @var \RecursiveDirectoryIterator $ri */
-            $targetPath = $target . DIRECTORY_SEPARATOR . $ri->getSubPathName();
-            if ($file->isDir()) {
-                $fs->ensureDirectoryExists($targetPath);
-            } else {
-                copy($file->getPathname(), $targetPath);
-            }
+        foreach ($this->getFixtureFiles() as $filename) {
+            $path = $this->target . '/' . $filename;
+            $fs->ensureDirectoryExists(dirname($path));
+            @file_put_contents($path, '');
         }
     }
 
@@ -52,6 +42,31 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->target);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getFixtureFiles()
+    {
+        return array(
+            '.hidden',
+            'CHANGELOG',
+            'README',
+            'lib/autoload.php',
+            'src/.hidden',
+            'src/doc',
+            'src/foo/.hidden',
+            'src/foo/empty.html',
+            'src/foo/empty.md',
+            'src/foo/empty.txt',
+            'src/foo/small.txt',
+            'src/lib/empty.txt',
+            'src/lib/foo/empty.txt',
+            'src/lib/foo/small.txt',
+            'src/tests/empty.html',
+            'tests/bootstrap.php',
+        );
     }
 
     public function testDeleteIgnoredFiles()
