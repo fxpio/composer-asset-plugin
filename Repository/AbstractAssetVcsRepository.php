@@ -16,6 +16,8 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Loader\LoaderInterface;
+use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
@@ -230,5 +232,41 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
 
         return (array) $data;
+    }
+
+    /**
+     * Override the branch alias extra config of the current package.
+     *
+     * @param PackageInterface $package         The current package
+     * @param string           $aliasNormalized The alias version normalizes
+     * @param string           $branch          The branch name
+     *
+     * @return PackageInterface
+     */
+    protected function overrideBranchAliasConfig(PackageInterface $package, $aliasNormalized, $branch)
+    {
+        if ($package instanceof Package && false === strpos('dev-', $aliasNormalized)) {
+            $extra = $package->getExtra();
+            $extra['branch-alias'] = array(
+                'dev-' . $branch => $this->rootPackageVersion . '-dev',
+            );
+            $this->injectExtraConfig($package, $extra);
+        }
+
+        return $package;
+    }
+
+    /**
+     * Inject the overriding extra config in the current package.
+     *
+     * @param PackageInterface $package The package
+     * @param array            $extra   The new extra config
+     */
+    private function injectExtraConfig(PackageInterface $package, array $extra)
+    {
+        $ref = new \ReflectionClass($package);
+        $met = $ref->getProperty('extra');
+        $met->setAccessible(true);
+        $met->setValue($package, $extra);
     }
 }
