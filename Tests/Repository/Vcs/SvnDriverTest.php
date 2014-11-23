@@ -68,7 +68,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
 
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -104,7 +104,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -124,7 +124,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
                     $value = array(
                         'Last Changed Rev: '.$identifier,
-                        'Last Changed Date: '.$date->format('Y-m-d H:i:s O').' ('.$date->format('l, j F Y').')'
+                        'Last Changed Date: '.$date->format('Y-m-d H:i:s O').' ('.$date->format('l, j F Y').')',
                     );
 
                     $output('out', implode(PHP_EOL, $value));
@@ -157,7 +157,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -177,7 +177,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
                     $date = new \DateTime(null, new \DateTimeZone('UTC'));
                     $value = array(
                         'Last Changed Rev: '.$identifier,
-                        'Last Changed Date: '.$date->format('Y-m-d H:i:s O').' ('.$date->format('l, j F Y').')'
+                        'Last Changed Date: '.$date->format('Y-m-d H:i:s O').' ('.$date->format('l, j F Y').')',
                     );
 
                     $output('out', implode(PHP_EOL, $value));
@@ -215,7 +215,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
 
         $process = $this->getMock('Composer\Util\ProcessExecutor');

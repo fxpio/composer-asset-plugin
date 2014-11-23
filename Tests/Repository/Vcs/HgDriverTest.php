@@ -67,7 +67,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
 
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -103,7 +103,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -146,7 +146,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url'        => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename
+            'filename'   => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');

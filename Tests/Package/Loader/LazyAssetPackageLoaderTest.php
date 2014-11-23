@@ -247,7 +247,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             $validOutput = array(
                 'Reading '.$filename.' of <info>'.$this->lazyPackage->getName().'</info> (<comment>'.$this->lazyPackage->getPrettyVersion().'</comment>)',
                 'Importing empty TYPE '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
-                ''
+                '',
             );
         }
         $this->assertSame($validOutput, $this->io->getTraces());
@@ -266,7 +266,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $arrayPackage = array(
             'name' => 'PACKAGE_NAME',
-            'version' => '1.0'
+            'version' => '1.0',
         );
 
         $realPackage = $this->getMock('Composer\Package\CompletePackageInterface');
@@ -311,7 +311,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             $validOutput = array(
                 'Reading '.$filename.' of <info>'.$this->lazyPackage->getName().'</info> (<comment>'.$this->lazyPackage->getPrettyVersion().'</comment>)',
                 'Importing TYPE'.' '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
-                ''
+                '',
             );
         }
 

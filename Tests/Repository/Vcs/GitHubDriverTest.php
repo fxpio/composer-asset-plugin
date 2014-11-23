@@ -882,24 +882,24 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $valid1 = array();
         $git1 = array();
         $valid2 = array(
-            'master' => '0123456789abcdef0123456789abcdef01234567'
+            'master' => '0123456789abcdef0123456789abcdef01234567',
         );
         $git2 = array(
-            'master 0123456789abcdef0123456789abcdef01234567 Comment'
+            'master 0123456789abcdef0123456789abcdef01234567 Comment',
         );
         $valid3 = array(
-            'gh-pages' => '0123456789abcdef0123456789abcdef01234567'
+            'gh-pages' => '0123456789abcdef0123456789abcdef01234567',
         );
         $git3 = array(
-            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment'
+            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment',
         );
         $valid4 = array(
             'master' => '0123456789abcdef0123456789abcdef01234567',
-            'gh-pages' => '0123456789abcdef0123456789abcdef01234567'
+            'gh-pages' => '0123456789abcdef0123456789abcdef01234567',
         );
         $git4 = array(
             'master 0123456789abcdef0123456789abcdef01234567 Comment',
-            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment'
+            'gh-pages 0123456789abcdef0123456789abcdef01234567 Comment',
         );
 
         return array(

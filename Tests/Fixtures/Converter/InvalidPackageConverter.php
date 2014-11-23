@@ -28,7 +28,7 @@ class InvalidPackageConverter extends AbstractPackageConverter
         return array_merge(parent::getMapKeys(), array(
             'name' => array(null, function ($value) {
                 return $value;
-            }),
+            }, ),
         ));
     }
 }

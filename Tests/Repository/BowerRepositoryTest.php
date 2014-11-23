@@ -56,7 +56,7 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     {
         return array(
             array(
-                'name' => $name
+                'name' => $name,
             ),
         );
     }

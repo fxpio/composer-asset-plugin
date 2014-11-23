@@ -28,13 +28,13 @@ class BowerPackageConverter extends AbstractPackageConverter
         return array(
             'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->formatComposerName($value);
-            }),
+            }, ),
             'type'               => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
-            }),
+            }, ),
             'version'            => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);
-            }),
+            }, ),
             'version_normalized' => 'version_normalized',
             'description'        => 'description',
             'keywords'           => 'keywords',

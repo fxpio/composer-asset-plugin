@@ -63,7 +63,7 @@ class PerforceTest extends BasePerforceTest
     public function getTestRepoConfig()
     {
         return array_merge(parent::getTestRepoConfig(), array(
-            'filename' => 'ASSET.json'
+            'filename' => 'ASSET.json',
         ));
     }
 
@@ -88,7 +88,7 @@ class PerforceTest extends BasePerforceTest
             'name'              => 'test/perforce',
             'description'       => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array())
+            'autoload'          => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -129,7 +129,7 @@ class PerforceTest extends BasePerforceTest
             'name'              => 'test/perforce',
             'description'       => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array())
+            'autoload'          => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -158,7 +158,7 @@ class PerforceTest extends BasePerforceTest
             'name'              => 'test/perforce',
             'description'       => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array())
+            'autoload'          => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -200,7 +200,7 @@ class PerforceTest extends BasePerforceTest
             'name'              => 'test/perforce',
             'description'       => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array())
+            'autoload'          => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }

@@ -44,7 +44,7 @@ class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
         return array(
             array(null),
             array('lazy'),
-            array('lazy-exception')
+            array('lazy-exception'),
         );
     }
 
