@@ -54,7 +54,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
             $this->redirectApi = false;
 
             return $contents;
-
         } catch (TransportException $e) {
             if ($this->hasRedirectUrl($url)) {
                 $url = $this->getValidContentUrl($url);
@@ -120,7 +119,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
             }
 
             return false;
-
         } catch (\Exception $ex) {
             return false;
         }
@@ -221,7 +219,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
             }
 
             $resource = $this->getNextPage();
-
         } while ($resource);
     }
 }

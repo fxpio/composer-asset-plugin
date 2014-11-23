@@ -61,7 +61,6 @@ abstract class PackageUtil
                     ),
                 );
             }
-
         }
 
         return array($dependency, $version);

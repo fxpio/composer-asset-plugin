@@ -82,7 +82,6 @@ class SvnDriver extends BaseSvnDriver
         $output = null;
 
         try {
-
             $output = $this->execute('svn cat', $this->baseUrl.$resource.$rev);
         } catch (\RuntimeException $e) {
             throw new TransportException($e->getMessage());

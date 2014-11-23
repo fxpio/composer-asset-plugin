@@ -22,7 +22,6 @@ use Composer\Util\ProcessExecutor;
  */
 class ProcessUtil
 {
-
     /**
      * Get composer information.
      *

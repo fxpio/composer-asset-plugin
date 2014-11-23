@@ -82,7 +82,6 @@ class ScriptHandler
     {
         if ($operation instanceof UpdateOperation) {
             return $operation->getTargetPackage();
-
         } elseif ($operation instanceof InstallOperation) {
             return $operation->getPackage();
         }

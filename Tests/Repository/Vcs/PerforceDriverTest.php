@@ -38,7 +38,6 @@ class PerforceDriverTest extends BasePerforceDriverTest
 
         $this->driver = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
         $this->overrideDriverInternalPerforce($this->perforce);
-
     }
 
     public function testInitializeCapturesVariablesFromRepoConfig()

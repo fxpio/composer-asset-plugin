@@ -133,13 +133,10 @@ abstract class SemverUtil
 
         if ('dev' === $type) {
             $patchVersion = false;
-
         } elseif ('a' === $type) {
             $type = 'alpha';
-
         } elseif (in_array($type, array('b', 'pre'))) {
             $type = 'beta';
-
         } elseif (!in_array($type, array('alpha', 'beta', 'RC'))) {
             $type = 'patch';
         }

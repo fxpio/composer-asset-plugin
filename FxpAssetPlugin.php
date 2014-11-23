@@ -148,7 +148,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
 
             if ('package' === $repo['type']) {
                 $name = $repo['package']['name'];
-
             } else {
                 $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
                 $name = isset($repo['name']) ? $repo['name'] : $name;

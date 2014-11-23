@@ -31,7 +31,6 @@ class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->package = new LazyCompletePackage('foo', '1.0.0.0', '1.0');
-
     }
 
     protected function tearDown()
