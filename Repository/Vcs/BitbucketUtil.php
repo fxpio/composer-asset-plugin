@@ -43,7 +43,7 @@ class BitbucketUtil
         $infoCache[$identifier] = Util::readCache($infoCache, $cache, $repoConfig['asset-type'], $identifier);
 
         if (!isset($infoCache[$identifier])) {
-            $resource = $scheme . '://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
+            $resource = $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
             $composer = static::getComposerContent($resource, $identifier, $scheme, $owner, $repository, $driver, $method);
 
             Util::writeCache($cache, $repoConfig['asset-type'], $identifier, $composer);
@@ -103,7 +103,7 @@ class BitbucketUtil
      */
     protected static function formatComposerContent(array $composer, $identifier, $scheme, $owner, $repository, $driver, $method)
     {
-        $resource = $scheme . '://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/changesets/'.$identifier;
+        $resource = $scheme.'://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/changesets/'.$identifier;
         $composer = Util::addComposerTime($composer, 'timestamp', $resource, $driver, $method);
 
         return $composer;

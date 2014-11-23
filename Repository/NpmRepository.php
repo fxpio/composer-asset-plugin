@@ -44,7 +44,7 @@ class NpmRepository extends AbstractAssetsRepository
      */
     protected function getPackageUrl()
     {
-        return $this->canonicalizeUrl($this->baseUrl . '/%package%');
+        return $this->canonicalizeUrl($this->baseUrl.'/%package%');
     }
 
     /**
@@ -52,7 +52,7 @@ class NpmRepository extends AbstractAssetsRepository
      */
     protected function getSearchUrl()
     {
-        return $this->canonicalizeUrl($this->baseUrl . '/-/all');
+        return $this->canonicalizeUrl($this->baseUrl.'/-/all');
     }
 
     /**
@@ -71,7 +71,7 @@ class NpmRepository extends AbstractAssetsRepository
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
 
         return array(
-            'type' => $this->assetType->getName() . '-' . $type,
+            'type' => $this->assetType->getName().'-'.$type,
             'url'  => $this->getVcsRepositoryUrl($data, $registryName),
             'name' => $registryName,
         );
@@ -133,7 +133,7 @@ class NpmRepository extends AbstractAssetsRepository
     {
         if (!isset($data['repository']['url'])) {
             $msg = sprintf('The "repository.url" parameter of "%s" %s asset package must be present for create a VCS Repository', $registryName, $this->assetType->getName());
-            $msg .= PHP_EOL . 'If the config comes from the NPM Registry, override the config with a custom Asset VCS Repository';
+            $msg .= PHP_EOL.'If the config comes from the NPM Registry, override the config with a custom Asset VCS Repository';
             $ex = new InvalidCreateRepositoryException($msg);
             $ex->setData($data);
 

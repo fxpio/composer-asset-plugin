@@ -131,7 +131,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $repoName = Util::convertAliasName($name);
             $packageName = Util::cleanPackageName($repoName);
             $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
-            $cacheName = $packageName . '-' . sha1($packageName) . '-package.json';
+            $cacheName = $packageName.'-'.sha1($packageName).'-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
             $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
             $repo['vcs-package-filter'] = $this->packageFilter;
@@ -139,7 +139,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             Util::addRepository($this->rm, $this->repos, $name, $repo, $pool);
 
             $this->providers[$name] = array();
-
         } catch (\Exception $ex) {
             $this->whatProvidesManageException($pool, $name, $ex);
         }
@@ -165,7 +164,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     protected function findWhatProvides($name)
     {
-        $assetPrefix = $this->assetType->getComposerVendorName() . '/';
+        $assetPrefix = $this->assetType->getComposerVendorName().'/';
 
         if (false === strpos($name, $assetPrefix)) {
             return array();
@@ -241,7 +240,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected function createSearchItem(array $item)
     {
         return array(
-            'name'        => $this->assetType->getComposerVendorName() . '/' . $item['name'],
+            'name'        => $this->assetType->getComposerVendorName().'/'.$item['name'],
             'description' => null,
         );
     }

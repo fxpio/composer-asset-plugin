@@ -58,9 +58,9 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($key) {
                 switch ($key) {
                     case 'cache-repo-dir':
-                        return sys_get_temp_dir() . '/composer-test-repo-cache';
+                        return sys_get_temp_dir().'/composer-test-repo-cache';
                     case 'vendor-dir':
-                        return sys_get_temp_dir() . '/composer-test/vendor';
+                        return sys_get_temp_dir().'/composer-test/vendor';
                 }
 
                 return null;
@@ -104,14 +104,14 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $this->io = null;
 
         $fs = new Filesystem();
-        $fs->remove(sys_get_temp_dir() . '/composer-test-repo-cache');
-        $fs->remove(sys_get_temp_dir() . '/composer-test/vendor');
+        $fs->remove(sys_get_temp_dir().'/composer-test-repo-cache');
+        $fs->remove(sys_get_temp_dir().'/composer-test/vendor');
     }
 
     public function testDefaultVendorDir()
     {
         $installer = $this->createInstaller();
-        $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/vendor/'.$this->type->getComposerVendorName();
+        $vendorDir = realpath(sys_get_temp_dir()).'/composer-test/vendor/'.$this->type->getComposerVendorName();
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
         $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo'));
@@ -125,7 +125,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
     public function testCustomFooDir()
     {
-        $vendorDir = realpath(sys_get_temp_dir()) . '/composer-test/web';
+        $vendorDir = realpath(sys_get_temp_dir()).'/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
@@ -135,7 +135,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array(
                 'asset-installer-paths' => array(
                     $this->type->getComposerType() => $vendorDir,
-                )
+                ),
             )));
 
         $installer = $this->createInstaller();
@@ -174,7 +174,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $package = $this->createPackageMock('foo-asset/package');
 
         /* @var PackageInterface $package */
-        $packageDir = $vendorDir . '/' . $package->getPrettyName();
+        $packageDir = $vendorDir.'/'.$package->getPrettyName();
 
         $dm->expects($this->once())
             ->method('download')

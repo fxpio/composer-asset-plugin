@@ -49,7 +49,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
      */
     public function getComposerVendorName()
     {
-        return $this->getName() . '-asset';
+        return $this->getName().'-asset';
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
      */
     public function getComposerType()
     {
-        return $this->getName() . '-asset-library';
+        return $this->getName().'-asset-library';
     }
 
     /**
@@ -65,7 +65,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
      */
     public function getFilename()
     {
-        return $this->getName() . '.json';
+        return $this->getName().'.json';
     }
 
     /**
@@ -89,13 +89,13 @@ abstract class AbstractAssetType implements AssetTypeInterface
      */
     public function formatComposerName($name)
     {
-        $prefix = $this->getComposerVendorName() . '/';
+        $prefix = $this->getComposerVendorName().'/';
 
         if (preg_match('/(\:\/\/)|\@/', $name) || 0 === strpos($name, $prefix)) {
             return $name;
         }
 
-        return $prefix . $name;
+        return $prefix.$name;
     }
 
     /**

@@ -44,7 +44,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         $driver->cleanup();
 
         if (!$this->getPackages()) {
-            throw new InvalidRepositoryException('No valid ' . $this->assetType->getFilename() . ' was found in any branch or tag of '.$this->url.', could not load a package from it.');
+            throw new InvalidRepositoryException('No valid '.$this->assetType->getFilename().' was found in any branch or tag of '.$this->url.', could not load a package from it.');
         }
     }
 
@@ -169,7 +169,6 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         $package = $loader->load($data);
         $package = $this->includeBranchAlias($driver, $package, $branch);
         $this->addPackage($package);
-
     }
 
     /**
@@ -203,7 +202,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
 
         // make sure branch packages have a dev flag
         if ('dev-' === substr((string) $parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
-            $data['version'] = 'dev-' . $data['version'];
+            $data['version'] = 'dev-'.$data['version'];
         } else {
             $data['version'] = preg_replace('{(\.9{7})+}', '.x', (string) $parsedBranch);
         }
@@ -264,7 +263,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     protected function normalizeBranchAlias(PackageInterface $package)
     {
         $stability = VersionParser::parseStability($this->versionParser->normalize($this->rootPackageVersion));
-        $aliasNormalized = 'dev-' . $this->rootPackageVersion;
+        $aliasNormalized = 'dev-'.$this->rootPackageVersion;
 
         if (BasePackage::STABILITY_STABLE === BasePackage::$stabilities[$stability]
             && null === $this->findPackage($package->getName(), $this->rootPackageVersion)) {

@@ -44,7 +44,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($composer, $this->converter->convertVersion($semver));
 
         if (!ctype_alpha($semver) && !in_array($semver, array(null, ''))) {
-            $this->assertEquals('v' . $composer, $this->converter->convertVersion('v' . $semver));
+            $this->assertEquals('v'.$composer, $this->converter->convertVersion('v'.$semver));
         }
     }
 

@@ -39,6 +39,6 @@ class MockVcsDriverSkipParsing extends MockVcsDriver
      */
     public function getComposerInformation($identifier)
     {
-        throw new \Exception('MESSAGE with ' . $identifier);
+        throw new \Exception('MESSAGE with '.$identifier);
     }
 }

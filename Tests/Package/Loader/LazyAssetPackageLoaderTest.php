@@ -129,7 +129,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
-                    'url'  => 'http://foobar.tld/dist/' . $value,
+                    'url'  => 'http://foobar.tld/dist/'.$value,
                 );
             }));
         $this->driver
@@ -138,7 +138,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
-                    'url'  => 'http://foobar.tld/source/' . $value,
+                    'url'  => 'http://foobar.tld/source/'.$value,
                 );
             }));
     }
@@ -245,8 +245,8 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
 
         if ($verbose) {
             $validOutput = array(
-                'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
-                'Importing empty TYPE ' . $this->lazyPackage->getPrettyVersion() . ' (' . $this->lazyPackage->getVersion() . ')',
+                'Reading '.$filename.' of <info>'.$this->lazyPackage->getName().'</info> (<comment>'.$this->lazyPackage->getPrettyVersion().'</comment>)',
+                'Importing empty TYPE '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
                 ''
             );
         }
@@ -309,8 +309,8 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
 
         if ($verbose) {
             $validOutput = array(
-                'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
-                'Importing TYPE' . ' '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
+                'Reading '.$filename.' of <info>'.$this->lazyPackage->getName().'</info> (<comment>'.$this->lazyPackage->getPrettyVersion().'</comment>)',
+                'Importing TYPE'.' '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
                 ''
             );
         }
@@ -365,8 +365,8 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
 
         if ($verbose) {
             $validOutput = array(
-                'Reading ' . $filename . ' of <info>' . $this->lazyPackage->getName() . '</info> (<comment>' . $this->lazyPackage->getPrettyVersion() . '</comment>)',
-                'Importing empty ' . $type . ' ' . $this->lazyPackage->getPrettyVersion() . ' (' . $this->lazyPackage->getVersion() . ')',
+                'Reading '.$filename.' of <info>'.$this->lazyPackage->getName().'</info> (<comment>'.$this->lazyPackage->getPrettyVersion().'</comment>)',
+                'Importing empty '.$type.' '.$this->lazyPackage->getPrettyVersion().' ('.$this->lazyPackage->getVersion().')',
                 $validTrace,
                 '',
             );

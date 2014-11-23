@@ -50,7 +50,7 @@ class Util
         }
 
         if (self::isSha($identifier) || $force) {
-            $res = $cache->read($type . '-' . $identifier);
+            $res = $cache->read($type.'-'.$identifier);
 
             if ($res) {
                 return JsonFile::parseJson($res);
@@ -70,7 +70,7 @@ class Util
     public static function writeCache(Cache $cache, $type, $identifier, array $composer, $force = false)
     {
         if (self::isSha($identifier) || $force) {
-            $cache->write($type . '-' . $identifier, json_encode($composer));
+            $cache->write($type.'-'.$identifier, json_encode($composer));
         }
     }
 

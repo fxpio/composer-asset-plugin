@@ -61,7 +61,7 @@ class IgnoreFactory
     protected static function getInstallDir(Composer $composer, PackageInterface $package, $installDir = null)
     {
         if (null === $installDir) {
-            $installDir = rtrim($composer->getConfig()->get('vendor-dir'), '/') . '/' . $package->getName();
+            $installDir = rtrim($composer->getConfig()->get('vendor-dir'), '/').'/'.$package->getName();
         }
 
         return rtrim($installDir, '/');

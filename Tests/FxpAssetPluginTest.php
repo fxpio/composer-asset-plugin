@@ -59,7 +59,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($key) {
                 switch ($key) {
                     case 'cache-repo-dir':
-                        return sys_get_temp_dir() . '/composer-test-repo-cache';
+                        return sys_get_temp_dir().'/composer-test-repo-cache';
                 }
 
                 return null;
@@ -103,7 +103,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->io = null;
 
         $fs = new Filesystem();
-        $fs->remove(sys_get_temp_dir() . '/composer-test-repo-cache');
+        $fs->remove(sys_get_temp_dir().'/composer-test-repo-cache');
     }
 
     public function testAssetRepositories()

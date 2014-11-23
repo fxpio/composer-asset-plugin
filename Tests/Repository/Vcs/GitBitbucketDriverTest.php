@@ -35,8 +35,8 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config();
         $this->config->merge(array(
             'config' => array(
-                'home'           => sys_get_temp_dir() . '/composer-test',
-                'cache-repo-dir' => sys_get_temp_dir() . '/composer-test-cache',
+                'home'           => sys_get_temp_dir().'/composer-test',
+                'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
             ),
         ));
     }
@@ -44,8 +44,8 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->removeDirectory(sys_get_temp_dir() . '/composer-test');
-        $fs->removeDirectory(sys_get_temp_dir() . '/composer-test-cache');
+        $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
+        $fs->removeDirectory(sys_get_temp_dir().'/composer-test-cache');
     }
 
     public function getAssetTypes()

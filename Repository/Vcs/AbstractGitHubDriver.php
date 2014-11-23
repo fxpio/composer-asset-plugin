@@ -76,7 +76,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         }
 
         if (is_string($this->redirectApi) && 0 === strpos($url, $this->getRepositoryApiUrl())) {
-            $url = $this->redirectApi . substr($url, strlen($this->getRepositoryApiUrl()));
+            $url = $this->redirectApi.substr($url, strlen($this->getRepositoryApiUrl()));
         }
 
         return $url;
@@ -166,7 +166,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         $owner = null !== $owner ? $owner : $this->owner;
         $repository = null !== $repository ? $repository : $this->repository;
 
-        return $this->getApiUrl() . '/repos/'.$owner.'/'.$repository;
+        return $this->getApiUrl().'/repos/'.$owner.'/'.$repository;
     }
 
     /**
@@ -192,7 +192,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
 
         if (null === $this->branches) {
             $this->branches = array();
-            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
+            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
             $branchBlacklist = 'gh-pages' === $this->getRootIdentifier() ? array() : array('gh-pages');
 
             $this->doAddBranches($resource, $branchBlacklist);

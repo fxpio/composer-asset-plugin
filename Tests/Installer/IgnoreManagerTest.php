@@ -29,10 +29,10 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $fs = new Filesystem();
-        $this->target = sys_get_temp_dir() . '/composer-foo';
+        $this->target = sys_get_temp_dir().'/composer-foo';
 
         foreach ($this->getFixtureFiles() as $filename) {
-            $path = $this->target . '/' . $filename;
+            $path = $this->target.'/'.$filename;
             $fs->ensureDirectoryExists(dirname($path));
             @file_put_contents($path, '');
         }

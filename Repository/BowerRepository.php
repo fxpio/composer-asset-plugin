@@ -39,7 +39,7 @@ class BowerRepository extends AbstractAssetsRepository
      */
     protected function getPackageUrl()
     {
-        return $this->canonicalizeUrl($this->baseUrl . '/%package%');
+        return $this->canonicalizeUrl($this->baseUrl.'/%package%');
     }
 
     /**
@@ -47,7 +47,7 @@ class BowerRepository extends AbstractAssetsRepository
      */
     protected function getSearchUrl()
     {
-        return $this->canonicalizeUrl($this->baseUrl . '/search/%query%');
+        return $this->canonicalizeUrl($this->baseUrl.'/search/%query%');
     }
 
     /**
@@ -56,7 +56,7 @@ class BowerRepository extends AbstractAssetsRepository
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         return array(
-            'type' => $this->assetType->getName() . '-vcs',
+            'type' => $this->assetType->getName().'-vcs',
             'url'  => $data['url'],
             'name' => $registryName,
         );

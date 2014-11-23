@@ -46,7 +46,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
         for ($i = $start; $i>=0; $i--) {
             if (null === $value) {
-                $value = 'level ' . $i;
+                $value = 'level '.$i;
             }
 
             $value = array($keys[$i] => $value);
@@ -54,7 +54,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
         $driver->contents = json_encode($value);
         $composerValid = array_merge($composer, array(
-            'time' => 'level ' . (count($keys) - 1),
+            'time' => 'level '.(count($keys) - 1),
         ));
 
         $composer = Util::addComposerTime($composer, $resourceKey, 'http://example.tld', $driver);

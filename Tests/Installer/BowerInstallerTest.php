@@ -185,7 +185,7 @@ class BowerInstallerTest extends TestCase
             ->will($this->returnValue('foo-asset/package'));
 
         /* @var PackageInterface $package */
-        $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
+        $packageDir = $this->vendorDir.'/'.$package->getPrettyName();
         mkdir($packageDir, 0777, true);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
@@ -234,7 +234,7 @@ class BowerInstallerTest extends TestCase
             ->will($this->returnValue('foo-asset/package'));
 
         /* @var PackageInterface $package */
-        $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
+        $packageDir = $this->vendorDir.'/'.$package->getPrettyName();
         mkdir($packageDir, 0777, true);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $dm */
@@ -282,7 +282,7 @@ class BowerInstallerTest extends TestCase
             ->will($this->returnValue('foo-asset/package'));
 
         /* @var PackageInterface $package */
-        $packageDir = $this->vendorDir . '/' . $package->getPrettyName();
+        $packageDir = $this->vendorDir.'/'.$package->getPrettyName();
         mkdir($packageDir, 0777, true);
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $repository */

@@ -38,8 +38,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config();
         $this->config->merge(array(
             'config' => array(
-                'home'           => sys_get_temp_dir() . '/composer-test',
-                'cache-repo-dir' => sys_get_temp_dir() . '/composer-test-cache',
+                'home'           => sys_get_temp_dir().'/composer-test',
+                'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
             ),
         ));
     }
@@ -47,8 +47,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->removeDirectory(sys_get_temp_dir() . '/composer-test');
-        $fs->removeDirectory(sys_get_temp_dir() . '/composer-test-cache');
+        $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
+        $fs->removeDirectory(sys_get_temp_dir().'/composer-test-cache');
     }
 
     public function getAssetTypes()
@@ -326,7 +326,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         // clean local clone if present
         $fs = new Filesystem();
-        $fs->removeDirectory(sys_get_temp_dir() . '/composer-test');
+        $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
 
         $process->expects($this->at(0))
             ->method('execute')
@@ -683,7 +683,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array(
                 'HTTP/1.1 301 Moved Permanently',
                 'Header-parameter: test',
-                'Location: ' . $repoUrl . '-new',
+                'Location: '.$repoUrl.'-new',
             )));
 
         $remoteFilesystem->expects($this->at(3))

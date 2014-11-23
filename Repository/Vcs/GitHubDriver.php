@@ -33,7 +33,7 @@ class GitHubDriver extends AbstractGitHubDriver
         $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], $identifier);
 
         if (!isset($this->infoCache[$identifier])) {
-            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/' . $this->repoConfig['filename'] . '?ref='.urlencode($identifier);
+            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/contents/'.$this->repoConfig['filename'].'?ref='.urlencode($identifier);
             $composer = $this->getComposerContent($resource);
 
             if ($composer) {
@@ -96,7 +96,7 @@ class GitHubDriver extends AbstractGitHubDriver
     {
         $composer = (array) JsonFile::parseJson((string) $this->getContents($resource));
         if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
-            throw new \RuntimeException('Could not retrieve ' . $this->repoConfig['filename'] . ' from '.$resource);
+            throw new \RuntimeException('Could not retrieve '.$this->repoConfig['filename'].' from '.$resource);
         }
 
         return $composer;
@@ -114,7 +114,7 @@ class GitHubDriver extends AbstractGitHubDriver
     protected function convertComposerContent($composer, $resource, $identifier)
     {
         $composer = JsonFile::parseJson($composer, $resource);
-        $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
+        $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
         $composer = Util::addComposerTime($composer, 'commit.committer.date', $resource, $this);
 
         if (!isset($composer['support']['source'])) {

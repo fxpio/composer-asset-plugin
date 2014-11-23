@@ -86,7 +86,7 @@ abstract class PackageUtil
             $searchVerion = substr($version, 1);
 
             if (false === strpos($version, '*') && Validator::validateTag($searchVerion, $assetType)) {
-                $dependency .= '-' . str_replace('#', '', $version);
+                $dependency .= '-'.str_replace('#', '', $version);
             }
         }
 
@@ -110,13 +110,13 @@ abstract class PackageUtil
 
         // sha version or branch verison
         if (preg_match('{^[0-9a-f]{40}$}', $version)) {
-            $version = 'dev-default#' . $version;
+            $version = 'dev-default#'.$version;
         } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType)) {
             $oldVersion = $version;
-            $version = 'dev-' . $version;
+            $version = 'dev-'.$version;
 
             if (!Validator::validateBranch($oldVersion)) {
-                $version .= ' || ' . $oldVersion;
+                $version .= ' || '.$oldVersion;
             }
         }
 
@@ -201,10 +201,10 @@ abstract class PackageUtil
     protected static function getUrlFileDependencyName(AssetTypeInterface $assetType, array $composer, $dependency)
     {
         $prefix = isset($composer['name'])
-            ? substr($composer['name'], strlen($assetType->getComposerVendorName()) + 1) . '-'
+            ? substr($composer['name'], strlen($assetType->getComposerVendorName()) + 1).'-'
             : '';
 
-        return $prefix . $dependency . '-file';
+        return $prefix.$dependency.'-file';
     }
 
     /**

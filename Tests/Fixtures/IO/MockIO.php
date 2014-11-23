@@ -88,7 +88,7 @@ class MockIO extends BaseIO
     {
         $pos = max(count($this->traces) - 1, 0);
         if (isset($this->traces[$pos])) {
-            $messages = $this->traces[$pos] . $messages;
+            $messages = $this->traces[$pos].$messages;
         }
         $this->traces[$pos] = $messages;
         if ($newline) {

@@ -99,7 +99,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
         $packages = array();
 
         foreach ($this->composer as $name => $data) {
-            if (0 === strpos($name, $type . ':')) {
+            if (0 === strpos($name, $type.':')) {
                 $name = substr($name, strpos($name, ':') + 1);
                 $packages[$name] = $data;
             }

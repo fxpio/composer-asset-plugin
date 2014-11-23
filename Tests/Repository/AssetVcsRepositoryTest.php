@@ -184,7 +184,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testRepositoryPackageName($type, $url, $class, $verbose)
     {
         $packageName = 'asset-package-name';
-        $valid = str_replace('-mock', '-asset', $type) . '/' . $packageName;
+        $valid = str_replace('-mock', '-asset', $type).'/'.$packageName;
 
         $this->init(true, $type, $url, $class, $verbose, null, $packageName);
 
@@ -196,7 +196,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithTagsAndBranchs($type, $url, $class, $verbose)
     {
-        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/foobar';
+        $validPackageName = substr($type, 0, strpos($type, '-')).'-asset/foobar';
         $validTraces = array('');
         if ($verbose) {
             $validTraces = array(
@@ -275,7 +275,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithTagsAndBranchsWithRegistryPackageName($type, $url, $class, $verbose)
     {
-        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/registry-foobar';
+        $validPackageName = substr($type, 0, strpos($type, '-')).'-asset/registry-foobar';
         $validTraces = array('');
         if ($verbose) {
             $validTraces = array(
@@ -307,7 +307,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithFilterTags($type, $url, $class, $verbose)
     {
-        $validPackageName = substr($type, 0, strpos($type, '-')) . '-asset/registry-foobar';
+        $validPackageName = substr($type, 0, strpos($type, '-')).'-asset/registry-foobar';
         $validTraces = array('');
         if ($verbose) {
             $validTraces = array();

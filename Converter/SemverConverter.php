@@ -31,7 +31,7 @@ class SemverConverter implements VersionConverterInterface
         $version = substr($version, strlen($prefix));
         $version = SemverUtil::convertVersionMetadata($version);
 
-        return $prefix . $version;
+        return $prefix.$version;
     }
 
     /**
@@ -54,7 +54,7 @@ class SemverConverter implements VersionConverterInterface
     protected function cleanRange($range)
     {
         foreach (array('<', '>', '=', '~', '^', '||') as $character) {
-            $range = str_replace($character . ' ', $character, $range);
+            $range = str_replace($character.' ', $character, $range);
         }
 
         return str_replace(' ||', '||', $range);
@@ -121,7 +121,7 @@ class SemverConverter implements VersionConverterInterface
         $matched = true;
 
         if (' - ' === $match) {
-            $matches[$i - 1] = '>=' . $matches[$i - 1];
+            $matches[$i - 1] = '>='.$matches[$i - 1];
             $matches[$i] = ',<=';
         } elseif (in_array($match, array('', '<', '>', '=', ','))) {
             $replace = in_array($match, array('<', '>')) ? $match : $replace;
@@ -180,10 +180,10 @@ class SemverConverter implements VersionConverterInterface
 
         if (!$majorVersion) {
             $minor = isset($exp[1]) ? (int) $exp[1] : 0;
-            $upVersion .= '.' . ($minor + 1);
 
+            $upVersion .= '.'.($minor + 1);
         } else {
-            $upVersion = ((int) $upVersion + 1) . '.0';
+            $upVersion = ((int) $upVersion + 1).'.0';
         }
 
         $newMatch .= $this->convertVersion($upVersion);

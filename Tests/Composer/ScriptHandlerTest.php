@@ -59,9 +59,9 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($key) {
                 switch ($key) {
                     case 'cache-repo-dir':
-                        return sys_get_temp_dir() . '/composer-test-repo-cache';
+                        return sys_get_temp_dir().'/composer-test-repo-cache';
                     case 'vendor-dir':
-                        return sys_get_temp_dir() . '/composer-test/vendor';
+                        return sys_get_temp_dir().'/composer-test/vendor';
                 }
 
                 return null;

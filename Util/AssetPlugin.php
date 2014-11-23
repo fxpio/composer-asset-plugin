@@ -53,7 +53,7 @@ class AssetPlugin
         $options = array();
 
         foreach ($extra as $key => $value) {
-            if (0 === strpos($key, $assetType . '-')) {
+            if (0 === strpos($key, $assetType.'-')) {
                 $key = substr($key, strlen($assetType) + 1);
                 $options[$key] = $value;
             }
@@ -96,7 +96,7 @@ class AssetPlugin
     {
         foreach (Assets::getTypes() as $assetType) {
             foreach (Assets::getVcsRepositoryDrivers() as $driverType => $repositoryClass) {
-                $rm->setRepositoryClass($assetType . '-' . $driverType, $repositoryClass);
+                $rm->setRepositoryClass($assetType.'-'.$driverType, $repositoryClass);
             }
         }
     }

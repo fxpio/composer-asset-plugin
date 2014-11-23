@@ -267,7 +267,7 @@ class VcsPackageFilter
         /* @var PackageInterface $package */
         foreach ($this->installedRepository->getPackages() as $package) {
             /* @var Link $link */
-            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>' . $package->getPrettyVersion())));
+            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>'.$package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 
             $this->requires[$package->getName()] = $link;

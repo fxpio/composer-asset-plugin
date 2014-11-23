@@ -248,7 +248,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         if ($package instanceof Package && false === strpos('dev-', $aliasNormalized)) {
             $extra = $package->getExtra();
             $extra['branch-alias'] = array(
-                'dev-' . $branch => $this->rootPackageVersion . '-dev',
+                'dev-'.$branch => $this->rootPackageVersion.'-dev',
             );
             $this->injectExtraConfig($package, $extra);
         }
