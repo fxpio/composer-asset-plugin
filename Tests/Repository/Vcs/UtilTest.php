@@ -44,7 +44,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $keys = explode('.', $resourceKey);
         $start = count($keys) - 1;
 
-        for ($i = $start; $i>=0; $i--) {
+        for ($i = $start; $i >= 0; $i--) {
             if (null === $value) {
                 $value = 'level '.$i;
             }
