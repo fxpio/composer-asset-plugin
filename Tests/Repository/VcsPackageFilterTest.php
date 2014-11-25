@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
+use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Repository\InstalledFilesystemRepository;
@@ -412,6 +413,24 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
             array($opt2, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
             array($opt3, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
             array($opt4, 'acme/foobar', 'v0.9.0', 'stable', null,    null,    false),
+
+            array($opt1, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', '1.0.0', false),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', '1.0.0', true),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', '1.0.0', true),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', '1.0.0', false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', '1.0.0', false),
+
+            array($opt1, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt2, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt3, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt4, 'acme/foobar', 'v1.0.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt1, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt2, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt3, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', null,    false),
+            array($opt4, 'acme/foobar', 'v0.9.0', 'dev',   '>=0.9@stable', null,    false),
         );
     }
 
@@ -463,6 +482,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new VersionParser();
         $linkRequires = $parser->parseLinks('__ROOT__', '1.0.0', 'requires', $requires);
+        $stabilityFlags = $this->findStabilityFlags($requires);
 
         $this->package->expects($this->any())
             ->method('getRequires')
@@ -473,6 +493,9 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getMinimumStability')
             ->will($this->returnValue($minimumStability));
+        $this->package->expects($this->any())
+            ->method('getStabilityFlags')
+            ->will($this->returnValue($stabilityFlags));
 
         /* @var RootPackageInterface $package */
         $package = $this->package;
@@ -510,5 +533,26 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         }
 
         return $packages;
+    }
+
+    /**
+     * Find the stability flag of requires.
+     *
+     * @param array $requires The require dependencies
+     *
+     * @return array
+     */
+    protected function findStabilityFlags(array $requires)
+    {
+        $flags = array();
+        $stabilities = Package::$stabilities;
+
+        foreach ($requires as $require => $prettyConstraint) {
+            if (preg_match_all('/@('.implode('|', array_keys($stabilities)).')/', $prettyConstraint, $matches)) {
+                $flags[$require] = $stabilities[$matches[1][0]];
+            }
+        }
+
+        return $flags;
     }
 }

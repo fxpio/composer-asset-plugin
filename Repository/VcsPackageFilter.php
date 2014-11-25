@@ -186,7 +186,48 @@ class VcsPackageFilter
             return $this->findInlineStabilities($matches[1]);
         }
 
+        return $this->getMinimumStabilityFlag($require);
+    }
+
+    /**
+     * Get the minimum stability for the require dependency defined in root package.
+     *
+     * @param Link $require The require link defined in root package
+     *
+     * @return string The minimum stability defined in root package (in links or global project)
+     */
+    protected function getMinimumStabilityFlag(Link $require)
+    {
+        $flags = $this->package->getStabilityFlags();
+
+        if (isset($flags[$require->getTarget()])) {
+            return $this->findFlagStabilityName($flags[$require->getTarget()]);
+        }
+
         return $this->package->getMinimumStability();
+    }
+
+    /**
+     * Find the stability name with the stability value.
+     *
+     * @param int $level The stability level.
+     *
+     * @return string The stability name
+     */
+    protected function findFlagStabilityName($level)
+    {
+        $stability = 'dev';
+
+        /* @var string $stabilityName */
+        /* @var int    $stabilityLevel */
+        foreach (Package::$stabilities as $stabilityName => $stabilityLevel) {
+            if ($stabilityLevel === $level) {
+                $stability = $stabilityName;
+                break;
+            }
+        }
+
+        return $stability;
     }
 
     /**
