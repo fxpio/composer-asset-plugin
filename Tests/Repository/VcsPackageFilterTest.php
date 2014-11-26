@@ -13,8 +13,8 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
-use Composer\Package\Version\VersionParser;
 use Composer\Repository\InstalledFilesystemRepository;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 

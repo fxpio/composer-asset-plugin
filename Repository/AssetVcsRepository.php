@@ -15,10 +15,10 @@ use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\PackageInterface;
-use Composer\Package\Version\VersionParser;
 use Composer\Repository\InvalidRepositoryException;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Fxp\Composer\AssetPlugin\Package\LazyCompletePackage;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Util\Validator;
 
 /**

@@ -15,10 +15,10 @@ use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Package\Version\VersionParser;
 use Composer\Package\LinkConstraint\LinkConstraintInterface;
 use Composer\Package\LinkConstraint\MultiConstraint;
 use Composer\Repository\InstalledFilesystemRepository;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -165,7 +165,6 @@ class VcsPackageFilter
     {
         $requireStability = $this->getRequireStability($require);
         $stability = $this->versionParser->parseStability($normalizedVersion);
-        $stability = false !== strpos($normalizedVersion, '-patch') ? 'dev' : $stability;
 
         return Package::$stabilities[$stability] <= Package::$stabilities[$requireStability];
     }

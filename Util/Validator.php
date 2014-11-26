@@ -11,7 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Util;
 
-use Composer\Package\Version\VersionParser;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**

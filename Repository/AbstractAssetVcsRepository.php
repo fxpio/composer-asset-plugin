@@ -18,12 +18,12 @@ use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
-use Composer\Package\Version\VersionParser;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**

@@ -11,7 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Converter;
 
-use Composer\Package\Version\VersionParser;
+use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 
 /**
  * Utils for semver converter.
