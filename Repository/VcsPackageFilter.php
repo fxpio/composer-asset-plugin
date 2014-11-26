@@ -204,7 +204,9 @@ class VcsPackageFilter
             return $this->findFlagStabilityName($flags[$require->getTarget()]);
         }
 
-        return $this->package->getMinimumStability();
+        return $this->package->getPreferStable()
+            ? 'stable'
+            : $this->package->getMinimumStability();
     }
 
     /**
