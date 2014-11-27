@@ -101,7 +101,7 @@ class FilterUtil
         $flags = $package->getStabilityFlags();
 
         if (isset($flags[$require->getTarget()])) {
-            return FilterUtil::findFlagStabilityName($flags[$require->getTarget()]);
+            return static::findFlagStabilityName($flags[$require->getTarget()]);
         }
 
         return $package->getPreferStable()
