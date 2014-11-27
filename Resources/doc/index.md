@@ -205,6 +205,31 @@ You can disable the import filter using the versions of installed packages with 
 }
 ```
 
+#### Change/Disable the skip of versions by pattern
+
+By default, the plugin does not import the `patch` versions for increase dramatically
+performance. However, it is possible to change the pattern or to disable this feature.
+
+**Example for change the pattern:**
+
+```json
+{
+    "extra": {
+        "asset-pattern-skip-version": "(-build)"
+    }
+}
+```
+
+**Example for disable the pattern:**
+
+```json
+{
+    "extra": {
+        "asset-pattern-skip-version": false
+    }
+}
+```
+
 #### Disable the conjunctive option of the import filter
 
 You can disable the `conjunctive` mode of the import filter with the option
