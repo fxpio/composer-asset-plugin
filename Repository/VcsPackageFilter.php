@@ -159,9 +159,15 @@ class VcsPackageFilter
     {
         $extra = $this->package->getExtra();
 
-        return array_key_exists('asset-pattern-skip-version', $extra)
-            ? trim($extra['asset-pattern-skip-version'], '/')
-            : '(-patch)';
+        if (!array_key_exists('asset-pattern-skip-version', $extra)) {
+            $extra['asset-pattern-skip-version'] = '(-patch)';
+        }
+
+        if (is_string($extra['asset-pattern-skip-version'])) {
+            return trim($extra['asset-pattern-skip-version'], '/');
+        }
+
+        return false;
     }
 
     /**
