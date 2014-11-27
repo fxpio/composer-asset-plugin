@@ -15,7 +15,6 @@ use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Package\LinkConstraint\LinkConstraintInterface;
 use Composer\Package\LinkConstraint\MultiConstraint;
 use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
@@ -190,8 +189,8 @@ class VcsPackageFilter
         $constraintSame = $this->versionParser->parseConstraints($normalizedVersion);
         $sameVersion = (bool) $require->getConstraint()->matches($constraintSame);
 
-        $normalizedVersion = $this->getVersionConstraint($normalizedVersion);
-        $constraint = $this->getVersionConstraint($normalizedVersion);
+        $normalizedVersion = FilterUtil::getVersionConstraint($normalizedVersion, $this->versionParser);
+        $constraint = FilterUtil::getVersionConstraint($normalizedVersion, $this->versionParser);
 
         return (bool) $require->getConstraint()->matches($constraint) || $sameVersion;
     }
@@ -225,92 +224,10 @@ class VcsPackageFilter
         $stabilities = Package::$stabilities;
 
         if (preg_match_all('/@('.implode('|', array_keys($stabilities)).')/', $prettyConstraint, $matches)) {
-            return $this->findInlineStabilities($matches[1]);
+            return FilterUtil::findInlineStabilities($matches[1], $this->versionParser);
         }
 
-        return $this->getMinimumStabilityFlag($require);
-    }
-
-    /**
-     * Get the minimum stability for the require dependency defined in root package.
-     *
-     * @param Link $require The require link defined in root package
-     *
-     * @return string The minimum stability defined in root package (in links or global project)
-     */
-    protected function getMinimumStabilityFlag(Link $require)
-    {
-        $flags = $this->package->getStabilityFlags();
-
-        if (isset($flags[$require->getTarget()])) {
-            return $this->findFlagStabilityName($flags[$require->getTarget()]);
-        }
-
-        return $this->package->getPreferStable()
-            ? 'stable'
-            : $this->package->getMinimumStability();
-    }
-
-    /**
-     * Find the stability name with the stability value.
-     *
-     * @param int $level The stability level.
-     *
-     * @return string The stability name
-     */
-    protected function findFlagStabilityName($level)
-    {
-        $stability = 'dev';
-
-        /* @var string $stabilityName */
-        /* @var int    $stabilityLevel */
-        foreach (Package::$stabilities as $stabilityName => $stabilityLevel) {
-            if ($stabilityLevel === $level) {
-                $stability = $stabilityName;
-                break;
-            }
-        }
-
-        return $stability;
-    }
-
-    /**
-     * Find the lowest stability.
-     *
-     * @param string[] $stabilities The list of stability
-     *
-     * @return string The lowest stability
-     */
-    protected function findInlineStabilities(array $stabilities)
-    {
-        $lowestStability = 'stable';
-
-        foreach ($stabilities as $stability) {
-            $stability = $this->versionParser->normalizeStability($stability);
-            $stability = $this->versionParser->parseStability($stability);
-
-            if (Package::$stabilities[$stability] > Package::$stabilities[$lowestStability]) {
-                $lowestStability = $stability;
-            }
-        }
-
-        return $lowestStability;
-    }
-
-    /**
-     * Get the link constraint of normalized version.
-     *
-     * @param string $normalizedVersion The normalized version
-     *
-     * @return LinkConstraintInterface The constraint
-     */
-    protected function getVersionConstraint($normalizedVersion)
-    {
-        if (preg_match('/^\d+(\.\d+)(\.\d+)(\.\d+)\-[A-Za-z0-9]+$/', $normalizedVersion)) {
-            $normalizedVersion = substr($normalizedVersion, 0, strpos($normalizedVersion, '-'));
-        }
-
-        return $this->versionParser->parseConstraints($normalizedVersion);
+        return FilterUtil::getMinimumStabilityFlag($this->package, $require);
     }
 
     /**
@@ -324,24 +241,9 @@ class VcsPackageFilter
         );
 
         if (null !== $this->installedRepository
-                && $this->checkExtraOption('asset-optimize-with-installed-packages')) {
+                && FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-installed-packages')) {
             $this->initInstalledPackages();
         }
-    }
-
-    /**
-     * Check the extra option.
-     *
-     * @param string $name The extra option name
-     *
-     * @return bool
-     */
-    private function checkExtraOption($name)
-    {
-        $extra = $this->package->getExtra();
-
-        return !array_key_exists($name, $extra)
-            || true === $extra[$name];
     }
 
     /**
@@ -373,7 +275,7 @@ class VcsPackageFilter
         if (isset($this->requires[$package->getName()])) {
             /* @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
-            $useConjunctive = $this->checkExtraOption('asset-optimize-with-conjunctive');
+            $useConjunctive = FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-conjunctive');
             $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
             $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
         }
