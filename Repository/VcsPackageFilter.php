@@ -103,6 +103,30 @@ class VcsPackageFilter
      */
     public function skip(AssetTypeInterface $assetType, $name, $version)
     {
+        try {
+            $cVersion = $assetType->getVersionConverter()->convertVersion($version);
+            $normalizedVersion = $this->versionParser->normalize($cVersion);
+        } catch (\Exception $ex) {
+            return true;
+        }
+
+        if ($this->skipByPattern() && $this->forceSkipVersion($normalizedVersion)) {
+            return true;
+        }
+
+        return $this->doSkip($name, $normalizedVersion);
+    }
+
+    /**
+     * Do check if the version must be skipped.
+     *
+     * @param string $name              The composer package name
+     * @param string $normalizedVersion The normalized version
+     *
+     * @return bool
+     */
+    protected function doSkip($name, $normalizedVersion)
+    {
         if (!isset($this->requires[$name])) {
             return false;
         }
@@ -110,14 +134,7 @@ class VcsPackageFilter
         /* @var Link $require */
         $require = $this->requires[$name];
 
-        try {
-            $cVersion = $assetType->getVersionConverter()->convertVersion($version);
-            $normalizedVersion = $this->versionParser->normalize($cVersion);
-
-            return !$this->satisfy($require, $normalizedVersion) && $this->isEnabled();
-        } catch (\Exception $ex) {
-            return true;
-        }
+        return !$this->satisfy($require, $normalizedVersion) && $this->isEnabled();
     }
 
     /**
@@ -132,6 +149,32 @@ class VcsPackageFilter
     {
         return $this->satisfyVersion($require, $normalizedVersion)
             && $this->satisfyStability($require, $normalizedVersion);
+    }
+
+    /**
+     * Check if the filter must be skipped the version by pattern or not.
+     *
+     * @return string|false Return the pattern or FALSE for disable the feature
+     */
+    protected function skipByPattern()
+    {
+        $extra = $this->package->getExtra();
+
+        return array_key_exists('asset-pattern-skip-version', $extra)
+            ? trim($extra['asset-pattern-skip-version'], '/')
+            : '(-patch)';
+    }
+
+    /**
+     * Check if the require package version must be skipped or not.
+     *
+     * @param string $normalizedVersion The normalized version
+     *
+     * @return bool
+     */
+    protected function forceSkipVersion($normalizedVersion)
+    {
+        return (bool) preg_match('/'.$this->skipByPattern().'/', $normalizedVersion);
     }
 
     /**
