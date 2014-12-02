@@ -78,7 +78,7 @@ class SemverConverter implements VersionConverterInterface
         foreach ($matches as $i => $match) {
             if ($first && '' !== $match) {
                 $first = false;
-                $match = '=' === $match ? '~' : $match;
+                $match = '=' === $match ? 'EQUAL' : $match;
             }
 
             $this->matchRangeToken($i, $match, $matches, $special, $replace);
@@ -125,7 +125,7 @@ class SemverConverter implements VersionConverterInterface
             $matches[$i] = ',<=';
         } elseif (in_array($match, array('', '<', '>', '=', ','))) {
             $replace = in_array($match, array('<', '>')) ? $match : $replace;
-        } elseif (in_array($match, array('~', '^'))) {
+        } elseif (in_array($match, array('EQUAL', '^'))) {
             $special = $match;
             $matches[$i] = '';
         } else {
@@ -150,7 +150,7 @@ class SemverConverter implements VersionConverterInterface
             $matches[$i] = ',';
         } elseif ('||' === $match) {
             $matches[$i] = '|';
-        } elseif (in_array($special, array('~', '^'))) {
+        } elseif (in_array($special, array('^'))) {
             $matches[$i] = $this->replaceSpecialRange($match, '^' === $special);
             $special = null;
         } else {
@@ -164,27 +164,19 @@ class SemverConverter implements VersionConverterInterface
     }
 
     /**
-     * Replaces the special range "~".
+     * Replaces the special range "^".
      *
-     * @param string $match        The match version
-     * @param bool   $majorVersion Limit the the major version or
+     * @param string $match The match version
      *
      * @return string the new match version
      */
-    protected function replaceSpecialRange($match, $majorVersion = false)
+    protected function replaceSpecialRange($match)
     {
         $newMatch = $this->convertVersion($match);
         $newMatch = '>='.SemverUtil::replaceAlias($newMatch, '>').',<';
         $exp = explode('.', $match);
         $upVersion = isset($exp[0]) ? $exp[0] : '0';
-
-        if (!$majorVersion) {
-            $minor = isset($exp[1]) ? (int) $exp[1] : 0;
-
-            $upVersion .= '.'.($minor + 1);
-        } else {
-            $upVersion = ((int) $upVersion + 1).'.0';
-        }
+        $upVersion = ((int) $upVersion + 1).'.0';
 
         $newMatch .= $this->convertVersion($upVersion);
 
