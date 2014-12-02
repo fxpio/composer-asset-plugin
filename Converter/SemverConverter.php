@@ -151,7 +151,7 @@ class SemverConverter implements VersionConverterInterface
         } elseif ('||' === $match) {
             $matches[$i] = '|';
         } elseif (in_array($special, array('^'))) {
-            $matches[$i] = $this->replaceSpecialRange($match, '^' === $special);
+            $matches[$i] = $this->replaceSpecialRange($match);
             $special = null;
         } else {
             $matches[$i] = $this->convertVersion($match);
