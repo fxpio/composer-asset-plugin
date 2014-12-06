@@ -68,7 +68,7 @@ class ScriptHandler
             return $package;
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -86,7 +86,7 @@ class ScriptHandler
             return $operation->getPackage();
         }
 
-        return null;
+        return;
     }
 
     /**

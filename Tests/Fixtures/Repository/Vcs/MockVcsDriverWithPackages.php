@@ -70,7 +70,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
             }
         }
 
-        return null;
+        return;
     }
 
     /**

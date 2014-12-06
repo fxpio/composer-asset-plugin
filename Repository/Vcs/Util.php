@@ -57,7 +57,7 @@ class Util
             }
         }
 
-        return null;
+        return;
     }
 
     /**

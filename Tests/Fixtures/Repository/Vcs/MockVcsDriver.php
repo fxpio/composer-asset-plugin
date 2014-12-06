@@ -45,7 +45,7 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getComposerInformation($identifier)
     {
-        return null;
+        return;
     }
 
     /**
@@ -53,7 +53,7 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getRootIdentifier()
     {
-        return null;
+        return;
     }
 
     /**
@@ -77,7 +77,7 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getDist($identifier)
     {
-        return null;
+        return;
     }
 
     /**
@@ -85,7 +85,7 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getSource($identifier)
     {
-        return null;
+        return;
     }
 
     /**
@@ -93,7 +93,7 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getUrl()
     {
-        return null;
+        return;
     }
 
     /**

@@ -137,7 +137,7 @@ class MockIO extends BaseIO
      */
     public function askAndHideAnswer($question)
     {
-        return null;
+        return;
     }
 
     /**

@@ -34,7 +34,7 @@ class MockAssetRepository implements RepositoryInterface
      */
     public function findPackage($name, $version)
     {
-        return null;
+        return;
     }
 
     /**

@@ -64,7 +64,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
                         return sys_get_temp_dir().'/composer-test/vendor';
                 }
 
-                return null;
+                return;
             }));
 
         $rootPackage = $this->getMock('Composer\Package\RootPackageInterface');

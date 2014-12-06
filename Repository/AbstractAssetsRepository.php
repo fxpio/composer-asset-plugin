@@ -180,7 +180,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return $this->providers[$name];
         }
 
-        return null;
+        return;
     }
 
     /**
