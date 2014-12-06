@@ -185,12 +185,7 @@ class SemverConverter implements VersionConverterInterface
                 continue;
             }
 
-            $iNext = min(min($i + 1, 3), count($exp) - 1);
-
-            if (($iNext !== $i && ($exp[$i] > 0 || (int) $exp[$iNext] > 9999998)) || $iNext === $i) {
-                $exp[$i] = (int) $sub + 1;
-                $increase = true;
-            }
+            $this->increaseSubVersion($i, $exp, $increase);
         }
 
         $newMatch .= $this->convertVersion(SemverUtil::standardizeVersion($exp));
@@ -223,5 +218,22 @@ class SemverConverter implements VersionConverterInterface
         }
 
         return $analyzed;
+    }
+
+    /**
+     * Increase the sub version of splitted version.
+     *
+     * @param int   $i        The position in splitted version
+     * @param array $exp      The splitted version
+     * @param bool  $increase Check if the next sub version must be increased
+     */
+    protected function increaseSubVersion($i, array &$exp, &$increase)
+    {
+        $iNext = min(min($i + 1, 3), count($exp) - 1);
+
+        if (($iNext !== $i && ($exp[$i] > 0 || (int) $exp[$iNext] > 9999998)) || $iNext === $i) {
+            $exp[$i] = (int) $exp[$i] + 1;
+            $increase = true;
+        }
     }
 }
