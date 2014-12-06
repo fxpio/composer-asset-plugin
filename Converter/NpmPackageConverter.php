@@ -28,13 +28,13 @@ class NpmPackageConverter extends AbstractPackageConverter
         return array(
             'name'               => array('name', function ($value) use ($assetType) {
                 return $assetType->formatComposerName($value);
-            }, ),
+            }),
             'type'               => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
-            }, ),
+            }),
             'version'            => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);
-            }, ),
+            }),
             'version_normalized' => 'version_normalized',
             'description'        => 'description',
             'keywords'           => 'keywords',
@@ -42,16 +42,16 @@ class NpmPackageConverter extends AbstractPackageConverter
             'license'            => 'license',
             'author'             => array('authors', function ($value) {
                 return NpmPackageUtil::convertAuthor($value);
-            }, ),
+            }),
             'contributors'       => array('authors', function ($value, $prevValue) {
                 return NpmPackageUtil::convertContributors($value, $prevValue);
-            }, ),
+            }),
             'bin'                => array('bin', function ($value) {
                 return (array) $value;
-            }, ),
+            }),
             'dist'               => array('dist', function ($value) {
                 return NpmPackageUtil::convertDist($value);
-            }, ),
+            }),
         );
     }
 
