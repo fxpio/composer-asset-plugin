@@ -153,7 +153,7 @@ class SemverConverter implements VersionConverterInterface
         } elseif ('||' === $match) {
             $matches[$i] = '|';
         } elseif (in_array($special, array('^'))) {
-            $matches[$i] = $this->replaceSpecialRange($match);
+            $matches[$i] = SemverRangeUtil::replaceSpecialRange($this, $match);
             $special = null;
         } else {
             $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
@@ -163,77 +163,6 @@ class SemverConverter implements VersionConverterInterface
                 : $matches[$i];
             $special = null;
             $replace = null;
-        }
-    }
-
-    /**
-     * Replaces the special range "^".
-     *
-     * @param string $match The match version
-     *
-     * @return string the new match version
-     */
-    protected function replaceSpecialRange($match)
-    {
-        $newMatch = $this->convertVersion($match);
-        $newMatch = '>='.SemverUtil::standardizeVersion(SemverUtil::replaceAlias($newMatch, '>')).',<';
-        $exp = SemverUtil::getSplittedVersion($match);
-        $increase = false;
-
-        foreach ($exp as $i => $sub) {
-            if ($this->analyzeSubVersion($i, $exp, $increase)) {
-                continue;
-            }
-
-            $this->increaseSubVersion($i, $exp, $increase);
-        }
-
-        $newMatch .= $this->convertVersion(SemverUtil::standardizeVersion($exp));
-
-        return $newMatch;
-    }
-
-    /**
-     * Analyze the sub version of splitted version.
-     *
-     * @param int   $i        The position in splitted version
-     * @param array $exp      The splitted version
-     * @param bool  $increase Check if the next sub version must be increased
-     *
-     * @return bool
-     */
-    protected function analyzeSubVersion($i, array &$exp, &$increase)
-    {
-        $analyzed = false;
-
-        if ($increase) {
-            $exp[$i] = 0;
-            $analyzed = true;
-        }
-
-        if (0 === $i && (int) $exp[$i] > 0) {
-            $increase = true;
-            $exp[$i] = (int) $exp[$i] + 1;
-            $analyzed = true;
-        }
-
-        return $analyzed;
-    }
-
-    /**
-     * Increase the sub version of splitted version.
-     *
-     * @param int   $i        The position in splitted version
-     * @param array $exp      The splitted version
-     * @param bool  $increase Check if the next sub version must be increased
-     */
-    protected function increaseSubVersion($i, array &$exp, &$increase)
-    {
-        $iNext = min(min($i + 1, 3), count($exp) - 1);
-
-        if (($iNext !== $i && ($exp[$i] > 0 || (int) $exp[$iNext] > 9999998)) || $iNext === $i) {
-            $exp[$i] = (int) $exp[$i] + 1;
-            $increase = true;
         }
     }
 }
