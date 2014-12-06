@@ -145,4 +145,58 @@ abstract class SemverUtil
 
         return array($version, $patchVersion);
     }
+
+    /**
+     * Standardize the version.
+     *
+     * @param string|array $version The version or the splitted version
+     *
+     * @return string
+     */
+    public static function standardizeVersion($version)
+    {
+        if (is_string($version)) {
+            $version = explode('.', $version);
+        }
+
+        while (count($version) < 3) {
+            $version[] = '0';
+        }
+
+        return implode('.', $version);
+    }
+
+    /**
+     * Split the version.
+     *
+     * @param string $version
+     *
+     * @return array
+     */
+    public static function getSplittedVersion($version)
+    {
+        $version = static::cleanExtraVersion($version);
+        $version = str_replace(array('*', 'x', 'X'), '9999999', $version);
+        $exp = explode('.', $version);
+
+        return $exp;
+    }
+
+    /**
+     * Remove the extra informations of the version (info after "-").
+     *
+     * @param string $version
+     *
+     * @return string
+     */
+    public static function cleanExtraVersion($version)
+    {
+        $pos = strpos($version, '-');
+
+        if (false !== $pos) {
+            $version = substr($version, 0, $pos);
+        }
+
+        return $version;
+    }
 }

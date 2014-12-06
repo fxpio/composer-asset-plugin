@@ -176,13 +176,52 @@ class SemverConverter implements VersionConverterInterface
     protected function replaceSpecialRange($match)
     {
         $newMatch = $this->convertVersion($match);
-        $newMatch = '>='.SemverUtil::replaceAlias($newMatch, '>').',<';
-        $exp = explode('.', $match);
-        $upVersion = isset($exp[0]) ? $exp[0] : '0';
-        $upVersion = ((int) $upVersion + 1).'.0';
+        $newMatch = '>='.SemverUtil::standardizeVersion(SemverUtil::replaceAlias($newMatch, '>')).',<';
+        $exp = SemverUtil::getSplittedVersion($match);
+        $increase = false;
 
-        $newMatch .= $this->convertVersion($upVersion);
+        foreach ($exp as $i => $sub) {
+            if ($this->analyzeSubVersion($i, $exp, $increase)) {
+                continue;
+            }
+
+            $iNext = min(min($i + 1, 3), count($exp) - 1);
+
+            if (($iNext !== $i && ($exp[$i] > 0 || (int) $exp[$iNext] > 9999998)) || $iNext === $i) {
+                $exp[$i] = (int) $sub + 1;
+                $increase = true;
+            }
+        }
+
+        $newMatch .= $this->convertVersion(SemverUtil::standardizeVersion($exp));
 
         return $newMatch;
+    }
+
+    /**
+     * Analyze the sub version of splitted version.
+     *
+     * @param int   $i        The position in splitted version
+     * @param array $exp      The splitted version
+     * @param bool  $increase Check if the next sub version must be increased
+     *
+     * @return bool
+     */
+    protected function analyzeSubVersion($i, array &$exp, &$increase)
+    {
+        $analyzed = false;
+
+        if ($increase) {
+            $exp[$i] = 0;
+            $analyzed = true;
+        }
+
+        if (0 === $i && (int) $exp[$i] > 0) {
+            $increase = true;
+            $exp[$i] = (int) $exp[$i] + 1;
+            $analyzed = true;
+        }
+
+        return $analyzed;
     }
 }
