@@ -49,15 +49,16 @@ class Util
             return $cacheCode[$identifier];
         }
 
+        $data = null;
         if (self::isSha($identifier) || $force) {
             $res = $cache->read($type.'-'.$identifier);
 
             if ($res) {
-                return JsonFile::parseJson($res);
+                $data = JsonFile::parseJson($res);
             }
         }
 
-        return;
+        return $data;
     }
 
     /**

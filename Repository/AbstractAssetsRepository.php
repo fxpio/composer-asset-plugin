@@ -174,13 +174,13 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return $this->providers[$name];
         }
 
+        $data = null;
         if ($this->hasVcsRepository($name)) {
             $this->providers[$name] = array();
-
-            return $this->providers[$name];
+            $data = $this->providers[$name];
         }
 
-        return;
+        return $data;
     }
 
     /**

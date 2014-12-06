@@ -63,12 +63,13 @@ class ScriptHandler
     protected static function getLibraryPackage(OperationInterface $operation)
     {
         $package = static::getOperationPackage($operation);
+        $data = null;
 
         if ($package && !static::isAsset($package)) {
-            return $package;
+            $data = $package;
         }
 
-        return;
+        return $data;
     }
 
     /**
@@ -80,13 +81,14 @@ class ScriptHandler
      */
     protected static function getOperationPackage(OperationInterface $operation)
     {
+        $data = null;
         if ($operation instanceof UpdateOperation) {
-            return $operation->getTargetPackage();
+            $data = $operation->getTargetPackage();
         } elseif ($operation instanceof InstallOperation) {
-            return $operation->getPackage();
+            $data = $operation->getPackage();
         }
 
-        return;
+        return $data;
     }
 
     /**
