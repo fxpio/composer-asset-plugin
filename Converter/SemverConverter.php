@@ -125,6 +125,8 @@ class SemverConverter implements VersionConverterInterface
             $matches[$i] = ',<=';
         } elseif (in_array($match, array('', '<', '>', '=', ','))) {
             $replace = in_array($match, array('<', '>')) ? $match : $replace;
+        } elseif ('~' === $match) {
+            $special = $match;
         } elseif (in_array($match, array('EQUAL', '^'))) {
             $special = $match;
             $matches[$i] = '';
@@ -154,6 +156,7 @@ class SemverConverter implements VersionConverterInterface
             $matches[$i] = $this->replaceSpecialRange($match);
             $special = null;
         } else {
+            $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
             $matches[$i] = $this->convertVersion($match);
             $matches[$i] = $replace
                 ? SemverUtil::replaceAlias($matches[$i], $replace)
