@@ -34,10 +34,8 @@ class Util
      */
     public static function addRepository(RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
     {
-        if (!isset($repos[$name])) {
-            $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
-            static::addRepositoryInstance($rm, $repos, $name, $repo, $pool);
-        }
+        $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
+        static::addRepositoryInstance($rm, $repos, $name, $repo, $pool);
     }
 
     /**
