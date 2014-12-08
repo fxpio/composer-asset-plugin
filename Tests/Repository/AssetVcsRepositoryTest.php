@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Config;
 use Composer\Package\AliasPackage;
+use Composer\Package\CompletePackage;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InvalidRepositoryException;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
@@ -341,6 +342,32 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getMockDrivers
+     */
+    public function testPackageWithRegistryVersions($type, $url, $class)
+    {
+        $registryPackages = array(
+            new CompletePackage('package1', '0.1.0.0', '0.1'),
+            new CompletePackage('package1', '0.2.0.0', '0.2'),
+            new CompletePackage('package1', '0.3.0.0', '0.3'),
+            new CompletePackage('package1', '0.4.0.0', '0.4'),
+            new CompletePackage('package1', '0.5.0.0', '0.5'),
+            new CompletePackage('package1', '0.6.0.0', '0.6'),
+            new CompletePackage('package1', '0.7.0.0', '0.7'),
+            new CompletePackage('package1', '0.8.0.0', '0.8'),
+            new CompletePackage('package1', '0.9.0.0', '0.9'),
+            new CompletePackage('package1', '1.0.0.0', '1.0'),
+        );
+
+        $this->init(true, $type, $url, $class, false, null, 'registry-foobar', null, $registryPackages);
+
+        /* @var PackageInterface[] $packages */
+        $packages = $this->repository->getPackages();
+        $this->assertCount(10, $packages);
+        $this->assertSame($registryPackages, $packages);
+    }
+
+    /**
      * Init the test.
      *
      * @param bool                  $supported
@@ -351,8 +378,9 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      * @param array|null            $drivers
      * @param string|null           $registryName
      * @param VcsPackageFilter|null $vcsPackageFilter
+     * @param array                 $registryPackages
      */
-    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null, VcsPackageFilter $vcsPackageFilter = null)
+    protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null, VcsPackageFilter $vcsPackageFilter = null, array $registryPackages = array())
     {
         MockVcsDriver::$supported = $supported;
         $driverType = substr($type, strpos($type, '-') + 1);
@@ -362,6 +390,10 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             $drivers = array(
                 $driverType => $class,
             );
+        }
+
+        if (count($registryPackages) > 0) {
+            $repoConfig['registry-versions'] = $registryPackages;
         }
 
         $this->io = $this->createIO($verbose);

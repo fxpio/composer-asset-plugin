@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\DependencyResolver\Pool;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\ArrayRepository;
 use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
@@ -71,9 +72,12 @@ class NpmRepository extends AbstractAssetsRepository
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
 
         return array(
-            'type' => $this->assetType->getName().'-'.$type,
-            'url'  => $this->getVcsRepositoryUrl($data, $registryName),
-            'name' => $registryName,
+            'type'              => $this->assetType->getName().'-'.$type,
+            'url'               => $this->getVcsRepositoryUrl($data, $registryName),
+            'name'              => $registryName,
+            'registry-versions' => isset($data['versions'])
+                ? $this->createArrayRepositoryConfig($data['versions'])
+                : array(),
         );
     }
 
@@ -86,7 +90,7 @@ class NpmRepository extends AbstractAssetsRepository
             $data = $exception->getData();
 
             if (isset($data['versions']) && !empty($data['versions'])) {
-                $this->createArrayRepositoryConfig($data['versions'], $name, $pool);
+                $this->putArrayRepositoryConfig($data['versions'], $name, $pool);
 
                 return;
             }
@@ -96,13 +100,29 @@ class NpmRepository extends AbstractAssetsRepository
     }
 
     /**
-     * Create the array repository with the asset configs.
+     * Create and put the array repository with the asset configs.
      *
      * @param array  $packageConfigs The configs of assets package versions
      * @param string $name           The asset package name
      * @param Pool   $pool           The pool
      */
-    protected function createArrayRepositoryConfig(array $packageConfigs, $name, Pool $pool)
+    protected function putArrayRepositoryConfig(array $packageConfigs, $name, Pool $pool)
+    {
+        $packages = $this->createArrayRepositoryConfig($packageConfigs);
+        $repo = new ArrayRepository($packages);
+        Util::addRepositoryInstance($this->rm, $this->repos, $name, $repo, $pool);
+
+        $this->providers[$name] = array();
+    }
+
+    /**
+     * Create the array repository with the asset configs.
+     *
+     * @param array $packageConfigs The configs of assets package versions
+     *
+     * @return CompletePackageInterface[]
+     */
+    protected function createArrayRepositoryConfig(array $packageConfigs)
     {
         $packages = array();
         $loader = new ArrayLoader();
@@ -113,10 +133,7 @@ class NpmRepository extends AbstractAssetsRepository
             $packages[] = $loader->load($config);
         }
 
-        $repo = new ArrayRepository($packages);
-        Util::addRepositoryInstance($this->rm, $this->repos, $name, $repo, $pool);
-
-        $this->providers[$name] = array();
+        return $packages;
     }
 
     /**

@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Package\AliasPackage;
 use Composer\Package\BasePackage;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InvalidRepositoryException;
@@ -39,6 +40,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
 
         $this->initLoader();
         $this->initRootIdentifier($driver);
+        $this->initRegistryVersions();
         $this->initTags($driver);
         $this->initBranches($driver);
         $driver->cleanup();
@@ -118,7 +120,10 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         $lazyLoader = $this->createLazyLoader('tag', $identifier, $packageData, $driver);
         /* @var LazyCompletePackage $package */
         $package->setLoader($lazyLoader);
-        $this->addPackage($package);
+
+        if (!$this->hasPackage($package)) {
+            $this->addPackage($package);
+        }
     }
 
     /**
@@ -271,5 +276,18 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         }
 
         return $aliasNormalized;
+    }
+
+    /**
+     * Init the package versions added directly in the Asset Registry.
+     */
+    protected function initRegistryVersions()
+    {
+        if (isset($this->repoConfig['registry-versions'])) {
+            /* @var CompletePackageInterface $package */
+            foreach ($this->repoConfig['registry-versions'] as $package) {
+                $this->addPackage($package);
+            }
+        }
     }
 }

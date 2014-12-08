@@ -51,11 +51,13 @@ class Util
      */
     public static function addRepositoryInstance(RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
     {
-        $repos[$name] = $repo;
-        $rm->addRepository($repo);
+        if (!isset($repos[$name])) {
+            $repos[$name] = $repo;
+            $rm->addRepository($repo);
 
-        if (null !== $pool) {
-            $pool->addRepository($repo);
+            if (null !== $pool) {
+                $pool->addRepository($repo);
+            }
         }
     }
 

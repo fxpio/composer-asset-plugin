@@ -105,12 +105,13 @@ abstract class PackageUtil
     {
         $version = str_replace('#', '', $version);
         $version = empty($version) ? '*' : $version;
+        $version = trim($version);
         $searchVersion = str_replace(array(' ', '<', '>', '=', '^', '~'), '', $version);
 
         // sha version or branch verison
         if (preg_match('{^[0-9a-f]{40}$}', $version)) {
             $version = 'dev-default#'.$version;
-        } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType)) {
+        } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType) && !static::depIsRange($version)) {
             $oldVersion = $version;
             $version = 'dev-'.$version;
 
@@ -250,5 +251,19 @@ abstract class PackageUtil
         }
 
         return false;
+    }
+
+    /**
+     * Check if the version of dependency is a range version.
+     *
+     * @param string $version
+     *
+     * @return bool
+     */
+    protected static function depIsRange($version)
+    {
+        $version = trim($version);
+
+        return (bool) preg_match('/[\<\>\=\^\~\ ]/', $version);
     }
 }
