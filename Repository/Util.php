@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\DependencyResolver\Pool;
+use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
@@ -26,30 +27,33 @@ class Util
     /**
      * Add repository config.
      *
+     * @param IOInterface       $io         The IO instance
      * @param RepositoryManager $rm         The repository mamanger
      * @param array             $repos      The list of already repository added (passed by reference)
      * @param string            $name       The name of the new repository
      * @param array             $repoConfig The config of the new repository
      * @param Pool|null         $pool       The pool
      */
-    public static function addRepository(RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
+    public static function addRepository(IOInterface $io, RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
     {
         $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
-        static::addRepositoryInstance($rm, $repos, $name, $repo, $pool);
+        static::addRepositoryInstance($io, $rm, $repos, $name, $repo, $pool);
     }
 
     /**
      * Add repository instance.
      *
+     * @param IOInterface         $io    The IO instance
      * @param RepositoryManager   $rm    The repository mamanger
      * @param array               $repos The list of already repository added (passed by reference)
      * @param string              $name  The name of the new repository
      * @param RepositoryInterface $repo  The repository instance
      * @param Pool|null           $pool  The pool
      */
-    public static function addRepositoryInstance(RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
+    public static function addRepositoryInstance(IOInterface $io, RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
     {
         if (!isset($repos[$name])) {
+            static::writeAddRepository($io, $name);
             $repos[$name] = $repo;
             $rm->addRepository($repo);
 
@@ -95,5 +99,18 @@ class Util
         }
 
         return $name;
+    }
+
+    /**
+     * Write the vcs repository name in output console.
+     *
+     * @param IOInterface $io   The IO instance
+     * @param string      $name The vcs repository name
+     */
+    protected static function writeAddRepository(IOInterface $io, $name)
+    {
+        if ($io->isVerbose()) {
+            $io->write('Adding VCS repository <comment>'.$name.'</comment>');
+        }
     }
 }

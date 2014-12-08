@@ -41,6 +41,11 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     protected $composer;
 
     /**
+     * @var IOInterface
+     */
+    protected $io;
+
+    /**
      * @var RepositoryInterface[]
      */
     protected $repos = array();
@@ -81,6 +86,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         /* @var InstalledFilesystemRepository $installedRepository */
         $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
         $this->composer = $composer;
+        $this->io = $io;
         $this->packageFilter = new VcsPackageFilter($composer->getPackage(), $installedRepository);
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
@@ -154,7 +160,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
                 $repo['vcs-package-filter'] = $this->packageFilter;
             }
 
-            Util::addRepository($rm, $this->repos, $name, $repo, $pool);
+            Util::addRepository($this->io, $rm, $this->repos, $name, $repo, $pool);
         }
     }
 

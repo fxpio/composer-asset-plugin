@@ -28,7 +28,7 @@ use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
 abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var
+     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $io;
 
@@ -54,8 +54,11 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        /* @var IOInterface $io */
         $io = $this->getMock('Composer\IO\IOInterface');
+        $io->expects($this->any())
+            ->method('isVerbose')
+            ->will($this->returnValue(true));
+        /* @var IOInterface $io */
         $config = new Config();
         $config->merge(array(
             'config' => array(

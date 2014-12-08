@@ -136,7 +136,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
             $repo['vcs-package-filter'] = $this->packageFilter;
 
-            Util::addRepository($this->rm, $this->repos, $name, $repo, $pool);
+            Util::addRepository($this->io, $this->rm, $this->repos, $name, $repo, $pool);
 
             $this->providers[$name] = array();
         } catch (\Exception $ex) {
