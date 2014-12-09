@@ -52,7 +52,7 @@ The `package.json` of asset repository is automatically converted to a Complete 
 | NPM Package          | Composer Package                      |
 |----------------------|---------------------------------------|
 | name                 | name (`npm-asset/{name}`)             |
-| `npm-asset`          | type                                  |
+| `npm-asset-library`  | type                                  |
 | description          | description                           |
 | version              | version                               |
 | keywords             | keywords                              |
@@ -100,7 +100,7 @@ The `bower.json` of asset repository is automatically converted to a Complete Pa
 | Bower Package        | Composer Package                      |
 |----------------------|---------------------------------------|
 | name                 | name (`bower-asset/{name}`)           |
-| `bower-asset`        | type                                  |
+| `bower-asset-library`| type                                  |
 | description          | description                           |
 | version              | version                               |
 | keywords             | keywords                              |
