@@ -157,8 +157,8 @@ class IgnoreManager
             $this->doAddPattern($prefix.substr($searchPattern, 3));
         } elseif ('.*' === $searchPattern) {
             $this->doAddPattern($prefix.'**/.*');
-        } elseif ((strlen($pattern) - 2) === strrpos($pattern, '/*')) {
-            $this->doAddPattern(substr($pattern, 0, strlen($pattern) - 2));
+        } elseif (preg_match('/\/\*$|\/\*\*$/', $pattern, $matches)) {
+            $this->doAddPattern(substr($pattern, 0, strlen($pattern) - strlen($matches[0])));
         }
 
         return $pattern;
