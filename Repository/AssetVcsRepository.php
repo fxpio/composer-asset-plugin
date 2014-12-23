@@ -60,7 +60,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         foreach ($driver->getTags() as $tag => $identifier) {
             $packageName = $this->createPackageName();
             // strip the release- prefix from tags if present
-            $tag = str_replace('release-', '', $tag);
+            $tag = str_replace(array('release-', 'version/'), '', $tag);
 
             $this->initTag($driver, $packageName, $tag, $identifier);
         }
