@@ -15,7 +15,6 @@ use Composer\DependencyResolver\Pool;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
-use Fxp\Composer\AssetPlugin\Converter\SemverUtil;
 
 /**
  * Helper for Repository.
@@ -88,14 +87,8 @@ class Util
      */
     public static function convertAliasName($name)
     {
-        $pos = strrpos($name, '-');
-
-        if (false !== $pos) {
-            $version = substr($name, $pos + 1);
-
-            if (preg_match(SemverUtil::createPattern(''), $version)) {
-                return substr($name, 0, $pos);
-            }
+        if (preg_match('/([\w0-9\/_-]+)-\d+(.\d+)?.[\dxX]+$/', $name, $matches)) {
+            return $matches[1];
         }
 
         return $name;
