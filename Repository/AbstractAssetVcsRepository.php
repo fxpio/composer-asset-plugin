@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
+use Composer\Package\AliasPackage;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Package\Package;
@@ -251,6 +252,27 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
                 'dev-'.$branch => $this->rootPackageVersion.'-dev',
             );
             $this->injectExtraConfig($package, $extra);
+        }
+
+        return $package;
+    }
+
+    /**
+     * Add the alias packages.
+     *
+     * @param PackageInterface $package         The current package
+     * @param string           $aliasNormalized The alias version normalizes
+     *
+     * @return PackageInterface
+     */
+    protected function addPackageAliases(PackageInterface $package, $aliasNormalized)
+    {
+        $alias = new AliasPackage($package, $aliasNormalized, $this->rootPackageVersion);
+        $this->addPackage($alias);
+
+        if (false === strpos('dev-', $aliasNormalized)) {
+            $alias = new AliasPackage($package, $aliasNormalized.'-dev', $this->rootPackageVersion);
+            $this->addPackage($alias);
         }
 
         return $package;

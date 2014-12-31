@@ -252,7 +252,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
             $aliasNormalized = $this->normalizeBranchAlias($package);
             $package = $package instanceof AliasPackage ? $package->getAliasOf() : $package;
             $package = $this->overrideBranchAliasConfig($package, $aliasNormalized, $branch);
-            $package = new AliasPackage($package, $aliasNormalized, $this->rootPackageVersion);
+            $package = $this->addPackageAliases($package, $aliasNormalized);
         }
 
         return $package;

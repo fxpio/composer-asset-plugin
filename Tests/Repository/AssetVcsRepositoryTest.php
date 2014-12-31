@@ -210,7 +210,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(5, $packages);
+        $this->assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
@@ -257,7 +257,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(5, $packages);
+        $this->assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
@@ -289,7 +289,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(5, $packages);
+        $this->assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
@@ -327,7 +327,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         /* @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(3, $packages);
+        $this->assertCount(5, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
