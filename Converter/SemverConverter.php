@@ -24,7 +24,7 @@ class SemverConverter implements VersionConverterInterface
     public function convertVersion($version)
     {
         if (in_array($version, array(null, '', 'latest'))) {
-            return '*';
+            return ('latest' === $version ? 'default || ' : '').'*';
         }
 
         $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';

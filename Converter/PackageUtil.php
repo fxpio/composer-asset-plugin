@@ -113,7 +113,7 @@ abstract class PackageUtil
             $version = 'dev-default#'.$version;
         } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType) && !static::depIsRange($version)) {
             $oldVersion = $version;
-            $version = 'dev-'.$version;
+            $version = 'dev-'.$assetType->getVersionConverter()->convertVersion($version);
 
             if (!Validator::validateBranch($oldVersion)) {
                 $version .= ' || '.$oldVersion;
