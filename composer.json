@@ -1,8 +1,8 @@
 {
-    "name": "fxp/composer-asset-plugin",
-    "description": "NPM/Bower Dependency Manager for Composer",
+    "name": "bisubus/composer-asset-plugin",
+    "description": "NPM/Bower Dependency Manager for Composer (kill switch speedup)",
     "keywords": ["npm", "bower", "dependency manager", "package", "asset", "composer", "nodejs"],
-    "homepage": "https://github.com/francoispluchino/composer-asset-plugin",
+    "homepage": "https://github.com/bisubus/composer-asset-plugin",
     "type": "composer-plugin",
     "license": "MIT",
     "authors": [
@@ -17,6 +17,9 @@
     },
     "require-dev": {
         "composer/composer": "~1.0@dev"
+    },
+    "replace": {
+        "fxp/composer-asset-plugin": "*"
     },
     "autoload": {
         "psr-4": {
