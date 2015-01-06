@@ -136,7 +136,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $inputPublic = $inputReflection->getValue($io);
         // no dark sarcasm
         $args = $inputPublic->getArguments();
-        $isAsset = (bool)count(array_filter($args['packages'], function($el) {
+        $isAsset = isset($args['packages']) && (bool)count(array_filter($args['packages'], function($el) {
             return (strpos($el, 'bower-asset') !== false) || (strpos($el, 'npm-asset') !== false);
         }));
         //  kids alone
