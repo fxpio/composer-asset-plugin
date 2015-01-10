@@ -233,7 +233,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * Creates the search result item.
      *
-     * @param array $item.
+     * @param array $item The item
      *
      * @return array An array('name' => '...', 'description' => '...')
      */
