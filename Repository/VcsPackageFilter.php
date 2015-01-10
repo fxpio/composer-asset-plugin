@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
+use Composer\Installer\InstallationManager;
 use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
@@ -32,6 +33,11 @@ class VcsPackageFilter
      * @var RootPackageInterface
      */
     protected $package;
+
+    /**
+     * @var InstallationManager
+     */
+    protected $installationManager;
 
     /**
      * @var InstalledFilesystemRepository
@@ -57,11 +63,13 @@ class VcsPackageFilter
      * Constructor.
      *
      * @param RootPackageInterface               $package             The root package
+     * @param InstallationManager                $installationManager The installation manager
      * @param InstalledFilesystemRepository|null $installedRepository The installed repository
      */
-    public function __construct(RootPackageInterface $package, InstalledFilesystemRepository $installedRepository = null)
+    public function __construct(RootPackageInterface $package, InstallationManager $installationManager, InstalledFilesystemRepository $installedRepository = null)
     {
         $this->package = $package;
+        $this->installationManager = $installationManager;
         $this->installedRepository = $installedRepository;
         $this->versionParser = new VersionParser();
         $this->enabled = true;
@@ -259,8 +267,9 @@ class VcsPackageFilter
     {
         /* @var PackageInterface $package */
         foreach ($this->installedRepository->getPackages() as $package) {
+            $operator = $this->getFilterOperator($package);
             /* @var Link $link */
-            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => '>'.$package->getPrettyVersion())));
+            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 
             $this->requires[$package->getName()] = $link;
@@ -287,5 +296,19 @@ class VcsPackageFilter
         }
 
         return $link;
+    }
+
+    /**
+     * Get the filter root constraint operator.
+     *
+     * @param PackageInterface $package
+     *
+     * @return string
+     */
+    private function getFilterOperator(PackageInterface $package)
+    {
+        return $this->installationManager->isPackageInstalled($this->installedRepository, $package)
+            ? '>'
+            : '>=';
     }
 }

@@ -87,7 +87,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
         $this->composer = $composer;
         $this->io = $io;
-        $this->packageFilter = new VcsPackageFilter($composer->getPackage(), $installedRepository);
+        $this->packageFilter = new VcsPackageFilter($composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
         $extra = $composer->getPackage()->getExtra();
         $rm = $composer->getRepositoryManager();
 

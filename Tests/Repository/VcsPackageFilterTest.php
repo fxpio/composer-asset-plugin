@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
+use Composer\Installer\InstallationManager;
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledFilesystemRepository;
@@ -29,6 +30,11 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
+
+    /**
+     * @var InstallationManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $installationManager;
 
     /**
      * @var InstalledFilesystemRepository|\PHPUnit_Framework_MockObject_MockObject|null
@@ -59,6 +65,14 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $this->assetType->expects($this->any())
             ->method('getVersionConverter')
             ->will($this->returnValue($versionConverter));
+
+        $this->installationManager = $this->getMockBuilder('Composer\Installer\InstallationManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->installationManager->expects($this->any())
+            ->method('isPackageInstalled')
+            ->will($this->returnValue(true));
     }
 
     protected function tearDown()
@@ -558,7 +572,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
         /* @var RootPackageInterface $package */
         $package = $this->package;
-        $this->filter = new VcsPackageFilter($package, $this->installedRepository);
+        $this->filter = new VcsPackageFilter($package, $this->installationManager, $this->installedRepository);
     }
 
     /**
