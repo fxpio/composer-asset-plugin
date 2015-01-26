@@ -2,10 +2,10 @@ NPM/Bower Dependency Manager for Composer
 =========================================
 
 [![Latest Version](https://img.shields.io/packagist/v/fxp/composer-asset-plugin.svg)](https://packagist.org/packages/fxp/composer-asset-plugin)
-[![Build Status](https://travis-ci.org/francoispluchino/composer-asset-plugin.svg?branch=master)](https://travis-ci.org/francoispluchino/composer-asset-plugin)
-[![Coverage Status](https://img.shields.io/coveralls/francoispluchino/composer-asset-plugin.svg)](https://coveralls.io/r/francoispluchino/composer-asset-plugin)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/quality-score.png)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce/mini.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
+[![Build Status](https://img.shields.io/travis/francoispluchino/composer-asset-plugin/1.0.svg)](https://travis-ci.org/francoispluchino/composer-asset-plugin)
+[![Coverage Status](https://img.shields.io/coveralls/francoispluchino/composer-asset-plugin/1.0.svg)](https://coveralls.io/r/francoispluchino/composer-asset-plugin)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin/badges/quality-score.png?b=1.0)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/0d67ca33-5a72-46b8-b109-cfbf95673fce.png)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
 The Composer Asset Plugin allows you to manage project assets (css, js, etc.) in your `composer.json`
 without installing NPM or Bower.
