@@ -53,8 +53,6 @@ class PerforceDriverTest extends BasePerforceDriverTest
      * Test that supports() simply return false.
      *
      * @covers \Composer\Repository\Vcs\PerforceDriver::supports
-     *
-     * @return void
      */
     public function testSupportsReturnsFalseNoDeepCheck()
     {
