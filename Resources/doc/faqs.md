@@ -6,25 +6,25 @@ What version required of Composer?
 
 See the documentation: [Installation](index.md#installation).
 
-How does work the plugin?
+How does the plugin work?
 -------------------------
 
-For add dependencies of asset in Composer, The plugin uses the VCS repositories to add
+To add dependencies of asset in Composer, the plugin uses the VCS repositories to add
 each repository of a required asset.
 
-However, to retrieve automatically the repository of an asset, the plugin needs to add
-a Composer 'Repository' operating in the same way that the registry 'Packagist', but
-dedicated to the NPM registry and the Bower registry. Of course, it’s still possible to
-add manually an VCS repository of asset.
+However, to retrieve the repository of an asset automatically, the plugin needs to add
+a Composer 'Repository' operating in the same way than the 'Packagist' registry, but
+dedicated to the NPM and Bower registries. Of course, it’s still possible to
+add an asset’s VCS repository manually.
 
 Once the VCS repository is selected, Composer downloads the package definition of the
 main branch, together with the list of branches and tags. Of course, a conversion of
-package definitions of NPM or Bower is made. Note the definitions of each package will
-be got at the time when Composer will need it (in the Solver).
+NPM or Bower package definitions is made. Note that the definitions of each package will
+be taken at the time Composer needs it (in the Solver).
 
-In this way, the plugin allows add a VCS repository by simulating the presence of the
-`composer.json` file, and there is no need to add this file manually if the package is
-registered in the registry of NPM or Bower, and if the file `bower.json` or
+This way, the plugin makes it possible to add a VCS repository by simulating the presence
+of the `composer.json` file, and there is no need to add this file manually if the 
+package is registered in the registry of NPM or Bower, and if the file `bower.json` or
 `package.json` is present in the repository.
 
 Why does the plugin use the VCS repository?
@@ -39,26 +39,26 @@ There are already several possibilities for managing assets in a PHP project:
 Packagist or an VCS repository)
 5. Add a package repository in `composer.json` with a direct download link
 6. Create a Satis or Packagist server
-7. Other?
+7. And possibly other creative options
 
 In the case of a complete project in PHP, it shouldn't be necessary to use several tools
 (PHP, Nodejs, Composer, NPM, Bower, Grunt, etc.) to simply install these assets in your
 project. This eliminates the possibilities 1, 2 and 3.
 
-And the solution 6 is unfortunately not feasible, because it would regularly collect all
+Solution 6 is unfortunately not feasible, because it would regularly collect all
 packages in the registries of NPM and Bower, then analyze each and every branch and
 every tag of each package. The packages would not be updated immediately, and the
 requests limit of API would be reached very quickly.
 
-The solutions 4 and 5 are standard in Composer, but tyey are very onerous to manage. The
+The solutions 4 and 5 are standard in Composer, but they are very onerous to manage. The
 plugin allows exactly opting for this solution, while sorely simplifying these solutions.
 
 Why is Composer slow when the plugin retrieves the package definitions?
 -----------------------------------------------------------------------
 
-For the VCS repositories, The native system of Composer retrieves the package definitions
-for all branches and all tags. Once there are numerous, it may become very slow. However,
-the plugin uses a caching system, allowing to not make new requests for retrieve the
+For the VCS repositories, the native system of Composer retrieves the package definitions
+for all branches and all tags. If these are numerous, it may become very slow. However,
+the plugin uses a caching system, allowing to not make new requests to retrieve the
 definitions of packages. The next commands install/update will be much faster.
 
 The performance to get the new package definitions could be even higher, but this requires
@@ -68,7 +68,7 @@ a change directly into Composer ([see composer/composer#3282]
 Why are the definitions from multiple versions of package retrieved to install?
 -------------------------------------------------------------------------------
 
-For the `install`, The Solver must verify that each version available answer all project
+For the `install`, the Solver must verify that each version available answer all project
 constraints.
 
 Therefore, if constraints of version are 'flexible', then the Solver must retrieve the
@@ -77,8 +77,8 @@ definitions of package for each version who answer the constraint.
 So, more you specify the version, less Composer will try to retrieve the definitions
 of package.
 
-Why are retrieved from all the version definitions of all packages to update?
------------------------------------------------------------------------------
+Why are all the versions definitions retrieved for all packages to update?
+--------------------------------------------------------------------------
 
 For the `update`, The Solver must obtain all of the definitions for each package and for
 all available versions.
@@ -95,7 +95,7 @@ Composer throws an exception stating that the version does not exist
 --------------------------------------------------------------------
 
 If Composer throws an exception stating that the version does not exist, whereas the
-version exists, but it isn't imported: is that this new package version is lesser than
+version exists, but it isn't imported, it means that this new package version is lesser than
 the installed version.
 
 Of course, 3 solutions can work around the problem:
@@ -108,7 +108,7 @@ Of course, 3 solutions can work around the problem:
   - do the `update`,
   - remove the dependency in the root Composer package
   - remove the option `extra.asset-optimize-with-conjunctive`
-  - do the `update` for sync the lock file,
+  - do the `update` to sync the lock file,
 
 > The solution 1 is the easiest and fastest.
 
@@ -118,7 +118,7 @@ See the documentation: [Disable the import filter using the installed packages]
 How to reduce the number of requests for getting the package definitions?
 -------------------------------------------------------------------------
 
-For the `install`, more you specify the versions in your dependencies, less Composer will
+For the `install`, the more you specify the versions in your dependencies, less Composer will
 try to retrieve the definitions of the packages.
 
 For the `update`, in contrast, this is unfortunately not the case, because Composer must
