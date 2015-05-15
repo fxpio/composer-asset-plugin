@@ -57,6 +57,10 @@ If your asset is not listed on the NPM- or Bower-Repository, or it is a private 
 create a VCS repository for it. The repository must have an asset package file for NPM (`package.json`)
 or Bower (`bower.json`).
 
+In addition, for Github, the repository must have (lightweight) tags that represents the version number following the [semver](http://semver.org/) scheme. Example tags for alpha, beta, and stable releases are `1.0.0-alpha`, `1.0.0-alpha.1`, `1.0.0-beta`, and `1.0.0`.
+
+If your repository does not contain a tag that repsent the number, you must put the flag @dev or directly use the development branch dev-master.
+
 **Example:**
 
 Add the following to your `composer.json`:
