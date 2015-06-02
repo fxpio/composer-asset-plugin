@@ -81,6 +81,7 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/test-library17-file' => '*',
             'ASSET/test-library18-file' => '1.2.3',
             'ASSET/test-library19-file' => '*',
+            'ASSET/library20' => '1 || 2',
         ), $composer['require']);
 
         $this->assertArrayHasKey('require-dev', $composer);
