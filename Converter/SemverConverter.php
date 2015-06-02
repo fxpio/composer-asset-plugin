@@ -57,7 +57,7 @@ class SemverConverter implements VersionConverterInterface
             $range = str_replace($character.' ', $character, $range);
         }
 
-        if (preg_match_all('/[v|V](\d+)/', $range, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all('/(?:[vV])?(\d+)/', $range, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
                 $range = str_replace($match[0], $match[1], $range);
             }
