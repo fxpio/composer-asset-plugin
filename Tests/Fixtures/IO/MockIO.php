@@ -99,6 +99,14 @@ class MockIO extends BaseIO
     /**
      * {@inheritDoc}
      */
+    public function writeError($messages, $newline = true)
+    {
+        $this->write($messages, $newline);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function overwrite($messages, $newline = true, $size = 80)
     {
         $pos = max(count($this->traces) - 1, 0);
@@ -106,6 +114,11 @@ class MockIO extends BaseIO
         if ($newline) {
             $this->traces[] = '';
         }
+    }
+
+    public function overwriteError($messages, $newline = true, $size = null)
+    {
+        $this->overwrite($messages, $newline, $size);
     }
 
     /**
