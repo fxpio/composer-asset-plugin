@@ -90,18 +90,13 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
 
         $io->expects($this->once())
-            ->method('ask')
-            ->with($this->equalTo('Username: '))
-            ->will($this->returnValue('someuser'));
-
-        $io->expects($this->once())
             ->method('askAndHideAnswer')
-            ->with($this->equalTo('Password: '))
-            ->will($this->returnValue('somepassword'));
+            ->with($this->equalTo('Token (hidden): '))
+            ->will($this->returnValue('sometoken'));
 
         $io->expects($this->any())
             ->method('setAuthentication')
-            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{someuser|abcdef}'), $this->matchesRegularExpression('{somepassword|x-oauth-basic}'));
+            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
@@ -119,15 +114,10 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(4))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/authorizations'), $this->equalTo(false))
-            ->will($this->returnValue('[]'));
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/rate_limit'), $this->equalTo(false))
+            ->will($this->returnValue('{}'));
 
         $remoteFilesystem->expects($this->at(5))
-            ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/authorizations'), $this->equalTo(false))
-            ->will($this->returnValue('{"token": "abcdef"}'));
-
-        $remoteFilesystem->expects($this->at(6))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
             ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master', 'private' => true))));
@@ -744,18 +734,13 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
 
         $io->expects($this->once())
-            ->method('ask')
-            ->with($this->equalTo('Username: '))
-            ->will($this->returnValue('someuser'));
-
-        $io->expects($this->once())
             ->method('askAndHideAnswer')
-            ->with($this->equalTo('Password: '))
-            ->will($this->returnValue('somepassword'));
+            ->with($this->equalTo('Token (hidden): '))
+            ->will($this->returnValue('sometoken'));
 
         $io->expects($this->any())
             ->method('setAuthentication')
-            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{someuser|abcdef}'), $this->matchesRegularExpression('{somepassword|x-oauth-basic}'));
+            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'));
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
@@ -769,20 +754,15 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/authorizations'), $this->equalTo(false))
-            ->will($this->returnValue('[]'));
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/rate_limit'), $this->equalTo(false))
+            ->will($this->returnValue('{}'));
 
         $remoteFilesystem->expects($this->at(4))
-            ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/authorizations'), $this->equalTo(false))
-            ->will($this->returnValue('{"token": "abcdef"}'));
-
-        $remoteFilesystem->expects($this->at(5))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
             ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
 
-        $remoteFilesystem->expects($this->at(6))
+        $remoteFilesystem->expects($this->at(5))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl.'/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
             ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
