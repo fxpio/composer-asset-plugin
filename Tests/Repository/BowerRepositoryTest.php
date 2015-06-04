@@ -45,7 +45,7 @@ class BowerRepositoryTest extends AbstractAssetsRepositoryTest
     protected function getMockPackageForVcsConfig()
     {
         return array(
-            'url'  => 'http://foo.tld',
+            'url' => 'http://foo.tld',
         );
     }
 

@@ -240,7 +240,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected function createSearchItem(array $item)
     {
         return array(
-            'name'        => $this->assetType->getComposerVendorName().'/'.$item['name'],
+            'name' => $this->assetType->getComposerVendorName().'/'.$item['name'],
             'description' => null,
         );
     }

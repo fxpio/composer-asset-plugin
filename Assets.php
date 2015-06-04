@@ -24,7 +24,7 @@ class Assets
      * @var array
      */
     protected static $typeClasses = array(
-        'npm'   => 'Fxp\Composer\AssetPlugin\Type\NpmAssetType',
+        'npm' => 'Fxp\Composer\AssetPlugin\Type\NpmAssetType',
         'bower' => 'Fxp\Composer\AssetPlugin\Type\BowerAssetType',
     );
 
@@ -32,7 +32,7 @@ class Assets
      * @var array
      */
     protected static $registryClasses = array(
-        'npm'   => 'Fxp\Composer\AssetPlugin\Repository\NpmRepository',
+        'npm' => 'Fxp\Composer\AssetPlugin\Repository\NpmRepository',
         'bower' => 'Fxp\Composer\AssetPlugin\Repository\BowerRepository',
     );
 
@@ -40,28 +40,28 @@ class Assets
      * @var array
      */
     protected static $vcsRepositoryDrivers = array(
-        'vcs'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'github'        => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'vcs' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'github' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'git'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'hg'            => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'perforce'      => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
-        'svn'           => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'git' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'hg-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'hg' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'perforce' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'svn' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
      * @var array
      */
     protected static $vcsDrivers = array(
-        'github'        => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
+        'github' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver',
         'git-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitBitbucketDriver',
-        'git'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
-        'hg-bitbucket'  => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver',
-        'hg'            => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
-        'perforce'      => 'Fxp\Composer\AssetPlugin\Repository\Vcs\PerforceDriver',
+        'git' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
+        'hg-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver',
+        'hg' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
+        'perforce' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\PerforceDriver',
         // svn must be last because identifying a subversion server for sure is practically impossible
-        'svn'           => 'Fxp\Composer\AssetPlugin\Repository\Vcs\SvnDriver',
+        'svn' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\SvnDriver',
     );
 
     /**

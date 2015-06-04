@@ -177,7 +177,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     protected function getMapDependencies()
     {
         return array(
-            'dependencies'    => 'require',
+            'dependencies' => 'require',
             'devDependencies' => 'require-dev',
         );
     }

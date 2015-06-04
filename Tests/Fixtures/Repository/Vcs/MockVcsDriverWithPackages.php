@@ -20,22 +20,22 @@ class MockVcsDriverWithPackages extends MockVcsDriver
 {
     protected $composer = array(
         'branch:master' => array(
-            'name'        => 'foobar',
-            'version'     => '2.0',
+            'name' => 'foobar',
+            'version' => '2.0',
         ),
         'branch:1.x' => array(
-            'name'        => 'foobar',
-            'version'     => '1.1',
+            'name' => 'foobar',
+            'version' => '1.1',
         ),
         'tag:v1.0.0' => array(
-            'name'        => 'foobar',
-            'version'     => '1.0',
+            'name' => 'foobar',
+            'version' => '1.0',
         ),
         'tag:v1.0.1' => array(
-            'name'        => 'foobar',
+            'name' => 'foobar',
         ),
         'tag:invalid' => array(
-            'name'        => 'foobar',
+            'name' => 'foobar',
             'description' => 'invalid tag name',
         ),
     );

@@ -20,13 +20,13 @@ class MockVcsDriverWithUrlPackages extends MockVcsDriverWithPackages
 {
     protected $composer = array(
         'branch:master' => array(
-            'version'     => '2.0',
+            'version' => '2.0',
         ),
         'branch:1.x' => array(
-            'version'     => '1.1',
+            'version' => '1.1',
         ),
         'tag:v1.0.0' => array(
-            'version'     => '1.0',
+            'version' => '1.0',
         ),
         'tag:v1.0.1' => array(
         ),

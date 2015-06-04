@@ -129,7 +129,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
-                    'url'  => 'http://foobar.tld/dist/'.$value,
+                    'url' => 'http://foobar.tld/dist/'.$value,
                 );
             }));
         $this->driver
@@ -138,7 +138,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
-                    'url'  => 'http://foobar.tld/source/'.$value,
+                    'url' => 'http://foobar.tld/source/'.$value,
                 );
             }));
     }

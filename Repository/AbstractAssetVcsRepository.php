@@ -191,9 +191,9 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     protected function createMockOfPackageConfig($name, $version)
     {
         return array(
-            'name'    => $name,
+            'name' => $name,
             'version' => $version,
-            'type'    => $this->assetType->getComposerType(),
+            'type' => $this->assetType->getComposerType(),
         );
     }
 

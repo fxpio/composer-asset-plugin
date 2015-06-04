@@ -72,9 +72,9 @@ class NpmRepository extends AbstractAssetsRepository
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
 
         return array(
-            'type'              => $this->assetType->getName().'-'.$type,
-            'url'               => $this->getVcsRepositoryUrl($data, $registryName),
-            'name'              => $registryName,
+            'type' => $this->assetType->getName().'-'.$type,
+            'url' => $this->getVcsRepositoryUrl($data, $registryName),
+            'name' => $registryName,
             'registry-versions' => isset($data['versions'])
                 ? $this->createArrayRepositoryConfig($data['versions'])
                 : array(),

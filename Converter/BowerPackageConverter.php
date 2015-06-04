@@ -26,20 +26,20 @@ class BowerPackageConverter extends AbstractPackageConverter
         $assetType = $this->assetType;
 
         return array(
-            'name'               => array('name', function ($value) use ($assetType) {
+            'name' => array('name', function ($value) use ($assetType) {
                 return $assetType->formatComposerName($value);
             }),
-            'type'               => array('type', function () use ($assetType) {
+            'type' => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
             }),
-            'version'            => array('version', function ($value) use ($assetType) {
+            'version' => array('version', function ($value) use ($assetType) {
                 return $assetType->getVersionConverter()->convertVersion($value);
             }),
             'version_normalized' => 'version_normalized',
-            'description'        => 'description',
-            'keywords'           => 'keywords',
-            'license'            => 'license',
-            'bin'                => 'bin',
+            'description' => 'description',
+            'keywords' => 'keywords',
+            'license' => 'license',
+            'bin' => 'bin',
         );
     }
 
@@ -49,8 +49,8 @@ class BowerPackageConverter extends AbstractPackageConverter
     protected function getMapExtras()
     {
         return array(
-            'main'    => 'bower-asset-main',
-            'ignore'  => 'bower-asset-ignore',
+            'main' => 'bower-asset-main',
+            'ignore' => 'bower-asset-ignore',
             'private' => 'bower-asset-private',
         );
     }

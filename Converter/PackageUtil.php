@@ -44,18 +44,18 @@ abstract class PackageUtil
             if (static::hasUrlDependencySupported($url)) {
                 $vcsRepos[] = array(
                     'type' => sprintf('%s-vcs', $assetType->getName()),
-                    'url'  => $url,
+                    'url' => $url,
                 );
             } else {
                 $dependency = static::getUrlFileDependencyName($assetType, $composer, $dependency);
                 $vcsRepos[] = array(
-                    'type'    => 'package',
+                    'type' => 'package',
                     'package' => array(
-                        'name'    => $assetType->formatComposerName($dependency),
-                        'type'    => $assetType->getComposerType(),
+                        'name' => $assetType->formatComposerName($dependency),
+                        'type' => $assetType->getComposerType(),
                         'version' => static::getUrlFileDependencyVersion($assetType, $url, $version),
-                        'dist'    => array(
-                            'url'  => $url,
+                        'dist' => array(
+                            'url' => $url,
                             'type' => 'file',
                         ),
                     ),

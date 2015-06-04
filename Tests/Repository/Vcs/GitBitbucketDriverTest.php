@@ -35,7 +35,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config();
         $this->config->merge(array(
             'config' => array(
-                'home'           => sys_get_temp_dir().'/composer-test',
+                'home' => sys_get_temp_dir().'/composer-test',
                 'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
             ),
         ));
@@ -87,9 +87,9 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->createJsonComposer(array())));
 
         $repoConfig = array(
-            'url'        => $repoUrl,
+            'url' => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename,
+            'filename' => $filename,
         );
 
         /* @var IOInterface $io */
@@ -134,9 +134,9 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new TransportException('Not Found', 404)));
 
         $repoConfig = array(
-            'url'        => $repoUrl,
+            'url' => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename,
+            'filename' => $filename,
         );
 
         /* @var IOInterface $io */
@@ -175,7 +175,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
     protected function createJsonComposer(array $content, $name = 'repo-name')
     {
         return json_encode(array_merge_recursive($content, array(
-            'name'  => $name,
+            'name' => $name,
         )));
     }
 

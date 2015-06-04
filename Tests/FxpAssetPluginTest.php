@@ -134,7 +134,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $rm = $this->composer->getRepositoryManager();
         $repo = $rm->createRepository($type, array(
             'type' => $type,
-            'url'  => 'http://foo.tld',
+            'url' => 'http://foo.tld',
         ));
 
         $this->assertInstanceOf('Composer\Repository\VcsRepository', $repo);
@@ -268,13 +268,13 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
                 array(
-                    'type'    => 'package',
+                    'type' => 'package',
                     'package' => array(
-                        'name'    => 'foo',
-                        'type'    => 'ASSET-asset-library',
+                        'name' => 'foo',
+                        'type' => 'ASSET-asset-library',
                         'version' => '0.0.0.0',
-                        'dist'    => array(
-                            'url'  => 'foo.tld/bar',
+                        'dist' => array(
+                            'url' => 'foo.tld/bar',
                             'type' => 'file',
                         ),
                     ),
@@ -295,7 +295,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-registry-options' => array(
-                'npm-option1'   => 'value 1',
+                'npm-option1' => 'value 1',
                 'bower-option1' => 'value 2',
             ))));
 
@@ -312,7 +312,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
 
         $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, array(
-            array('type' => 'npm-vcs', 'url'  => 'http://foo.tld'),
+            array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
         ));
         /* @var InstallerEvent $eventInstaller */
         $eventInstaller = $this->getMockBuilder('Composer\Installer\InstallerEvent')

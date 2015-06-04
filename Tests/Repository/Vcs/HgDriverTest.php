@@ -34,7 +34,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $this->config = new Config();
         $this->config->merge(array(
             'config' => array(
-                'home'           => sys_get_temp_dir().'/composer-test',
+                'home' => sys_get_temp_dir().'/composer-test',
                 'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
             ),
         ));
@@ -65,9 +65,9 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMock('Composer\IO\IOInterface');
 
         $repoConfig = array(
-            'url'        => $repoUrl,
+            'url' => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename,
+            'filename' => $filename,
         );
 
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -101,9 +101,9 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'https://bitbucket.org/composer-test/repo-name';
         $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
         $repoConfig = array(
-            'url'        => $repoUrl,
+            'url' => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename,
+            'filename' => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');
@@ -144,9 +144,9 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'https://bitbucket.org/composer-test/repo-name';
         $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
         $repoConfig = array(
-            'url'        => $repoUrl,
+            'url' => $repoUrl,
             'asset-type' => $type,
-            'filename'   => $filename,
+            'filename' => $filename,
         );
         $io = $this->getMock('Composer\IO\IOInterface');
         $process = $this->getMock('Composer\Util\ProcessExecutor');

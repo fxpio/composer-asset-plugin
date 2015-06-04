@@ -48,7 +48,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         return array(
             'repository' => array(
                 'type' => 'vcs',
-                'url'  => 'http://foo.tld',
+                'url' => 'http://foo.tld',
             ),
         );
     }
@@ -87,7 +87,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 ),
                 'versions' => array(
                     '1.0.0' => array(
-                        'name'    => 'foobar',
+                        'name' => 'foobar',
                         'version' => '0.0.1',
                         'dependencies' => array(),
                         'dist' => array(

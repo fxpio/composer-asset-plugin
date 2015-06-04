@@ -49,11 +49,11 @@ class PerforceTest extends BasePerforceTest
     public function testQueryP4PasswordWithPasswordAlreadySet()
     {
         $repoConfig = array(
-            'depot'      => 'depot',
-            'branch'     => 'branch',
-            'p4user'     => 'user',
+            'depot' => 'depot',
+            'branch' => 'branch',
+            'p4user' => 'user',
             'p4password' => 'TEST_PASSWORD',
-            'filename'   => 'ASSET.json',
+            'filename' => 'ASSET.json',
         );
         $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false,  $this->getMockIOInterface(), 'TEST');
         $password = $this->perforce->queryP4Password();
@@ -85,10 +85,10 @@ class PerforceTest extends BasePerforceTest
 
         $result = $this->perforce->getComposerInformation('//depot');
         $expected = array(
-            'name'              => 'test/perforce',
-            'description'       => 'Basic project for testing',
+            'name' => 'test/perforce',
+            'description' => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array()),
+            'autoload' => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -126,10 +126,10 @@ class PerforceTest extends BasePerforceTest
         $result = $this->perforce->getComposerInformation('//depot@0.0.1');
 
         $expected = array(
-            'name'              => 'test/perforce',
-            'description'       => 'Basic project for testing',
+            'name' => 'test/perforce',
+            'description' => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array()),
+            'autoload' => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -155,10 +155,10 @@ class PerforceTest extends BasePerforceTest
         $result = $this->perforce->getComposerInformation('//depot/branch');
 
         $expected = array(
-            'name'              => 'test/perforce',
-            'description'       => 'Basic project for testing',
+            'name' => 'test/perforce',
+            'description' => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array()),
+            'autoload' => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
@@ -197,10 +197,10 @@ class PerforceTest extends BasePerforceTest
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
         $expected = array(
-            'name'              => 'test/perforce',
-            'description'       => 'Basic project for testing',
+            'name' => 'test/perforce',
+            'description' => 'Basic project for testing',
             'minimum-stability' => 'dev',
-            'autoload'          => array('psr-0' => array()),
+            'autoload' => array('psr-0' => array()),
         );
         $this->assertEquals($expected, $result);
     }
