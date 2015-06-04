@@ -214,7 +214,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
-                $package =  $package->getAliasOf();
+                $package = $package->getAliasOf();
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
@@ -261,7 +261,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
-                $package =  $package->getAliasOf();
+                $package = $package->getAliasOf();
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
@@ -293,7 +293,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
-                $package =  $package->getAliasOf();
+                $package = $package->getAliasOf();
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
@@ -331,7 +331,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
-                $package =  $package->getAliasOf();
+                $package = $package->getAliasOf();
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
