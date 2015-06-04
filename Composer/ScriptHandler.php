@@ -15,7 +15,7 @@ use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\Package\PackageInterface;
-use Composer\Script\PackageEvent;
+use Composer\Installer\PackageEvent;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreFactory;
 
