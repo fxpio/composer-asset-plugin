@@ -40,6 +40,7 @@ class SemverConverter implements VersionConverterInterface
     public function convertRange($range)
     {
         $range = $this->cleanRange(strtolower($range));
+        $range = preg_replace('/(?<!\S)[vV]?\d+(?:\.\d+)?(?!\S)/', '${0}.*', $range);
 
         return $this->matchRange($range);
     }
@@ -57,11 +58,7 @@ class SemverConverter implements VersionConverterInterface
             $range = str_replace($character.' ', $character, $range);
         }
 
-        if (preg_match_all('/(?:[vV])?(\d+)/', $range, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $match) {
-                $range = str_replace($match[0], $match[1], $range);
-            }
-        }
+        $range = preg_replace('/(?:[vV])(\d+)/', '${1}', $range);
 
         return str_replace(' ||', '||', $range);
     }
