@@ -118,4 +118,23 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
 
         $this->registry->whatProvides($this->pool, $name);
     }
+
+    public function testWhatProvidesWithGitPlusHttpsUrl()
+    {
+        $name = $this->getType().'-asset/existing';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode(array(
+                'repository' => array(
+                    'type' => 'vcs',
+                    'url' => 'git+https://foo.tld',
+                ),
+            ))));
+
+        $this->assertCount(0, $this->rm->getRepositories());
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        $this->assertCount(1, $this->rm->getRepositories());
+    }
 }
