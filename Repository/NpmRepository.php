@@ -157,10 +157,22 @@ class NpmRepository extends AbstractAssetsRepository
             throw $ex;
         }
 
-        $url = (string) $data['repository']['url'];
-        if (strpos($url, "git+https") === 0) {
+        return $this->convertUrl((string) $data['repository']['url']);
+    }
+
+    /**
+     * Convert the url repository.
+     *
+     * @param string $url The url
+     *
+     * @return string The url converted
+     */
+    private function convertUrl($url)
+    {
+        if (0 === strpos($url, "git+http")) {
             return substr($url, 4) ;
         }
+
         return $url;
     }
 }
