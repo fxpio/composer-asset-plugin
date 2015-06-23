@@ -157,6 +157,10 @@ class NpmRepository extends AbstractAssetsRepository
             throw $ex;
         }
 
-        return (string) $data['repository']['url'];
+        $url = (string) $data['repository']['url'];
+        if (strpos($url, "git+https") === 0) {
+            return substr($url, 4) ;
+        }
+        return $url;
     }
 }
