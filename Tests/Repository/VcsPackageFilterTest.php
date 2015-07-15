@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
 use Composer\Installer\InstallationManager;
+use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledFilesystemRepository;
@@ -551,7 +552,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
      */
     protected function init(array $requires = array(), $minimumStability = 'stable', array $extra = array())
     {
-        $parser = new VersionParser();
+        $parser = new ArrayLoader();
         $linkRequires = $parser->parseLinks('__ROOT__', '1.0.0', 'requires', $requires);
         $stabilityFlags = $this->findStabilityFlags($requires);
 
