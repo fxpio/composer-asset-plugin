@@ -8,22 +8,23 @@ php:
     - hhvm
 
 env:
-    - COMPOSER_VERSION=''
+    - COMPOSER_VERSION='~1.0@dev'
 
 matrix:
     include:
         - php: 5.6
-          env: COMPOSER_VERSION='--version=1.0.0-alpha10'
+          env: COMPOSER_VERSION='v1.0.0-alpha10'
 
     allow_failures:
         - php: hhvm
 
 before_script:
+    - composer self-update
+    - composer install
+    - composer require composer/composer:${COMPOSER_VERSION}
+    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
+    - composer update phpunit/php-code-coverage satooshi/php-coveralls
     - mkdir -p ./build/logs
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=./build --filename=composer ${COMPOSER_VERSION}
-    - ./build/composer install
-    - ./build/composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
-    - ./build/composer update phpunit/php-code-coverage satooshi/php-coveralls
 
 script:
     - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
