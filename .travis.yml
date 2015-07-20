@@ -8,12 +8,12 @@ php:
     - hhvm
 
 env:
-    - COMPOSER_VERSION='~1.0@dev'
+    - COMPOSER_VERSION=~1.0@dev
 
 matrix:
     include:
         - php: 5.6
-          env: COMPOSER_VERSION='v1.0.0-alpha10'
+          env: COMPOSER_VERSION=1.0.0-alpha10
 
     allow_failures:
         - php: hhvm
@@ -21,7 +21,7 @@ matrix:
 before_script:
     - composer self-update
     - composer install
-    - composer require composer/composer:${COMPOSER_VERSION}
+    - composer require --dev composer/composer:${COMPOSER_VERSION}
     - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
     - composer update phpunit/php-code-coverage satooshi/php-coveralls
     - mkdir -p ./build/logs
