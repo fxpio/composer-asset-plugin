@@ -21,9 +21,8 @@ matrix:
 before_script:
     - composer self-update
     - composer install
-    - composer require --dev composer/composer:${COMPOSER_VERSION}
-    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
-    - composer update phpunit/php-code-coverage satooshi/php-coveralls
+    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev composer/composer:${COMPOSER_VERSION}
+    - composer update phpunit/php-code-coverage satooshi/php-coveralls composer/composer
     - mkdir -p ./build/logs
 
 script:
