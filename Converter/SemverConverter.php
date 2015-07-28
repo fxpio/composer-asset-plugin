@@ -40,7 +40,6 @@ class SemverConverter implements VersionConverterInterface
     public function convertRange($range)
     {
         $range = $this->cleanRange(strtolower($range));
-        $range = preg_replace('/(?<!\S)[vV]?\d+(?:\.\d+)?(?!\S)/', '${0}.*', $range);
 
         return $this->matchRange($range);
     }
