@@ -17,6 +17,7 @@ use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\LinkConstraint\MultiConstraint;
+use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -50,6 +51,11 @@ class VcsPackageFilter
     protected $versionParser;
 
     /**
+     * @var ArrayLoader
+     */
+    protected $arrayLoader;
+
+    /**
      * @var bool
      */
     protected $enabled;
@@ -72,6 +78,7 @@ class VcsPackageFilter
         $this->installationManager = $installationManager;
         $this->installedRepository = $installedRepository;
         $this->versionParser = new VersionParser();
+        $this->arrayLoader = new ArrayLoader();
         $this->enabled = true;
 
         $this->initialize();
@@ -269,7 +276,11 @@ class VcsPackageFilter
         foreach ($this->installedRepository->getPackages() as $package) {
             $operator = $this->getFilterOperator($package);
             /* @var Link $link */
-            $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
+            if (method_exists($this->arrayLoader, 'parseLinks')) {
+                $link = current($this->arrayLoader->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
+            } else {
+                $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
+            }
             $link = $this->includeRootConstraint($package, $link);
 
             $this->requires[$package->getName()] = $link;
