@@ -124,7 +124,7 @@ class VcsPackageFilter
             return true;
         }
 
-        if ($this->skipByPattern() && $this->forceSkipVersion($normalizedVersion)) {
+        if (false !== $this->skipByPattern() && $this->forceSkipVersion($normalizedVersion)) {
             return true;
         }
 
