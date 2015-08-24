@@ -84,7 +84,7 @@ class AssetInstaller extends LibraryInstaller
      */
     protected function updateCode(PackageInterface $initial, PackageInterface $target)
     {
-        $package = AssetPlugin::addMainFiles($this->composer, $package);
+        $target = AssetPlugin::addMainFiles($this->composer, $target);
 
         parent::updateCode($initial, $target);
 
