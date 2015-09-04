@@ -62,7 +62,7 @@ class MockIO extends BaseIO
      */
     public function isVeryVerbose()
     {
-        return false;
+        return $this->verbose;
     }
 
     /**
