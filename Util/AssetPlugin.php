@@ -111,26 +111,24 @@ class AssetPlugin
      */
     public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
-        if (! get_class($package) == 'Composer\Package\Package' && ! in_array('Composer\Package\Package', class_parents($package))) {
-            return $package;
-        }
+        if (get_class($package) == 'Composer\Package\Package' || in_array('Composer\Package\Package', class_parents($package))) {
+            $packageExtra = $package->getExtra();
 
-        $packageExtra = $package->getExtra();
-
-        $extra = $composer->getPackage()->getExtra();
-        if (isset($extra[$section])) {
-            foreach ($extra[$section] as $packageName => $files) {
-                if ($packageName === $package->getName()) {
-                    $packageExtra['bower-asset-main'] = $files;
-                    break;
+            $extra = $composer->getPackage()->getExtra();
+            if (isset($extra[$section])) {
+                foreach ($extra[$section] as $packageName => $files) {
+                    if ($packageName === $package->getName()) {
+                        $packageExtra['bower-asset-main'] = $files;
+                        break;
+                    }
                 }
             }
+            // copied from Repository\AbstractAssetVcsRepository->injectExtraConfig
+            $ref = new \ReflectionClass($package);
+            $met = $ref->getProperty('extra');
+            $met->setAccessible(true);
+            $met->setValue($package, $packageExtra);
         }
-        // copied from Repository\AbstractAssetVcsRepository->injectExtraConfig
-        $ref = new \ReflectionClass($package);
-        $met = $ref->getProperty('extra');
-        $met->setAccessible(true);
-        $met->setValue($package, $packageExtra);
 
         return $package;
     }
