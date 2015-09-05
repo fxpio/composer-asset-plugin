@@ -111,6 +111,10 @@ class AssetPlugin
      */
     public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
+        if (! in_array('Composer\Package\Package', class_parents($package))) {
+            return $package;
+        }
+
         $packageExtra = $package->getExtra();
 
         $extra = $composer->getPackage()->getExtra();
