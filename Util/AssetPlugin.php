@@ -14,7 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Util;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
-use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
@@ -106,10 +106,10 @@ class AssetPlugin
      * Adds the main file definitions from the root package.
      *
      * @param Composer         $composer
-     * @param Package          $package
+     * @param PackageInterface $package
      * @param string           $section
      */
-    public static function addMainFiles(Composer $composer, Package $package, $section = 'asset-main-files')
+    public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
         $packageExtra = $package->getExtra();
 
@@ -122,7 +122,12 @@ class AssetPlugin
                 }
             }
         }
-        $package->setExtra($packageExtra);
+        // copied from Repository\AbstractAssetVcsRepository->injectExtraConfig
+        $ref = new \ReflectionClass($package);
+        $met = $ref->getProperty('extra');
+        $met->setAccessible(true);
+        $met->setValue($package, $packageExtra);
+
         return $package;
     }
 }
