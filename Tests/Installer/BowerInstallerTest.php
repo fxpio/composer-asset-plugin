@@ -213,17 +213,18 @@ class BowerInstallerTest extends TestCase
         );
     }
 
-    public function getAssetMainFiles(){
+    public function getAssetMainFiles()
+    {
         return array(
             array(array()),
             array(array(
-                'asset-main-files'=>array(
-                    'foo-asset/bar'=>array(
+                'asset-main-files' => array(
+                    'foo-asset/bar' => array(
                         'foo',
-                        'bar'
-                    )
-                )
-            ))
+                        'bar',
+                    ),
+                ),
+            )),
         );
     }
 
@@ -449,7 +450,7 @@ class BowerInstallerTest extends TestCase
         $package = new Package('foo-asset/bar', '1.0.0', '1.0.0');
         $package = AssetPlugin::addMainFiles($this->composer, $package);
         $extra = $package->getExtra();
-        if (isset($mainFiles['asset-main-files'])){
+        if (isset($mainFiles['asset-main-files'])) {
             $this->assertEquals($extra['bower-asset-main'], $mainFiles['asset-main-files']['foo-asset/bar']);
         } else {
             $this->assertEquals($extra, array());

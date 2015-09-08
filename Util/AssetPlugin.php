@@ -111,7 +111,7 @@ class AssetPlugin
      */
     public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
-        if (get_class($package) == 'Composer\Package\Package' || in_array('Composer\Package\Package', class_parents($package))) {
+        if ($package instanceof \Composer\Package\Package) {
             $packageExtra = $package->getExtra();
 
             $extra = $composer->getPackage()->getExtra();
@@ -123,11 +123,7 @@ class AssetPlugin
                     }
                 }
             }
-            // copied from Repository\AbstractAssetVcsRepository->injectExtraConfig
-            $ref = new \ReflectionClass($package);
-            $met = $ref->getProperty('extra');
-            $met->setAccessible(true);
-            $met->setValue($package, $packageExtra);
+            $package->setExtra($packageExtra);
         }
 
         return $package;
