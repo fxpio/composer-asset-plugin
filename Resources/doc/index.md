@@ -354,6 +354,31 @@ Package. To do this, you can use the script helper
 }
 ```
 
+### Override the main files for Bower
+
+The bower.json specification allows packages to define entry-point files
+which can later be processed with taskrunners or build scripts. Some Bower
+plugins like main-bower-files, wiredep and asset-builder have a feature to
+override the package main files in the project configuration file.
+
+You can do the same with composer-asset-plugin, just add a section
+`asset-main-files` in the root project `composer.json` file with the package
+name and the files you want to mark as main files.
+
+**Example:**
+
+```json
+{
+    "extra": {
+        "asset-main-files": {
+            "acme/other-asset": [
+                "other-asset.js"
+            ]
+        }
+    }
+}
+```
+
 ### Disable the search for an asset registry
 
 If you want to disable the search for an asset registry, you can add an extra
