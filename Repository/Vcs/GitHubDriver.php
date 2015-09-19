@@ -75,7 +75,7 @@ class GitHubDriver extends AbstractGitHubDriver
                 }
 
                 // retry fetching if github returns a 404 since they happen randomly
-                $notFoundRetries--;
+                --$notFoundRetries;
                 $composer = false;
             }
         }
