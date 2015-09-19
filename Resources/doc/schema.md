@@ -43,6 +43,12 @@ Options available for the asset registers:
 - **bower-searchable** (bool): The search in the Bower registry may be disabled with this option
                                for the search command.
 
+##### extra.asset-main-files (root-only)
+
+The plugin can override the main file definitions of the Bower packages. To override the file
+definitions specify the packages and their main file array as name/value pairs. For an example
+see the [usage informations](index.md#override-the-main-files-for-bower).
+
 ### Mapping asset file to composer package
 
 ##### NPM mapping

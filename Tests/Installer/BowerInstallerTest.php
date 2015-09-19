@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Installer;
 use Composer\Downloader\DownloadManager;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Util\Filesystem;
@@ -22,6 +23,7 @@ use Composer\Composer;
 use Composer\Config;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
+use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
 /**
  * Tests of bower asset installer.
@@ -208,6 +210,21 @@ class BowerInstallerTest extends TestCase
         return array(
             array(array()),
             array(array('foo', 'bar')),
+        );
+    }
+
+    public function getAssetMainFiles()
+    {
+        return array(
+            array(array()),
+            array(array(
+                'asset-main-files' => array(
+                    'foo-asset/bar' => array(
+                        'foo',
+                        'bar',
+                    ),
+                ),
+            )),
         );
     }
 
@@ -422,6 +439,25 @@ class BowerInstallerTest extends TestCase
     }
 
     /**
+     * @dataProvider getAssetMainFiles
+     */
+    public function testMainFiles(array $mainFiles)
+    {
+        /* @var RootPackageInterface $rootPackage */
+        $rootPackage = $this->createRootPackageMock($mainFiles);
+        $this->composer->setPackage($rootPackage);
+
+        $package = new Package('foo-asset/bar', '1.0.0', '1.0.0');
+        $package = AssetPlugin::addMainFiles($this->composer, $package);
+        $extra = $package->getExtra();
+        if (isset($mainFiles['asset-main-files'])) {
+            $this->assertEquals($extra['bower-asset-main'], $mainFiles['asset-main-files']['foo-asset/bar']);
+        } else {
+            $this->assertEquals($extra, array());
+        }
+    }
+
+    /**
      * @param array $ignoreFiles
      *
      * @return PackageInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -443,9 +479,11 @@ class BowerInstallerTest extends TestCase
     }
 
     /**
+     * @param array $mainFiles
+     *
      * @return RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createRootPackageMock()
+    protected function createRootPackageMock(array $mainFiles = array())
     {
         $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')
             ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
@@ -454,7 +492,7 @@ class BowerInstallerTest extends TestCase
         $package
             ->expects($this->any())
             ->method('getExtra')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue($mainFiles));
 
         return $package;
     }

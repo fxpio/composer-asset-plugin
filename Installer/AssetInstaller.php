@@ -17,6 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
+use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
 /**
  * Installer for asset packages.
@@ -71,6 +72,8 @@ class AssetInstaller extends LibraryInstaller
      */
     protected function installCode(PackageInterface $package)
     {
+        $package = AssetPlugin::addMainFiles($this->composer, $package);
+
         parent::installCode($package);
 
         $this->deleteIgnoredFiles($package);
@@ -81,6 +84,8 @@ class AssetInstaller extends LibraryInstaller
      */
     protected function updateCode(PackageInterface $initial, PackageInterface $target)
     {
+        $target = AssetPlugin::addMainFiles($this->composer, $target);
+
         parent::updateCode($initial, $target);
 
         $this->deleteIgnoredFiles($target);
