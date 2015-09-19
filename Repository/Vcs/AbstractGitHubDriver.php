@@ -180,7 +180,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBranches()
     {

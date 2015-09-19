@@ -25,7 +25,7 @@ use Composer\Repository\Vcs\SvnDriver as BaseSvnDriver;
 class SvnDriver extends BaseSvnDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {
@@ -138,7 +138,7 @@ class SvnDriver extends BaseSvnDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function supports(IOInterface $io, Config $config, $url, $deep = false)
     {

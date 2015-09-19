@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Package;
 class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPackageInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTransportOptions()
     {
@@ -29,7 +29,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargetDir()
     {
@@ -39,7 +39,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExtra()
     {
@@ -49,7 +49,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBinaries()
     {
@@ -59,7 +59,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getInstallationSource()
     {
@@ -69,7 +69,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSourceType()
     {
@@ -79,7 +79,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSourceUrl()
     {
@@ -89,7 +89,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSourceReference()
     {
@@ -99,7 +99,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSourceMirrors()
     {
@@ -109,7 +109,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSourceUrls()
     {
@@ -119,7 +119,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistType()
     {
@@ -129,7 +129,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistUrl()
     {
@@ -139,7 +139,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistReference()
     {
@@ -149,7 +149,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistSha1Checksum()
     {
@@ -159,7 +159,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistMirrors()
     {
@@ -169,7 +169,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDistUrls()
     {
@@ -179,7 +179,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getReleaseDate()
     {
@@ -189,7 +189,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRequires()
     {
@@ -199,7 +199,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConflicts()
     {
@@ -209,7 +209,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDevRequires()
     {
@@ -219,7 +219,7 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSuggests()
     {

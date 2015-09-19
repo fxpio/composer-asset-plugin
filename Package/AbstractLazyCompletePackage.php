@@ -27,7 +27,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     protected $lazyLoader;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAutoload()
     {
@@ -37,7 +37,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDevAutoload()
     {
@@ -47,7 +47,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getIncludePaths()
     {
@@ -57,7 +57,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getNotificationUrl()
     {
@@ -67,7 +67,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getArchiveExcludes()
     {
@@ -77,7 +77,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getScripts()
     {
@@ -87,7 +87,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRepositories()
     {
@@ -97,7 +97,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLicense()
     {
@@ -107,7 +107,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getKeywords()
     {
@@ -117,7 +117,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAuthors()
     {
@@ -127,7 +127,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -137,7 +137,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getHomepage()
     {
@@ -147,7 +147,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSupport()
     {
@@ -157,7 +157,7 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setLoader(LazyLoaderInterface $lazyLoader)
     {

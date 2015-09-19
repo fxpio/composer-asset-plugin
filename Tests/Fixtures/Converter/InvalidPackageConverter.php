@@ -21,7 +21,7 @@ use Fxp\Composer\AssetPlugin\Converter\AbstractPackageConverter;
 class InvalidPackageConverter extends AbstractPackageConverter
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMapKeys()
     {

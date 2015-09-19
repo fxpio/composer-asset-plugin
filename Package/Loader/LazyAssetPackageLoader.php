@@ -147,7 +147,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(LazyPackageInterface $package)
     {

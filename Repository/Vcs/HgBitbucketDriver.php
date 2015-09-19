@@ -27,7 +27,7 @@ class HgBitbucketDriver extends BaseHgBitbucketDriver
     protected $cache;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
@@ -37,7 +37,7 @@ class HgBitbucketDriver extends BaseHgBitbucketDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

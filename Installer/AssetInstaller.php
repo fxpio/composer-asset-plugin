@@ -48,7 +48,7 @@ class AssetInstaller extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($packageType)
     {
@@ -56,7 +56,7 @@ class AssetInstaller extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getPackageBasePath(PackageInterface $package)
     {
@@ -68,7 +68,7 @@ class AssetInstaller extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function installCode(PackageInterface $package)
     {
@@ -80,7 +80,7 @@ class AssetInstaller extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function updateCode(PackageInterface $initial, PackageInterface $target)
     {

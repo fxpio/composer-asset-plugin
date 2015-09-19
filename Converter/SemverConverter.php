@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Converter;
 class SemverConverter implements VersionConverterInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function convertVersion($version)
     {
@@ -35,7 +35,7 @@ class SemverConverter implements VersionConverterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function convertRange($range)
     {

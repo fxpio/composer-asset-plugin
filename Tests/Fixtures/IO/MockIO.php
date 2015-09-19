@@ -42,7 +42,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isInteractive()
     {
@@ -50,7 +50,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isVerbose()
     {
@@ -58,7 +58,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isVeryVerbose()
     {
@@ -66,7 +66,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isDebug()
     {
@@ -74,7 +74,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isDecorated()
     {
@@ -82,7 +82,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function write($messages, $newline = true)
     {
@@ -97,7 +97,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function writeError($messages, $newline = true)
     {
@@ -105,7 +105,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function overwrite($messages, $newline = true, $size = 80)
     {
@@ -122,7 +122,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function ask($question, $default = null)
     {
@@ -130,7 +130,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function askConfirmation($question, $default = true)
     {
@@ -138,7 +138,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function askAndValidate($question, $validator, $attempts = false, $default = null)
     {
@@ -146,7 +146,7 @@ class MockIO extends BaseIO
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function askAndHideAnswer($question)
     {

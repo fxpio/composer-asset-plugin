@@ -29,7 +29,7 @@ class HgDriver extends BaseHgDriver
     protected $cache;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
@@ -43,7 +43,7 @@ class HgDriver extends BaseHgDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

@@ -27,7 +27,7 @@ class GitDriver extends BaseGitDriver
     protected $cache;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

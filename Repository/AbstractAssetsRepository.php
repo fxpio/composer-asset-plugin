@@ -96,7 +96,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function search($query, $mode = 0)
     {
@@ -119,7 +119,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function whatProvides(Pool $pool, $name)
     {
@@ -147,7 +147,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMinimalPackages()
     {
@@ -203,7 +203,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function loadRootServerFile()
     {

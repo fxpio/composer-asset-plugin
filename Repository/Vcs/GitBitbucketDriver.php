@@ -27,7 +27,7 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
     protected $cache;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
@@ -37,7 +37,7 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

@@ -41,7 +41,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
     );
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRootIdentifier()
     {
@@ -49,7 +49,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasComposerFile($identifier)
     {
@@ -58,7 +58,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {
@@ -74,7 +74,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBranches()
     {
@@ -82,7 +82,7 @@ class MockVcsDriverWithPackages extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTags()
     {

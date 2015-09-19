@@ -22,7 +22,7 @@ use Composer\Json\JsonFile;
 class GitHubDriver extends AbstractGitHubDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

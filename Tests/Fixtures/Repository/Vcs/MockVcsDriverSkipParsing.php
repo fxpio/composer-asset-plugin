@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs;
 class MockVcsDriverSkipParsing extends MockVcsDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRootIdentifier()
     {
@@ -27,7 +27,7 @@ class MockVcsDriverSkipParsing extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasComposerFile($identifier)
     {
@@ -35,7 +35,7 @@ class MockVcsDriverSkipParsing extends MockVcsDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

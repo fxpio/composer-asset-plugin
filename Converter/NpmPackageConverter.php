@@ -19,7 +19,7 @@ namespace Fxp\Composer\AssetPlugin\Converter;
 class NpmPackageConverter extends AbstractPackageConverter
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMapKeys()
     {
@@ -56,7 +56,7 @@ class NpmPackageConverter extends AbstractPackageConverter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMapExtras()
     {

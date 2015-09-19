@@ -38,7 +38,7 @@ class PerforceDriver extends BasePerforceDriver
     protected $cache;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
@@ -61,7 +61,7 @@ class PerforceDriver extends BasePerforceDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getComposerInformation($identifier)
     {

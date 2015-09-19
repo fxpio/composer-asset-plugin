@@ -36,7 +36,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function convert(array $data, array &$vcsRepos = array())
     {
@@ -162,7 +162,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMapKeys()
     {
@@ -183,7 +183,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMapExtras()
     {
