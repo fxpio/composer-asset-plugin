@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "7679e03515ab60a419deced4f4d17d3a",
+    "content-hash": "2bbff494c13e392da1932a5e98c6863d",
     "packages": [],
     "packages-dev": [
         {
@@ -13,12 +14,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "c6cc6dd6070871f4b198ed39f76dd8047c116b02"
+                "reference": "9e67bc761be98b45875855003eb8b2f23f4bf5a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/c6cc6dd6070871f4b198ed39f76dd8047c116b02",
-                "reference": "c6cc6dd6070871f4b198ed39f76dd8047c116b02",
+                "url": "https://api.github.com/repos/composer/composer/zipball/9e67bc761be98b45875855003eb8b2f23f4bf5a5",
+                "reference": "9e67bc761be98b45875855003eb8b2f23f4bf5a5",
                 "shasum": ""
             },
             "require": {
@@ -29,6 +30,7 @@
                 "seld/jsonlint": "~1.0",
                 "seld/phar-utils": "~1.0",
                 "symfony/console": "~2.5",
+                "symfony/filesystem": "~2.5",
                 "symfony/finder": "~2.2",
                 "symfony/process": "~2.1"
             },
@@ -77,20 +79,20 @@
                 "dependency",
                 "package"
             ],
-            "time": "2015-07-21 13:46:38"
+            "time": "2015-09-18 14:32:06"
         },
         {
             "name": "composer/spdx-licenses",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/spdx-licenses.git",
-                "reference": "2f17228c1b98283b779698cefa917f7f4fd0b0d4"
+                "reference": "324b3530ac3e6277ff4bedf82a34fbf35836eb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/2f17228c1b98283b779698cefa917f7f4fd0b0d4",
-                "reference": "2f17228c1b98283b779698cefa917f7f4fd0b0d4",
+                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/324b3530ac3e6277ff4bedf82a34fbf35836eb8d",
+                "reference": "324b3530ac3e6277ff4bedf82a34fbf35836eb8d",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +105,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -137,20 +139,20 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2015-07-17 06:17:03"
+            "time": "2015-09-07 16:25:20"
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.4.4",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce"
+                "reference": "a4bee9f4b344b66e0a0d96c7afae1e92edf385fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
-                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/a4bee9f4b344b66e0a0d96c7afae1e92edf385fe",
+                "reference": "a4bee9f4b344b66e0a0d96c7afae1e92edf385fe",
                 "shasum": ""
             },
             "require": {
@@ -171,8 +173,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "JsonSchema": "src/"
+                "psr-4": {
+                    "JsonSchema\\": "src/JsonSchema/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -203,7 +205,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-07-14 16:29:50"
+            "time": "2015-09-08 22:28:04"
         },
         {
             "name": "seld/cli-prompt",
@@ -345,16 +347,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.7.2",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "8cf484449130cabfd98dcb4694ca9945802a21ed"
+                "reference": "9ff9032151186bd66ecee727d728f1319f52d1d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/8cf484449130cabfd98dcb4694ca9945802a21ed",
-                "reference": "8cf484449130cabfd98dcb4694ca9945802a21ed",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/9ff9032151186bd66ecee727d728f1319f52d1d8",
+                "reference": "9ff9032151186bd66ecee727d728f1319f52d1d8",
                 "shasum": ""
             },
             "require": {
@@ -398,20 +400,69 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-09 16:07:40"
+            "time": "2015-09-03 11:40:38"
         },
         {
-            "name": "symfony/finder",
-            "version": "v2.7.2",
+            "name": "symfony/filesystem",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Finder.git",
-                "reference": "ae0f363277485094edc04c9f3cbe595b183b78e4"
+                "url": "https://github.com/symfony/Filesystem.git",
+                "reference": "f079e9933799929584200b9a926f72f29e291654"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/ae0f363277485094edc04c9f3cbe595b183b78e4",
-                "reference": "ae0f363277485094edc04c9f3cbe595b183b78e4",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/f079e9933799929584200b9a926f72f29e291654",
+                "reference": "f079e9933799929584200b9a926f72f29e291654",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Filesystem\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Filesystem Component",
+            "homepage": "https://symfony.com",
+            "time": "2015-08-27 07:03:44"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "v2.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Finder.git",
+                "reference": "fff4b0c362640a0ab7355e2647b3d461608e9065"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/fff4b0c362640a0ab7355e2647b3d461608e9065",
+                "reference": "fff4b0c362640a0ab7355e2647b3d461608e9065",
                 "shasum": ""
             },
             "require": {
@@ -447,20 +498,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-09 16:07:40"
+            "time": "2015-08-26 17:56:37"
         },
         {
             "name": "symfony/process",
-            "version": "v2.7.2",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3"
+                "reference": "f7b3f73f70a7f8f49a1c838dc3debbf054732d8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/48aeb0e48600321c272955132d7606ab0a49adb3",
-                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/f7b3f73f70a7f8f49a1c838dc3debbf054732d8e",
+                "reference": "f7b3f73f70a7f8f49a1c838dc3debbf054732d8e",
                 "shasum": ""
             },
             "require": {
@@ -496,7 +547,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-01 11:25:50"
+            "time": "2015-08-27 06:45:45"
         }
     ],
     "aliases": [],
