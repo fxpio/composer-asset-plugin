@@ -552,13 +552,8 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
      */
     protected function init(array $requires = array(), $minimumStability = 'stable', array $extra = array())
     {
-        if (method_exists('Composer\Package\Loader\ArrayLoader', 'parseLinks')) {
-            $parser = new ArrayLoader();
-            $linkRequires = $parser->parseLinks('__ROOT__', '1.0.0', 'requires', $requires);
-        } else {
-            $parser = new VersionParser();
-            $linkRequires = $parser->parseLinks('__ROOT__', '1.0.0', 'requires', $requires);
-        }
+        $parser = new ArrayLoader();
+        $linkRequires = $parser->parseLinks('__ROOT__', '1.0.0', 'requires', $requires);
 
         $stabilityFlags = $this->findStabilityFlags($requires);
 

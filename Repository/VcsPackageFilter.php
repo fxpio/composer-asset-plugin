@@ -16,8 +16,9 @@ use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Package\LinkConstraint\MultiConstraint;
 use Composer\Package\Loader\ArrayLoader;
+use Composer\Package\LinkConstraint\MultiConstraint as LinkMultiConstraint;
+use Composer\Semver\Constraint\MultiConstraint;
 use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -288,6 +289,23 @@ class VcsPackageFilter
     }
 
     /**
+     * Get current MultiConstraint class based on the composer version.
+     *
+     * @param array $constraints    Array list of constraints
+     * @param bool  $useConjunctive
+     *
+     * @return \Composer\Semver\Constraint\MultiConstraint|\Composer\Package\LinkConstraint\MultiConstraint
+     */
+    private function getMultiConstraintInstance(array $constraints, $useConjunctive)
+    {
+        if (class_exists('\Composer\Semver\Constraint\MultiConstraint')) {
+            return new MultiConstraint($constraints, $useConjunctive);
+        }
+
+        return new LinkMultiConstraint($constraints, $useConjunctive);
+    }
+
+    /**
      * Include the constraint of root dependency version in the constraint
      * of installed package.
      *
@@ -302,7 +320,7 @@ class VcsPackageFilter
             /* @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
             $useConjunctive = FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-conjunctive');
-            $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
+            $constraint = $this->getMultiConstraintInstance(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
             $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
         }
 
