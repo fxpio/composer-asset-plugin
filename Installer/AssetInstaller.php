@@ -62,9 +62,11 @@ class AssetInstaller extends LibraryInstaller
     {
         $this->initializeVendorDir();
 
+        $targetDir = $package->getTargetDir();
+
         list(, $name) = explode('/', $package->getPrettyName(), 2);
 
-        return ($this->vendorDir ? $this->vendorDir.'/' : '').$name;
+        return ($this->vendorDir ? $this->vendorDir.'/' : '').$name.($targetDir ? '/'.$targetDir : '');
     }
 
     /**
