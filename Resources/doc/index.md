@@ -57,6 +57,13 @@ If your asset is not listed on the NPM- or Bower-Repository, or it is a private 
 create a VCS repository for it. The repository must have an asset package file for NPM (`package.json`)
 or Bower (`bower.json`).
 
+In addition, the repository must respect the specifications of [Bower Spec]
+(https://github.com/bower/bower.json-spec) or [NPM Spec](https://docs.npmjs.com/files/package.json)
+for the package files. Concerning the version numbers and the tags, they must respect the [Semver 2.0]
+(http://semver.org/) format.
+
+If your repository does not contain a tag that repsent the number, you must put the flag @dev or directly use the development branch dev-master.
+
 **Example:**
 
 Add the following to your `composer.json`:
