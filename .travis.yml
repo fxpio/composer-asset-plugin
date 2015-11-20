@@ -21,14 +21,10 @@ matrix:
 
     fast_finish: true
 
-env:
-    global:
-        - COMPOSER_VERSION=~1.0@dev
-
 before_script:
     - composer self-update
     - composer install --prefer-source
-    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev composer/composer:${COMPOSER_VERSION}
+    - composer require --dev --no-update phpunit/phpunit:@stable phpunit/php-code-coverage:@stable satooshi/php-coveralls:@dev
     - composer update --prefer-source phpunit/php-code-coverage satooshi/php-coveralls composer/composer
     - mkdir -p ./build/logs
 
