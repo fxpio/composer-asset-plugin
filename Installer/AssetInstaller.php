@@ -58,13 +58,23 @@ class AssetInstaller extends LibraryInstaller
     /**
      * {@inheritdoc}
      */
-    protected function getPackageBasePath(PackageInterface $package)
+    public function getInstallPath(PackageInterface $package)
     {
         $this->initializeVendorDir();
 
+        $targetDir = $package->getTargetDir();
+
         list(, $name) = explode('/', $package->getPrettyName(), 2);
 
-        return ($this->vendorDir ? $this->vendorDir.'/' : '').$name;
+        return ($this->vendorDir ? $this->vendorDir.'/' : '').$name.($targetDir ? '/'.$targetDir : '');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getPackageBasePath(PackageInterface $package)
+    {
+        return $this->getInstallPath($package);
     }
 
     /**
