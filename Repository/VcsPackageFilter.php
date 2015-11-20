@@ -17,7 +17,6 @@ use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\Loader\ArrayLoader;
-use Composer\Package\LinkConstraint\MultiConstraint as LinkMultiConstraint;
 use Composer\Semver\Constraint\MultiConstraint;
 use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
@@ -277,32 +276,11 @@ class VcsPackageFilter
         foreach ($this->installedRepository->getPackages() as $package) {
             $operator = $this->getFilterOperator($package);
             /* @var Link $link */
-            if (method_exists($this->arrayLoader, 'parseLinks')) {
-                $link = current($this->arrayLoader->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
-            } else {
-                $link = current($this->versionParser->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
-            }
+            $link = current($this->arrayLoader->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 
             $this->requires[$package->getName()] = $link;
         }
-    }
-
-    /**
-     * Get current MultiConstraint class based on the composer version.
-     *
-     * @param array $constraints    Array list of constraints
-     * @param bool  $useConjunctive
-     *
-     * @return \Composer\Semver\Constraint\MultiConstraint|\Composer\Package\LinkConstraint\MultiConstraint
-     */
-    private function getMultiConstraintInstance(array $constraints, $useConjunctive)
-    {
-        if (class_exists('\Composer\Semver\Constraint\MultiConstraint')) {
-            return new MultiConstraint($constraints, $useConjunctive);
-        }
-
-        return new LinkMultiConstraint($constraints, $useConjunctive);
     }
 
     /**
@@ -320,7 +298,7 @@ class VcsPackageFilter
             /* @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
             $useConjunctive = FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-conjunctive');
-            $constraint = $this->getMultiConstraintInstance(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
+            $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
             $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
         }
 
