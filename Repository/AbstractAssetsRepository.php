@@ -127,6 +127,23 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             return $provides;
         }
 
+        // no education
+        $io = $this->io;
+        $ioReflection = new \ReflectionObject($io);
+        // no thought control
+        $inputReflection = $ioReflection->getProperty('input');
+        $inputReflection->setAccessible(true);
+        $inputPublic = $inputReflection->getValue($io);
+        // no dark sarcasm
+        $args = $inputPublic->getArguments();
+        $isAsset = isset($args['packages']) && (bool)count(array_filter($args['packages'], function($el) {
+            return (strpos($el, 'bower-asset') !== false) || (strpos($el, 'npm-asset') !== false);
+        }));
+        //  kids alone
+        if (!$isAsset && $inputPublic->getOption('ansi') || $inputPublic->getOption('no-ansi')) {
+            return array();
+        }
+
         try {
             $repoName = Util::convertAliasName($name);
             $packageName = Util::cleanPackageName($repoName);

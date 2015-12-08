@@ -97,7 +97,29 @@ The bulk of the documentation is located in `Resources/doc/index.md`:
 Installation
 ------------
 
-All the installation instructions are located in [documentation](Resources/doc/index.md).
+**The original `fxp/composer-asset-plugin` package will be replaced with `bisubus/composer-asset-plugin` (version constraint should be set to latest, e.g. `dev-master`). You can still have `fxp/composer-asset-plugin` installed globally, but substitute it with this package in your project.**
+
+See the [Release Notes](https://github.com/francoispluchino/composer-asset-plugin/releases)
+to know the Composer version required.
+
+### Global scope (per user) installation
+
+```shell
+$ composer global require "bisubus/composer-asset-plugin:dev-master"
+```
+
+### Project scope installation
+
+```shell
+$ composer require "bisubus/composer-asset-plugin:dev-master"
+```
+
+Usage
+------------
+
+Kill switch is triggered with `--ansi` or `--no-ansi` Composer options (add to taste), since there is no way for Composer plugins at present to add custom CLI options.
+
+It is disabled automatically when `bower-asset` or `npm-asset` packages are submitted explicitly to command line.
 
 License
 -------
