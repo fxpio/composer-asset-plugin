@@ -13,13 +13,13 @@ to know the Composer version required.
 ### Global scope (per user) installation
 
 ```shell
-$ composer global require "fxp/composer-asset-plugin:~1.0"
+$ composer global require "fxp/composer-asset-plugin:~1.1"
 ```
 
 ### Project scope installation
 
 ```shell
-$ composer require "fxp/composer-asset-plugin:~1.0"
+$ composer require "fxp/composer-asset-plugin:~1.1"
 ```
 
 ## Usage
