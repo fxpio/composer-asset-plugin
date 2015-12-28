@@ -32,7 +32,7 @@ script:
     - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
 
 after_script:
-    - 'echo ''src_dir: .'' >> ./.coveralls.yml'
+    - 'echo ''coverage_clover: build/logs/clover.xml'' >> ./.coveralls.yml'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ./vendor/bin/coveralls -v; fi;'
 
 notifications:
