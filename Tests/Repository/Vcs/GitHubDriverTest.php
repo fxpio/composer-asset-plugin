@@ -114,7 +114,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(4))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/rate_limit'), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/'), $this->equalTo(false))
             ->will($this->returnValue('{}'));
 
         $remoteFilesystem->expects($this->at(5))
@@ -754,7 +754,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
-            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/rate_limit'), $this->equalTo(false))
+            ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/'), $this->equalTo(false))
             ->will($this->returnValue('{}'));
 
         $remoteFilesystem->expects($this->at(4))
