@@ -108,6 +108,8 @@ class AssetPlugin
      * @param Composer         $composer
      * @param PackageInterface $package
      * @param string           $section
+     *
+     * @return PackageInterface
      */
     public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
