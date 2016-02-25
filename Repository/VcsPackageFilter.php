@@ -210,8 +210,8 @@ class VcsPackageFilter
         $constraintSame = $this->versionParser->parseConstraints($normalizedVersion);
         $sameVersion = (bool) $require->getConstraint()->matches($constraintSame);
 
-        $normalizedVersion = FilterUtil::getVersionConstraint($normalizedVersion, $this->versionParser);
-        $constraint = FilterUtil::getVersionConstraint($normalizedVersion, $this->versionParser);
+        $consNormalizedVersion = FilterUtil::getVersionConstraint($normalizedVersion, $this->versionParser);
+        $constraint = FilterUtil::getVersionConstraint($consNormalizedVersion->getPrettyString(), $this->versionParser);
 
         return (bool) $require->getConstraint()->matches($constraint) || $sameVersion;
     }
