@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Util;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Package\Package;
 use Composer\Repository\RepositoryManager;
 use Composer\Package\PackageInterface;
 use Fxp\Composer\AssetPlugin\Assets;
@@ -113,7 +114,7 @@ class AssetPlugin
      */
     public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
     {
-        if ($package instanceof \Composer\Package\Package) {
+        if ($package instanceof Package) {
             $packageExtra = $package->getExtra();
 
             $extra = $composer->getPackage()->getExtra();
