@@ -157,10 +157,11 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->registry->findPackages('foobar', '0'));
     }
 
+    /**
+     * @expectedException \LogicException
+     */
     public function testGetPackagesNotBeUsed()
     {
-        $this->setExpectedException('LogicException');
-
         $this->registry->getPackages();
     }
 

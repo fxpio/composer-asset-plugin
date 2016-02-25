@@ -204,11 +204,11 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @expectedException \Composer\Downloader\TransportException
      */
     public function testPublicRepositoryWithInvalidUrl($type, $filename, $identifier)
     {
-        $this->setExpectedException('Composer\Downloader\TransportException');
-
         $repoUrl = 'svn://example.tld/composer-test/repo-name/trunk';
         $io = $this->getMock('Composer\IO\IOInterface');
 

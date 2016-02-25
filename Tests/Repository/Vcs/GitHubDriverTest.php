@@ -552,11 +552,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @expectedException \RuntimeException
      */
     public function testGetComposerInformationWithRuntimeException($type, $filename)
     {
-        $this->setExpectedException('RuntimeException');
-
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';
@@ -594,11 +594,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @expectedException \RuntimeException
      */
     public function testGetComposerInformationWithTransportException($type, $filename)
     {
-        $this->setExpectedException('RuntimeException');
-
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';
@@ -710,11 +710,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @expectedException \RuntimeException
      */
     public function testRedirectUrlWithNonexistentRepository($type, $filename)
     {
-        $this->setExpectedException('RuntimeException');
-
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $identifier = 'v0.0.0';

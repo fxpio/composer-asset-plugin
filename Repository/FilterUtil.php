@@ -12,9 +12,9 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Package\Link;
-use Composer\Package\LinkConstraint\LinkConstraintInterface;
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 
 /**
@@ -30,7 +30,7 @@ class FilterUtil
      * @param string        $normalizedVersion The normalized version
      * @param VersionParser $versionParser     The version parser
      *
-     * @return LinkConstraintInterface The constraint
+     * @return ConstraintInterface The constraint
      */
     public static function getVersionConstraint($normalizedVersion, VersionParser $versionParser)
     {

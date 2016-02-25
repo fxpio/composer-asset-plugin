@@ -319,6 +319,9 @@ class BowerInstallerTest extends TestCase
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testUninstall()
     {
         /* @var RootPackageInterface $rootPackage */
@@ -362,8 +365,6 @@ class BowerInstallerTest extends TestCase
         /* @var InstalledRepositoryInterface $repository */
         /* @var PackageInterface $package */
         $library->uninstall($repository, $package);
-
-        $this->setExpectedException('InvalidArgumentException');
 
         $library->uninstall($repository, $package);
     }

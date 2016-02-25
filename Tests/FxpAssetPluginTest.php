@@ -153,10 +153,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetRepositoryWithValueIsNotArray()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
@@ -166,10 +167,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetRepositoryWithInvalidType()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
@@ -179,10 +181,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetRepositoryWithInvalidTypeFormat()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
@@ -192,10 +195,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetRepositoryWithInvalidUrl()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
@@ -236,10 +240,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetPackageWithoutPackage()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
@@ -249,10 +254,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
     }
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testAssetPackageWithInvalidPackage()
     {
-        $this->setExpectedException('UnexpectedValueException');
-
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(

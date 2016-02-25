@@ -106,22 +106,23 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDrivers
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage No driver found to handle Asset VCS repository
      */
     public function testNotDriverFound($type, $url, $class)
     {
-        $this->setExpectedException('InvalidArgumentException', 'No driver found to handle Asset VCS repository '.$url);
-
         $this->init(false, $type, $url, $class);
         $this->repository->getPackages();
     }
 
     /**
      * @dataProvider getMockDrivers
+     *
+     * @expectedException \Composer\Repository\InvalidRepositoryException
      */
     public function testWithoutValidPackage($type, $url, $class)
     {
-        $this->setExpectedException('Composer\Repository\InvalidRepositoryException');
-
         $this->init(true, $type, $url, $class);
         $this->repository->getPackages();
     }

@@ -104,10 +104,12 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         $this->assertCount(1, $this->rm->getRepositories());
     }
 
+    /**
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException
+     * @expectedExceptionMessage "repository.url" parameter of "foobar"
+     */
     public function testWatProvidesWithoutRepositoryUrlAndWithoutVersions()
     {
-        $this->setExpectedException('Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException', '"repository.url" parameter of "foobar"');
-
         $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())

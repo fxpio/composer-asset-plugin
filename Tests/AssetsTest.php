@@ -63,10 +63,11 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
         ), array_keys(Assets::getVcsDrivers()));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testCreationOfInvalidType()
     {
-        $this->setExpectedException('InvalidArgumentException');
-
         Assets::createType(null);
     }
 

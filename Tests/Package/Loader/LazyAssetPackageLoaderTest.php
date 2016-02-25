@@ -154,18 +154,22 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $this->lazyLoader = null;
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The "assetType" property must be defined
+     */
     public function testMissingAssetType()
     {
-        $this->setExpectedException('InvalidArgumentException', 'The "assetType" property must be defined');
-
         $loader = $this->createLazyLoader('TYPE');
         $loader->load($this->lazyPackage);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The "loader" property must be defined
+     */
     public function testMissingLoader()
     {
-        $this->setExpectedException('InvalidArgumentException', 'The "loader" property must be defined');
-
         /* @var AssetTypeInterface $assetType */
         $assetType = $this->assetType;
         $loader = $this->createLazyLoader('TYPE');
@@ -173,10 +177,12 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load($this->lazyPackage);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The "driver" property must be defined
+     */
     public function testMissingDriver()
     {
-        $this->setExpectedException('InvalidArgumentException', 'The "driver" property must be defined');
-
         /* @var AssetTypeInterface $assetType */
         $assetType = $this->assetType;
         /* @var LoaderInterface $cLoader */
@@ -189,10 +195,12 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load($lazyPackage);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The "io" property must be defined
+     */
     public function testMissingIo()
     {
-        $this->setExpectedException('InvalidArgumentException', 'The "io" property must be defined');
-
         /* @var AssetTypeInterface $assetType */
         $assetType = $this->assetType;
         /* @var LoaderInterface $cLoader */

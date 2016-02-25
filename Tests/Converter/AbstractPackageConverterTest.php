@@ -76,9 +76,11 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
         $this->asset = array();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testConversionWithInvalidKey()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $this->converter = new InvalidPackageConverter($this->type);
 
         $this->converter->convert(array(
