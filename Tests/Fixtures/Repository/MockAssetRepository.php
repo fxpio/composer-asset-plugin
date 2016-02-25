@@ -11,6 +11,9 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository;
 
+use Composer\Config;
+use Composer\EventDispatcher\EventDispatcher;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 
@@ -21,6 +24,19 @@ use Composer\Repository\RepositoryInterface;
  */
 class MockAssetRepository implements RepositoryInterface
 {
+    /**
+     * Constructor.
+     *
+     * @param array                $repoConfig
+     * @param IOInterface          $io
+     * @param Config               $config
+     * @param EventDispatcher|null $eventDispatcher
+     */
+    public function __construct(array $repoConfig, IOInterface $io, Config $config,
+                                EventDispatcher $eventDispatcher = null)
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
