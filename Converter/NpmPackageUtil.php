@@ -68,6 +68,10 @@ abstract class NpmPackageUtil
             $value = array();
 
             foreach ($data as $type => $url) {
+                $httpPrefix = 'http://';
+                if (0 === strpos($url, $httpPrefix)) {
+                    $url = 'https://' . substr($url, strlen($httpPrefix));
+                }
                 if ('shasum' === $type) {
                     $value[$type] = $url;
                 } else {
