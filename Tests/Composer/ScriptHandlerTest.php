@@ -145,13 +145,17 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getType')
             ->will($this->returnValue($composerType));
 
-        $this->operation->expects($this->any())
-            ->method('getTargetPackage')
-            ->will($this->returnValue($this->package));
+        if ($this->operation instanceof UpdateOperation) {
+            $this->operation->expects($this->any())
+                ->method('getTargetPackage')
+                ->will($this->returnValue($this->package));
+        }
 
-        $this->operation->expects($this->any())
-            ->method('getPackage')
-            ->will($this->returnValue($this->package));
+        if ($this->operation instanceof InstallOperation) {
+            $this->operation->expects($this->any())
+                ->method('getPackage')
+                ->will($this->returnValue($this->package));
+        }
 
         /* @var PolicyInterface $policy */
         $policy = $this->getMock('Composer\DependencyResolver\PolicyInterface');
