@@ -121,7 +121,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * {@inheritdoc}
      */
-    public function whatProvides(Pool $pool, $name)
+    public function whatProvides(Pool $pool, $name, $bypassFilters = false)
     {
         if (null !== $provides = $this->findWhatProvides($name)) {
             return $provides;
