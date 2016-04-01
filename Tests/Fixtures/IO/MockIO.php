@@ -154,6 +154,14 @@ class MockIO extends BaseIO
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function select($question, $choices, $default, $attempts = false, $errorMessage = 'Value "%s" is invalid', $multiselect = false)
+    {
+        return $default;
+    }
+
+    /**
      * Gets the taces.
      *
      * @return array

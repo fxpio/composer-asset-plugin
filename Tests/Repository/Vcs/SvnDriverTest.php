@@ -36,6 +36,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'config' => array(
                 'home' => sys_get_temp_dir().'/composer-test',
                 'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
+                'secure-http' => false,
             ),
         ));
     }
