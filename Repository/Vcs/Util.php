@@ -93,7 +93,7 @@ class Util
             $meth = $ref->getMethod($method);
             $meth->setAccessible(true);
 
-            $commit = JsonFile::parseJson((string) $meth->invoke($driver, $resource), $resource);
+            $commit = JsonFile::parseJson($meth->invoke($driver, $resource), $resource);
             $keys = explode('.', $resourceKey);
 
             while (!empty($keys)) {
