@@ -115,7 +115,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(2, $repos);
+        $this->assertCount(3, $repos);
         foreach ($repos as $repo) {
             $this->assertInstanceOf('Composer\Repository\ComposerRepository', $repo);
         }
@@ -220,8 +220,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
+        $this->assertCount(4, $repos);
+        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[3]);
     }
 
     public function testAssetRepositoryWithAlreadyExistRepositoryName()
@@ -236,8 +236,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
+        $this->assertCount(4, $repos);
+        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[3]);
     }
 
     /**
@@ -292,8 +292,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Composer\Repository\PackageRepository', $repos[2]);
+        $this->assertCount(4, $repos);
+        $this->assertInstanceOf('Composer\Repository\PackageRepository', $repos[3]);
     }
 
     public function testOptionsForAssetRegistryRepositories()
@@ -333,11 +333,11 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('show'));
 
         $this->plugin->activate($this->composer, $this->io);
-        $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
+        $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
         $this->plugin->onAddVcsRepositories($event);
         $this->plugin->onPluginCommand($eventCommand);
         $this->plugin->onPreDependenciesSolving($eventInstaller);
-        $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
+        $this->assertCount(4, $this->composer->getRepositoryManager()->getRepositories());
     }
 
     public function testAssetInstallers()
