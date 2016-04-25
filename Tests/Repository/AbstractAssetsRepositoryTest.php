@@ -16,9 +16,12 @@ use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Config;
+use Composer\Package\Package;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
+use Fxp\Composer\AssetPlugin\Repository\Cache\AbstractAssetsRepositoryCache;
+use Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Cache\MockAssetRepositoryCache;
 
 /**
  * Abstract class for Tests of assets repository.
@@ -89,6 +92,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->rm = null;
         $this->registry = null;
         $this->pool = null;
+        AbstractAssetsRepositoryCache::cleanRegistration();
     }
 
     /**
@@ -173,6 +177,30 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testGetMinimalPackagesMustBeAlwaysEmpty()
     {
         $this->assertCount(0, $this->registry->getMinimalPackages());
+    }
+
+    public function testWhatProvidesWithCache()
+    {
+        $name = $this->getType().'-asset/existing';
+
+        $cache = new MockAssetRepositoryCache();
+
+        $this->assertCount(1, AbstractAssetsRepositoryCache::getCacheList());
+
+        $cacheData = $cache->findItems($name, $this->getType());
+        $this->assertArrayHasKey('dist', $cacheData[0]);
+        $this->assertArrayHasKey('version', $cacheData[0]);
+
+        /** @var Package[] $items */
+        $items = $this->registry->whatProvides($this->pool, $name);
+        $this->assertCount(1, $items);
+        $this->assertArrayHasKey('1.1.1.0', $items);
+        $this->assertSame('1.1.1.0', $items['1.1.1.0']->getVersion());
+        $this->assertFileNotExists($items['1.1.1.0']->getDistUrl());
+        $this->assertSame('zip', $items['1.1.1.0']->getDistType());
+
+        MockAssetRepositoryCache::cleanRegistration();
+        $this->assertCount(0, AbstractAssetsRepositoryCache::getCacheList());
     }
 
     public function testWhatProvidesWithNotAssetName()

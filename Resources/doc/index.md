@@ -405,3 +405,33 @@ option `extra.asset-registry-options.{type}-searchable` in the root project
     }
 }
 ```
+
+### Assets cache
+
+Now plugin supports the cache system. You can write own cache-composer-plugin,
+for that you need to create own composer plugin and implement abstract method
+`AbstractAssetsRepositoryCache::findItems`
+
+```php
+class MyCachePlugin extends AbstractAssetsRepositoryCache
+{
+    public function findItems($packageName, $assetsRepositoryType)
+    {
+        ...
+    }
+}
+```
+
+Then register cache system through the creation of an object, e.g.
+
+```php
+class MyCacheComposerPlugin implements PluginInterface
+{
+    public function activate(Composer $composer, IOInterface $io)
+    {
+        new MyCachePlugin();
+    }
+}
+```
+
+(Plugin example: https://github.com/pelmennoteam/composer-asset-plugin-assagist)
