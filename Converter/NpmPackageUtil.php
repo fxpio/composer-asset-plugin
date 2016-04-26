@@ -68,6 +68,9 @@ abstract class NpmPackageUtil
             $value = array();
 
             foreach ($data as $type => $url) {
+                if (!is_string($url)) {
+                  continue;
+                }
                 $httpPrefix = 'http://';
                 if (0 === strpos($url, $httpPrefix)) {
                     $url = 'https://'.substr($url, strlen($httpPrefix));
