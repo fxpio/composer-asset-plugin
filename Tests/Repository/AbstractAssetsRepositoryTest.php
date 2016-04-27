@@ -73,6 +73,9 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
             'asset-options' => array(
                 'searchable' => true,
             ),
+            'composer-extra' => array(
+                'asset-bower-private-url' => 'http://foo.tld',
+            ),
         );
 
         $this->io = $io;

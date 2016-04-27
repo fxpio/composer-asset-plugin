@@ -33,7 +33,7 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'npm',
             'bower',
-            'bowerPrivate',
+            'bowerprivate',
         ), array_keys(Assets::getRegistries()));
     }
 

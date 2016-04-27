@@ -3,7 +3,7 @@
 /*
  * This file is part of the Fxp Composer Asset Plugin package.
  *
- * (c) FranÃ§ois Pluchino <francois.pluchino@gmail.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,10 +14,29 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 /**
  * Bower repository for Private Instaltions.
  *
- * @author Marcus Stüben <marcus@it-stueben.de>
+ * @author Marcus Stueben <marcus@it-stueben.de>
  */
 class BowerPrivateRepository extends AbstractAssetsRepository
 {
+    /**
+     * Constructor.
+     *
+     * @param array $repoConfig
+     * @param IOInterface $io
+     * @param Config $config
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function __construct(array $repoConfig,  $io,  $config,  $eventDispatcher = null)
+    {
+        $url = "";
+        if (isset($repoConfig['composer-extra']['asset-bower-private-url'])){
+            $url = $repoConfig['composer-extra']['asset-bower-private-url'];
+        }
+
+        $this->setUrl($url);
+        parent::__construct($repoConfig, $io, $config, $eventDispatcher);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,16 +50,15 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     protected function getUrl()
     {
-        //todo set Url from config extra[asset]
-        /*
-        LIKE:
-        "asset-private-bower": {
-            "url" : "http://myprivateBower:1234"
-        },
+        return $this->url;
+    }
 
-        */
-        $myUrl = 'http://';
-        return $myUrl;
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 
     /**
@@ -56,14 +74,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     protected function getSearchUrl()
     {
-        return $this->canonicalizeUrl($this->baseUrl.'/%packages%');
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function search($query, $mode = 0)
-    {
-        return array();
+        return $this->canonicalizeUrl($this->baseUrl.'/search/%query%');
     }
 
     /**
@@ -71,7 +82,6 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
-
         $myArray = [];
         $myArray['repository'] = $data;
 
@@ -113,7 +123,6 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     private function convertUrl($url)
     {
-
         if (0 === strpos($url, 'svn+http')) {
             return substr($url, 4);
         }

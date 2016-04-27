@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
+use Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository;
 use Fxp\Composer\AssetPlugin\Repository\BowerRepository;
 
 /**
@@ -31,12 +32,13 @@ class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         return 'bower';
     }
 
+
     /**
      * {@inheritdoc}
      */
     protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
-        return new BowerRepository($repoConfig, $io, $config, $eventDispatcher);
+        return new BowerPrivateRepository($repoConfig, $io, $config, $eventDispatcher);
     }
 
     /**

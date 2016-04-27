@@ -34,7 +34,7 @@ class Assets
     protected static $registryClasses = array(
         'npm' => 'Fxp\Composer\AssetPlugin\Repository\NpmRepository',
         'bower' => 'Fxp\Composer\AssetPlugin\Repository\BowerRepository',
-        'bowerPrivate' => 'Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository',
+        'bowerprivate' => 'Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository',
     );
 
     /**
