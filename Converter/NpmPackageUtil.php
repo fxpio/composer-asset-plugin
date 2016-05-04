@@ -69,7 +69,7 @@ abstract class NpmPackageUtil
 
             foreach ($data as $type => $url) {
                 if (is_string($url)) {
-                    static::convertDistEntry($value, $type, $url);
+                    self::convertDistEntry($value, $type, $url);
                 }
             }
         }
