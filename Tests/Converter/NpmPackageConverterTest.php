@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Converter;
 
 use Fxp\Composer\AssetPlugin\Converter\NpmPackageConverter;
+use Fxp\Composer\AssetPlugin\Converter\NpmPackageUtil;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -161,5 +162,26 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
         $this->assertArrayNotHasKey('include-path', $composer);
         $this->assertArrayNotHasKey('target-dir', $composer);
         $this->assertArrayNotHasKey('archive', $composer);
+    }
+
+    public function getConvertDistData()
+    {
+        return array(
+            array(array('type' => null), array()),
+            array(array('type' => 'http://example.com'), array('type' => 'type', 'url' => 'https://example.com')),
+            array(array('tarball' => 'http://example.com'), array('type' => 'tar', 'url' => 'https://example.com')),
+            array(array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01'), array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01')),
+        );
+    }
+
+    /**
+     * @dataProvider getConvertDistData
+     *
+     * @param array $value  The value must be converted
+     * @param array $result The result of convertion
+     */
+    public function testConvertDist($value, $result)
+    {
+        $this->assertSame($result, NpmPackageUtil::convertDist($value));
     }
 }
