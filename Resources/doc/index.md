@@ -51,6 +51,21 @@ It must be prefixed with `{asset-type}-asset/`.
 }
 ```
 
+### Usage with Private Bower Regesitry
+
+Adding the URL to your Private Bower Server in the `composer.json` in the section `extra`. This Asset Plugin automaticly look if there is a private Bower URL defined and search for your Private Bower Package. 
+
+**Example:**
+
+```json
+{
+    "extra": {
+        "asset-bower-private-url": "http://YourPrivateBowerURL/packages"
+    }
+}
+```
+  
+
 ### Usage with VCS repository
 
 If your asset is not listed on the NPM- or Bower-Repository, or it is a private package, you can
