@@ -4,22 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "387c67754f0cdec05fbdc6bc8490536f",
-    "content-hash": "2fa84afc4e31e4096d46ed703420c5a6",
+    "hash": "b3fa6745959dad378ad8cb96beda7da1",
+    "content-hash": "821c9cdf8b245ceea4f38768360e597d",
     "packages": [],
     "packages-dev": [
         {
             "name": "composer/composer",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "a083aa5e0c9b8ad989c622638aa380c1f88a68ec"
+                "reference": "a4a0546ece469cae984219f920c75437820064ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/a083aa5e0c9b8ad989c622638aa380c1f88a68ec",
-                "reference": "a083aa5e0c9b8ad989c622638aa380c1f88a68ec",
+                "url": "https://api.github.com/repos/composer/composer/zipball/a4a0546ece469cae984219f920c75437820064ff",
+                "reference": "a4a0546ece469cae984219f920c75437820064ff",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +81,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-04-21 11:30:19"
+            "time": "2016-04-29 15:30:16"
         },
         {
             "name": "composer/semver",
@@ -412,16 +412,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "6b1175135bc2a74c08a28d89761272de8beed8cd"
+                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/6b1175135bc2a74c08a28d89761272de8beed8cd",
-                "reference": "6b1175135bc2a74c08a28d89761272de8beed8cd",
+                "url": "https://api.github.com/repos/symfony/console/zipball/34a214710e0714b6efcf40ba3cd1e31373a97820",
+                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820",
                 "shasum": ""
             },
             "require": {
@@ -468,20 +468,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-16 17:00:50"
+            "time": "2016-04-28 09:48:42"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "f82499a459dcade2ea56df94cc58b19c8bde3d20"
+                "reference": "74fec3511b62cb934b64bce1d96f06fffa4beafd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/f82499a459dcade2ea56df94cc58b19c8bde3d20",
-                "reference": "f82499a459dcade2ea56df94cc58b19c8bde3d20",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/74fec3511b62cb934b64bce1d96f06fffa4beafd",
+                "reference": "74fec3511b62cb934b64bce1d96f06fffa4beafd",
                 "shasum": ""
             },
             "require": {
@@ -517,11 +517,11 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-27 10:24:39"
+            "time": "2016-04-12 18:09:53"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -629,16 +629,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "e6f1f98bbd355d209a992bfff45e7edfbd4a0776"
+                "reference": "53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/e6f1f98bbd355d209a992bfff45e7edfbd4a0776",
-                "reference": "e6f1f98bbd355d209a992bfff45e7edfbd4a0776",
+                "url": "https://api.github.com/repos/symfony/process/zipball/53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb",
+                "reference": "53f9407c0bb1c5a79127db8f7bfe12f0f6f3dcdb",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +674,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-30 10:41:14"
+            "time": "2016-04-14 15:30:28"
         }
     ],
     "aliases": [],
