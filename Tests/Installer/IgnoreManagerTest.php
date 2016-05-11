@@ -206,4 +206,45 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($this->target.'/tests/bootstrap.php');
         $this->assertFileExists($this->target.'/tests');
     }
+
+    public function testIgnoreAllFilesExceptAFewWithDoubleAsterisks()
+    {
+        $ignorer = new IgnoreManager($this->target);
+
+        $ignorer->addPattern('**');
+        $ignorer->addPattern('!/src/foo/*.txt');
+
+        $ignorer->cleanup();
+
+        $this->assertFileExists($this->target.'/.hidden');
+        $this->assertFileNotExists($this->target.'/CHANGELOG');
+        $this->assertFileNotExists($this->target.'/README');
+
+        $this->assertFileNotExists($this->target.'/lib/autoload.php');
+        $this->assertFileNotExists($this->target.'/lib');
+
+        $this->assertFileNotExists($this->target.'/src/.hidden');
+        $this->assertFileNotExists($this->target.'/src/doc');
+        $this->assertFileExists($this->target.'/src');
+
+        $this->assertFileNotExists($this->target.'/src/foo/.hidden');
+        $this->assertFileNotExists($this->target.'/src/foo/empty.html');
+        $this->assertFileNotExists($this->target.'/src/foo/empty.md');
+        $this->assertFileExists($this->target.'/src/foo/empty.txt');
+        $this->assertFileExists($this->target.'/src/foo/small.txt');
+        $this->assertFileExists($this->target.'/src/foo');
+
+        $this->assertFileNotExists($this->target.'/src/lib/empty.txt');
+        $this->assertFileNotExists($this->target.'/src/lib');
+
+        $this->assertFileNotExists($this->target.'/src/lib/foo/empty.txt');
+        $this->assertFileNotExists($this->target.'/src/lib/foo/small.txt');
+        $this->assertFileNotExists($this->target.'/src/lib/foo');
+
+        $this->assertFileNotExists($this->target.'/src/tests/empty.html');
+        $this->assertFileNotExists($this->target.'/src/tests');
+
+        $this->assertFileNotExists($this->target.'/tests/bootstrap.php');
+        $this->assertFileNotExists($this->target.'/tests');
+    }
 }
