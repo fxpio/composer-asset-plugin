@@ -135,9 +135,11 @@ class IgnoreManager
             $this->finder->notPath(Glob::toRegex($searchPattern, true, true));
 
             $pathComponents = explode('/', $searchPattern);
+
             if (1 < count($pathComponents)) {
                 $parentDirectories = array_slice($pathComponents, 0, -1);
                 $basePath = '';
+
                 foreach ($parentDirectories as $dir) {
                     $this->finder->notPath('/\b('.preg_quote($basePath.$dir, '/').')(?!\/)\b/');
                     $basePath .= $dir.'/';
