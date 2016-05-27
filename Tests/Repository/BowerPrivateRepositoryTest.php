@@ -15,7 +15,6 @@ use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository;
-use Fxp\Composer\AssetPlugin\Repository\BowerRepository;
 
 /**
  * Tests of Private Bower repository.
