@@ -51,9 +51,11 @@ It must be prefixed with `{asset-type}-asset/`.
 }
 ```
 
-### Usage with Private Bower Regesitry
+### Usage with Private Bower Registry
 
-Adding the URL to your Private Bower Server in the `composer.json` in the section `extra`. This Asset Plugin automaticly look if there is a private Bower URL defined and search for your Private Bower Package. 
+Adding the URL to your Private Bower Server in the `composer.json` in the section `extra`. This
+Asset Plugin automaticly look if there is a private Bower URL defined and search for your Private
+Bower Package.
 
 **Example:**
 
