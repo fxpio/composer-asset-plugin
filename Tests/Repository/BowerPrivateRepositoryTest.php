@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
+use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
 use Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository;
 
 /**
@@ -59,5 +60,19 @@ class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
                 'name' => $name,
             ),
         );
+    }
+
+    public function testWhatProvidesWithInvalidPrivateUrl()
+    {
+        $this->expectException(InvalidCreateRepositoryException::class);
+        $this->expectExceptionMessage('The "repository.url" parameter of "existing" bower asset package must be present for create a VCS Repository');
+
+        $name = $this->getType().'-asset/existing';
+        $rfs = $this->replaceRegistryRfsByMock();
+        $rfs->expects($this->any())
+            ->method('getContents')
+            ->will($this->returnValue(json_encode(array())));
+
+        $this->registry->whatProvides($this->pool, $name);
     }
 }
