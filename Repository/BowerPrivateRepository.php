@@ -124,11 +124,9 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     private function convertUrl($url)
     {
-        if (0 === strpos($url, 'svn+http')) {
-            return substr($url, 4);
-        }
-
-        return $url;
+        return 0 === strpos($url, 'svn+http')
+            ? substr($url, 4)
+            : $url;
     }
 
     /**
