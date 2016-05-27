@@ -124,7 +124,12 @@ class SemverConverter implements VersionConverterInterface
 
         if (' - ' === $match) {
             $matches[$i - 1] = '>='.$matches[$i - 1];
-            $matches[$i] = ',<=';
+            if (strpos($matches[$i + 1], '*') === false && strpos($matches[$i + 1], 'x') === false && strpos($matches[$i + 1], 'X') === false) {
+                $matches[$i] = ',<=';
+            } else {
+                $matches[$i] = ',<';
+                $special = ',<~';
+            }
         } elseif (in_array($match, array('', '<', '>', '=', ','))) {
             $replace = in_array($match, array('<', '>')) ? $match : $replace;
         } elseif ('~' === $match) {
@@ -158,7 +163,15 @@ class SemverConverter implements VersionConverterInterface
             $matches[$i] = SemverRangeUtil::replaceSpecialRange($this, $match);
             $special = null;
         } else {
-            $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
+            if ($special === ',<~') {
+                // Version range contains x in last place.
+                $version = explode('.', $match);
+                $change = count($version) - 2;
+                $version[$change] = intval($version[$change]) + 1;
+                $match = str_replace(array('*', 'x', 'X'), '0', implode('.', $version));
+            } else {
+                $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
+            }
             $matches[$i] = $this->convertVersion($match);
             $matches[$i] = $replace
                 ? SemverUtil::replaceAlias($matches[$i], $replace)
