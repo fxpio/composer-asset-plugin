@@ -33,7 +33,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
-        $this->setUrl($this->getPrivateUrl($repoConfig));
+        $this->url = $this->getPrivateUrl($repoConfig);
 
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
     }
@@ -52,14 +52,6 @@ class BowerPrivateRepository extends AbstractAssetsRepository
     protected function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
     }
 
     /**
@@ -88,7 +80,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
 
         return array(
             'type' => $this->assetType->getName().'-vcs',
-            'url' => $this->getPrivateBowerRepositoryUrl($myArray, $registryName),
+            'url' => $this->getVcsRepositoryUrl($myArray, $registryName),
             'name' => $registryName,
         );
     }
@@ -102,7 +94,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      *
      * @throws InvalidCreateRepositoryException When the repository.url parameter does not exist
      */
-    protected function getPrivateBowerRepositoryUrl(array $data, $registryName = null)
+    protected function getVcsRepositoryUrl(array $data, $registryName = null)
     {
         if (!isset($data['repository']['url'])) {
             $msg = sprintf('The "repository.url" parameter of "%s" %s asset package must be present for create a VCS Repository', $registryName, $this->assetType->getName());
