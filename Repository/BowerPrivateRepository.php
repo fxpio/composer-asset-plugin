@@ -106,7 +106,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
     {
         if (!isset($data['repository']['url'])) {
             $msg = sprintf('The "repository.url" parameter of "%s" %s asset package must be present for create a VCS Repository', $registryName, $this->assetType->getName());
-            $msg .= PHP_EOL.'If the config comes from the NPM Registry, override the config with a custom Asset VCS Repository';
+            $msg .= PHP_EOL.'If the config comes from the Bower Private Registry, override the config with a custom Asset VCS Repository';
             $ex = new InvalidCreateRepositoryException($msg);
             $ex->setData($data);
 
