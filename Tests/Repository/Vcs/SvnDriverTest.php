@@ -243,25 +243,52 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     public function getSupportsUrls()
     {
         return array(
-            array('svn://example.tld/trunk',         true),
-            array('svn+ssh://example.tld/trunk',     true),
-            array('svn://svn.example.tld/trunk',     true),
-            array('svn+ssh://svn.example.tld/trunk', true),
-            array('http://example.tld/svn/trunk',    true),
-            array('https://example.tld/svn/trunk',   true),
-            array('http://example.tld/sub',          false),
-            array('https://example.tld/sub',         false),
+            array('svn://example.tld/trunk',           true,  'svn://example.tld/trunk'),
+            array('svn+ssh://example.tld/trunk',       true,  'svn+ssh://example.tld/trunk'),
+            array('svn://svn.example.tld/trunk',       true,  'svn://svn.example.tld/trunk'),
+            array('svn+ssh://svn.example.tld/trunk',   true,  'svn+ssh://svn.example.tld/trunk'),
+            array('svn+http://svn.example.tld/trunk',  true,  'http://svn.example.tld/trunk'),
+            array('svn+https://svn.example.tld/trunk', true,  'https://svn.example.tld/trunk'),
+            array('http://example.tld/svn/trunk',      true,  'http://example.tld/svn/trunk'),
+            array('https://example.tld/svn/trunk',     true,  'https://example.tld/svn/trunk'),
+            array('http://example.tld/sub',            false, null),
+            array('https://example.tld/sub',           false, null),
         );
     }
 
     /**
      * @dataProvider getSupportsUrls
      */
-    public function testSupports($url, $supperted)
+    public function testSupports($url, $supperted, $urlUsed)
     {
         /* @var IOInterface $io */
         $io = $this->getMock('Composer\IO\IOInterface');
 
         $this->assertSame($supperted, SvnDriver::supports($io, $this->config, $url, false));
+
+        if (!$supperted) {
+            return;
+        }
+
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function () {
+                return 0;
+            }));
+
+        $repoConfig = array(
+            'url' => $url,
+            'asset-type' => 'bower',
+            'filename' => 'bower.json',
+        );
+
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
+        $driver->initialize();
+
+        $this->assertEquals($urlUsed, $driver->getUrl());
     }
 }

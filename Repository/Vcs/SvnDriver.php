@@ -25,6 +25,18 @@ use Composer\Repository\Vcs\SvnDriver as BaseSvnDriver;
 class SvnDriver extends BaseSvnDriver
 {
     /**
+     * {@inheritDoc}
+     */
+    public function initialize()
+    {
+        $this->url = 0 === strpos($this->url, 'svn+http')
+            ? substr($this->url, 4)
+            : $this->url;
+
+        parent::initialize();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getComposerInformation($identifier)

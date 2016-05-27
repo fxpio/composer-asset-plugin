@@ -113,20 +113,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
             throw $ex;
         }
 
-        return $this->convertUrl((string) $data['repository']['url']);
-    }
-    /**
-     * Convert the url repository.
-     *
-     * @param string $url The url
-     *
-     * @return string The url converted
-     */
-    private function convertUrl($url)
-    {
-        return 0 === strpos($url, 'svn+http')
-            ? substr($url, 4)
-            : $url;
+        return (string) $data['repository']['url'];
     }
 
     /**
