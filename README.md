@@ -23,6 +23,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - Automatically get and create an Asset VCS repository defined in:
   - [NPM Registry](https://www.npmjs.org)
   - [Bower Registry](http://bower.io/search)
+  - [Private Bower Registry](https://github.com/Hacklone/private-bower)
 - Automatically get and create the Asset VCS repositories of dependencies defined
   in each asset package (dev dependencies included)
 - Mapping conversion of asset package to composer package for:

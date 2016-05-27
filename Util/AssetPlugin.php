@@ -82,6 +82,7 @@ class AssetPlugin
                 'repository-manager' => $rm,
                 'vcs-package-filter' => $filter,
                 'asset-options' => static::createAssetOptions($opts, $assetType),
+                'composer-extra' => $extra,
             );
 
             $rm->setRepositoryClass($assetType, $registryClass);

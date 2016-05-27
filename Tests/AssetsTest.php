@@ -33,6 +33,7 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'npm',
             'bower',
+            'bowerprivate',
         ), array_keys(Assets::getRegistries()));
     }
 
@@ -79,6 +80,13 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testCreationOfBowerAsset()
+    {
+        $type = Assets::createType('bower');
+
+        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
+    }
+
+    public function testCreationOfPrivateBowerAsset()
     {
         $type = Assets::createType('bower');
 
