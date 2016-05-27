@@ -25,7 +25,7 @@ use Composer\Repository\Vcs\SvnDriver as BaseSvnDriver;
 class SvnDriver extends BaseSvnDriver
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
