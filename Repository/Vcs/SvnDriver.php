@@ -82,7 +82,7 @@ class SvnDriver extends BaseSvnDriver
         $output = null;
 
         try {
-            $output = $this->execute($this->setSvnCredetials('svn cat'), $this->baseUrl.$resource.$rev);
+            $output = $this->execute($this->getSvnCredetials('svn cat'), $this->baseUrl.$resource.$rev);
         } catch (\RuntimeException $e) {
             throw new TransportException($e->getMessage());
         }
@@ -123,7 +123,7 @@ class SvnDriver extends BaseSvnDriver
     protected function addComposerTime(array $composer, $path, $rev)
     {
         if (!isset($composer['time'])) {
-            $output = $this->execute($this->setSvnCredetials('svn info'), $this->baseUrl.$path.$rev);
+            $output = $this->execute($this->getSvnCredetials('svn info'), $this->baseUrl.$path.$rev);
 
             foreach ($this->process->splitLines($output) as $line) {
                 if ($line && preg_match('{^Last Changed Date: ([^(]+)}', $line, $match)) {
@@ -149,7 +149,14 @@ class SvnDriver extends BaseSvnDriver
         return parent::supports($io, $config, $url, $deep);
     }
 
-    protected function setSvnCredetials($command)
+    /**
+     * Get the credentials of SVN.
+     *
+     * @param string $command The command
+     *
+     * @return string
+     */
+    protected function getSvnCredetials($command)
     {
         $httpBasic = $this->config->get('http-basic');
         $parsedUrl = parse_url($this->baseUrl);
