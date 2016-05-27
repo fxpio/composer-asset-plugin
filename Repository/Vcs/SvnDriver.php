@@ -150,7 +150,7 @@ class SvnDriver extends BaseSvnDriver
     }
 
     protected function setSvnCredetials($command){
-        $httpBasic = $this->config->get("http-basic");
+        $httpBasic = $this->config->get('http-basic');
         $parsedUrl = parse_url($this->baseUrl);
         $svnCommand = $command;
 

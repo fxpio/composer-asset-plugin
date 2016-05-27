@@ -28,7 +28,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     public function __construct(array $repoConfig,  $io,  $config,  $eventDispatcher = null)
     {
-        $url = "";
+        $url = '';
         if (isset($repoConfig['composer-extra']['asset-bower-private-url'])){
             $url = $repoConfig['composer-extra']['asset-bower-private-url'];
         }
