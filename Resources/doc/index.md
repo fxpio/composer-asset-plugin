@@ -53,6 +53,9 @@ It must be prefixed with `{asset-type}-asset/`.
 
 ### Usage with Private Bower Registry
 
+You can work with your private Bower server build with
+[Hacklone Private Bower](https://github.com/Hacklone/private-bower):
+
 Adding the URL to your Private Bower Server in the `composer.json` in the section `extra`. This
 Asset Plugin automaticly look if there is a private Bower URL defined and search for your Private
 Bower Package.
@@ -62,11 +65,12 @@ Bower Package.
 ```json
 {
     "extra": {
-        "asset-bower-private-url": "http://YourPrivateBowerURL/packages"
+        "asset-private-bower-registries": {
+            "<YourPrivateBowerRegistryServerName>": "https://<YourPrivateBowerRegistryServerURL>/packages"
+        }
     }
 }
 ```
-  
 
 ### Usage with VCS repository
 

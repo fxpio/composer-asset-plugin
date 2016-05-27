@@ -62,6 +62,16 @@ class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getCustomRepoConfig()
+    {
+        return array(
+            'private-registry-url' => 'http://foo.tld',
+        );
+    }
+
     public function testWhatProvidesWithInvalidPrivateUrl()
     {
         $this->expectException(InvalidCreateRepositoryException::class);

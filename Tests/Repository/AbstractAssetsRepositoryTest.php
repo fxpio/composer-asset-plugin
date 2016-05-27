@@ -68,15 +68,12 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         ));
         $rm = new RepositoryManager($io, $config);
         $rm->setRepositoryClass($this->getType().'-vcs', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\MockAssetRepository');
-        $repoConfig = array(
+        $repoConfig = array_merge(array(
             'repository-manager' => $rm,
             'asset-options' => array(
                 'searchable' => true,
             ),
-            'composer-extra' => array(
-                'asset-bower-private-url' => 'http://foo.tld',
-            ),
-        );
+        ), $this->getCustomRepoConfig());
 
         $this->io = $io;
         $this->config = $config;
@@ -92,6 +89,11 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->rm = null;
         $this->registry = null;
         $this->pool = null;
+    }
+
+    protected function getCustomRepoConfig()
+    {
+        return array();
     }
 
     /**

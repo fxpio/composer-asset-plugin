@@ -33,7 +33,9 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
-        $this->url = $this->getPrivateUrl($repoConfig);
+        $this->url = isset($repoConfig['private-registry-url'])
+            ? $repoConfig['private-registry-url']
+            : null;
 
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
     }
@@ -106,22 +108,5 @@ class BowerPrivateRepository extends AbstractAssetsRepository
         }
 
         return (string) $data['repository']['url'];
-    }
-
-    /**
-     * Get the private url in composer extra config.
-     *
-     * @param array $repoConfig
-     *
-     * @return string
-     */
-    private function getPrivateUrl(array $repoConfig) {
-        $url = '';
-
-        if (isset($repoConfig['composer-extra']['asset-bower-private-url'])) {
-            $url = $repoConfig['composer-extra']['asset-bower-private-url'];
-        }
-
-        return $url;
     }
 }

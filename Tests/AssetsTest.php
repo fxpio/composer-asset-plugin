@@ -28,13 +28,12 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
         ), Assets::getTypes());
     }
 
-    public function testGetRegistries()
+    public function testDefaultGetRegistries()
     {
         $this->assertEquals(array(
             'npm',
             'bower',
-            'bowerprivate',
-        ), array_keys(Assets::getRegistries()));
+        ), array_keys(Assets::getDefaultRegistries()));
     }
 
     public function testGetVcsRepositoryDrivers()
