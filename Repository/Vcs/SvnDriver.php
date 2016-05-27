@@ -160,7 +160,7 @@ class SvnDriver extends BaseSvnDriver
                 $uname = $httpBasic[$parsedUrl['host']]['username'];
                 $pw = $httpBasic[$parsedUrl['host']]['password'];
 
-                $svnCommand = $command . sprintf(' --username %s --password %s --no-auth-cache', $uname, $pw);
+                $svnCommand = $command.sprintf(' --username %s --password %s --no-auth-cache', $uname, $pw);
             }
 
         }
