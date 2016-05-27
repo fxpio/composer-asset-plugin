@@ -21,9 +21,9 @@ class BowerPrivateRepository extends AbstractAssetsRepository
     /**
      * Constructor.
      *
-     * @param array $repoConfig
-     * @param IOInterface $io
-     * @param Config $config
+     * @param array           $repoConfig
+     * @param IOInterface     $io
+     * @param Config          $config
      * @param EventDispatcher $eventDispatcher
      */
     public function __construct(array $repoConfig,  $io,  $config,  $eventDispatcher = null)
