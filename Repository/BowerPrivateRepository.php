@@ -11,6 +11,11 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
+use Composer\Config;
+use Composer\EventDispatcher\EventDispatcher;
+use Composer\IO\IOInterface;
+use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
+
 /**
  * Bower repository for Private Instaltions.
  *
@@ -26,7 +31,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      * @param Config          $config
      * @param EventDispatcher $eventDispatcher
      */
-    public function __construct(array $repoConfig,  $io,  $config,  $eventDispatcher = null)
+    public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
         $url = '';
         if (isset($repoConfig['composer-extra']['asset-bower-private-url'])) {
