@@ -18,9 +18,8 @@ $ composer global require "fxp/composer-asset-plugin:~1.1"
 
 ### Project scope installation
 
-```shell
-$ composer require "fxp/composer-asset-plugin:~1.1"
-```
+The installation in the project scope is not supported (see the
+[issue #7](https://github.com/francoispluchino/composer-asset-plugin/issues/7)).
 
 ## Usage
 
