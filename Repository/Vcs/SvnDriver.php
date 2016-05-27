@@ -162,10 +162,8 @@ class SvnDriver extends BaseSvnDriver
 
                 $svnCommand = $command.sprintf(' --username %s --password %s --no-auth-cache', $uname, $pw);
             }
-
         }
 
         return $svnCommand;
-
     }
 }

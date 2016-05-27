@@ -32,7 +32,6 @@ class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         return 'bower';
     }
 
-
     /**
      * {@inheritdoc}
      */
