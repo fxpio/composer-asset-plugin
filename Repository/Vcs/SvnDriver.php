@@ -154,8 +154,8 @@ class SvnDriver extends BaseSvnDriver
         $parsedUrl = parse_url($this->baseUrl);
         $svnCommand = $command;
 
-        if ($parsedUrl && isset($httpBasic[$parsedUrl['host']])){
-            if ($httpBasic[$parsedUrl['host']]['username'] && $httpBasic[$parsedUrl['host']]['password']){
+        if ($parsedUrl && isset($httpBasic[$parsedUrl['host']])) {
+            if ($httpBasic[$parsedUrl['host']]['username'] && $httpBasic[$parsedUrl['host']]['password']) {
                 $uname = $httpBasic[$parsedUrl['host']]['username'];
                 $pw = $httpBasic[$parsedUrl['host']]['password'];
 
