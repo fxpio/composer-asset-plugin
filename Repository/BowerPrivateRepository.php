@@ -83,7 +83,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
-        $myArray = [];
+        $myArray = array();
         $myArray['repository'] = $data;
 
         return array(
