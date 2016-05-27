@@ -98,6 +98,59 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAssetTypes
      */
+    public function testPrivateRepositoryWithEmptyComposer($type, $filename, $identifier)
+    {
+        $this->config->merge(array(
+            'config' => array(
+                'http-basic' => array(
+                    'example.tld' => array(
+                        'username' => 'peter',
+                        'password' => 'quill',
+                    ),
+                ),
+            ),
+        ));
+
+        $repoBaseUrl = 'svn://example.tld/composer-test/repo-name';
+        $repoUrl = $repoBaseUrl.'/trunk';
+        $io = $this->getMock('Composer\IO\IOInterface');
+
+        $repoConfig = array(
+            'url' => $repoUrl,
+            'asset-type' => $type,
+            'filename' => $filename,
+        );
+
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('splitLines')
+            ->will($this->returnValue(array()));
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function ($command) {
+                if (false !== strpos($command, '--username "peter"') && false !== strpos($command, '--password "quill"')) {
+                    return 0;
+                }
+
+                return 1;
+            }));
+
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
+        $driver->initialize();
+
+        $validEmpty = array(
+            '_nonexistent_package' => true,
+        );
+
+        $this->assertSame($validEmpty, $driver->getComposerInformation($identifier));
+    }
+
+    /**
+     * @dataProvider getAssetTypes
+     */
     public function testPublicRepositoryWithCodeCache($type, $filename, $identifier)
     {
         $repoBaseUrl = 'svn://example.tld/composer-test/repo-name';
