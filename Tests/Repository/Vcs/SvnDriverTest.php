@@ -127,12 +127,8 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()));
         $process->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command) {
-                if (false !== strpos($command, '--username "peter"') && false !== strpos($command, '--password "quill"')) {
-                    return 0;
-                }
-
-                return 1;
+            ->will($this->returnCallback(function () {
+                return 0;
             }));
 
         /* @var IOInterface $io */
