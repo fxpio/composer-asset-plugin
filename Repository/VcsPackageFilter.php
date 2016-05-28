@@ -141,7 +141,7 @@ class VcsPackageFilter
      */
     protected function doSkip($name, $normalizedVersion)
     {
-        if (!isset($this->requires[$name])) {
+        if (!isset($this->requires[$name]) || false !== strpos($normalizedVersion, '-p')) {
             return false;
         }
 
@@ -175,7 +175,7 @@ class VcsPackageFilter
         $extra = $this->package->getExtra();
 
         if (!array_key_exists('asset-pattern-skip-version', $extra)) {
-            $extra['asset-pattern-skip-version'] = '(-patch)';
+            $extra['asset-pattern-skip-version'] = false;
         }
 
         if (is_string($extra['asset-pattern-skip-version'])) {
