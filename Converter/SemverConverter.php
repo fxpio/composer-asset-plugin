@@ -102,7 +102,9 @@ class SemverConverter implements VersionConverterInterface
     {
         if (' - ' === $match) {
             $matches[$i - 1] = '>='.$matches[$i - 1];
-            if (strpos($matches[$i + 1], '*') === false && strpos($matches[$i + 1], 'x') === false && strpos($matches[$i + 1], 'X') === false) {
+
+            if (false !== strpos($matches[$i + 1], '.') && strpos($matches[$i + 1], '*') === false
+                    && strpos($matches[$i + 1], 'x') === false && strpos($matches[$i + 1], 'X') === false) {
                 $matches[$i] = ',<=';
             } else {
                 $matches[$i] = ',<';
@@ -172,6 +174,7 @@ class SemverConverter implements VersionConverterInterface
     {
         if ($special === ',<~') {
             // Version range contains x in last place.
+            $match .= (false === strpos($match, '.') ? '.x' : '');
             $version = explode('.', $match);
             $change = count($version) - 2;
             $version[$change] = intval($version[$change]) + 1;
