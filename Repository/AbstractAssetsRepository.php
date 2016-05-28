@@ -20,6 +20,7 @@ use Composer\Json\JsonFile;
 use Composer\Repository\ComposerRepository;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Repository\Cache\AbstractAssetsRepositoryCache;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -119,6 +120,40 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     }
 
     /**
+     * Try to find package in cache. Returns true, if package was found in cache, and fill "providers" array.
+     *
+     * @param string $name package name
+     *
+     * @return bool
+     */
+    protected function findInCache($name)
+    {
+        $cacheList = AbstractAssetsRepositoryCache::getCacheList();
+        $data = null;
+        if (!empty($cacheList)) {
+            foreach ($cacheList as $cacheObject) {
+                $data = $cacheObject->findItems($name, $this->getType());
+                if ($data !== null) {
+                    break;
+                }
+            }
+        }
+
+        $this->providers[$name] = array();
+        if ($data !== null && !empty($data)) {
+            foreach ($data as $item) {
+                $item['name'] = $name;
+                $item['type'] = $this->assetType->getComposerType();
+                $package = $this->createPackage($item);
+                $package->setRepository($this);
+                $this->providers[$name][$item['version']] = $package;
+            }
+        }
+
+        return !empty($this->providers[$name]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function whatProvides(Pool $pool, $name, $bypassFilters = false)
@@ -130,15 +165,18 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         try {
             $repoName = Util::convertAliasName($name);
             $packageName = Util::cleanPackageName($repoName);
-            $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
             $cacheName = $packageName.'-'.sha1($packageName).'-package.json';
-            $data = $this->fetchFile($packageUrl, $cacheName);
-            $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
-            $repo['vcs-package-filter'] = $this->packageFilter;
 
-            Util::addRepository($this->io, $this->rm, $this->repos, $name, $repo, $pool);
+            if (!$this->findInCache($name)) {
+                $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
+                $data = $this->fetchFile($packageUrl, $cacheName);
+                $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
+                $repo['vcs-package-filter'] = $this->packageFilter;
 
-            $this->providers[$name] = array();
+                Util::addRepository($this->io, $this->rm, $this->repos, $name, $repo, $pool);
+
+                $this->providers[$name] = array();
+            }
         } catch (\Exception $ex) {
             $this->whatProvidesManageException($pool, $name, $ex);
         }
