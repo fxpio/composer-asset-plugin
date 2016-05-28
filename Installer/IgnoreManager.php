@@ -168,7 +168,23 @@ class IgnoreManager
         } elseif (0 === strpos($searchPattern, '**/')) {
             $this->doAddPattern($prefix.'**/'.$searchPattern);
             $this->doAddPattern($prefix.substr($searchPattern, 3));
-        } elseif ('.*' === $searchPattern) {
+        } else {
+            $this->convertPatternStep2($prefix, $searchPattern, $pattern);
+        }
+
+        return $pattern;
+    }
+
+    /**
+     * Step2: Converter pattern to glob.
+     *
+     * @param string $prefix        The prefix
+     * @param string $searchPattern The search pattern
+     * @param string $pattern       The pattern
+     */
+    protected function convertPatternStep2($prefix, $searchPattern, $pattern)
+    {
+        if ('.*' === $searchPattern) {
             $this->doAddPattern($prefix.'**/.*');
         } elseif ('**' === $searchPattern) {
             $this->finder->path('/.*/');
@@ -176,7 +192,5 @@ class IgnoreManager
         } elseif (preg_match('/\/\*$|\/\*\*$/', $pattern, $matches)) {
             $this->doAddPattern(substr($pattern, 0, strlen($pattern) - strlen($matches[0])));
         }
-
-        return $pattern;
     }
 }
