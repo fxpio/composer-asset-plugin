@@ -185,6 +185,20 @@ class SemverConverter implements VersionConverterInterface
             $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
         }
 
+        $this->matchRangeTokenStep5($i, $match, $matches, $special, $replace);
+    }
+
+    /**
+     * Step5: Converts the token of the matched range.
+     *
+     * @param int         $i
+     * @param string      $match
+     * @param array       $matches
+     * @param string|null $special
+     * @param string|null $replace
+     */
+    protected function matchRangeTokenStep5($i, $match, array &$matches, &$special, &$replace)
+    {
         $matches[$i] = $this->convertVersion($match);
         $matches[$i] = $replace
             ? SemverUtil::replaceAlias($matches[$i], $replace)
