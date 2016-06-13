@@ -23,6 +23,9 @@ class VcsRepositoryEventTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getTestEvents
+     *
+     * @param string $eventName
+     * @param array  $repos
      */
     public function testEvents($eventName, array $repos)
     {

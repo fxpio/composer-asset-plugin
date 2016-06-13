@@ -102,6 +102,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPackageComposerTypes
+     *
+     * @param string $composerType
      */
     public function testDeleteIgnoreFiles($composerType)
     {
@@ -112,6 +114,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPackageComposerTypes
+     *
+     * @param string $composerType
      */
     public function testDeleteIgnoreFilesWithInstallOperation($composerType)
     {
@@ -124,6 +128,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPackageComposerTypes
+     *
+     * @param string $composerType
      */
     public function testDeleteIgnoreFilesWithUpdateOperation($composerType)
     {

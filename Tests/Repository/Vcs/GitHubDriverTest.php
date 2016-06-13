@@ -61,6 +61,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPrivateRepository($type, $filename)
     {
@@ -159,6 +162,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepository($type, $filename)
     {
@@ -210,6 +216,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepository2($type, $filename)
     {
@@ -273,6 +282,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPrivateRepositoryNoInteraction($type, $filename)
     {
@@ -385,6 +397,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testGetComposerInformationWithGitDriver($type, $filename)
     {
@@ -428,6 +443,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testGetComposerInformationWithCodeCache($type, $filename)
     {
@@ -463,6 +481,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testGetComposerInformationWithFilesystemCache($type, $filename)
     {
@@ -504,6 +525,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testGetComposerInformationWithEmptyContent($type, $filename)
     {
@@ -553,6 +577,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAssetTypes
      *
+     * @param string $type
+     * @param string $filename
+     *
      * @expectedException \RuntimeException
      */
     public function testGetComposerInformationWithRuntimeException($type, $filename)
@@ -594,6 +621,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      *
      * @expectedException \RuntimeException
      */
@@ -641,6 +671,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testRedirectUrlRepository($type, $filename)
     {
@@ -710,6 +743,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      *
      * @expectedException \RuntimeException
      */
@@ -801,6 +837,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testRedirectUrlRepositoryWithCache($type, $filename)
     {
@@ -896,6 +935,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDataBranches
+     *
+     * @param string $type
+     * @param string $filename
+     * @param array  $branches
+     * @param array  $gitBranches
      */
     public function testGetBranchesWithGitDriver($type, $filename, array $branches, array $gitBranches)
     {
@@ -934,6 +978,10 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDataBranches
+     *
+     * @param string $type
+     * @param string $filename
+     * @param array  $branches
      */
     public function testGetBranches($type, $filename, array $branches)
     {

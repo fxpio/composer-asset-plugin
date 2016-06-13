@@ -58,6 +58,9 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepositoryWithComposer($type, $filename)
     {
@@ -114,6 +117,9 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename)
     {

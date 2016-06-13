@@ -230,6 +230,8 @@ class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetIgnoreFiles
+     *
+     * @param array $ignoreFiles
      */
     public function testInstall(array $ignoreFiles)
     {
@@ -278,6 +280,8 @@ class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetIgnoreFiles
+     *
+     * @param array $ignoreFiles
      */
     public function testUpdate(array $ignoreFiles)
     {
@@ -441,6 +445,8 @@ class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetMainFiles
+     *
+     * @param array $mainFiles
      */
     public function testMainFiles(array $mainFiles)
     {

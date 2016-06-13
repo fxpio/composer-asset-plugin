@@ -32,6 +32,8 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDataProvider
+     *
+     * @param string $resourceKey
      */
     public function testAddComposerTimeWithSimpleKey($resourceKey)
     {

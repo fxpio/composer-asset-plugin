@@ -130,6 +130,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDataForAssetVcsRepositories
+     *
+     * @param string $type
      */
     public function testAssetVcsRepositories($type)
     {

@@ -57,6 +57,9 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename)
     {
@@ -95,6 +98,9 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepositoryWithCodeCache($type, $filename)
     {
@@ -138,6 +144,9 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
      */
     public function testPublicRepositoryWithFilesystemCache($type, $filename)
     {

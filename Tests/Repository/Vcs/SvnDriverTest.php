@@ -60,6 +60,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
+     * @param string $identifier
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename, $identifier)
     {
@@ -97,6 +101,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
+     * @param string $identifier
      */
     public function testPrivateRepositoryWithEmptyComposer($type, $filename, $identifier)
     {
@@ -146,6 +154,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
+     * @param string $identifier
      */
     public function testPublicRepositoryWithCodeCache($type, $filename, $identifier)
     {
@@ -199,6 +211,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getAssetTypes
+     *
+     * @param string $type
+     * @param string $filename
+     * @param string $identifier
      */
     public function testPublicRepositoryWithFilesystemCache($type, $filename, $identifier)
     {
@@ -255,6 +271,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getAssetTypes
      *
+     * @param string $type
+     * @param string $filename
+     * @param string $identifier
+     *
      * @expectedException \Composer\Downloader\TransportException
      */
     public function testPublicRepositoryWithInvalidUrl($type, $filename, $identifier)
@@ -307,6 +327,10 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getSupportsUrls
+     *
+     * @param string $url
+     * @param string $supperted
+     * @param string $urlUsed
      */
     public function testSupports($url, $supperted, $urlUsed)
     {

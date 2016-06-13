@@ -38,6 +38,9 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getTestVersions
+     *
+     * @param string $semver
+     * @param string $composer
      */
     public function testConverter($semver, $composer)
     {
@@ -90,6 +93,9 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getTestRanges
+     *
+     * @param string $semver
+     * @param string $composer
      */
     public function testRangeConverter($semver, $composer)
     {

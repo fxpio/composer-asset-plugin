@@ -84,6 +84,9 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDefaultDrivers
+     *
+     * @param string $type
+     * @param string $url
      */
     public function testDefaultConstructor($type, $url)
     {
@@ -107,6 +110,10 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getMockDrivers
      *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage No driver found to handle Asset VCS repository
      */
@@ -118,6 +125,10 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDrivers
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
      *
      * @expectedException \Composer\Repository\InvalidRepositoryException
      */
@@ -144,6 +155,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversSkipParsing
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testSkipParsingFile($type, $url, $class, $verbose)
     {
@@ -182,6 +198,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersions
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testRepositoryPackageName($type, $url, $class, $verbose)
     {
@@ -195,6 +216,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersions
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testWithTagsAndBranchs($type, $url, $class, $verbose)
     {
@@ -242,6 +268,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersionsAndWithoutName
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testWithTagsAndBranchsWithoutPackageName($type, $url, $class, $verbose)
     {
@@ -274,6 +305,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersions
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testWithTagsAndBranchsWithRegistryPackageName($type, $url, $class, $verbose)
     {
@@ -306,6 +342,11 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDriversWithVersions
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     * @param bool   $verbose
      */
     public function testWithFilterTags($type, $url, $class, $verbose)
     {
@@ -344,6 +385,10 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockDrivers
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
      */
     public function testPackageWithRegistryVersions($type, $url, $class)
     {
