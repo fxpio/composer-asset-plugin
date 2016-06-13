@@ -22,7 +22,7 @@ matrix:
 before_script:
     - composer self-update
     - composer install --prefer-source
-    - composer require --dev --no-update satooshi/php-coveralls:@dev
+    - composer require --dev --no-update satooshi/php-coveralls:^1.0.0
     - composer update --prefer-source satooshi/php-coveralls
     - mkdir -p ./build/logs
 
