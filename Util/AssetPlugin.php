@@ -19,6 +19,7 @@ use Composer\Package\PackageInterface;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
+use Fxp\Composer\AssetPlugin\Repository\Util;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 
 /**
@@ -76,9 +77,7 @@ class AssetPlugin
      */
     public static function createRepositoryConfig(RepositoryManager $rm, VcsPackageFilter $filter, array $extra, $assetType)
     {
-        $opts = array_key_exists('asset-registry-options', $extra)
-            ? $extra['asset-registry-options']
-            : array();
+        $opts = Util::getArrayValue($extra, 'asset-registry-options', array());
 
         return array(
             'repository-manager' => $rm,

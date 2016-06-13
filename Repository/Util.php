@@ -95,6 +95,22 @@ class Util
     }
 
     /**
+     * Get the array value.
+     *
+     * @param array  $array   The array
+     * @param string $name    The key name
+     * @param mixed  $default The default value
+     *
+     * @return mixed
+     */
+    public static function getArrayValue(array $array, $name, $default = null)
+    {
+        return array_key_exists($name, $array)
+            ? $array[$name]
+            : $default;
+    }
+
+    /**
      * Write the vcs repository name in output console.
      *
      * @param IOInterface $io   The IO instance
