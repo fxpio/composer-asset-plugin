@@ -1066,6 +1066,53 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getDataBranches
+     *
+     * @param string $type
+     * @param string $filename
+     * @param array  $branches
+     * @param array  $gitBranches
+     */
+    public function testNoApi($type, $filename, array $branches, array $gitBranches)
+    {
+        $repoUrl = 'https://github.com/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
+
+        $io = $this->getMock('Composer\IO\IOInterface');
+        $io->expects($this->any())
+            ->method('isInteractive')
+            ->will($this->returnValue(true));
+
+        $repoConfig = array(
+            'url' => $repoUrl,
+            'asset-type' => $type,
+            'filename' => $filename,
+            'package-name' => $packageName,
+            'vcs-driver-options' => array(
+                'github-no-api' => true,
+            ),
+        );
+
+        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process->expects($this->any())
+            ->method('splitLines')
+            ->will($this->returnValue($gitBranches));
+        $process->expects($this->any())
+            ->method('execute')
+            ->will($this->returnCallback(function () {
+                return 0;
+            }));
+
+        /* @var IOInterface $io */
+        /* @var ProcessExecutor $process */
+
+        $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
+        $gitHubDriver->initialize();
+
+        $this->assertSame($branches, $gitHubDriver->getBranches());
+    }
+
+    /**
      * @param object $object
      * @param string $attribute
      * @param mixed  $value
