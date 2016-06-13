@@ -144,6 +144,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $repo = $rm->createRepository($type, array(
             'type' => $type,
             'url' => 'http://foo.tld',
+            'name' => 'foo',
         ));
 
         $this->assertInstanceOf('Composer\Repository\VcsRepository', $repo);
@@ -223,7 +224,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
-                array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
             ))));
 
         $this->plugin->activate($this->composer, $this->io);
@@ -238,8 +239,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->package->expects($this->any())
             ->method('getExtra')
             ->will($this->returnValue(array('asset-repositories' => array(
-                array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
-                array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
+                array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
             ))));
 
         $this->plugin->activate($this->composer, $this->io);
@@ -327,7 +328,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
 
         $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, array(
-            array('type' => 'npm-vcs', 'url' => 'http://foo.tld'),
+            array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
         ));
         /* @var InstallerEvent $eventInstaller */
         $eventInstaller = $this->getMockBuilder('Composer\Installer\InstallerEvent')

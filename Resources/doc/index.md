@@ -425,3 +425,39 @@ option `extra.asset-registry-options.{type}-searchable` in the root project
     }
 }
 ```
+
+### Use no-api option of VCS Githhub driver
+
+If you want to use the [no-api](https://getcomposer.org/doc/05-repositories.md#git-alternatives) option
+for your Github assets, you can add an extra option `extra.asset-vcs-driver-options.github-no-api` in
+the root project `composer.json` file. By default, this option is to `false`.
+
+```json
+{
+    "extra": {
+        "asset-vcs-driver-options": {
+            "github-no-api": true
+        }
+    }
+}
+```
+
+You can further define this option for each package:
+
+```json
+{
+    "extra": {
+        "asset-vcs-driver-options": {
+            "github-no-api": {
+                "default": true,
+                "packages": {
+                    "bower-asset/example-asset1": false
+                }
+            }
+        }
+    }
+}
+```
+
+With this configuration, all your github packages will use the native Git, except for
+the `bower-asset/example-asset1` package.

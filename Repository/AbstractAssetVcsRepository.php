@@ -84,6 +84,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $assetType = substr($repoConfig['type'], 0, strpos($repoConfig['type'], '-'));
         $assetType = Assets::createType($assetType);
         $repoConfig['asset-type'] = $assetType->getName();
+        $repoConfig['package-name'] = $assetType->formatComposerName($repoConfig['name']);
         $repoConfig['filename'] = $assetType->getFilename();
         $this->assetType = $assetType;
         $this->dispatcher = $dispatcher;

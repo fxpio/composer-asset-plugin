@@ -15,6 +15,7 @@ use Composer\Cache;
 use Composer\Downloader\TransportException;
 use Composer\Json\JsonFile;
 use Composer\Repository\Vcs\GitHubDriver as BaseGitHubDriver;
+use Fxp\Composer\AssetPlugin\Repository\Util as RepoUtil;
 
 /**
  * Abstract class for GitHub vcs driver.
@@ -32,6 +33,38 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
      * @var string|null|false
      */
     protected $redirectApi;
+
+    public function initialize()
+    {
+        if (!isset($this->repoConfig['no-api'])) {
+            $this->repoConfig['no-api'] = $this->getNoApiOption();
+        }
+
+        parent::initialize();
+    }
+
+    /**
+     * Get the no-api repository option.
+     *
+     * @return bool
+     */
+    protected function getNoApiOption()
+    {
+        $packageName = $this->repoConfig['package-name'];
+        $opts = RepoUtil::getArrayValue($this->repoConfig, 'vcs-driver-options', array());
+        $noApiOpt = RepoUtil::getArrayValue($opts, 'github-no-api', array());
+        $defaultValue = false;
+
+        if (is_bool($noApiOpt)) {
+            $defaultValue = $noApiOpt;
+            $noApiOpt = array();
+        }
+
+        $noApiOpt['default'] = (bool) RepoUtil::getArrayValue($noApiOpt, 'default', $defaultValue);
+        $noApiOpt['packages'] = (array) RepoUtil::getArrayValue($noApiOpt, 'packages', array());
+
+        return (bool) RepoUtil::getArrayValue($noApiOpt['packages'], $packageName, $defaultValue);
+    }
 
     /**
      * Get the remote content.

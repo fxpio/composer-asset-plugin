@@ -70,6 +70,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $repoSshUrl = 'git@github.com:composer-test/repo-name.git';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -141,6 +142,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, $remoteFilesystem);
@@ -170,6 +172,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -191,6 +194,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
@@ -224,6 +228,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'feature/3.2-foo';
         $sha = 'SOMESHA';
 
@@ -255,6 +260,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
@@ -291,6 +297,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $repoSshUrl = 'git@github.com:composer-test/repo-name.git';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -368,6 +375,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */
@@ -451,6 +459,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'dev-master';
         $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
 
@@ -466,6 +475,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
@@ -489,6 +499,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'dev-master';
         $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
 
@@ -506,6 +517,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         $gitHubDriver1 = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem1);
@@ -533,6 +545,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -559,6 +572,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */
@@ -586,6 +600,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -608,6 +623,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */
@@ -631,6 +647,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -658,6 +675,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */
@@ -679,6 +697,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -718,6 +737,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
@@ -753,6 +773,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
         $io = $this->getMock('Composer\IO\IOInterface');
@@ -816,6 +837,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */
@@ -849,6 +871,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'http://'.$originUrl.'/'.$owner.'/'.$repository;
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
         $repoApiUrlNew = $repoApiUrl.'-new';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -870,6 +893,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
@@ -987,6 +1011,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'http://github.com/composer-test/repo-name';
         $repoApiUrl = 'https://api.github.com/repos/composer-test/repo-name';
+        $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -1026,6 +1051,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'url' => $repoUrl,
             'asset-type' => $type,
             'filename' => $filename,
+            'package-name' => $packageName,
         );
 
         /* @var IOInterface $io */

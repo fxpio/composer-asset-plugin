@@ -83,6 +83,7 @@ class AssetPlugin
             'repository-manager' => $rm,
             'vcs-package-filter' => $filter,
             'asset-options' => static::createAssetOptions($opts, $assetType),
+            'vcs-driver-options' => Util::getArrayValue($extra, 'asset-vcs-driver-options', array()),
         );
     }
 
