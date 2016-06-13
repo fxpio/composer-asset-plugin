@@ -62,15 +62,17 @@ class MockVcsDriverWithPackages extends MockVcsDriver
      */
     public function getComposerInformation($identifier)
     {
+        $composer = null;
+
         if ($this->hasComposerFile($identifier)) {
             if (isset($this->composer['branch:'.$identifier])) {
-                return $this->composer['branch:'.$identifier];
+                $composer = $this->composer['branch:'.$identifier];
             } elseif (isset($this->composer['tag:'.$identifier])) {
-                return $this->composer['tag:'.$identifier];
+                $composer = $this->composer['tag:'.$identifier];
             }
         }
 
-        return;
+        return $composer;
     }
 
     /**

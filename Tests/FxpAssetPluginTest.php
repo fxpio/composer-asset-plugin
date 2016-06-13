@@ -57,12 +57,15 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
+                $value = null;
+
                 switch ($key) {
                     case 'cache-repo-dir':
-                        return sys_get_temp_dir().'/composer-test-repo-cache';
+                        $value = sys_get_temp_dir().'/composer-test-repo-cache';
+                        break;
                 }
 
-                return;
+                return $value;
             }));
         $this->package = $this->getMock('Composer\Package\RootPackageInterface');
         $this->package->expects($this->any())
