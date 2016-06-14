@@ -21,17 +21,16 @@ matrix:
 
 before_script:
     - composer self-update
+    - composer global require --prefer-source phpunit/phpunit:"^4.8 || 5.3.*" satooshi/php-coveralls:^1.0.0
     - composer install --prefer-source
-    - composer require --dev --no-update satooshi/php-coveralls:^1.0.0
-    - composer update --prefer-source satooshi/php-coveralls
     - mkdir -p ./build/logs
 
 script:
-    - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+    - ~/.composer/vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
 
 after_script:
     - 'echo ''coverage_clover: build/logs/clover.xml'' >> ./.coveralls.yml'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ./vendor/bin/coveralls -v; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ~/.composer/vendor/bin/coveralls -v; fi;'
 
 notifications:
     email: false
