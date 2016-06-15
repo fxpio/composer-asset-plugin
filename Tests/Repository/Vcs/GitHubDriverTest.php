@@ -74,7 +74,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -83,7 +83,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(array($io))
             ->getMock();
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnValue(1));
@@ -126,8 +126,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
             ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master', 'private' => true))));
 
-        $configSource = $this->getMock('Composer\Config\ConfigSourceInterface');
-        $authConfigSource = $this->getMock('Composer\Config\ConfigSourceInterface');
+        $configSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
+        $authConfigSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
 
         /* @var ConfigSourceInterface $configSource */
         /* @var ConfigSourceInterface $authConfigSource */
@@ -176,7 +176,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -232,7 +232,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'feature/3.2-foo';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -305,7 +305,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(false));
@@ -414,7 +414,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'https://github.com/composer-test/repo-name';
         $identifier = 'v0.0.0';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -426,7 +426,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'no-api' => true,
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue(array()));
@@ -463,7 +463,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'dev-master';
         $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -503,7 +503,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'dev-master';
         $sha = '92bebbfdcde75ef2368317830e54b605bc938123';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -548,7 +548,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
@@ -603,7 +603,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
@@ -650,7 +650,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
@@ -701,7 +701,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -776,7 +776,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $packageName = $type.'-asset/repo-name';
         $identifier = 'v0.0.0';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -824,8 +824,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl.'/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
             ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
 
-        $configSource = $this->getMock('Composer\Config\ConfigSourceInterface');
-        $authConfigSource = $this->getMock('Composer\Config\ConfigSourceInterface');
+        $configSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
+        $authConfigSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
 
         /* @var ConfigSourceInterface $configSource */
         /* @var ConfigSourceInterface $authConfigSource */
@@ -875,7 +875,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -969,7 +969,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoUrl = 'https://github.com/composer-test/repo-name';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -981,7 +981,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'no-api' => true,
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue($gitBranches));
@@ -1015,7 +1015,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -1078,7 +1078,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoUrl = 'https://github.com/composer-test/repo-name';
         $packageName = $type.'-asset/repo-name';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -1093,7 +1093,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue($gitBranches));

@@ -70,7 +70,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
             ->will($this->returnValue(true));
@@ -128,7 +128,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $repoBaseUrl = 'https://bitbucket.org/composer-test/repo-name';
         $repoUrl = $repoBaseUrl.'.git';
         $identifier = 'v0.0.0';
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))

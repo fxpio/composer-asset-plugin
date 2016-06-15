@@ -63,10 +63,10 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->lazyPackage = $this->getMock('Fxp\Composer\AssetPlugin\Package\LazyPackageInterface');
-        $this->assetType = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
-        $this->loader = $this->getMock('Composer\Package\Loader\LoaderInterface');
-        $this->driver = $this->getMock('Composer\Repository\Vcs\VcsDriverInterface');
+        $this->lazyPackage = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Package\LazyPackageInterface')->getMock();
+        $this->assetType = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
+        $this->loader = $this->getMockBuilder('Composer\Package\Loader\LoaderInterface')->getMock();
+        $this->driver = $this->getMockBuilder('Composer\Repository\Vcs\VcsDriverInterface')->getMock();
         $this->dispatcher = $this->getMockBuilder('Composer\EventDispatcher\EventDispatcher')
             ->disableOriginalConstructor()->getMock();
 
@@ -87,7 +87,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->method('getVersion')
             ->will($this->returnValue('1.0.0.0'));
 
-        $versionConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface');
+        $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
         $versionConverter->expects($this->any())
             ->method('convertVersion')
             ->will($this->returnValue('VERSION_CONVERTED'));
@@ -96,7 +96,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return $value;
             }));
-        $packageConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface');
+        $packageConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock();
         /* @var LazyPackageInterface $lasyPackage */
         $lasyPackage = $this->lazyPackage;
         $packageConverter->expects($this->any())
@@ -277,7 +277,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             'version' => '1.0',
         );
 
-        $realPackage = $this->getMock('Composer\Package\CompletePackageInterface');
+        $realPackage = $this->getMockBuilder('Composer\Package\CompletePackageInterface')->getMock();
         $realPackage
             ->expects($this->any())
             ->method('getName')

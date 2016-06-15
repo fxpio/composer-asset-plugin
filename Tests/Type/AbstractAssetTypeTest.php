@@ -39,8 +39,8 @@ abstract class AbstractAssetTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->packageConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface');
-        $this->versionConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface');
+        $this->packageConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock();
+        $this->versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
     }
 
     protected function tearDown()

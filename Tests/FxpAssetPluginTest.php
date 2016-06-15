@@ -52,8 +52,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $io = $this->getMock('Composer\IO\IOInterface');
-        $config = $this->getMock('Composer\Config');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+        $config = $this->getMockBuilder('Composer\Config')->getMock();
         $config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
@@ -67,7 +67,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
 
                 return $value;
             }));
-        $this->package = $this->getMock('Composer\Package\RootPackageInterface');
+        $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
         $this->package->expects($this->any())
             ->method('getRequires')
             ->will($this->returnValue(array()));
@@ -80,7 +80,7 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $rm = new RepositoryManager($io, $config);
         $im = new InstallationManager();
 
-        $composer = $this->getMock('Composer\Composer');
+        $composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $composer->expects($this->any())
             ->method('getRepositoryManager')
             ->will($this->returnValue($rm));

@@ -39,7 +39,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $versionConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface');
+        $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
         $versionConverter->expects($this->any())
             ->method('convertVersion')
             ->will($this->returnCallback(function ($value) {
@@ -50,7 +50,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return $value;
             }));
-        $type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
+        $type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
         $type->expects($this->any())
             ->method('getComposerVendorName')
             ->will($this->returnValue('ASSET'));

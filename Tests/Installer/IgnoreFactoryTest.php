@@ -47,7 +47,7 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->config = $this->getMock('Composer\Config');
+        $this->config = $this->getMockBuilder('Composer\Config')->getMock();
         $this->config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
@@ -65,13 +65,13 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
                 return $value;
             }));
 
-        $this->rootPackage = $this->getMock('Composer\Package\RootPackageInterface');
-        $this->package = $this->getMock('Composer\Package\PackageInterface');
+        $this->rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
+        $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
         $this->package->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo-asset/foo'));
 
-        $this->composer = $this->getMock('Composer\Composer');
+        $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->composer->expects($this->any())
             ->method('getPackage')
             ->will($this->returnValue($this->rootPackage));

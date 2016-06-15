@@ -105,10 +105,10 @@ class BowerInstallerTest extends TestCase
         $dm = $this->dm;
         $this->composer->setDownloadManager($dm);
 
-        $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
-        $this->io = $this->getMock('Composer\IO\IOInterface');
+        $this->repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface')->getMock();
+        $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
-        $this->type = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
+        $this->type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
         $this->type->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -123,10 +123,10 @@ class BowerInstallerTest extends TestCase
             ->will($this->returnValue('foo.json'));
         $this->type->expects($this->any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')));
+            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock()));
         $this->type->expects($this->any())
             ->method('getPackageConverter')
-            ->will($this->returnValue($this->getMock('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')));
+            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock()));
     }
 
     protected function tearDown()

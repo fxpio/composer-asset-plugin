@@ -68,7 +68,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     public function testPublicRepositoryWithEmptyComposer($type, $filename, $identifier)
     {
         $repoUrl = 'svn://example.tld/composer-test/repo-name/trunk';
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -76,7 +76,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => $filename,
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue(array()));
@@ -121,7 +121,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
 
         $repoBaseUrl = 'svn://example.tld/composer-test/repo-name';
         $repoUrl = $repoBaseUrl.'/trunk';
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -129,7 +129,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => $filename,
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue(array()));
@@ -168,8 +168,8 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'asset-type' => $type,
             'filename' => $filename,
         );
-        $io = $this->getMock('Composer\IO\IOInterface');
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnCallback(function ($value) {
@@ -225,8 +225,8 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'asset-type' => $type,
             'filename' => $filename,
         );
-        $io = $this->getMock('Composer\IO\IOInterface');
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnCallback(function ($value) {
@@ -280,7 +280,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     public function testPublicRepositoryWithInvalidUrl($type, $filename, $identifier)
     {
         $repoUrl = 'svn://example.tld/composer-test/repo-name/trunk';
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -288,7 +288,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => $filename,
         );
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnValue(array()));
@@ -335,7 +335,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
     public function testSupports($url, $supperted, $urlUsed)
     {
         /* @var IOInterface $io */
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $this->assertSame($supperted, SvnDriver::supports($io, $this->config, $url, false));
 
@@ -343,7 +343,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $process = $this->getMock('Composer\Util\ProcessExecutor');
+        $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {

@@ -53,11 +53,11 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->composer = $this->getMock('Composer\Composer');
-        $this->io = $this->getMock('Composer\IO\IOInterface');
-        $this->package = $this->getMock('Composer\Package\PackageInterface');
+        $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
+        $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+        $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
 
-        $config = $this->getMock('Composer\Config');
+        $config = $this->getMockBuilder('Composer\Config')->getMock();
         $config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
@@ -73,7 +73,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
                 return $val;
             }));
 
-        $rootPackage = $this->getMock('Composer\Package\RootPackageInterface');
+        $rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer->expects($this->any())
             ->method('getConfig')
@@ -107,7 +107,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteIgnoreFiles($composerType)
     {
-        $this->operation = $this->getMock('Composer\DependencyResolver\Operation\OperationInterface');
+        $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock();
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
     }
@@ -164,14 +164,14 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
         }
 
         /* @var PolicyInterface $policy */
-        $policy = $this->getMock('Composer\DependencyResolver\PolicyInterface');
+        $policy = $this->getMockBuilder('Composer\DependencyResolver\PolicyInterface')->getMock();
         /* @var Pool $pool */
         $pool = $this->getMockBuilder('Composer\DependencyResolver\Pool')->disableOriginalConstructor()->getMock();
         /* @var CompositeRepository $installedRepo */
         $installedRepo = $this->getMockBuilder('Composer\Repository\CompositeRepository')->disableOriginalConstructor()->getMock();
         /* @var Request $request */
         $request = $this->getMockBuilder('Composer\DependencyResolver\Request')->disableOriginalConstructor()->getMock();
-        $operations = array($this->getMock('Composer\DependencyResolver\Operation\OperationInterface'));
+        $operations = array($this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock());
 
         return new PackageEvent('foo-event', $this->composer, $this->io, true, $policy, $pool, $installedRepo, $request, $operations, $this->operation);
     }

@@ -54,10 +54,10 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->package = $this->getMock('Composer\Package\RootPackageInterface');
-        $this->assetType = $this->getMock('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface');
+        $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
+        $this->assetType = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
 
-        $versionConverter = $this->getMock('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface');
+        $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
         $versionConverter->expects($this->any())
             ->method('convertVersion')
             ->will($this->returnCallback(function ($value) {
@@ -637,7 +637,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $parser = new VersionParser();
 
         foreach ($installed as $name => $version) {
-            $package = $this->getMock('Composer\Package\PackageInterface');
+            $package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
 
             $package->expects($this->any())
                 ->method('getName')

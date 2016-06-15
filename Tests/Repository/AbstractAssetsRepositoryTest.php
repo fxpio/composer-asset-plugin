@@ -54,7 +54,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $io = $this->getMock('Composer\IO\IOInterface');
+        $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isVerbose')
             ->will($this->returnValue(true));
@@ -79,7 +79,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->config = $config;
         $this->rm = $rm;
         $this->registry = $this->getRegistry($repoConfig, $io, $config);
-        $this->pool = $this->getMock('Composer\DependencyResolver\Pool');
+        $this->pool = $this->getMockBuilder('Composer\DependencyResolver\Pool')->getMock();
     }
 
     protected function tearDown()

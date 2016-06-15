@@ -60,7 +60,7 @@ class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
                     $this->package->getVersion(), $this->package->getPrettyVersion())
                 : false;
 
-            $loader = $this->getMock('Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface');
+            $loader = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface')->getMock();
             $loader
                 ->expects($this->any())
                 ->method('load')
