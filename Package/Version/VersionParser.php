@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Package\Version;
 
 use Composer\Package\Version\VersionParser as BaseVersionParser;
+use UnexpectedValueException;
 
 /**
  * Lazy loader for asset package.
@@ -33,4 +34,5 @@ class VersionParser extends BaseVersionParser
 
         return false !== strpos($version, '-patch') ? 'dev' : $stability;
     }
+
 }
