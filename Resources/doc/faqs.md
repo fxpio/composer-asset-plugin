@@ -168,4 +168,4 @@ Because it's impossible to create the custom VCS repositories: Composer checks t
 of VCS repository before the loading of plugins, so, an exception is thrown.
 
 The only way, is to put the config in `extra` section (see the [doc]
-(https://github.com/francoispluchino/composer-asset-plugin/blob/master/Resources/doc/schema.md#extraasset-repositories-root-only)).
+(https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/schema.md#extraasset-repositories-root-only)).

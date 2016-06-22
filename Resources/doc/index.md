@@ -7,7 +7,7 @@ Basic Usage
 
 ## Installation
 
-See the [Release Notes](https://github.com/francoispluchino/composer-asset-plugin/releases)
+See the [Release Notes](https://github.com/fxpio/composer-asset-plugin/releases)
 to know the Composer version required.
 
 ### Global scope (per user) installation
@@ -19,7 +19,7 @@ $ composer global require "fxp/composer-asset-plugin:~1.1"
 ### Project scope installation
 
 The installation in the project scope is not supported (see the
-[issue #7](https://github.com/francoispluchino/composer-asset-plugin/issues/7)).
+[issue #7](https://github.com/fxpio/composer-asset-plugin/issues/7)).
 
 ## Usage
 

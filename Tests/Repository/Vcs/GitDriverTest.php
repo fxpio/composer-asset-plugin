@@ -63,7 +63,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPublicRepositoryWithEmptyComposer($type, $filename)
     {
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin';
+        $repoUrl = 'https://github.com/fxpio/composer-asset-plugin';
         $identifier = 'v0.0.0';
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
@@ -104,7 +104,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPublicRepositoryWithCodeCache($type, $filename)
     {
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'https://github.com/fxpio/composer-asset-plugin.git';
         $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
         $repoConfig = array(
             'url' => $repoUrl,
@@ -150,7 +150,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPublicRepositoryWithFilesystemCache($type, $filename)
     {
-        $repoUrl = 'https://github.com/francoispluchino/composer-asset-plugin.git';
+        $repoUrl = 'https://github.com/fxpio/composer-asset-plugin.git';
         $identifier = '92bebbfdcde75ef2368317830e54b605bc938123';
         $repoConfig = array(
             'url' => $repoUrl,

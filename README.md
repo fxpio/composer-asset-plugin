@@ -2,9 +2,9 @@ NPM/Bower Dependency Manager for Composer
 =========================================
 
 [![Latest Version](https://img.shields.io/packagist/v/fxp/composer-asset-plugin.svg)](https://packagist.org/packages/fxp/composer-asset-plugin)
-[![Build Status](https://img.shields.io/travis/francoispluchino/composer-asset-plugin/master.svg)](https://travis-ci.org/francoispluchino/composer-asset-plugin)
-[![Coverage Status](https://img.shields.io/coveralls/francoispluchino/composer-asset-plugin/master.svg)](https://coveralls.io/r/francoispluchino/composer-asset-plugin?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/francoispluchino/composer-asset-plugin.svg)](https://scrutinizer-ci.com/g/francoispluchino/composer-asset-plugin?branch=master)
+[![Build Status](https://img.shields.io/travis/fxpio/composer-asset-plugin/master.svg)](https://travis-ci.org/fxpio/composer-asset-plugin)
+[![Coverage Status](https://img.shields.io/coveralls/fxpio/composer-asset-plugin/master.svg)](https://coveralls.io/r/fxpio/composer-asset-plugin?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/fxpio/composer-asset-plugin.svg)](https://scrutinizer-ci.com/g/fxpio/composer-asset-plugin?branch=master)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/0d67ca33-5a72-46b8-b109-cfbf95673fce.svg)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
 
 The Composer Asset Plugin allows you to manage project assets (css, js, etc.) in your `composer.json`
@@ -93,7 +93,7 @@ The bulk of the documentation is located in `Resources/doc/index.md`:
 
 [Read the FAQs](Resources/doc/faqs.md)
 
-[Read the Release Notes](https://github.com/francoispluchino/composer-asset-plugin/releases)
+[Read the Release Notes](https://github.com/fxpio/composer-asset-plugin/releases)
 
 Installation
 ------------
@@ -111,9 +111,9 @@ About
 -----
 
 Fxp Composer Asset Plugin is a [François Pluchino](https://github.com/francoispluchino) initiative.
-See also the list of [contributors](https://github.com/francoispluchino/composer-asset-plugin/contributors).
+See also the list of [contributors](https://github.com/fxpio/composer-asset-plugin/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------
 
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/francoispluchino/composer-asset-plugin/issues).
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/fxpio/composer-asset-plugin/issues).
