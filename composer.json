@@ -2,7 +2,7 @@
     "name": "fxp/composer-asset-plugin",
     "description": "NPM/Bower Dependency Manager for Composer",
     "keywords": ["npm", "bower", "dependency manager", "package", "asset", "composer", "nodejs"],
-    "homepage": "https://github.com/francoispluchino/composer-asset-plugin",
+    "homepage": "https://github.com/fxpio/composer-asset-plugin",
     "type": "composer-plugin",
     "license": "MIT",
     "authors": [
