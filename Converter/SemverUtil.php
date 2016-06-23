@@ -50,9 +50,8 @@ abstract class SemverUtil
             list($version, $patchVersion) = self::matchVersion($version, $type);
 
             $matches = array();
-            $hasPatchNumber = preg_match('/[0-9]+|\.[0-9]+$/', $end, $matches);
+            $hasPatchNumber = preg_match('/[0-9]+\.[0-9]+|[0-9]+|\.[0-9]+$/', $end, $matches);
             $end = $hasPatchNumber ? $matches[0] : '1';
-
             if ($patchVersion) {
                 $version .= $end;
             }
