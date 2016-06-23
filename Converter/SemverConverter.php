@@ -26,7 +26,9 @@ class SemverConverter implements VersionConverterInterface
         if (in_array($version, array(null, '', 'latest'))) {
             return ('latest' === $version ? 'default || ' : '').'*';
         }
-
+        
+        $version = str_replace('–', '-', $version);
+        
         $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';
         $version = substr($version, strlen($prefix));
         $version = SemverUtil::convertVersionMetadata($version);
