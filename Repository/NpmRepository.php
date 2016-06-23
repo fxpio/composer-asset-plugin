@@ -59,7 +59,7 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    public function search($query, $mode = 0)
+    public function search($query, $mode = 0, $type = null)
     {
         return array();
     }

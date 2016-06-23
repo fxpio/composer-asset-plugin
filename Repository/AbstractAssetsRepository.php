@@ -98,7 +98,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * {@inheritdoc}
      */
-    public function search($query, $mode = 0)
+    public function search($query, $mode = 0, $type = null)
     {
         if (!$this->searchable) {
             return array();
