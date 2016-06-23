@@ -52,6 +52,7 @@ abstract class SemverUtil
             $matches = array();
             $hasPatchNumber = preg_match('/[0-9]+\.[0-9]+|[0-9]+|\.[0-9]+$/', $end, $matches);
             $end = $hasPatchNumber ? $matches[0] : '1';
+
             if ($patchVersion) {
                 $version .= $end;
             }
