@@ -88,7 +88,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->method('getContents')
             ->with(
                 $this->equalTo('bitbucket.org'),
-                $this->equalTo($repoApiUrl . '/src/' . $identifier . '/' . $filename),
+                $this->equalTo($repoApiUrl.'/src/'.$identifier.'/'.$filename),
                 $this->equalTo(false)
             )
             ->will($this->returnValue($this->createApiJsonWithRepoData(array())));
@@ -143,7 +143,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->method('getContents')
             ->with(
                 $this->equalTo('bitbucket.org'),
-                $this->equalTo($repoApiUrl . '/src/' . $identifier . '/' . $filename),
+                $this->equalTo($repoApiUrl.'/src/'.$identifier.'/'.$filename),
                 $this->equalTo(false)
             )
             ->will($this->throwException(new TransportException('Not Found', 404)));
@@ -209,7 +209,7 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
                 'node' => 'nodename',
                 'path' => '/path/to/file',
                 'data' => $composerContent,
-                'size' => strlen($composerContent)
+                'size' => strlen($composerContent),
             )
         );
     }
