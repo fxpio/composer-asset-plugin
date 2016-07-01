@@ -43,7 +43,11 @@ class BitbucketUtil
         $infoCache[$identifier] = Util::readCache($infoCache, $cache, $repoConfig['asset-type'], $identifier);
 
         if (!isset($infoCache[$identifier])) {
-            $resource = $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
+            if (strpos(get_class($driver), 'Git') === false) {
+                $resource = $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
+            } else {
+                $resource = $scheme.'://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/src/'.$identifier.'/'.$repoConfig['filename'];
+            }
             $composer = static::getComposerContent($resource, $identifier, $scheme, $owner, $repository, $driver, $method);
 
             Util::writeCache($cache, $repoConfig['asset-type'], $identifier, $composer);
@@ -74,6 +78,14 @@ class BitbucketUtil
             $meth->setAccessible(true);
 
             $composer = $meth->invoke($driver, $resource);
+            if ($method !== 'getContents') {
+                $file = (array) JsonFile::parseJson((string) $composer, $resource);
+                if (empty($file) || !array_key_exists('data', $file)) {
+                    $composer = false;
+                } else {
+                    $composer = $file['data'];
+                }
+            }
         } catch (\Exception $e) {
             $composer = false;
         }

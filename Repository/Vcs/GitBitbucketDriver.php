@@ -41,6 +41,7 @@ class GitBitbucketDriver extends BaseGitBitbucketDriver
      */
     public function getComposerInformation($identifier)
     {
-        return BitbucketUtil::getComposerInformation($this->cache, $this->infoCache, $this->getScheme(), $this->repoConfig, $identifier, $this->owner, $this->repository, $this, 'getContents');
+        $method = method_exists($this, 'getContentsWithOAuthCredentials') ? 'getContentsWithOAuthCredentials' : 'getContents';
+        return BitbucketUtil::getComposerInformation($this->cache, $this->infoCache, $this->getScheme(), $this->repoConfig, $identifier, $this->owner, $this->repository, $this, $method);
     }
 }
