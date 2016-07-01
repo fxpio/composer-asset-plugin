@@ -43,11 +43,7 @@ class BitbucketUtil
         $infoCache[$identifier] = Util::readCache($infoCache, $cache, $repoConfig['asset-type'], $identifier);
 
         if (!isset($infoCache[$identifier])) {
-            if (strpos(get_class($driver), 'Git') === false) {
-                $resource = $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
-            } else {
-                $resource = $scheme.'://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/src/'.$identifier.'/'.$repoConfig['filename'];
-            }
+            $resource = static::getUrlResource($scheme, $repoConfig, $identifier, $owner, $repository, $driver);
             $composer = static::getComposerContent($resource, $identifier, $scheme, $owner, $repository, $driver, $method);
 
             Util::writeCache($cache, $repoConfig['asset-type'], $identifier, $composer);
@@ -55,6 +51,28 @@ class BitbucketUtil
         }
 
         return $infoCache[$identifier];
+    }
+
+    /**
+     * Get the url of resource.
+     *
+     * @param string             $scheme     The scheme
+     * @param array              $repoConfig The repository config
+     * @param string             $identifier The identifier
+     * @param string             $owner      The owner of repository
+     * @param string             $repository The repository name
+     * @param VcsDriverInterface $driver     The vcs driver
+     *
+     * @return string
+     */
+    protected static function getUrlResource($scheme, array $repoConfig, $identifier, $owner, $repository,
+                                             VcsDriverInterface $driver)
+    {
+        if (false === strpos(get_class($driver), 'Git')) {
+            return $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
+        }
+
+        return $scheme.'://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/src/'.$identifier.'/'.$repoConfig['filename'];
     }
 
     /**
@@ -70,25 +88,10 @@ class BitbucketUtil
      *
      * @return array
      */
-    protected static function getComposerContent($resource, $identifier, $scheme, $owner, $repository, $driver, $method)
+    protected static function getComposerContent($resource, $identifier, $scheme, $owner, $repository,
+                                                 VcsDriverInterface $driver, $method)
     {
-        try {
-            $ref = new \ReflectionClass($driver);
-            $meth = $ref->getMethod($method);
-            $meth->setAccessible(true);
-
-            $composer = $meth->invoke($driver, $resource);
-            if ($method !== 'getContents') {
-                $file = (array) JsonFile::parseJson((string) $composer, $resource);
-                if (empty($file) || !array_key_exists('data', $file)) {
-                    $composer = false;
-                } else {
-                    $composer = $file['data'];
-                }
-            }
-        } catch (\Exception $e) {
-            $composer = false;
-        }
+        $composer = static::getComposerContentOfFile($resource, $driver, $method);
 
         if ($composer) {
             $composer = (array) JsonFile::parseJson((string) $composer, $resource);
@@ -98,6 +101,36 @@ class BitbucketUtil
         }
 
         return array('_nonexistent_package' => true);
+    }
+
+    /**
+     * Get the parsed content of composer.
+     *
+     * @param string             $resource The resource
+     * @param VcsDriverInterface $driver   The vcs driver
+     * @param string             $method   The method for get content
+     *
+     * @return string|false
+     */
+    protected static function getComposerContentOfFile($resource, VcsDriverInterface $driver, $method)
+    {
+        try {
+            $ref = new \ReflectionClass($driver);
+            $meth = $ref->getMethod($method);
+            $meth->setAccessible(true);
+            $composer = $meth->invoke($driver, $resource);
+
+            if ($method !== 'getContents') {
+                $file = (array) JsonFile::parseJson((string) $composer, $resource);
+                $composer = empty($file) || !array_key_exists('data', $file)
+                    ? false
+                    : $file['data'];
+            }
+        } catch (\Exception $e) {
+            $composer = false;
+        }
+
+        return $composer;
     }
 
     /**
