@@ -93,7 +93,7 @@ class BitbucketUtil
     {
         $composer = static::getComposerContentOfFile($resource, $driver, $method);
 
-        if ($composer) {
+        if (false !== $composer) {
             $composer = (array) JsonFile::parseJson((string) $composer, $resource);
             $composer = static::formatComposerContent($composer, $identifier, $scheme, $owner, $repository, $driver, $method);
 
