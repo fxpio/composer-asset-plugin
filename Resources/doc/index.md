@@ -430,14 +430,16 @@ option `extra.asset-registry-options.{type}-searchable` in the root project
 
 If you want to use the [no-api](https://getcomposer.org/doc/05-repositories.md#git-alternatives) option
 for your Github assets, you can add an extra option `extra.asset-vcs-driver-options.github-no-api` in
-the root project `composer.json` file. By default, this option is to `false`.
+the root project `composer.json` file. By default, this option is to `false`. The option `asset-pattern-skip-version`
+can be used to exclude tags via a regular expression.
 
 ```json
 {
     "extra": {
         "asset-vcs-driver-options": {
             "github-no-api": true
-        }
+        },
+        "asset-pattern-skip-version": "(-build|-patch)"
     }
 }
 ```
