@@ -45,6 +45,7 @@ abstract class PackageUtil
                 $vcsRepos[] = array(
                     'type' => sprintf('%s-vcs', $assetType->getName()),
                     'url' => $url,
+                    'name' => $assetType->formatComposerName($dependency),
                 );
             } else {
                 $dependency = static::getUrlFileDependencyName($assetType, $composer, $dependency);
