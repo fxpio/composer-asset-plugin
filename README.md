@@ -6,6 +6,7 @@ NPM/Bower Dependency Manager for Composer
 [![Coverage Status](https://img.shields.io/coveralls/fxpio/composer-asset-plugin/master.svg)](https://coveralls.io/r/fxpio/composer-asset-plugin?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/fxpio/composer-asset-plugin.svg)](https://scrutinizer-ci.com/g/fxpio/composer-asset-plugin?branch=master)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/0d67ca33-5a72-46b8-b109-cfbf95673fce.svg)](https://insight.sensiolabs.com/projects/0d67ca33-5a72-46b8-b109-cfbf95673fce)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/fxp/composer-asset-plugin.svg)](https://packagist.org/packages/fxp/composer-asset-plugin/stats)
 
 The Composer Asset Plugin allows you to manage project assets (css, js, etc.) in your `composer.json`
 without installing NPM or Bower.
