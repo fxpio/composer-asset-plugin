@@ -285,8 +285,6 @@ class PerforceTest extends BasePerforceTest
      * Test if "p4" command is missing.
      *
      * @covers \Composer\Util\Perforce::checkServerExists
-     *
-     * @return void
      */
     public function testCheckServerClientError()
     {
