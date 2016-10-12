@@ -36,7 +36,7 @@ abstract class PackageUtil
      *
      * @return string[] The new dependency and the new version
      */
-    public static function checkUrlVersion(AssetTypeInterface $assetType, $dependency, $version, array &$vcsRepos = array(), array $composer)
+    public static function checkUrlVersion(AssetTypeInterface $assetType, $dependency, $version, array &$vcsRepos, array $composer)
     {
         if (preg_match('/(\:\/\/)|\@/', $version)) {
             list($url, $version) = static::splitUrlVersion($version);

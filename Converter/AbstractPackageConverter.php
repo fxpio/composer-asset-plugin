@@ -152,7 +152,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      *
      * @return string[] The new dependency and the new version
      */
-    protected function convertDependency($dependency, $version, array &$vcsRepos = array(), array $composer)
+    protected function convertDependency($dependency, $version, array &$vcsRepos, array $composer)
     {
         list($dependency, $version) = PackageUtil::checkUrlVersion($this->assetType, $dependency, $version, $vcsRepos, $composer);
         list($dependency, $version) = PackageUtil::checkAliasVersion($this->assetType, $dependency, $version);

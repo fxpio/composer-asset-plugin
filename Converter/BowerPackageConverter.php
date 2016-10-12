@@ -58,7 +58,7 @@ class BowerPackageConverter extends AbstractPackageConverter
     /**
      * {@inheritdoc}
      */
-    protected function convertDependency($dependency, $version, array &$vcsRepos = array(), array $composer)
+    protected function convertDependency($dependency, $version, array &$vcsRepos, array $composer)
     {
         list($dependency, $version) = $this->checkGithubRepositoryVersion($dependency, $version);
 
