@@ -35,6 +35,7 @@ class Util
      */
     public static function addRepository(IOInterface $io, RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
     {
+        $repoConfig['name'] = $name;
         $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
         static::addRepositoryInstance($io, $rm, $repos, $name, $repo, $pool);
     }
