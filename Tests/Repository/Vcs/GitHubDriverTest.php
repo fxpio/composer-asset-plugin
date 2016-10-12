@@ -433,8 +433,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
-                        return 0;
-                    }));
+                return 0;
+            }));
 
         /* @var IOInterface $io */
         /* @var ProcessExecutor $process */

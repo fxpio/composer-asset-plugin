@@ -165,15 +165,15 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
-                        if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
-                            $output = '{"name": "foo"}';
-                        } elseif (false !== strpos($command, 'git log')) {
-                            $date = new \DateTime(null, new \DateTimeZone('UTC'));
-                            $output = $date->getTimestamp();
-                        }
+                if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
+                    $output = '{"name": "foo"}';
+                } elseif (false !== strpos($command, 'git log')) {
+                    $date = new \DateTime(null, new \DateTimeZone('UTC'));
+                    $output = $date->getTimestamp();
+                }
 
-                        return 0;
-                    }));
+                return 0;
+            }));
 
         /* @var IOInterface $io */
         /* @var ProcessExecutor $process */
