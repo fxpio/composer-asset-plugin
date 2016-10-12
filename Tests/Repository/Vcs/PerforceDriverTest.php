@@ -149,6 +149,9 @@ class PerforceDriverTest extends BasePerforceDriverTest
     {
         $methods = array('p4login', 'checkStream', 'writeP4ClientSpec', 'connectClient', 'getComposerInformation', 'cleanupClientSpec');
 
-        return $this->createPartialMock('Fxp\Composer\AssetPlugin\Util\Perforce', $methods);
+        return $this->getMockBuilder('Fxp\Composer\AssetPlugin\Util\Perforce')
+            ->disableOriginalConstructor()
+            ->setMethods($methods)
+            ->getMock();
     }
 }
