@@ -40,6 +40,16 @@ class PerforceDriverTest extends BasePerforceDriverTest
         $this->overrideDriverInternalPerforce($this->perforce);
     }
 
+    protected function getMockIOInterface()
+    {
+        return $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+    }
+
+    protected function getMockProcessExecutor()
+    {
+        return $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+    }
+
     public function testInitializeCapturesVariablesFromRepoConfig()
     {
         $driver = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
@@ -139,8 +149,6 @@ class PerforceDriverTest extends BasePerforceDriverTest
     {
         $methods = array('p4login', 'checkStream', 'writeP4ClientSpec', 'connectClient', 'getComposerInformation', 'cleanupClientSpec');
 
-        return $this->getMockBuilder('Fxp\Composer\AssetPlugin\Util\Perforce', $methods)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createPartialMock('Fxp\Composer\AssetPlugin\Util\Perforce', $methods);
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Util;
 
+use Composer\IO\IOInterface;
 use Composer\Test\Util\PerforceTest as BasePerforceTest;
 use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
@@ -38,12 +39,28 @@ class PerforceTest extends BasePerforceTest
      */
     protected $repoConfig;
 
+    protected function setUp()
+    {
+        $this->processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+        $this->repoConfig = $this->getTestRepoConfig();
+        $this->io = $this->getMockIOInterface();
+        $this->createNewPerforceWithWindowsFlag(true);
+    }
+
     protected function tearDown()
     {
         parent::tearDown();
 
         $fs = new Filesystem();
         $fs->remove($this::TEST_PATH);
+    }
+
+    /**
+     * @return IOInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockIOInterface()
+    {
+        return $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
     }
 
     public function testQueryP4PasswordWithPasswordAlreadySet()
@@ -247,6 +264,58 @@ class PerforceTest extends BasePerforceTest
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
         $this->assertSame('', $result);
+    }
+
+    public function testCheckServerExists()
+    {
+        /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
+        $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+
+        $expectedCommand = 'p4 -p perforce.does.exist:port info -s';
+        $processExecutor->expects($this->at(0))
+            ->method('execute')
+            ->with($this->equalTo($expectedCommand), $this->equalTo(null))
+            ->will($this->returnValue(0));
+
+        $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test if "p4" command is missing.
+     *
+     * @covers \Composer\Util\Perforce::checkServerExists
+     *
+     * @return void
+     */
+    public function testCheckServerClientError()
+    {
+        /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
+        $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+
+        $expectedCommand = 'p4 -p perforce.does.exist:port info -s';
+        $processExecutor->expects($this->at(0))
+            ->method('execute')
+            ->with($this->equalTo($expectedCommand), $this->equalTo(null))
+            ->will($this->returnValue(127));
+
+        $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
+        $this->assertFalse($result);
+    }
+
+    public function testCleanupClientSpecShouldDeleteClient()
+    {
+        /* @var Filesystem|\PHPUnit_Framework_MockObject_MockObject $fs */
+        $fs = $this->getMockBuilder('Composer\Util\Filesystem')->getMock();
+        $this->perforce->setFilesystem($fs);
+
+        $testClient = $this->perforce->getClient();
+        $expectedCommand = 'p4 -u ' . self::TEST_P4USER . ' -p ' . self::TEST_PORT . ' client -d ' . $testClient;
+        $this->processExecutor->expects($this->once())->method('execute')->with($this->equalTo($expectedCommand));
+
+        $fs->expects($this->once())->method('remove')->with($this->perforce->getP4ClientSpec());
+
+        $this->perforce->cleanupClientSpec();
     }
 
     protected function createNewPerforceWithWindowsFlag($flag)
