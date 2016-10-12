@@ -115,7 +115,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
      *
      * @return VcsDriverInterface
      *
-     * @throws \InvalidArgumentException When not driver found.
+     * @throws \InvalidArgumentException When not driver found
      */
     protected function initDriver()
     {

@@ -44,7 +44,7 @@ class FilterUtil
     /**
      * Find the stability name with the stability value.
      *
-     * @param int $level The stability level.
+     * @param int $level The stability level
      *
      * @return string The stability name
      */
