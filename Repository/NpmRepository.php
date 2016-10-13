@@ -16,6 +16,7 @@ use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\ArrayRepository;
 use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
+use UnexpectedValueException;
 
 /**
  * NPM repository.
@@ -128,9 +129,13 @@ class NpmRepository extends AbstractAssetsRepository
         $loader = new ArrayLoader();
 
         foreach ($packageConfigs as $version => $config) {
-            $config['version'] = $version;
-            $config = $this->assetType->getPackageConverter()->convert($config);
-            $packages[] = $loader->load($config);
+            try {
+                $config['version'] = $version;
+                $config = $this->assetType->getPackageConverter()->convert($config);
+                $packages[] = $loader->load($config);
+            } catch (UnexpectedValueException $e) {
+                $this->io->writeError("Composer Asset Plugin fails to parse version $version of $config[name], skipping it");
+            }
         }
 
         return $packages;
