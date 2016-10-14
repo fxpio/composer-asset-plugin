@@ -21,7 +21,10 @@
     "autoload": {
         "psr-4": {
             "Fxp\\Composer\\AssetPlugin\\": ""
-        }
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "autoload-dev": {
         "psr-0": { "Composer\\Test": "vendor/composer/composer/tests/" }
@@ -31,8 +34,5 @@
         "branch-alias": {
             "dev-master": "1.2-dev"
         }
-    },
-    "scripts": {
-        "test": "phpunit"
     }
 }
