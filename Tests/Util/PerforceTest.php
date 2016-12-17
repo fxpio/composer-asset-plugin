@@ -72,7 +72,7 @@ class PerforceTest extends BasePerforceTest
             'p4password' => 'TEST_PASSWORD',
             'filename' => 'ASSET.json',
         );
-        $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false,  $this->getMockIOInterface(), 'TEST');
+        $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false, $this->getMockIOInterface(), 'TEST');
         $password = $this->perforce->queryP4Password();
         $this->assertEquals('TEST_PASSWORD', $password);
     }

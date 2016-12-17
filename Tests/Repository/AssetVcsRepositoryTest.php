@@ -245,7 +245,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName,  $package->getName());
+            $this->assertSame($validPackageName, $package->getName());
         }
 
         $this->assertSame($validTraces, $this->io->getTraces());
@@ -297,7 +297,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName,  $package->getName());
+            $this->assertSame($validPackageName, $package->getName());
         }
 
         $this->assertSame($validTraces, $this->io->getTraces());
@@ -334,7 +334,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName,  $package->getName());
+            $this->assertSame($validPackageName, $package->getName());
         }
 
         $this->assertSame($validTraces, $this->io->getTraces());
@@ -377,7 +377,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName,  $package->getName());
+            $this->assertSame($validPackageName, $package->getName());
         }
 
         $this->assertSame($validTraces, $this->io->getTraces());
