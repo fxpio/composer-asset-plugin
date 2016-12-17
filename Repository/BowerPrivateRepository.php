@@ -86,6 +86,7 @@ class BowerPrivateRepository extends AbstractAssetsRepository
             'name' => $registryName,
         );
     }
+
     /**
      * Get the URL of VCS repository.
      *
