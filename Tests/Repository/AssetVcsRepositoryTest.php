@@ -11,8 +11,8 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
-use Composer\EventDispatcher\EventDispatcher;
 use Composer\Config;
+use Composer\EventDispatcher\EventDispatcher;
 use Composer\Package\AliasPackage;
 use Composer\Package\CompletePackage;
 use Composer\Package\PackageInterface;

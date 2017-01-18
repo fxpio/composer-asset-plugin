@@ -24,8 +24,8 @@ use Composer\Repository\InstalledFilesystemRepository;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
-use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Repository\Util;
+use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
 /**

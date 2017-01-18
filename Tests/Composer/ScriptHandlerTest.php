@@ -18,9 +18,9 @@ use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\DependencyResolver\PolicyInterface;
 use Composer\DependencyResolver\Pool;
 use Composer\DependencyResolver\Request;
+use Composer\Installer\PackageEvent;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use Composer\Installer\PackageEvent;
 use Composer\Repository\CompositeRepository;
 use Fxp\Composer\AssetPlugin\Composer\ScriptHandler;
 

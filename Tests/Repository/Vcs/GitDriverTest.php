@@ -11,9 +11,9 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository\Vcs;
 
+use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
-use Composer\Config;
 use Composer\Util\ProcessExecutor;
 use Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver;
 

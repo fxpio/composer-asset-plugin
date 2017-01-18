@@ -11,11 +11,11 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
+use Composer\Config;
 use Composer\DependencyResolver\Pool;
 use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
-use Composer\Config;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;

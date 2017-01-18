@@ -12,11 +12,11 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Repository\Vcs;
 
 use Composer\Cache;
+use Composer\Config;
+use Composer\Config\ConfigSourceInterface;
 use Composer\Downloader\TransportException;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
-use Composer\Config;
-use Composer\Config\ConfigSourceInterface;
 use Composer\Util\ProcessExecutor;
 use Composer\Util\RemoteFilesystem;
 use Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver;

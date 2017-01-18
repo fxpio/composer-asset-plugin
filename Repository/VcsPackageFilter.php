@@ -13,12 +13,12 @@ namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\Installer\InstallationManager;
 use Composer\Package\Link;
+use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Package\Loader\ArrayLoader;
-use Composer\Semver\Constraint\MultiConstraint;
 use Composer\Repository\InstalledFilesystemRepository;
+use Composer\Semver\Constraint\MultiConstraint;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 

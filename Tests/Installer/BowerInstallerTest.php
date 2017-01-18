@@ -11,16 +11,16 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Installer;
 
-use Composer\Downloader\DownloadManager;
-use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
-use Composer\Package\Package;
-use Composer\Package\RootPackageInterface;
-use Composer\Repository\InstalledRepositoryInterface;
-use Composer\Util\Filesystem;
-use Composer\TestCase;
 use Composer\Composer;
 use Composer\Config;
+use Composer\Downloader\DownloadManager;
+use Composer\IO\IOInterface;
+use Composer\Package\Package;
+use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
+use Composer\TestCase;
+use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
