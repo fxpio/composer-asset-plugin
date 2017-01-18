@@ -44,45 +44,11 @@ class Perforce extends BasePerforce
      */
     public function getComposerInformation($identifier)
     {
-        $index = strpos($identifier, '@');
+        $composerFileContent = $this->getFileContent($this->filename, $identifier);
 
-        if ($index === false) {
-            $composerJson = $identifier.'/'.$this->filename;
-
-            return $this->getComposerInformationFromPath($composerJson);
-        }
-
-        return $this->getComposerInformationFromLabel($identifier, $index);
-    }
-
-    /**
-     * @param string $identifier
-     * @param string $index
-     *
-     * @return array|string
-     */
-    public function getComposerInformationFromLabel($identifier, $index)
-    {
-        $composerJsonPath = substr($identifier, 0, $index).'/'.$this->filename.substr($identifier, $index);
-        $command = $this->generateP4Command(' files '.$composerJsonPath, false);
-        $this->executeCommand($command);
-        $result = $this->commandResult;
-        $index2 = strpos($result, 'no such file(s).');
-
-        if ($index2 === false) {
-            $index3 = strpos($result, 'change');
-
-            if (!($index3 === false)) {
-                $phrase = trim(substr($result, $index3));
-                $fields = explode(' ', $phrase);
-                $id = $fields[1];
-                $composerJson = substr($identifier, 0, $index).'/'.$this->filename.'@'.$id;
-
-                return $this->getComposerInformationFromPath($composerJson);
-            }
-        }
-
-        return '';
+        return !$composerFileContent
+            ? null
+            : json_decode($composerFileContent, true);
     }
 
     /**

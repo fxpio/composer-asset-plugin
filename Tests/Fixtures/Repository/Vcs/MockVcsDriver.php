@@ -127,4 +127,19 @@ class MockVcsDriver implements VcsDriverInterface
     {
         return $this->contents;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFileContent($file, $identifier)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChangeDate($identifier)
+    {
+        return new \DateTime();
+    }
 }

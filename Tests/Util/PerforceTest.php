@@ -241,7 +241,7 @@ class PerforceTest extends BasePerforceTest
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
-        $this->assertSame('', $result);
+        $this->assertNull($result);
     }
 
     public function testGetComposerInformationWithLabelWithStreamWithNoChange()
@@ -263,7 +263,7 @@ class PerforceTest extends BasePerforceTest
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
-        $this->assertSame('', $result);
+        $this->assertNull($result);
     }
 
     public function testCheckServerExists()
