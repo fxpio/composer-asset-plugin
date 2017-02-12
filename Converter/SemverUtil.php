@@ -36,6 +36,20 @@ abstract class SemverUtil
     }
 
     /**
+     * Converts the date or datetime version.
+     *
+     * @param string $version Tje version
+     *
+     * @return string
+     */
+    public static function convertDateVersion($version)
+    {
+        return preg_match('/^\d{7,}\./', $version)
+            ? substr($version, 0, strpos($version, '.')).'.000000'
+            : $version;
+    }
+
+    /**
      * Converts the version metadata.
      *
      * @param string $version

@@ -143,6 +143,9 @@ Here are the matches currently validated:
 | Semver version   | Composer version |
 | ---------------- | ---------------- |
 | 1.2.3            | 1.2.3            |
+| 20170124.0.0     | 20170124.000000  |
+| 20170124.0       | 20170124.000000  |
+| 20170124         | 20170124         |
 | 1.2.3alpha       | 1.2.3-alpha1     |
 | 1.2.3-alpha      | 1.2.3-alpha1     |
 | 1.2.3a           | 1.2.3-alpha1     |
