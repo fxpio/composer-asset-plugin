@@ -1,0 +1,13 @@
+{
+    "name": "@scope/test",
+    "description": "Test NPM Scope",
+    "version": "1.0.0-pre",
+    "license": "MIT",
+    "dependencies": {
+        "@scope/library1": ">= 1.0.0",
+        "@scope2/library2": ">= 1.0.0"
+    },
+    "devDependencies": {
+        "@scope3/dev-library1": ">= 1.0.0"
+    }
+}

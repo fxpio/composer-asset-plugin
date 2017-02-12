@@ -15,6 +15,7 @@ use Composer\DependencyResolver\Pool;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\ArrayRepository;
+use Fxp\Composer\AssetPlugin\Converter\NpmPackageUtil;
 use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
 
 /**
@@ -62,6 +63,14 @@ class NpmRepository extends AbstractAssetsRepository
     public function search($query, $mode = 0, $type = null)
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function buildPackageUrl($packageName)
+    {
+        return parent::buildPackageUrl(NpmPackageUtil::convertName($packageName));
     }
 
     /**

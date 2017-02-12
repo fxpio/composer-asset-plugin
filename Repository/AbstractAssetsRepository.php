@@ -130,7 +130,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         try {
             $repoName = Util::convertAliasName($name);
             $packageName = Util::cleanPackageName($repoName);
-            $packageUrl = str_replace('%package%', $packageName, $this->lazyProvidersUrl);
+            $packageUrl = $this->buildPackageUrl($packageName);
             $cacheName = $packageName.'-'.sha1($packageName).'-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
             $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
@@ -153,6 +153,18 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     public function getMinimalPackages()
     {
         return array();
+    }
+
+    /**
+     * Build the package url.
+     *
+     * @param string $packageName The package name
+     *
+     * @return string
+     */
+    protected function buildPackageUrl($packageName)
+    {
+        return str_replace('%package%', $packageName, $this->lazyProvidersUrl);
     }
 
     /**

@@ -27,7 +27,7 @@ class NpmPackageConverter extends AbstractPackageConverter
 
         return array(
             'name' => array('name', function ($value) use ($assetType) {
-                return $assetType->formatComposerName($value);
+                return $assetType->formatComposerName(NpmPackageUtil::convertName($value));
             }),
             'type' => array('type', function () use ($assetType) {
                 return $assetType->getComposerType();
@@ -79,5 +79,15 @@ class NpmPackageConverter extends AbstractPackageConverter
             'private' => 'npm-asset-private',
             'publishConfig' => 'npm-asset-publish-config',
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function convertDependency($dependency, $version, array &$vcsRepos, array $composer)
+    {
+        $dependency = NpmPackageUtil::convertName($dependency);
+
+        return parent::convertDependency($dependency, $version, $vcsRepos, $composer);
     }
 }
