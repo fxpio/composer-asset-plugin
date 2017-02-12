@@ -44,9 +44,9 @@ abstract class SemverUtil
      */
     public static function convertVersionMetadata($version)
     {
-        if (preg_match_all(self::createPattern('([a-z]+|(\-|\+)[a-z]+|(\-|\+)[0-9]+)'),
+        if (preg_match_all(self::createPattern('([a-zA-Z]+|(\-|\+)[a-zA-Z]+|(\-|\+)[0-9]+)'),
             $version, $matches, PREG_OFFSET_CAPTURE)) {
-            list($type, $version, $end) = self::cleanVersion($version, $matches);
+            list($type, $version, $end) = self::cleanVersion(strtolower($version), $matches);
             list($version, $patchVersion) = self::matchVersion($version, $type);
 
             $matches = array();
@@ -131,7 +131,8 @@ abstract class SemverUtil
     {
         $patchVersion = true;
 
-        if ('dev' === $type) {
+        if (in_array($type, array('dev', 'snapshot'))) {
+            $type = 'dev';
             $patchVersion = false;
         } elseif ('a' === $type) {
             $type = 'alpha';
