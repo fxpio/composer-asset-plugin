@@ -27,7 +27,7 @@ abstract class NpmPackageUtil
      */
     public static function convertName($name)
     {
-        if (0 === strpos($name, '@') && false !== $pos = strpos($name, '/')) {
+        if (0 === strpos($name, '@') && false !== strpos($name, '/')) {
             $name = ltrim(str_replace('/', '--', $name), '@');
         }
 
