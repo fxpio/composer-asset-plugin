@@ -21,6 +21,14 @@ use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 abstract class SemverUtil
 {
     /**
+     * @var string[]
+     */
+    private static $cleanPatterns = array(
+        '-npm-packages',
+        '-bower-packages',
+    );
+
+    /**
      * Replace the alias version (x or *) by integer.
      *
      * @param string $version
@@ -58,6 +66,8 @@ abstract class SemverUtil
      */
     public static function convertVersionMetadata($version)
     {
+        $version = str_replace(self::$cleanPatterns, '', $version);
+
         if (preg_match_all(self::createPattern('([a-zA-Z]+|(\-|\+)[a-zA-Z]+|(\-|\+)[0-9]+)'),
             $version, $matches, PREG_OFFSET_CAPTURE)) {
             list($type, $version, $end) = self::cleanVersion(strtolower($version), $matches);
