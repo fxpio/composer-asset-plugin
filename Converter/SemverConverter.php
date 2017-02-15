@@ -28,7 +28,7 @@ class SemverConverter implements VersionConverterInterface
         }
 
         $version = str_replace('–', '-', $version);
-        $prefix = preg_match('/^[a-z]/', $version) ? substr($version, 0, 1) : '';
+        $prefix = preg_match('/^[a-z]/', $version) && 0 !== strpos($version, 'dev-') ? substr($version, 0, 1) : '';
         $version = substr($version, strlen($prefix));
         $version = SemverUtil::convertVersionMetadata($version);
         $version = SemverUtil::convertDateVersion($version);
