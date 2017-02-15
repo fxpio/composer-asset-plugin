@@ -207,6 +207,7 @@ Here are the matches currently validated:
 | >1.2.3 <2.0          | >1.2.3,<2.0            |
 | &gt;=1.0 &lt;1.1 `¦¦` &gt;=1.2 | &gt;=1.0,&lt;1.1`¦`&gt;=1.2 |
 | 1.2.3 - 2.3.4        | >=1.2.3,<=2.3.4        |
+| 1 - 2                | >=1,<3.0               |
 
 
 ##### URL Range verison conversion
