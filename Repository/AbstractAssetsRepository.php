@@ -35,11 +35,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $assetType;
 
     /**
-     * @var RepositoryManager
-     */
-    protected $rm;
-
-    /**
      * @var AssetVcsRepository[]
      */
     protected $repos;
@@ -60,6 +55,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     protected $repositoryManager;
 
     /**
+     * @var AssetRepositoryManager
+     */
+    protected $assetRepositoryManager;
+
+    /**
      * @var VcsPackageFilter
      */
     protected $packageFilter;
@@ -77,7 +77,8 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $repoConfig = array_merge($repoConfig, array(
             'url' => $this->getUrl(),
         ));
-        $this->repositoryManager = $repoConfig['repository-manager'];
+        $this->assetRepositoryManager = $repoConfig['asset-repository-manager'];
+        $this->repositoryManager = $this->assetRepositoryManager->getRepositoryManager();
 
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
 
@@ -86,7 +87,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->providersUrl = $this->lazyProvidersUrl;
         $this->searchUrl = $this->getSearchUrl();
         $this->hasProviders = true;
-        $this->rm = $repoConfig['repository-manager'];
         $this->packageFilter = isset($repoConfig['vcs-package-filter'])
             ? $repoConfig['vcs-package-filter']
             : null;
@@ -134,10 +134,11 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             $cacheName = $packageName.'-'.sha1($packageName).'-package.json';
             $data = $this->fetchFile($packageUrl, $cacheName);
             $repo = $this->createVcsRepositoryConfig($data, Util::cleanPackageName($name));
+            $repo['asset-repository-manager'] = $this->assetRepositoryManager;
             $repo['vcs-package-filter'] = $this->packageFilter;
             $repo['vcs-driver-options'] = Util::getArrayValue($this->repoConfig, 'vcs-driver-options', array());
 
-            Util::addRepository($this->io, $this->rm, $this->repos, $name, $repo, $pool);
+            Util::addRepository($this->io, $this->repositoryManager, $this->repos, $name, $repo, $pool);
 
             $this->providers[$name] = array();
         } catch (\Exception $ex) {

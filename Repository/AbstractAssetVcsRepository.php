@@ -45,9 +45,9 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     protected $versionParser;
 
     /**
-     * @var EventDispatcher
+     * @var AssetRepositoryManager
      */
-    protected $dispatcher;
+    protected $assetRepositoryManager;
 
     /**
      * @var LoaderInterface
@@ -87,7 +87,10 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $repoConfig['package-name'] = $assetType->formatComposerName($repoConfig['name']);
         $repoConfig['filename'] = $assetType->getFilename();
         $this->assetType = $assetType;
-        $this->dispatcher = $dispatcher;
+        $this->assetRepositoryManager = isset($repoConfig['asset-repository-manager'])
+                && $repoConfig['asset-repository-manager'] instanceof AssetRepositoryManager
+            ? $repoConfig['asset-repository-manager']
+            : null;
         $this->filter = isset($repoConfig['vcs-package-filter'])
                 && $repoConfig['vcs-package-filter'] instanceof VcsPackageFilter
             ? $repoConfig['vcs-package-filter']
@@ -215,7 +218,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         $lazyLoader->setLoader($this->loader);
         $lazyLoader->setDriver(clone $driver);
         $lazyLoader->setIO($this->io);
-        $lazyLoader->setEventDispatcher($this->dispatcher);
+        $lazyLoader->setAssetRepositoryManager($this->assetRepositoryManager);
 
         return $lazyLoader;
     }

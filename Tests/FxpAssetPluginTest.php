@@ -13,14 +13,13 @@ namespace Fxp\Composer\AssetPlugin\Tests;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\DependencyResolver\Pool;
 use Composer\Installer\InstallationManager;
 use Composer\Installer\InstallerEvent;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
 use Composer\Repository\RepositoryManager;
 use Composer\Util\Filesystem;
-use Fxp\Composer\AssetPlugin\AssetEvents;
-use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
 
 /**
@@ -324,16 +323,19 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->method('getExtra')
             ->will($this->returnValue(array()));
 
-        $this->assertCount(3, $this->plugin->getSubscribedEvents());
+        $this->assertCount(2, $this->plugin->getSubscribedEvents());
         $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
 
-        $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, array(
-            array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
-        ));
-        /* @var InstallerEvent $eventInstaller */
+        /* @var InstallerEvent|\PHPUnit_Framework_MockObject_MockObject  $eventInstaller */
         $eventInstaller = $this->getMockBuilder('Composer\Installer\InstallerEvent')
             ->disableOriginalConstructor()
             ->getMock();
+        $eventInstaller->expects($this->any())
+            ->method('getPool')
+            ->will($this->returnValue($this->getMockBuilder(Pool::class)
+                ->disableOriginalConstructor()
+                ->getMock()
+            ));
         /* @var CommandEvent|\PHPUnit_Framework_MockObject_MockObject $eventCommand */
         $eventCommand = $this->getMockBuilder('Composer\Plugin\CommandEvent')
             ->disableOriginalConstructor()
@@ -343,11 +345,8 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('show'));
 
         $this->plugin->activate($this->composer, $this->io);
-        $this->assertCount(2, $this->composer->getRepositoryManager()->getRepositories());
-        $this->plugin->onAddVcsRepositories($event);
         $this->plugin->onPluginCommand($eventCommand);
         $this->plugin->onPreDependenciesSolving($eventInstaller);
-        $this->assertCount(3, $this->composer->getRepositoryManager()->getRepositories());
     }
 
     public function testAssetInstallers()

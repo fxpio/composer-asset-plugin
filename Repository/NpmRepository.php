@@ -119,7 +119,7 @@ class NpmRepository extends AbstractAssetsRepository
     {
         $packages = $this->createArrayRepositoryConfig($packageConfigs);
         $repo = new ArrayRepository($packages);
-        Util::addRepositoryInstance($this->io, $this->rm, $this->repos, $name, $repo, $pool);
+        Util::addRepositoryInstance($this->io, $this->repositoryManager, $this->repos, $name, $repo, $pool);
 
         $this->providers[$name] = array();
     }

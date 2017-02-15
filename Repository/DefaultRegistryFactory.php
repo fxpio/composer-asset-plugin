@@ -11,7 +11,6 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
-use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
@@ -25,10 +24,12 @@ class DefaultRegistryFactory implements RegistryFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(RepositoryManager $rm, VcsPackageFilter $filter, array $extra)
+    public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra)
     {
+        $rm = $arm->getRepositoryManager();
+
         foreach (Assets::getDefaultRegistries() as $assetType => $registryClass) {
-            $config = AssetPlugin::createRepositoryConfig($rm, $filter, $extra, $assetType);
+            $config = AssetPlugin::createRepositoryConfig($arm, $filter, $extra, $assetType);
 
             $rm->setRepositoryClass($assetType, $registryClass);
             $rm->addRepository($rm->createRepository($assetType, $config));

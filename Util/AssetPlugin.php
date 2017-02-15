@@ -19,6 +19,7 @@ use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
+use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\Util;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 
@@ -68,19 +69,19 @@ class AssetPlugin
     /**
      * Create the repository config.
      *
-     * @param RepositoryManager $rm        The repository manager
-     * @param VcsPackageFilter  $filter    The vcs package filter
-     * @param array             $extra     The composer extra
-     * @param string            $assetType The asset type
+     * @param AssetRepositoryManager $arm       The asset repository manager
+     * @param VcsPackageFilter       $filter    The vcs package filter
+     * @param array                  $extra     The composer extra
+     * @param string                 $assetType The asset type
      *
      * @return array
      */
-    public static function createRepositoryConfig(RepositoryManager $rm, VcsPackageFilter $filter, array $extra, $assetType)
+    public static function createRepositoryConfig(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra, $assetType)
     {
         $opts = Util::getArrayValue($extra, 'asset-registry-options', array());
 
         return array(
-            'repository-manager' => $rm,
+            'asset-repository-manager' => $arm,
             'vcs-package-filter' => $filter,
             'asset-options' => static::createAssetOptions($opts, $assetType),
             'vcs-driver-options' => Util::getArrayValue($extra, 'asset-vcs-driver-options', array()),
@@ -90,17 +91,17 @@ class AssetPlugin
     /**
      * Adds asset registry repositories.
      *
-     * @param RepositoryManager $rm
-     * @param VcsPackageFilter  $filter
-     * @param array             $extra
+     * @param AssetRepositoryManager $arm
+     * @param VcsPackageFilter       $filter
+     * @param array                  $extra
      */
-    public static function addRegistryRepositories(RepositoryManager $rm, VcsPackageFilter $filter, array $extra)
+    public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra)
     {
         foreach (Assets::getRegistryFactories() as $registryType => $factoryClass) {
             $ref = new \ReflectionClass($factoryClass);
 
             if ($ref->implementsInterface('Fxp\Composer\AssetPlugin\Repository\RegistryFactoryInterface')) {
-                call_user_func(array($factoryClass, 'create'), $rm, $filter, $extra);
+                call_user_func(array($factoryClass, 'create'), $arm, $filter, $extra);
             }
         }
     }

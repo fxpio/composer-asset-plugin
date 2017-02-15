@@ -18,7 +18,9 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
+use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
+use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 
 /**
  * Abstract class for Tests of assets repository.
@@ -41,6 +43,11 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
      * @var RepositoryManager
      */
     protected $rm;
+
+    /**
+     * @var AssetRepositoryManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $assertRepositoryManager;
 
     /**
      * @var AbstractAssetsRepository
@@ -66,10 +73,13 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
                 'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache-repo',
             ),
         ));
+        /* @var VcsPackageFilter $filter */
+        $filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
         $rm = new RepositoryManager($io, $config);
         $rm->setRepositoryClass($this->getType().'-vcs', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\MockAssetRepository');
+        $this->assertRepositoryManager = new AssetRepositoryManager($io, $rm, $filter);
         $repoConfig = array_merge(array(
-            'repository-manager' => $rm,
+            'asset-repository-manager' => $this->assertRepositoryManager,
             'asset-options' => array(
                 'searchable' => true,
             ),
@@ -279,7 +289,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testSearchWithSearchDisabled()
     {
         $repoConfig = array(
-            'repository-manager' => $this->rm,
+            'asset-repository-manager' => $this->assertRepositoryManager,
             'asset-options' => array(
                 'searchable' => false,
             ),

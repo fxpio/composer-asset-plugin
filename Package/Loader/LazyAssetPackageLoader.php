@@ -12,14 +12,12 @@
 namespace Fxp\Composer\AssetPlugin\Package\Loader;
 
 use Composer\Downloader\TransportException;
-use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
-use Fxp\Composer\AssetPlugin\AssetEvents;
-use Fxp\Composer\AssetPlugin\Event\VcsRepositoryEvent;
 use Fxp\Composer\AssetPlugin\Package\LazyPackageInterface;
+use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -65,9 +63,9 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     protected $io;
 
     /**
-     * @var EventDispatcher
+     * @var AssetRepositoryManager
      */
-    protected $dispatcher;
+    protected $assetRepositoryManager;
 
     /**
      * @var bool
@@ -137,13 +135,13 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     }
 
     /**
-     * Sets the event dispatcher.
+     * Sets the asset repository manager.
      *
-     * @param EventDispatcher $dispatcher
+     * @param AssetRepositoryManager $assetRepositoryManager The asset repository manager
      */
-    public function setEventDispatcher(EventDispatcher $dispatcher)
+    public function setAssetRepositoryManager(AssetRepositoryManager $assetRepositoryManager)
     {
-        $this->dispatcher = $dispatcher;
+        $this->assetRepositoryManager = $assetRepositoryManager;
     }
 
     /**
@@ -256,7 +254,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         $data = array_merge($data, $this->packageData);
         $data = $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
 
-        $this->dispatchAddVcsEvent($vcsRepos);
+        $this->addRepositories($vcsRepos);
 
         if (!isset($data['dist'])) {
             $data['dist'] = $driver->getDist($identifier);
@@ -271,13 +269,12 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     /**
      * Dispatches the vcs repositories event.
      *
-     * @param array $vcsRepos
+     * @param array $vcsRepositories
      */
-    protected function dispatchAddVcsEvent(array $vcsRepos)
+    protected function addRepositories(array $vcsRepositories)
     {
-        if (null !== $this->dispatcher) {
-            $event = new VcsRepositoryEvent(AssetEvents::ADD_VCS_REPOSITORIES, $vcsRepos);
-            $this->dispatcher->dispatch($event->getName(), $event);
+        if (null !== $this->assetRepositoryManager) {
+            $this->assetRepositoryManager->addRepositories($vcsRepositories);
         }
     }
 }

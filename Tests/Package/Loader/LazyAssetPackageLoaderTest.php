@@ -11,11 +11,15 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Package\Loader;
 
-use Composer\EventDispatcher\EventDispatcher;
+use Composer\Downloader\TransportException;
+use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
+use Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface;
+use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
 use Fxp\Composer\AssetPlugin\Package\LazyPackageInterface;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
+use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Tests\Fixtures\IO\MockIO;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
@@ -57,17 +61,17 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
-     * @var EventDispatcher|\PHPUnit_Framework_MockObject_MockObject
+     * @var AssetRepositoryManager|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $dispatcher;
+    protected $assetRepositoryManager;
 
     protected function setUp()
     {
-        $this->lazyPackage = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Package\LazyPackageInterface')->getMock();
-        $this->assetType = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
-        $this->loader = $this->getMockBuilder('Composer\Package\Loader\LoaderInterface')->getMock();
-        $this->driver = $this->getMockBuilder('Composer\Repository\Vcs\VcsDriverInterface')->getMock();
-        $this->dispatcher = $this->getMockBuilder('Composer\EventDispatcher\EventDispatcher')
+        $this->lazyPackage = $this->getMockBuilder(LazyPackageInterface::class)->getMock();
+        $this->assetType = $this->getMockBuilder(AssetTypeInterface::class)->getMock();
+        $this->loader = $this->getMockBuilder(LoaderInterface::class)->getMock();
+        $this->driver = $this->getMockBuilder(VcsDriverInterface::class)->getMock();
+        $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
             ->disableOriginalConstructor()->getMock();
 
         $this->lazyPackage
@@ -87,7 +91,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->method('getVersion')
             ->will($this->returnValue('1.0.0.0'));
 
-        $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
+        $versionConverter = $this->getMockBuilder(VersionConverterInterface::class)->getMock();
         $versionConverter->expects($this->any())
             ->method('convertVersion')
             ->will($this->returnValue('VERSION_CONVERTED'));
@@ -96,7 +100,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($value) {
                 return $value;
             }));
-        $packageConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock();
+        $packageConverter = $this->getMockBuilder(PackageConverterInterface::class)->getMock();
         /* @var LazyPackageInterface $lasyPackage */
         $lasyPackage = $this->lazyPackage;
         $packageConverter->expects($this->any())
@@ -150,7 +154,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $this->loader = null;
         $this->driver = null;
         $this->io = null;
-        $this->dispatcher = null;
+        $this->assetRepositoryManager = null;
         $this->lazyLoader = null;
     }
 
@@ -277,7 +281,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             'version' => '1.0',
         );
 
-        $realPackage = $this->getMockBuilder('Composer\Package\CompletePackageInterface')->getMock();
+        $realPackage = $this->getMockBuilder(CompletePackageInterface::class)->getMock();
         $realPackage
             ->expects($this->any())
             ->method('getName')
@@ -339,10 +343,10 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
             array('tag', true, 'Exception', '<warning>Skipped tag 1.0, MESSAGE</warning>'),
             array('branch', false, 'Exception', '<error>Skipped branch 1.0, MESSAGE</error>'),
             array('branch', true, 'Exception', '<error>Skipped branch 1.0, MESSAGE</error>'),
-            array('tag', false, 'Composer\Downloader\TransportException', '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
-            array('tag', true, 'Composer\Downloader\TransportException', '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
-            array('branch', false, 'Composer\Downloader\TransportException', '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
-            array('branch', true, 'Composer\Downloader\TransportException', '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
+            array('tag', false, TransportException::class, '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
+            array('tag', true, TransportException::class, '<warning>Skipped tag 1.0, no ASSET.json file was found</warning>'),
+            array('branch', false, TransportException::class, '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
+            array('branch', true, TransportException::class, '<error>Skipped branch 1.0, no ASSET.json file was found</error>'),
         );
     }
 
@@ -398,20 +402,13 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->io = new MockIO($verbose);
 
-        /* @var AssetTypeInterface $assetType */
-        $assetType = $this->assetType;
-        /* @var LoaderInterface $cLoader */
         $cLoader = $this->loader;
-        /* @var VcsDriverInterface $driver */
-        $driver = $this->driver;
-        /* @var EventDispatcher $dispatcher */
-        $dispatcher = $this->dispatcher;
         $loader = $this->createLazyLoader($type);
-        $loader->setAssetType($assetType);
+        $loader->setAssetType($this->assetType);
         $loader->setLoader($cLoader);
-        $loader->setDriver($driver);
+        $loader->setDriver($this->driver);
         $loader->setIO($this->io);
-        $loader->setEventDispatcher($dispatcher);
+        $loader->setAssetRepositoryManager($this->assetRepositoryManager);
 
         return $loader;
     }
