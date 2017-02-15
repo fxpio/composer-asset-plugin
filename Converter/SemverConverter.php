@@ -55,13 +55,15 @@ class SemverConverter implements VersionConverterInterface
      */
     protected function cleanRange($range)
     {
-        foreach (array('<', '>', '=', '~', '^', '||') as $character) {
+        foreach (array('<', '>', '=', '~', '^', '||', '&&') as $character) {
             $range = str_replace($character.' ', $character, $range);
         }
 
         $range = preg_replace('/(?:[vV])(\d+)/', '${1}', $range);
+        $range = str_replace(' ||', '||', $range);
+        $range = str_replace(array(' &&', '&&'), ',', $range);
 
-        return str_replace(' ||', '||', $range);
+        return $range;
     }
 
     /**
