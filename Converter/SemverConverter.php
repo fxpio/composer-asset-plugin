@@ -182,7 +182,9 @@ class SemverConverter implements VersionConverterInterface
             $version[$change] = intval($version[$change]) + 1;
             $match = str_replace(array('*', 'x', 'X'), '0', implode('.', $version));
         } elseif (null === $special && $i === 0 && false === strpos($match, '.') && is_numeric($match)) {
-            $match = '~'.$match;
+            $match = isset($matches[$i + 1]) && (' - ' === $matches[$i + 1] || '-' === $matches[$i + 1])
+                ? $match
+                : '~'.$match;
         } else {
             $match = '~' === $special ? str_replace(array('*', 'x', 'X'), '0', $match) : $match;
         }
