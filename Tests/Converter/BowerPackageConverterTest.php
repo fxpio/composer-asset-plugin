@@ -72,6 +72,7 @@ class BowerPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/test-library17-file' => '*',
             'ASSET/test-library18-file' => '1.2.3',
             'ASSET/test-library19-file' => '*',
+            'ASSET/test-library20-file' => '*',
         ), $composer['require']);
 
         $this->assertArrayHasKey('require-dev', $composer);

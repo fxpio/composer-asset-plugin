@@ -26,6 +26,20 @@ use Fxp\Composer\AssetPlugin\Util\Validator;
 abstract class PackageUtil
 {
     /**
+     * @var string[]
+     */
+    private static $extensions = array(
+        '.zip',
+        '.tar',
+        '.tar.gz',
+        '.tar.bz2',
+        '.tar.Z',
+        '.tar.xz',
+        '.bz2',
+        '.gz',
+    );
+
+    /**
      * Checks if the version is a URL version.
      *
      * @param AssetTypeInterface $assetType  The asset type
@@ -41,7 +55,7 @@ abstract class PackageUtil
         if (preg_match('/(\:\/\/)|\@/', $version)) {
             list($url, $version) = static::splitUrlVersion($version);
 
-            if (static::hasUrlDependencySupported($url)) {
+            if (!static::isUrlArchive($url) && static::hasUrlDependencySupported($url)) {
                 $vcsRepos[] = array(
                     'type' => sprintf('%s-vcs', $assetType->getName()),
                     'url' => $url,
@@ -65,6 +79,26 @@ abstract class PackageUtil
         }
 
         return array($dependency, $version);
+    }
+
+    /**
+     * Check if the url is a url of a archive file.
+     *
+     * @param string $url The url
+     *
+     * @return bool
+     */
+    public static function isUrlArchive($url)
+    {
+        if (0 === strpos($url, 'http')) {
+            foreach (self::$extensions as $extension) {
+                if (substr($url, -strlen($extension)) === $extension) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

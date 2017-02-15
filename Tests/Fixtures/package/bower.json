@@ -34,7 +34,8 @@
         "library16": "library16#>=1 <2",
         "library17": "http://foobar.tld/library17-1.2.3.js",
         "library18": "http://foobar.tld/library18.js#1.2.3",
-        "library19": "http://foobar.tld/library19.js"
+        "library19": "http://foobar.tld/library19.js",
+        "library20": "http://foobar.tld/library20/v1.2.tar.gz"
     },
     "devDependencies": {
         "dev-library1": ">= 1.0.0",
