@@ -103,7 +103,7 @@ class SemverConverter implements VersionConverterInterface
     protected function matchRangeToken($i, $match, array &$matches, &$special, &$replace)
     {
         if (' - ' === $match) {
-            $matches[$i - 1] = '>='.$matches[$i - 1];
+            $matches[$i - 1] = '>='.str_replace(array('*', 'x', 'X'), '0', $matches[$i - 1]);
 
             if (false !== strpos($matches[$i + 1], '.') && strpos($matches[$i + 1], '*') === false
                     && strpos($matches[$i + 1], 'x') === false && strpos($matches[$i + 1], 'X') === false) {
