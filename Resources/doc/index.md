@@ -351,6 +351,19 @@ delete the files:
 }
 ```
 
+### Work with the NPM scopes
+
+NPM can manage the package with the vendor scopes (`@<vendor>/<dependency-name>`),
+but Composer has already a namespace for vendors, and this plugin create a virtual
+vendor for the NPM assets (`npm-asset/`). Futhermore, the `@` character is not
+managed by Composer for the package name.
+
+For this reason, the NPM scope `@<vendor>/` is converted into `<vendor>--`.
+
+NPM package name              | Composer package name
+------------------------------|-----------------------------------------
+`@<vendor>/<dependency-name>` | `npm-asset/<vendor>--<dependency-name>`
+
 ### Use the Ignore Files Manager in the Composer scripts
 
 Sometimes you need to clean a package that is not considered an NPM/Bower Asset
