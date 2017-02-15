@@ -120,7 +120,7 @@ class Util
     protected static function writeAddRepository(IOInterface $io, $name)
     {
         if ($io->isVerbose()) {
-            $io->write('Adding VCS repository <comment>'.$name.'</comment>');
+            $io->write('Adding VCS repository <info>'.$name.'</info>');
         }
     }
 }
