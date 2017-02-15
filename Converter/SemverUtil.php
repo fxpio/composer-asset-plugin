@@ -46,15 +46,18 @@ abstract class SemverUtil
     /**
      * Converts the date or datetime version.
      *
-     * @param string $version Tje version
+     * @param string $version The version
      *
      * @return string
      */
     public static function convertDateVersion($version)
     {
-        return preg_match('/^\d{7,}\./', $version)
-            ? substr($version, 0, strpos($version, '.')).'.000000'
-            : $version;
+        if (preg_match('/^\d{7,}\./', $version)) {
+            $pos = strpos($version, '.');
+            $version = substr($version, 0, $pos).self::convertDateMinorVersion(substr($version, $pos + 1));
+        }
+
+        return $version;
     }
 
     /**
@@ -169,5 +172,21 @@ abstract class SemverUtil
         $version .= $type;
 
         return array($version, $patchVersion);
+    }
+
+    /**
+     * Convert the minor version of date.
+     *
+     * @param string $minor The minor version
+     *
+     * @return string
+     */
+    protected static function convertDateMinorVersion($minor)
+    {
+        $split = explode('.', $minor);
+        $minor = (int) $split[0];
+        $revision = isset($split[1]) ? (int) $split[1] : 0;
+
+        return '.'.sprintf('%03d', $minor).sprintf('%03d', $revision);
     }
 }
