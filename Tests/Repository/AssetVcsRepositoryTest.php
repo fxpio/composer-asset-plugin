@@ -123,7 +123,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      * @param string $url
      * @param string $class
      *
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      * @expectedExceptionMessage No driver found to handle Asset VCS repository
      */
     public function testNotDriverFound($type, $url, $class)

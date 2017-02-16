@@ -159,7 +159,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      * @expectedExceptionMessage The "assetType" property must be defined
      */
     public function testMissingAssetType()
@@ -169,7 +169,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      * @expectedExceptionMessage The "loader" property must be defined
      */
     public function testMissingLoader()
@@ -182,7 +182,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      * @expectedExceptionMessage The "driver" property must be defined
      */
     public function testMissingDriver()
@@ -200,7 +200,7 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      * @expectedExceptionMessage The "io" property must be defined
      */
     public function testMissingIo()

@@ -15,6 +15,7 @@ use Composer\Config;
 use Composer\IO\NullIO;
 use Composer\Repository\Vcs\VcsDriverInterface;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\Validator;
 
@@ -181,13 +182,13 @@ abstract class PackageUtil
      * @param array  $composer    The composer data
      * @param array  $composerKey The array with composer key name and closure
      *
-     * @throws \InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
+     * @throws InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
      */
     public static function convertArrayKey(array $asset, $assetKey, array &$composer, $composerKey)
     {
         if (2 !== count($composerKey)
             || !is_string($composerKey[0]) || !$composerKey[1] instanceof \Closure) {
-            throw new \InvalidArgumentException('The "composerKey" argument of asset packager converter must be an string or an array with the composer key and closure');
+            throw new InvalidArgumentException('The "composerKey" argument of asset packager converter must be an string or an array with the composer key and closure');
         }
 
         $closure = $composerKey[1];

@@ -16,6 +16,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\LoaderInterface;
 use Composer\Repository\Vcs\VcsDriverInterface;
+use Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException;
 use Fxp\Composer\AssetPlugin\Package\LazyPackageInterface;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -175,13 +176,13 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     /**
      * Validates the class config.
      *
-     * @throws \InvalidArgumentException When the property of this class is not defined
+     * @throws InvalidArgumentException When the property of this class is not defined
      */
     protected function validateConfig()
     {
         foreach (array('assetType', 'loader', 'driver', 'io') as $property) {
             if (null === $this->$property) {
-                throw new \InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
+                throw new InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
             }
         }
     }

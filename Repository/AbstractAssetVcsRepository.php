@@ -23,6 +23,7 @@ use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Repository\VcsRepository;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Converter\SemverConverter;
+use Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException;
 use Fxp\Composer\AssetPlugin\Package\Loader\LazyAssetPackageLoader;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -118,13 +119,13 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
      *
      * @return VcsDriverInterface
      *
-     * @throws \InvalidArgumentException When not driver found
+     * @throws InvalidArgumentException When not driver found
      */
     protected function initDriver()
     {
         $driver = $this->getDriver();
         if (!$driver) {
-            throw new \InvalidArgumentException('No driver found to handle Asset VCS repository '.$this->url);
+            throw new InvalidArgumentException('No driver found to handle Asset VCS repository '.$this->url);
         }
 
         return $driver;

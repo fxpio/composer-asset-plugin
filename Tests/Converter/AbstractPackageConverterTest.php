@@ -77,7 +77,7 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
      */
     public function testConversionWithInvalidKey()
     {

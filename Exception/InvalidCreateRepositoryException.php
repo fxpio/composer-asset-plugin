@@ -16,7 +16,7 @@ namespace Fxp\Composer\AssetPlugin\Exception;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class InvalidCreateRepositoryException extends \Exception
+class InvalidCreateRepositoryException extends \Exception implements ExceptionInterface
 {
     /**
      * @var array

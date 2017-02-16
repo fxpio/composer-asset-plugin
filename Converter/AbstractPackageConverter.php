@@ -11,6 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Converter;
 
+use Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
 /**
@@ -85,7 +86,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param array        $composer    The composer data
      * @param string|array $composerKey The composer key or array with composer key name and closure
      *
-     * @throws \InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
+     * @throws InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
      */
     protected function convertKey(array $asset, $assetKey, array &$composer, $composerKey)
     {
