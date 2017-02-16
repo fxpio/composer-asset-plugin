@@ -11,7 +11,9 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
+use Composer\Package\RootPackageInterface;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
+use Fxp\Composer\AssetPlugin\Util\Config;
 
 /**
  * Factory of bower private repository registries.
@@ -23,18 +25,13 @@ class BowerPrivateRegistryFactory implements RegistryFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra)
+    public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package)
     {
-        if (!array_key_exists('asset-private-bower-registries', $extra)
-                || !is_array($extra['asset-private-bower-registries'])) {
-            return;
-        }
-
         $rm = $arm->getRepositoryManager();
-        $registries = $extra['asset-private-bower-registries'];
+        $registries = Config::getArray($package, 'private-bower-registries');
 
         foreach ($registries as $registryName => $registryUrl) {
-            $config = AssetPlugin::createRepositoryConfig($arm, $filter, $extra, $registryName);
+            $config = AssetPlugin::createRepositoryConfig($arm, $filter, $package, $registryName);
             $config['private-registry-url'] = $registryUrl;
 
             $rm->setRepositoryClass($registryName, 'Fxp\Composer\AssetPlugin\Repository\BowerPrivateRepository');

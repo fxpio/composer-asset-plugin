@@ -23,6 +23,7 @@ use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
+use Fxp\Composer\AssetPlugin\Util\Config;
 
 /**
  * Composer plugin.
@@ -77,15 +78,11 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
         $this->packageFilter = new VcsPackageFilter($composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
         $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->packageFilter);
-        $extra = $composer->getPackage()->getExtra();
-        $rm = $composer->getRepositoryManager();
 
-        AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $extra);
-        AssetPlugin::setVcsTypeRepositories($rm);
+        AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $composer->getPackage());
+        AssetPlugin::setVcsTypeRepositories($composer->getRepositoryManager());
 
-        if (isset($extra['asset-repositories']) && is_array($extra['asset-repositories'])) {
-            $this->assetRepositoryManager->addRepositories($extra['asset-repositories']);
-        }
+        $this->assetRepositoryManager->addRepositories(Config::getArray($composer->getPackage(), 'repositories'));
 
         AssetPlugin::addInstallers($composer, $io);
     }
@@ -97,6 +94,8 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPluginCommand(CommandEvent $event)
     {
+        Config::validate($this->io, $this->composer->getPackage(), $event->getCommandName());
+
         if (!in_array($event->getCommandName(), array('install', 'update'))) {
             $this->packageFilter->setEnabled(false);
         }

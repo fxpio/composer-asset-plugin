@@ -14,10 +14,10 @@ Lists packages required for developing this package, or running tests, etc. The 
 of the root package are installed by default. Both `install` or `update` support the `--no-dev`
 option that prevents dev dependencies from being installed.
 
-##### extra.asset-repositories (root-only)
+##### config.fxp-asset.repositories (root-only)
 
 Because the plugin is installed after the analysis of type repositories, the custom types must
-be included in a special property in `extra` composer.
+be included in a special property in `config` composer.
 
 Custom package repositories to use.
 
@@ -25,7 +25,7 @@ By default composer just uses the packagist repository. By specifying
 repositories you can get packages from elsewhere.
 
 Repositories are not resolved recursively. You only can add them to your
-main `composer.json`. Repository declarations of dependencies' composer.jsons are ignored.
+main `composer.json`. Repository declarations of dependencies' composer.json are ignored.
 
 The following repository types are supported:
 
@@ -34,7 +34,7 @@ The following repository types are supported:
 - **bower-vcs**: The version control system repository can fetch packages from git with `bower.json`
                  file dedicated to Bower. The `url` property of git source code is required.
 
-##### extra.asset-registry-options (root-only)
+##### config.fxp-asset.registry-options (root-only)
 
 Options available for the asset registers:
 
@@ -43,7 +43,7 @@ Options available for the asset registers:
 - **bower-searchable** (bool): The search in the Bower registry may be disabled with this option
                                for the search command.
 
-##### extra.asset-main-files (root-only)
+##### config.fxp-asset.main-files (root-only)
 
 The plugin can override the main file definitions of the Bower packages. To override the file
 definitions specify the packages and their main file array as name/value pairs. For an example

@@ -28,7 +28,7 @@ class ScriptHandler
 {
     /**
      * Remove ignored files of the installed package defined in the root
-     * package extra section.
+     * package config section.
      *
      * @param PackageEvent $event
      */
@@ -38,19 +38,19 @@ class ScriptHandler
             return;
         }
 
-        $section = static::getIgnoreExtraSection();
+        $section = static::getIgnoreConfigSection();
         $manager = IgnoreFactory::create($event->getComposer(), $package, null, $section);
         $manager->cleanup();
     }
 
     /**
-     * Get the root extra section of igore file patterns for each package.
+     * Get the root config section of igore file patterns for each package.
      *
-     * @return string The extra section name
+     * @return string The config section name
      */
-    protected static function getIgnoreExtraSection()
+    protected static function getIgnoreConfigSection()
     {
-        return 'asset-ignore-files';
+        return 'ignore-files';
     }
 
     /**

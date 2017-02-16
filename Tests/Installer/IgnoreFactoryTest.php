@@ -99,18 +99,20 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithIgnoreFiles()
     {
-        $extra = array(
-            'asset-ignore-files' => array(
-                'foo-asset/foo' => array(
-                    'PATTERN',
+        $config = array(
+            'fxp-asset' => array(
+                'ignore-files' => array(
+                    'foo-asset/foo' => array(
+                        'PATTERN',
+                    ),
+                    'foo-asset/bar' => array(),
                 ),
-                'foo-asset/bar' => array(),
             ),
         );
 
         $this->rootPackage->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extra));
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         $manager = IgnoreFactory::create($this->composer, $this->package);
 
@@ -131,16 +133,18 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithEnablingOfIgnoreFiles()
     {
-        $extra = array(
-            'asset-ignore-files' => array(
-                'foo-asset/foo' => true,
-                'foo-asset/bar' => array(),
+        $config = array(
+            'fxp-asset' => array(
+                'ignore-files' => array(
+                    'foo-asset/foo' => true,
+                    'foo-asset/bar' => array(),
+                ),
             ),
         );
 
         $this->rootPackage->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extra));
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         $manager = IgnoreFactory::create($this->composer, $this->package);
 
@@ -151,16 +155,18 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithDisablingOfIgnoreFiles()
     {
-        $extra = array(
-            'asset-ignore-files' => array(
-                'foo-asset/foo' => false,
-                'foo-asset/bar' => array(),
+        $config = array(
+            'fxp-asset' => array(
+                'ignore-files' => array(
+                    'foo-asset/foo' => false,
+                    'foo-asset/bar' => array(),
+                ),
             ),
         );
 
         $this->rootPackage->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extra));
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         $manager = IgnoreFactory::create($this->composer, $this->package);
 
@@ -171,18 +177,20 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithCustomIgnoreSection()
     {
-        $extra = array(
-            'custom-ignore-files' => array(
-                'foo-asset/foo' => array(
-                    'PATTERN',
+        $config = array(
+            'fxp-asset' => array(
+                'custom-ignore-files' => array(
+                    'foo-asset/foo' => array(
+                        'PATTERN',
+                    ),
+                    'foo-asset/bar' => array(),
                 ),
-                'foo-asset/bar' => array(),
             ),
         );
 
         $this->rootPackage->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extra));
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         $manager = IgnoreFactory::create($this->composer, $this->package, null, 'custom-ignore-files');
 

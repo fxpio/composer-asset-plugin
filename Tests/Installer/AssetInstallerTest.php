@@ -39,7 +39,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
-     * @var PackageInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
 
@@ -69,7 +69,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
                 return $value;
             }));
 
-        $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
+        $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->composer->expects($this->any())
@@ -131,7 +131,6 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $vendorDir = realpath(sys_get_temp_dir()).'/composer-test/web';
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
-        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->package;
         $package->expects($this->any())
             ->method('getExtra')
@@ -237,7 +236,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $package->expects($this->any())
-            ->method('getExtra')
+            ->method('getConfig')
             ->will($this->returnValue(array()));
 
         return $package;

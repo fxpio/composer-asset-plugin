@@ -101,13 +101,13 @@ the installed version.
 Of course, 3 solutions can work around the problem:
 
 1. delete the `vendor` directory, do the `update`
-2. disable temporarily the import filter in the `extra` section
+2. disable temporarily the import filter in the `config` section
 3. add the dependency in the root Composer package:
   - add the dependency in the root Composer package with the required version (the version not found)
-  - put the option `extra.asset-optimize-with-conjunctive` to `false`,
+  - put the option `config.fxp-asset.optimize-with-conjunctive` to `false`,
   - do the `update`,
   - remove the dependency in the root Composer package
-  - remove the option `extra.asset-optimize-with-conjunctive`
+  - remove the option `config.fxp-asset.optimize-with-conjunctive`
   - do the `update` to sync the lock file,
 
 > The solution 1 is the easiest and fastest.
@@ -161,11 +161,11 @@ How to add a Github token in the configuration?
 See the official documentation of Composer: [API rate limit and OAuth tokens]
 (https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens).
 
-Why the asset VCS repositories are placed in the 'extra' section?
------------------------------------------------------------------
+Why the asset VCS repositories are placed in the 'config' section?
+------------------------------------------------------------------
 
 Because it's impossible to create the custom VCS repositories: Composer checks the type
 of VCS repository before the loading of plugins, so, an exception is thrown.
 
-The only way, is to put the config in `extra` section (see the [doc]
-(https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/schema.md#extraasset-repositories-root-only)).
+The only way, is to put the config in `config` section (see the [doc]
+(https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/schema.md#configfxp-assetrepositories-root-only)).

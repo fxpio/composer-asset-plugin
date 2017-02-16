@@ -15,12 +15,12 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
-use Fxp\Composer\AssetPlugin\Repository\Util;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 
 /**
@@ -47,16 +47,16 @@ class AssetPlugin
     /**
      * Creates the asset options.
      *
-     * @param array  $extra     The composer extra section of asset options
+     * @param array  $config    The composer config section of asset options
      * @param string $assetType The asset type
      *
      * @return array The asset registry options
      */
-    public static function createAssetOptions(array $extra, $assetType)
+    public static function createAssetOptions(array $config, $assetType)
     {
         $options = array();
 
-        foreach ($extra as $key => $value) {
+        foreach ($config as $key => $value) {
             if (0 === strpos($key, $assetType.'-')) {
                 $key = substr($key, strlen($assetType) + 1);
                 $options[$key] = $value;
@@ -71,20 +71,18 @@ class AssetPlugin
      *
      * @param AssetRepositoryManager $arm       The asset repository manager
      * @param VcsPackageFilter       $filter    The vcs package filter
-     * @param array                  $extra     The composer extra
+     * @param RootPackageInterface   $package   The root package
      * @param string                 $assetType The asset type
      *
      * @return array
      */
-    public static function createRepositoryConfig(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra, $assetType)
+    public static function createRepositoryConfig(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package, $assetType)
     {
-        $opts = Util::getArrayValue($extra, 'asset-registry-options', array());
-
         return array(
             'asset-repository-manager' => $arm,
             'vcs-package-filter' => $filter,
-            'asset-options' => static::createAssetOptions($opts, $assetType),
-            'vcs-driver-options' => Util::getArrayValue($extra, 'asset-vcs-driver-options', array()),
+            'asset-options' => static::createAssetOptions(Config::getArray($package, 'registry-options'), $assetType),
+            'vcs-driver-options' => Config::getArray($package, 'vcs-driver-options'),
         );
     }
 
@@ -93,15 +91,15 @@ class AssetPlugin
      *
      * @param AssetRepositoryManager $arm
      * @param VcsPackageFilter       $filter
-     * @param array                  $extra
+     * @param RootPackageInterface   $package
      */
-    public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, array $extra)
+    public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package)
     {
         foreach (Assets::getRegistryFactories() as $registryType => $factoryClass) {
             $ref = new \ReflectionClass($factoryClass);
 
             if ($ref->implementsInterface('Fxp\Composer\AssetPlugin\Repository\RegistryFactoryInterface')) {
-                call_user_func(array($factoryClass, 'create'), $arm, $filter, $extra);
+                call_user_func(array($factoryClass, 'create'), $arm, $filter, $package);
             }
         }
     }
@@ -129,20 +127,19 @@ class AssetPlugin
      *
      * @return PackageInterface
      */
-    public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'asset-main-files')
+    public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'main-files')
     {
         if ($package instanceof Package) {
             $packageExtra = $package->getExtra();
+            $rootMainFiles = Config::getArray($composer->getPackage(), $section);
 
-            $extra = $composer->getPackage()->getExtra();
-            if (isset($extra[$section])) {
-                foreach ($extra[$section] as $packageName => $files) {
-                    if ($packageName === $package->getName()) {
-                        $packageExtra['bower-asset-main'] = $files;
-                        break;
-                    }
+            foreach ($rootMainFiles as $packageName => $files) {
+                if ($packageName === $package->getName()) {
+                    $packageExtra['bower-asset-main'] = $files;
+                    break;
                 }
             }
+
             $package->setExtra($packageExtra);
         }
 

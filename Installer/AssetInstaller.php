@@ -18,6 +18,7 @@ use Composer\Package\PackageInterface;
 use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
+use Fxp\Composer\AssetPlugin\Util\Config;
 
 /**
  * Installer for asset packages.
@@ -39,9 +40,10 @@ class AssetInstaller extends LibraryInstaller
     {
         parent::__construct($io, $composer, $assetType->getComposerType(), $filesystem);
 
-        $extra = $composer->getPackage()->getExtra();
-        if (!empty($extra['asset-installer-paths'][$this->type])) {
-            $this->vendorDir = rtrim($extra['asset-installer-paths'][$this->type], '/');
+        $paths = Config::getArray($composer->getPackage(), 'installer-paths');
+
+        if (!empty($paths[$this->type])) {
+            $this->vendorDir = rtrim($paths[$this->type], '/');
         } else {
             $this->vendorDir = rtrim($this->vendorDir.'/'.$assetType->getComposerVendorName(), '/');
         }

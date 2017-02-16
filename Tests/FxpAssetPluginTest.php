@@ -111,10 +111,12 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
     public function testAssetRepositories()
     {
         $this->package->expects($this->any())
-            ->method('getExtra')
+            ->method('getConfig')
             ->will($this->returnValue(array(
-                'asset-private-bower-registries' => array(
-                    'my-private-bower-server' => 'https://my-private-bower-server.tld/packages',
+                'fxp-asset' => array(
+                    'private-bower-registries' => array(
+                        'my-private-bower-server' => 'https://my-private-bower-server.tld/packages',
+                    ),
                 ),
             )));
 
@@ -308,11 +310,15 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
     public function testOptionsForAssetRegistryRepositories()
     {
         $this->package->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue(array('asset-registry-options' => array(
-                'npm-option1' => 'value 1',
-                'bower-option1' => 'value 2',
-            ))));
+            ->method('getConfig')
+            ->will($this->returnValue(array(
+                'fxp-asset' => array(
+                    'registry-options' => array(
+                        'npm-option1' => 'value 1',
+                        'bower-option1' => 'value 2',
+                    ),
+                ),
+            )));
 
         $this->plugin->activate($this->composer, $this->io);
     }

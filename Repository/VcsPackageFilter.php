@@ -21,6 +21,7 @@ use Composer\Repository\InstalledFilesystemRepository;
 use Composer\Semver\Constraint\MultiConstraint;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
+use Fxp\Composer\AssetPlugin\Util\Config;
 
 /**
  * Filters the asset packages imported into VCS repository to optimize
@@ -172,17 +173,11 @@ class VcsPackageFilter
      */
     protected function skipByPattern()
     {
-        $extra = $this->package->getExtra();
+        $skip = Config::get($this->package, 'pattern-skip-version', false);
 
-        if (!array_key_exists('asset-pattern-skip-version', $extra)) {
-            $extra['asset-pattern-skip-version'] = false;
-        }
-
-        if (is_string($extra['asset-pattern-skip-version'])) {
-            return trim($extra['asset-pattern-skip-version'], '/');
-        }
-
-        return false;
+        return is_string($skip)
+            ? trim($skip, '/')
+            : false;
     }
 
     /**
@@ -262,7 +257,7 @@ class VcsPackageFilter
         );
 
         if (null !== $this->installedRepository
-                && FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-installed-packages')) {
+                && FilterUtil::checkConfigOption($this->package, 'optimize-with-installed-packages')) {
             $this->initInstalledPackages();
         }
     }
@@ -297,7 +292,7 @@ class VcsPackageFilter
         if (isset($this->requires[$package->getName()])) {
             /* @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
-            $useConjunctive = FilterUtil::checkExtraOption($this->package, 'asset-optimize-with-conjunctive');
+            $useConjunctive = FilterUtil::checkConfigOption($this->package, 'optimize-with-conjunctive');
             $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);
             $link = new Link($rLink->getSource(), $rLink->getTarget(), $constraint, 'installed', $constraint->getPrettyString());
         }

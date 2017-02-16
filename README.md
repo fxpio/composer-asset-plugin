@@ -36,7 +36,7 @@ This allows you to manage asset dependencies in a PHP based project very easily.
 - Conversion of [multiple versions of the same dependency](Resources/doc/schema.md#multiple-version-of-depdendency-in-the-same-project) to different dependencies of composer
 - Add manually the [multiple versions of a same dependency in the project](Resources/doc/index.md#usage-with-multiple-version-of-a-same-dependency)
 - Add a [custom config of VCS Repository](Resources/doc/index.md#usage-with-vcs-repository)
-- Override the [config of VCS Repository](Resources/doc/index.md#overriding-the-config-of-a-vcs-repository) defined by the asset registry directly in extra section of root composer
+- Override the [config of VCS Repository](Resources/doc/index.md#overriding-the-config-of-a-vcs-repository) defined by the asset registry directly in config section of root composer
 - VCS drivers for:
   - [Git](Resources/doc/index.md#usage-with-vcs-repository)
   - [GitHub](Resources/doc/index.md#usage-with-vcs-repository) (compatible with repository redirects)

@@ -55,7 +55,7 @@ It must be prefixed with `{asset-type}-asset/`.
 You can work with your private Bower server build with
 [Hacklone Private Bower](https://github.com/Hacklone/private-bower):
 
-Adding the URL to your Private Bower Server in the `composer.json` in the section `extra`. This
+Adding the URL to your Private Bower Server in the `composer.json` in the section `config`. This
 Asset Plugin automaticly look if there is a private Bower URL defined and search for your Private
 Bower Package.
 
@@ -63,9 +63,11 @@ Bower Package.
 
 ```json
 {
-    "extra": {
-        "asset-private-bower-registries": {
-            "<YourPrivateBowerRegistryServerName>": "https://<YourPrivateBowerRegistryServerURL>/packages"
+    "config": {
+        "fxp-asset": {
+            "private-bower-registries": {
+                "<YourPrivateBowerRegistryServerName>": "https://<YourPrivateBowerRegistryServerURL>/packages"
+            }
         }
     }
 }
@@ -91,13 +93,15 @@ Add the following to your `composer.json`:
 
 ```json
 {
-    "extra": {
-        "asset-repositories": [
-            {
-                "type": "bower-vcs",
-                "url": "https://github.com/vendor/exemple-asset-name.git"
-            }
-        ]
+    "config": {
+        "fxp-asset": {
+            "repositories": [
+                {
+                    "type": "bower-vcs",
+                    "url": "https://github.com/vendor/exemple-asset-name.git"
+                }
+            ]
+        }
     }
 }
 ```
@@ -125,14 +129,16 @@ Repository.
 
 ```json
 {
-    "extra": {
-        "asset-repositories": [
-            {
-                "type": "bower-vcs",
-                "url": "https://github.com/vendor/exemple-asset-name.git",
-                "name": "bower-asset/exemple-asset-name"
-            }
-        ]
+    "config": {
+        "fxp-asset": {
+            "repositories": [
+                {
+                    "type": "bower-vcs",
+                    "url": "https://github.com/vendor/exemple-asset-name.git",
+                    "name": "bower-asset/exemple-asset-name"
+                }
+            ]
+        }
     }
 }
 ```
@@ -141,11 +147,13 @@ You can also use the standard format of Composer for naming your VCS Repository:
 
 ```json
 {
-    "extra": {
-        "asset-repositories": {
-            "bower-asset/exemple-asset-name": {
-                "type": "bower-vcs",
-                "url": "https://github.com/vendor/exemple-asset-name.git"
+    "config": {
+        "fxp-asset": {
+            "repositories": {
+                "bower-asset/exemple-asset-name": {
+                    "type": "bower-vcs",
+                    "url": "https://github.com/vendor/exemple-asset-name.git"
+                }
             }
         }
     }
@@ -223,12 +231,14 @@ Of course, several solutions can work around the problem (see the [FAQs]
 solution below may be used in another use case.
 
 You can disable the import filter using the versions of installed packages with the option
-`extra.asset-optimize-with-installed-packages` in the root Composer package:
+`config.fxp-asset.optimize-with-installed-packages` in the root Composer package:
 
 ```json
 {
-    "extra": {
-        "asset-optimize-with-installed-packages": false
+    "config": {
+        "fxp-asset": {
+            "optimize-with-installed-packages": false
+        }
     }
 }
 ```
@@ -242,8 +252,10 @@ performance. However, it is possible to change the pattern or to disable this fe
 
 ```json
 {
-    "extra": {
-        "asset-pattern-skip-version": "(-build)"
+    "config": {
+        "fxp-asset": {
+            "pattern-skip-version": "(-build)"
+        }
     }
 }
 ```
@@ -252,8 +264,10 @@ performance. However, it is possible to change the pattern or to disable this fe
 
 ```json
 {
-    "extra": {
-        "asset-pattern-skip-version": false
+    "config": {
+        "fxp-asset": {
+            "pattern-skip-version": false
+        }
     }
 }
 ```
@@ -261,12 +275,14 @@ performance. However, it is possible to change the pattern or to disable this fe
 #### Disable the conjunctive option of the import filter
 
 You can disable the `conjunctive` mode of the import filter with the option
-`extra.asset-optimize-with-conjunctive` in the root Composer package:
+`config.fxp-asset.optimize-with-conjunctive` in the root Composer package:
 
 ```json
 {
-    "extra": {
-        "asset-optimize-with-conjunctive": false
+    "config": {
+        "fxp-asset": {
+            "optimize-with-conjunctive": false
+        }
     }
 }
 ```
@@ -286,10 +302,12 @@ But you can change the installation directory of the assets directly in the root
 
 ```json
 {
-    "extra": {
-        "asset-installer-paths": {
-            "npm-asset-library": "web/assets/vendor",
-            "bower-asset-library": "web/assets/vendor"
+    "config": {
+        "fxp-asset": {
+            "installer-paths": {
+                "npm-asset-library": "web/assets/vendor",
+                "bower-asset-library": "web/assets/vendor"
+            }
         }
     }
 }
@@ -308,9 +326,11 @@ installation of each package. Of course, this behavior can be disabled or replac
 
 ```json
 {
-    "extra": {
-        "asset-ignore-files": {
-            "bower-asset/example-asset1": false
+    "config": {
+        "fxp-asset": {
+            "ignore-files": {
+                "bower-asset/example-asset1": false
+            }
         }
     }
 }
@@ -320,13 +340,15 @@ installation of each package. Of course, this behavior can be disabled or replac
 
 ```json
 {
-    "extra": {
-        "asset-ignore-files": {
-            "bower-asset/example-asset1": [
-                ".*",
-                "*.md",
-                "test"
-            ]
+    "config": {
+        "fxp-asset": {
+            "ignore-files": {
+                "bower-asset/example-asset1": [
+                    ".*",
+                    "*.md",
+                    "test"
+                ]
+            }
         }
     }
 }
@@ -339,13 +361,15 @@ delete the files:
 
 ```json
 {
-    "extra": {
-        "asset-ignore-files": {
-            "npm-asset/example-asset1": [
-                ".*",
-                "*.md",
-                "test"
-            ]
+    "config": {
+        "fxp-asset": {
+            "ignore-files": {
+                "npm-asset/example-asset1": [
+                    ".*",
+                    "*.md",
+                    "test"
+                ]
+            }
         }
     }
 }
@@ -383,13 +407,15 @@ Package. To do this, you can use the script helper
             "Fxp\\Composer\\AssetPlugin\\Composer\\ScriptHandler::deleteIgnoredFiles"
         ]
     },
-    "extra": {
-        "asset-ignore-files": {
-            "acme/other-asset": [
-                ".*",
-                "*.md",
-                "test"
-            ]
+    "config": {
+        "fxp-asset": {
+            "ignore-files": {
+                "acme/other-asset": [
+                    ".*",
+                    "*.md",
+                    "test"
+                ]
+            }
         }
     }
 }
@@ -403,18 +429,20 @@ plugins like main-bower-files, wiredep and asset-builder have a feature to
 override the package main files in the project configuration file.
 
 You can do the same with composer-asset-plugin, just add a section
-`asset-main-files` in the root project `composer.json` file with the package
+`config.fxp-asset.main-files` in the root project `composer.json` file with the package
 name and the files you want to mark as main files.
 
 **Example:**
 
 ```json
 {
-    "extra": {
-        "asset-main-files": {
-            "acme/other-asset": [
-                "other-asset.js"
-            ]
+    "config": {
+        "fxp-asset": {
+            "main-files": {
+                "acme/other-asset": [
+                    "other-asset.js"
+                ]
+            }
         }
     }
 }
@@ -422,18 +450,20 @@ name and the files you want to mark as main files.
 
 ### Disable the search for an asset registry
 
-If you want to disable the search for an asset registry, you can add an extra
-option `extra.asset-registry-options.{type}-searchable` in the root project
+If you want to disable the search for an asset registry, you can add the
+option `config.fxp-asset.registry-options.{type}-searchable` in the root project
 `composer.json`-file.
 
 **Example:**
 
 ```json
 {
-    "extra": {
-        "asset-registry-options": {
-            "npm-searchable": false,
-            "bower-searchable": false
+    "config": {
+        "fxp-asset": {
+            "registry-options": {
+                "npm-searchable": false,
+                "bower-searchable": false
+            }
         }
     }
 }
@@ -442,17 +472,19 @@ option `extra.asset-registry-options.{type}-searchable` in the root project
 ### Use no-api option of VCS Githhub driver
 
 If you want to use the [no-api](https://getcomposer.org/doc/05-repositories.md#git-alternatives) option
-for your Github assets, you can add an extra option `extra.asset-vcs-driver-options.github-no-api` in
-the root project `composer.json` file. By default, this option is to `false`. The option `asset-pattern-skip-version`
+for your Github assets, you can add the option `config.fxp-asset.vcs-driver-options.github-no-api` in
+the root project `composer.json` file. By default, this option is to `false`. The option `config.fxp-asset.pattern-skip-version`
 can be used to exclude tags via a regular expression.
 
 ```json
 {
-    "extra": {
-        "asset-vcs-driver-options": {
-            "github-no-api": true
-        },
-        "asset-pattern-skip-version": "(-build|-patch)"
+    "config": {
+        "fxp-asset": {
+            "vcs-driver-options": {
+                "github-no-api": true
+            },
+            "pattern-skip-version": "(-build|-patch)"
+        }
     }
 }
 ```
@@ -461,12 +493,14 @@ You can further define this option for each package:
 
 ```json
 {
-    "extra": {
-        "asset-vcs-driver-options": {
-            "github-no-api": {
-                "default": true,
-                "packages": {
-                    "bower-asset/example-asset1": false
+    "config": {
+        "fxp-asset": {
+            "vcs-driver-options": {
+                "github-no-api": {
+                    "default": true,
+                    "packages": {
+                        "bower-asset/example-asset1": false
+                    }
                 }
             }
         }
