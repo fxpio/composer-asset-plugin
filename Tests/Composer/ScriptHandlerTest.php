@@ -21,8 +21,11 @@ use Composer\DependencyResolver\Request;
 use Composer\Installer\PackageEvent;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Composer\Plugin\PluginManager;
 use Composer\Repository\CompositeRepository;
 use Fxp\Composer\AssetPlugin\Composer\ScriptHandler;
+use Fxp\Composer\AssetPlugin\Config\Config;
+use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
 
 /**
  * Tests for the composer script handler.
@@ -35,6 +38,11 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
      * @var Composer|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $composer;
+
+    /**
+     * @var Config
+     */
+    protected $config;
 
     /**
      * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -57,8 +65,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
         $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
 
-        $config = $this->getMockBuilder('Composer\Config')->getMock();
-        $config->expects($this->any())
+        $this->config = $this->getMockBuilder('Composer\Config')->getMock();
+        $this->config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
                 $val = null;
@@ -77,10 +85,24 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->composer->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($this->config));
         $this->composer->expects($this->any())
             ->method('getPackage')
             ->will($this->returnValue($rootPackage));
+
+        $plugin = $this->getMockBuilder(FxpAssetPlugin::class)->disableOriginalConstructor()->getMock();
+        $plugin->expects($this->any())
+            ->method('getConfig')
+            ->willReturn(new Config(array()));
+
+        $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
+        $pm->expects($this->any())
+            ->method('getPlugins')
+            ->willReturn(array($plugin));
+
+        $this->composer->expects($this->any())
+            ->method('getPluginManager')
+            ->will($this->returnValue($pm));
     }
 
     public function tearDown()
@@ -138,6 +160,40 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
+    }
+
+    /**
+     * @dataProvider getPackageComposerTypes
+     *
+     * @param string $composerType
+     *
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage The fxp composer asset plugin is not found
+     */
+    public function testGetConfig($composerType)
+    {
+        $rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
+
+        $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
+        $this->composer->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($this->config));
+        $this->composer->expects($this->any())
+            ->method('getPackage')
+            ->will($this->returnValue($rootPackage));
+
+        $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
+        $pm->expects($this->any())
+            ->method('getPlugins')
+            ->willReturn(array());
+
+        $this->composer->expects($this->any())
+            ->method('getPluginManager')
+            ->will($this->returnValue($pm));
+
+        $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock();
+
+        ScriptHandler::getConfig($this->createEvent($composerType));
     }
 
     /**

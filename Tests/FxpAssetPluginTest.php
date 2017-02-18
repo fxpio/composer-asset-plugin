@@ -367,4 +367,12 @@ class FxpAssetPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\BowerInstaller', $im->getInstaller('bower-asset-library'));
         $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\AssetInstaller', $im->getInstaller('npm-asset-library'));
     }
+
+    public function testGetConfig()
+    {
+        $this->plugin->activate($this->composer, $this->io);
+
+        $config = $this->plugin->getConfig();
+        $this->assertInstanceOf(\Fxp\Composer\AssetPlugin\Config\Config::class, $config);
+    }
 }

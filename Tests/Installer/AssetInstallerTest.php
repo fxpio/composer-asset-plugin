@@ -17,6 +17,7 @@ use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Util\Filesystem;
+use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 
@@ -171,7 +172,6 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
             ->method('getDownloadManager')
             ->will($this->returnValue($dm));
 
-        $library = new AssetInstaller($io, $this->composer, $type);
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock('foo-asset/package');
 
@@ -186,6 +186,9 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $repository->expects($this->once())
             ->method('addPackage')
             ->with($package);
+
+        $config = ConfigBuilder::build($this->composer);
+        $library = new AssetInstaller($config, $io, $this->composer, $type);
 
         /* @var InstalledRepositoryInterface $repository */
         $library->install($repository, $package);
@@ -207,8 +210,9 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $composer = $this->composer;
         /* @var AssetTypeInterface $type */
         $type = $this->type;
+        $config = ConfigBuilder::build($composer);
 
-        return new AssetInstaller($io, $composer, $type);
+        return new AssetInstaller($config, $io, $composer, $type);
     }
 
     /**

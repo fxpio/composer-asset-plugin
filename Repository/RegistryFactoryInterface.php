@@ -11,7 +11,7 @@
 
 namespace Fxp\Composer\AssetPlugin\Repository;
 
-use Composer\Package\RootPackageInterface;
+use Fxp\Composer\AssetPlugin\Config\Config;
 
 /**
  * Interface of repository registry factory.
@@ -23,9 +23,9 @@ interface RegistryFactoryInterface
     /**
      * Create the repository registries.
      *
-     * @param AssetRepositoryManager $arm     The asset repository manager
-     * @param VcsPackageFilter       $filter  The vcs package filter
-     * @param RootPackageInterface   $package The root package
+     * @param AssetRepositoryManager $arm    The asset repository manager
+     * @param VcsPackageFilter       $filter The vcs package filter
+     * @param Config                 $config The plugin config
      */
-    public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package);
+    public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config);
 }

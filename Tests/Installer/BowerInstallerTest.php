@@ -21,6 +21,7 @@ use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\TestCase;
 use Composer\Util\Filesystem;
+use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
@@ -147,7 +148,7 @@ class BowerInstallerTest extends TestCase
         $this->fs->removeDirectory($this->vendorDir);
         $this->composer->setPackage($rootPackage);
 
-        new BowerInstaller($io, $this->composer, $type);
+        new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         $this->assertFileNotExists($this->vendorDir);
     }
 
@@ -163,7 +164,7 @@ class BowerInstallerTest extends TestCase
         $this->fs->removeDirectory($this->binDir);
         $this->composer->setPackage($rootPackage);
 
-        new BowerInstaller($io, $this->composer, $type);
+        new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         $this->assertFileNotExists($this->binDir);
     }
 
@@ -178,7 +179,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock();
         $package
@@ -246,7 +247,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock($ignoreFiles);
         $package
@@ -296,7 +297,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock($ignoreFiles);
         $package
@@ -339,7 +340,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         $package = $this->createPackageMock();
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
@@ -386,7 +387,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         $package = $this->createPackageMock();
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
@@ -423,7 +424,7 @@ class BowerInstallerTest extends TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $library = new BowerInstaller($io, $this->composer, $type);
+        $library = new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
         $package = $this->createPackageMock();
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
@@ -455,9 +456,10 @@ class BowerInstallerTest extends TestCase
         /* @var RootPackageInterface $rootPackage */
         $rootPackage = $this->createRootPackageMock($mainFiles);
         $this->composer->setPackage($rootPackage);
+        $config = ConfigBuilder::build($this->composer);
 
         $package = new Package('foo-asset/bar', '1.0.0', '1.0.0');
-        $package = AssetPlugin::addMainFiles($this->composer, $package);
+        $package = AssetPlugin::addMainFiles($config, $package);
         $extra = $package->getExtra();
 
         if (isset($mainFiles['fxp-asset']['main-files'])) {

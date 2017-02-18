@@ -17,6 +17,8 @@ use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\Installer\PackageEvent;
 use Composer\Package\PackageInterface;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Config\Config;
+use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreFactory;
 
 /**
@@ -39,8 +41,26 @@ class ScriptHandler
         }
 
         $section = static::getIgnoreConfigSection();
-        $manager = IgnoreFactory::create($event->getComposer(), $package, null, $section);
+        $manager = IgnoreFactory::create(static::getConfig($event), $event->getComposer(), $package, null, $section);
         $manager->cleanup();
+    }
+
+    /**
+     * Get the plugin config.
+     *
+     * @param PackageEvent $event
+     *
+     * @return Config
+     */
+    public static function getConfig(PackageEvent $event)
+    {
+        foreach ($event->getComposer()->getPluginManager()->getPlugins() as $plugin) {
+            if ($plugin instanceof FxpAssetPlugin) {
+                return $plugin->getConfig();
+            }
+        }
+
+        throw new \RuntimeException('The fxp composer asset plugin is not found');
     }
 
     /**

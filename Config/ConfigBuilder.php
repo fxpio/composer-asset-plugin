@@ -9,17 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Fxp\Composer\AssetPlugin\Util;
+namespace Fxp\Composer\AssetPlugin\Config;
 
+use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 
 /**
- * Helper of package config.
+ * Plugin Config builder.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-abstract class Config
+abstract class ConfigBuilder
 {
     /**
      * List of the deprecated options.
@@ -60,54 +61,33 @@ abstract class Config
     }
 
     /**
-     * Get the array config value.
+     * Build the config of plugin.
      *
-     * @param RootPackageInterface $package The root package
-     * @param string               $key     The config key
-     * @param array                $default The default value
+     * @param Composer $composer The composer
      *
-     * @return array
+     * @return Config
      */
-    public static function getArray(RootPackageInterface $package, $key, array $default = array())
+    public static function build(Composer $composer)
     {
-        return (array) static::get($package, $key, $default);
-    }
+        $config = self::injectDeprecatedConfig(self::getConfigBase($composer), (array) $composer->getPackage()->getExtra());
 
-    /**
-     * Get the config value.
-     *
-     * @param RootPackageInterface $package The root package
-     * @param string               $key     The config key
-     * @param mixed|null           $default The default value
-     *
-     * @return mixed|null
-     */
-    public static function get(RootPackageInterface $package, $key, $default = null)
-    {
-        $config = self::injectDeprecatedConfig(self::getConfigBase($package), (array) $package->getExtra(), $key);
-
-        return array_key_exists($key, $config)
-            ? $config[$key]
-            : $default;
+        return new Config($config);
     }
 
     /**
      * Inject the deprecated keys in config if the config keys are not present.
      *
-     * @param array  $config The
-     * @param array  $extra
-     * @param string $key
+     * @param array $config The config
+     * @param array $extra  The root package extra section
      *
      * @return array
      */
-    private static function injectDeprecatedConfig(array $config, array $extra, $key)
+    private static function injectDeprecatedConfig(array $config, array $extra)
     {
-        $deprecatedKey = isset(self::$deprecatedOptions[$key])
-            ? self::$deprecatedOptions[$key]
-            : 'asset-'.$key;
-
-        if (array_key_exists($deprecatedKey, $extra) && !array_key_exists($key, $config)) {
-            $config[$key] = $extra[$deprecatedKey];
+        foreach (self::$deprecatedOptions as $key => $deprecatedKey) {
+            if (array_key_exists($deprecatedKey, $extra) && !array_key_exists($key, $config)) {
+                $config[$key] = $extra[$deprecatedKey];
+            }
         }
 
         return $config;
@@ -116,13 +96,13 @@ abstract class Config
     /**
      * Get the base of data.
      *
-     * @param RootPackageInterface $package The config data
+     * @param Composer $composer The compser
      *
      * @return array
      */
-    private static function getConfigBase($package)
+    private static function getConfigBase(Composer $composer)
     {
-        $config = $package->getConfig();
+        $config = $composer->getPackage()->getConfig();
 
         return isset($config['fxp-asset']) && is_array($config['fxp-asset'])
             ? $config['fxp-asset']

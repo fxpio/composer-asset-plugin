@@ -13,7 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Installer;
 
 use Composer\Composer;
 use Composer\Package\PackageInterface;
-use Fxp\Composer\AssetPlugin\Util\Config;
+use Fxp\Composer\AssetPlugin\Config\Config;
 
 /**
  * Factory of ignore manager patterns.
@@ -25,6 +25,7 @@ class IgnoreFactory
     /**
      * Create a ignore manager.
      *
+     * @param Config           $config     The plugin config
      * @param Composer         $composer   The composer instance
      * @param PackageInterface $package    The package instance
      * @param string|null      $installDir The custom installation directory
@@ -32,11 +33,11 @@ class IgnoreFactory
      *
      * @return IgnoreManager
      */
-    public static function create(Composer $composer, PackageInterface $package, $installDir = null, $section = 'ignore-files')
+    public static function create(Config $config, Composer $composer, PackageInterface $package, $installDir = null, $section = 'ignore-files')
     {
         $installDir = static::getInstallDir($composer, $package, $installDir);
         $manager = new IgnoreManager($installDir);
-        $config = Config::getArray($composer->getPackage(), $section);
+        $config = $config->getArray($section);
 
         foreach ($config as $packageName => $patterns) {
             if ($packageName === $package->getName()) {

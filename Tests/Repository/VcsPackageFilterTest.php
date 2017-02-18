@@ -11,11 +11,13 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
+use Composer\Composer;
 use Composer\Installer\InstallationManager;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledFilesystemRepository;
+use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
@@ -28,7 +30,12 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var Composer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $composer;
+
+    /**
+     * @var RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $package;
 
@@ -54,6 +61,7 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->composer = $this->getMockBuilder('Composer\Composer')->disableOriginalConstructor()->getMock();
         $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
         $this->assetType = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
 
@@ -74,6 +82,10 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
         $this->installationManager->expects($this->any())
             ->method('isPackageInstalled')
             ->will($this->returnValue(true));
+
+        $this->composer->expects($this->any())
+            ->method('getPackage')
+            ->willReturn($this->package);
     }
 
     protected function tearDown()
@@ -623,7 +635,9 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
         /* @var RootPackageInterface $package */
         $package = $this->package;
-        $this->filter = new VcsPackageFilter($package, $this->installationManager, $this->installedRepository);
+        $config = ConfigBuilder::build($this->composer);
+
+        $this->filter = new VcsPackageFilter($config, $package, $this->installationManager, $this->installedRepository);
     }
 
     /**

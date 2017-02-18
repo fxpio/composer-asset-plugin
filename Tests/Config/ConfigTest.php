@@ -9,19 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Fxp\Composer\AssetPlugin\Tests\Util;
+namespace Fxp\Composer\AssetPlugin\Tests\Composer;
 
+use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
-use Fxp\Composer\AssetPlugin\Util\Config;
+use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 
 /**
- * Tests for config.
+ * Tests for the plugin config.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Composer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $composer;
+
     /**
      * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -34,8 +40,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->composer = $this->getMockBuilder(Composer::class)->disableOriginalConstructor()->getMock();
         $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
         $this->package = $this->getMockBuilder(RootPackageInterface::class)->getMock();
+
+        $this->composer->expects($this->any())
+            ->method('getPackage')
+            ->willReturn($this->package);
     }
 
     public function getDataForGetConfig()
@@ -44,7 +55,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array('foo', 42, 42),
             array('bar', 'foo', 'empty'),
             array('baz', false, true),
-            array('old', 42, 0),
+            array('repositories', 42, 0),
         );
     }
 
@@ -61,7 +72,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ->method('getExtra')
             ->willReturn(array(
                 'asset-baz' => false,
-                'asset-old' => 42,
+                'asset-repositories' => 42,
             ));
 
         $this->package->expects($this->any())
@@ -73,7 +84,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 ),
             ));
 
-        $this->assertSame($expected, Config::get($this->package, $key, $default));
+        $config = ConfigBuilder::build($this->composer);
+
+        $this->assertSame($expected, $config->get($key, $default));
     }
 
     public function testValidateConfig()
@@ -101,6 +114,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 ->with('<warning>The "extra.'.$option.'" option is deprecated, use the "config.fxp-asset.'.substr($option, 6).'" option</warning>');
         }
 
-        Config::validate($this->io, $this->package);
+        ConfigBuilder::validate($this->io, $this->package);
     }
 }

@@ -15,8 +15,8 @@ use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Semver\Constraint\ConstraintInterface;
+use Fxp\Composer\AssetPlugin\Config\Config;
 use Fxp\Composer\AssetPlugin\Package\Version\VersionParser;
-use Fxp\Composer\AssetPlugin\Util\Config;
 
 /**
  * Helper for Filter Package of Repository.
@@ -113,13 +113,13 @@ class FilterUtil
     /**
      * Check the config option.
      *
-     * @param RootPackageInterface $package The root package
-     * @param string               $name    The extra option name
+     * @param Config $config The plugin config
+     * @param string $name   The extra option name
      *
      * @return bool
      */
-    public static function checkConfigOption(RootPackageInterface $package, $name)
+    public static function checkConfigOption(Config $config, $name)
     {
-        return true === Config::get($package, $name, true);
+        return true === $config->get($name, true);
     }
 }

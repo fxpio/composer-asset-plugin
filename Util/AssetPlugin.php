@@ -15,9 +15,9 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Assets;
+use Fxp\Composer\AssetPlugin\Config\Config;
 use Fxp\Composer\AssetPlugin\Installer\AssetInstaller;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
@@ -33,15 +33,16 @@ class AssetPlugin
     /**
      * Adds asset installers.
      *
+     * @param Config      $config
      * @param Composer    $composer
      * @param IOInterface $io
      */
-    public static function addInstallers(Composer $composer, IOInterface $io)
+    public static function addInstallers(Config $config, Composer $composer, IOInterface $io)
     {
         $im = $composer->getInstallationManager();
 
-        $im->addInstaller(new BowerInstaller($io, $composer, Assets::createType('bower')));
-        $im->addInstaller(new AssetInstaller($io, $composer, Assets::createType('npm')));
+        $im->addInstaller(new BowerInstaller($config, $io, $composer, Assets::createType('bower')));
+        $im->addInstaller(new AssetInstaller($config, $io, $composer, Assets::createType('npm')));
     }
 
     /**
@@ -71,18 +72,18 @@ class AssetPlugin
      *
      * @param AssetRepositoryManager $arm       The asset repository manager
      * @param VcsPackageFilter       $filter    The vcs package filter
-     * @param RootPackageInterface   $package   The root package
+     * @param Config                 $config    The plugin config
      * @param string                 $assetType The asset type
      *
      * @return array
      */
-    public static function createRepositoryConfig(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package, $assetType)
+    public static function createRepositoryConfig(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config, $assetType)
     {
         return array(
             'asset-repository-manager' => $arm,
             'vcs-package-filter' => $filter,
-            'asset-options' => static::createAssetOptions(Config::getArray($package, 'registry-options'), $assetType),
-            'vcs-driver-options' => Config::getArray($package, 'vcs-driver-options'),
+            'asset-options' => static::createAssetOptions($config->getArray('registry-options'), $assetType),
+            'vcs-driver-options' => $config->getArray('vcs-driver-options'),
         );
     }
 
@@ -91,15 +92,15 @@ class AssetPlugin
      *
      * @param AssetRepositoryManager $arm
      * @param VcsPackageFilter       $filter
-     * @param RootPackageInterface   $package
+     * @param Config                 $config
      */
-    public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, RootPackageInterface $package)
+    public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config)
     {
         foreach (Assets::getRegistryFactories() as $registryType => $factoryClass) {
             $ref = new \ReflectionClass($factoryClass);
 
             if ($ref->implementsInterface('Fxp\Composer\AssetPlugin\Repository\RegistryFactoryInterface')) {
-                call_user_func(array($factoryClass, 'create'), $arm, $filter, $package);
+                call_user_func(array($factoryClass, 'create'), $arm, $filter, $config);
             }
         }
     }
@@ -121,17 +122,17 @@ class AssetPlugin
     /**
      * Adds the main file definitions from the root package.
      *
-     * @param Composer         $composer
+     * @param Config           $config
      * @param PackageInterface $package
      * @param string           $section
      *
      * @return PackageInterface
      */
-    public static function addMainFiles(Composer $composer, PackageInterface $package, $section = 'main-files')
+    public static function addMainFiles(Config $config, PackageInterface $package, $section = 'main-files')
     {
         if ($package instanceof Package) {
             $packageExtra = $package->getExtra();
-            $rootMainFiles = Config::getArray($composer->getPackage(), $section);
+            $rootMainFiles = $config->getArray($section);
 
             foreach ($rootMainFiles as $packageName => $files) {
                 if ($packageName === $package->getName()) {

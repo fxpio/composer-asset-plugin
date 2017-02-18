@@ -15,6 +15,7 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
+use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreFactory;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreManager;
 
@@ -90,7 +91,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateWithoutIgnoreFiles()
     {
-        $manager = IgnoreFactory::create($this->composer, $this->package);
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
         $this->assertTrue($manager->isEnabled());
         $this->assertFalse($manager->hasPattern());
@@ -114,7 +116,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $manager = IgnoreFactory::create($this->composer, $this->package);
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
         $this->assertTrue($manager->isEnabled());
         $this->assertTrue($manager->hasPattern());
@@ -124,7 +127,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateWithCustomInstallDir()
     {
         $installDir = 'web/assets/';
-        $manager = IgnoreFactory::create($this->composer, $this->package, $installDir);
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package, $installDir);
 
         $this->assertTrue($manager->isEnabled());
         $this->assertFalse($manager->hasPattern());
@@ -146,7 +150,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $manager = IgnoreFactory::create($this->composer, $this->package);
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
         $this->assertTrue($manager->isEnabled());
         $this->assertFalse($manager->hasPattern());
@@ -168,7 +173,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $manager = IgnoreFactory::create($this->composer, $this->package);
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
         $this->assertFalse($manager->isEnabled());
         $this->assertFalse($manager->hasPattern());
@@ -192,7 +198,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $manager = IgnoreFactory::create($this->composer, $this->package, null, 'custom-ignore-files');
+        $config = ConfigBuilder::build($this->composer);
+        $manager = IgnoreFactory::create($config, $this->composer, $this->package, null, 'custom-ignore-files');
 
         $this->assertTrue($manager->isEnabled());
         $this->assertTrue($manager->hasPattern());
