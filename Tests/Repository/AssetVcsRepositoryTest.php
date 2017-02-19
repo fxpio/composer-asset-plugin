@@ -123,8 +123,8 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      * @param string $url
      * @param string $class
      *
-     * @expectedException \Fxp\Composer\AssetPlugin\Exception\InvalidArgumentException
-     * @expectedExceptionMessage No driver found to handle Asset VCS repository
+     * @expectedException \Composer\Repository\InvalidRepositoryException
+     * @expectedExceptionMessageRegExp /No valid (bower|package).json was found in any branch or tag of http:\/\/example.org\/foo, could not load a package from it./
      */
     public function testNotDriverFound($type, $url, $class)
     {

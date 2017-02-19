@@ -36,17 +36,28 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     {
         $this->packages = array();
         $this->packageName = isset($this->repoConfig['name']) ? Util::cleanPackageName($this->repoConfig['name']) : null;
-        $driver = $this->initDriver();
-
         $this->initLoader();
-        $this->initRootIdentifier($driver);
         $this->initRegistryVersions();
-        $this->initTags($driver);
-        $this->initBranches($driver);
-        $driver->cleanup();
+        $this->initFullDriver();
 
         if (!$this->getPackages()) {
             throw new InvalidRepositoryException('No valid '.$this->assetType->getFilename().' was found in any branch or tag of '.$this->url.', could not load a package from it.');
+        }
+    }
+
+    /**
+     * Init the driver with branches and tags.
+     */
+    protected function initFullDriver()
+    {
+        try {
+            $driver = $this->initDriver();
+            $this->initRootIdentifier($driver);
+            $this->initTags($driver);
+            $this->initBranches($driver);
+            $driver->cleanup();
+        } catch (\Exception $e) {
+            // do nothing
         }
     }
 
