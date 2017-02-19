@@ -80,7 +80,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
     {
         /* @var InstalledFilesystemRepository $installedRepository */
         $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
-        $this->config = ConfigBuilder::build($composer);
+        $this->config = ConfigBuilder::build($composer, $io);
         $this->composer = $composer;
         $this->io = $io;
         $this->packageFilter = new VcsPackageFilter($this->config, $composer->getPackage(), $composer->getInstallationManager(), $installedRepository);

@@ -510,3 +510,28 @@ You can further define this option for each package:
 
 With this configuration, all your github packages will use the native Git, except for
 the `bower-asset/example-asset1` package.
+
+### Define the config for all projects
+
+You can define each option (`config.fxp-asset.*`) in each project in the `composer.json`
+file of each project, but you can also set an option for all projects.
+
+To do this, you simply need to add your options in the Composer global configuration,
+in the file of your choice:
+
+- `<COMPOSER_HOME>/composer.json` file
+- `<COMPOSER_HOME>/config.json` file
+
+> **Note:**
+> The `composer global config` command cannot be used, bacause Composer does not accept custom options.
+> But you can use the command `composer global config -e` to edit the global `composer.json`
+file with your text editor.
+
+### Config priority order
+
+The config values are retrieved in priority in:
+
+1. the project `composer.json` file
+2. the global `<COMPOSER_HOME>/config.json` file
+3. the global `<COMPOSER_HOME>/composer.json` file
+4. the deprecated config `extra.asset-*` of the project `composer.json` file

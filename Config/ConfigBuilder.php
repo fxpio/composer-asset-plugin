@@ -13,6 +13,7 @@ namespace Fxp\Composer\AssetPlugin\Config;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Json\JsonFile;
 use Composer\Package\RootPackageInterface;
 
 /**
@@ -63,13 +64,15 @@ abstract class ConfigBuilder
     /**
      * Build the config of plugin.
      *
-     * @param Composer $composer The composer
+     * @param Composer         $composer The composer
+     * @param IOInterface|null $io       The composer input/output
      *
      * @return Config
      */
-    public static function build(Composer $composer)
+    public static function build(Composer $composer, $io = null)
     {
-        $config = self::injectDeprecatedConfig(self::getConfigBase($composer), (array) $composer->getPackage()->getExtra());
+        $config = self::getConfigBase($composer, $io);
+        $config = self::injectDeprecatedConfig($config, (array) $composer->getPackage()->getExtra());
 
         return new Config($config);
     }
@@ -96,16 +99,64 @@ abstract class ConfigBuilder
     /**
      * Get the base of data.
      *
-     * @param Composer $composer The compser
+     * @param Composer         $composer The composer
+     * @param IOInterface|null $io       The composer input/output
      *
      * @return array
      */
-    private static function getConfigBase(Composer $composer)
+    private static function getConfigBase(Composer $composer, $io = null)
     {
-        $config = $composer->getPackage()->getConfig();
-
-        return isset($config['fxp-asset']) && is_array($config['fxp-asset'])
-            ? $config['fxp-asset']
+        $globalPackageConfig = self::getGlobalConfig($composer, 'composer', $io);
+        $globalConfig = self::getGlobalConfig($composer, 'config', $io);
+        $packageConfig = $composer->getPackage()->getConfig();
+        $packageConfig = isset($packageConfig['fxp-asset']) && is_array($packageConfig['fxp-asset'])
+            ? $packageConfig['fxp-asset']
             : array();
+
+        return array_merge($globalPackageConfig, $globalConfig, $packageConfig);
+    }
+
+    /**
+     * Get the data of the global config.
+     *
+     * @param Composer         $composer The composer
+     * @param string           $filename The filename
+     * @param IOInterface|null $io       The composer input/output
+     *
+     * @return array
+     */
+    private static function getGlobalConfig(Composer $composer, $filename, $io = null)
+    {
+        $home = self::getComposerHome($composer);
+        $file = new JsonFile($home.'/'.$filename.'.json');
+        $config = array();
+
+        if ($file->exists()) {
+            $data = $file->read();
+
+            if (isset($data['config']['fxp-asset']) && is_array($data['config']['fxp-asset'])) {
+                $config = $data['config']['fxp-asset'];
+
+                if ($io instanceof IOInterface && $io->isDebug()) {
+                    $io->writeError('Loading fxp-asset config in file '.$file->getPath());
+                }
+            }
+        }
+
+        return $config;
+    }
+
+    /**
+     * Get the home directory of composer.
+     *
+     * @param Composer $composer The composer
+     *
+     * @return string
+     */
+    private static function getComposerHome(Composer $composer)
+    {
+        return null !== $composer->getConfig() && $composer->getConfig()->has('home')
+            ? $composer->getConfig()->get('home')
+            : '';
     }
 }

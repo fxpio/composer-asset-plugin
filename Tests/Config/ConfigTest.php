@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Composer;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
@@ -29,6 +30,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     protected $composer;
 
     /**
+     * @var Config|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $composerConfig;
+
+    /**
      * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $io;
@@ -41,12 +47,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->composer = $this->getMockBuilder(Composer::class)->disableOriginalConstructor()->getMock();
+        $this->composerConfig = $this->getMockBuilder(Config::class)->disableOriginalConstructor()->getMock();
         $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
         $this->package = $this->getMockBuilder(RootPackageInterface::class)->getMock();
 
         $this->composer->expects($this->any())
             ->method('getPackage')
             ->willReturn($this->package);
+
+        $this->composer->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($this->composerConfig);
     }
 
     public function getDataForGetConfig()
@@ -56,6 +67,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array('bar', 'foo', 'empty'),
             array('baz', false, true),
             array('repositories', 42, 0),
+            array('global-composer-foo', 90, 0),
+            array('global-composer-bar', 70, 0),
+            array('global-config-foo', 23, 0),
         );
     }
 
@@ -68,6 +82,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfig($key, $expected, $default = null)
     {
+        $globalPath = realpath(__DIR__.'/../Fixtures/package/global');
+        $this->composerConfig->expects($this->any())
+            ->method('has')
+            ->with('home')
+            ->willReturn(true);
+
+        $this->composerConfig->expects($this->any())
+            ->method('get')
+            ->with('home')
+            ->willReturn($globalPath);
+
         $this->package->expects($this->any())
             ->method('getExtra')
             ->willReturn(array(
@@ -84,7 +109,20 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 ),
             ));
 
-        $config = ConfigBuilder::build($this->composer);
+        if (0 === strpos($key, 'global-')) {
+            $this->io->expects($this->atLeast(2))
+                ->method('isDebug')
+                ->willReturn(true);
+
+            $this->io->expects($this->at(1))
+                ->method('writeError')
+                ->with(sprintf('Loading fxp-asset config in file %s/composer.json', $globalPath));
+            $this->io->expects($this->at(3))
+                ->method('writeError')
+                ->with(sprintf('Loading fxp-asset config in file %s/config.json', $globalPath));
+        }
+
+        $config = ConfigBuilder::build($this->composer, $this->io);
 
         $this->assertSame($expected, $config->get($key, $default));
     }
