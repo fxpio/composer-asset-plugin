@@ -74,6 +74,12 @@ class LazyAssetPackageLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
             ->disableOriginalConstructor()->getMock();
 
+        $this->assetRepositoryManager->expects($this->any())
+            ->method('solveResolutions')
+            ->willReturnCallback(function ($value) {
+                return $value;
+            });
+
         $this->lazyPackage
             ->expects($this->any())
             ->method('getName')

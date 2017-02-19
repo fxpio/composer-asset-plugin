@@ -44,6 +44,11 @@ class AssetRepositoryManager
     protected $pool;
 
     /**
+     * @var ResolutionManager
+     */
+    protected $resolutionManager;
+
+    /**
      * @var RepositoryInterface[]
      */
     protected $repositories = array();
@@ -84,6 +89,30 @@ class AssetRepositoryManager
         $this->pool = $pool;
 
         return $this;
+    }
+
+    /**
+     * Set the dependency resolution manager.
+     *
+     * @param ResolutionManager $resolutionManager The dependency resolution manager
+     */
+    public function setResolutionManager(ResolutionManager $resolutionManager)
+    {
+        $this->resolutionManager = $resolutionManager;
+    }
+
+    /**
+     * Solve the dependency resolutions.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function solveResolutions(array $data)
+    {
+        return null !== $this->resolutionManager
+            ? $this->resolutionManager->solveResolutions($data)
+            : $data;
     }
 
     /**

@@ -139,6 +139,7 @@ class NpmRepository extends AbstractAssetsRepository
         foreach ($packageConfigs as $version => $config) {
             $config['version'] = $version;
             $config = $this->assetType->getPackageConverter()->convert($config);
+            $config = $this->assetRepositoryManager->solveResolutions($config);
             $packages[] = $loader->load($config);
         }
 

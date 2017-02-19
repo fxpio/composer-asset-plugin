@@ -511,6 +511,51 @@ You can further define this option for each package:
 With this configuration, all your github packages will use the native Git, except for
 the `bower-asset/example-asset1` package.
 
+### Solve the conflicts of asset dependencies
+
+Bower include a [resolution section](https://jaketrent.com/post/bower-resolutions) to
+solve the conflicts between 2 same dependencies but with different versions.
+
+As for NPM, it's possible to install several versions of the same dependency by different
+dependencies, which is not the case for Bower and Composer. Only the installation of a
+single version compatible for all dependencies is possible.
+
+The dependency resolution would force (replace) a version or range version directly in the
+root Composer package.
+
+**Example:**
+```json
+    "name": "foo/bar",
+    "require": {
+        "bower-asset/jquery": "^2.2.0"
+    }
+```
+```json
+    "name": "bar/baz",
+    "require": {
+        "bower-asset/jquery": "2.0.*"
+    }
+```
+```json
+    "name": "root/package",
+    "require": {
+        "foo/bar": "^1.0.0",
+        "bar/baz": "^1.0.0"
+    }
+    "config": {
+        "fxp-asset": {
+            "resolutions": {
+                "bower-asset/jquery": "^3.0.0"
+            }
+        }
+    }
+```
+
+Result, all asset packages with the `bower-asset/jquery` dependency will use the `^3.0.0` range version.
+
+> **Note:**
+> Be careful when replacing the version, and check the compatibility before.
+
 ### Define the config for all projects
 
 You can define each option (`config.fxp-asset.*`) in each project in the `composer.json`

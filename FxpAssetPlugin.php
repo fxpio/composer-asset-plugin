@@ -23,6 +23,7 @@ use Composer\Repository\InstalledFilesystemRepository;
 use Fxp\Composer\AssetPlugin\Config\Config;
 use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
+use Fxp\Composer\AssetPlugin\Repository\ResolutionManager;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 
@@ -87,6 +88,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
             $this->io = $io;
             $this->packageFilter = new VcsPackageFilter($this->config, $composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
             $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->packageFilter);
+            $this->assetRepositoryManager->setResolutionManager(new ResolutionManager($this->config->getArray('resolutions')));
 
             AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $this->config);
             AssetPlugin::setVcsTypeRepositories($composer->getRepositoryManager());
