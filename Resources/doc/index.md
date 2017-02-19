@@ -561,3 +561,36 @@ The config values are retrieved in priority in:
 3. the global `<COMPOSER_HOME>/config.json` file
 4. the global `<COMPOSER_HOME>/composer.json` file
 5. the deprecated config `extra.asset-*` of the project `composer.json` file
+
+### Disable the plugin
+
+When you working on multiple PHP projects, you do not necessarily need to use the plugin. It's
+possible to disable the plugin with the `config.fxp-asset.enabled` option with the `false` value.
+
+For example, you can disable the plugin globally (for all your projects), and enable it only
+for projects requiring the plugin.
+
+**Example:**
+```json
+// The global <COMPOSER_HOME>/config.json file
+{
+    "config": {
+        "fxp-asset": {
+            "enabled": false
+        }
+    }
+}
+```
+```json
+// The project composer.json file
+{
+    "config": {
+        "fxp-asset": {
+            "enabled": true
+        }
+    }
+}
+```
+
+> **Note:**
+> If you disable the plugin, and your project require this plugin, Composer will throw an exception indicating that the asset dependencies does not exist.

@@ -78,20 +78,23 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
-        /* @var InstalledFilesystemRepository $installedRepository */
-        $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
         $this->config = ConfigBuilder::build($composer, $io);
-        $this->composer = $composer;
-        $this->io = $io;
-        $this->packageFilter = new VcsPackageFilter($this->config, $composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
-        $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->packageFilter);
 
-        AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $this->config);
-        AssetPlugin::setVcsTypeRepositories($composer->getRepositoryManager());
+        if ($this->config->get('enabled', true)) {
+            /* @var InstalledFilesystemRepository $installedRepository */
+            $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
+            $this->composer = $composer;
+            $this->io = $io;
+            $this->packageFilter = new VcsPackageFilter($this->config, $composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
+            $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->packageFilter);
 
-        $this->assetRepositoryManager->addRepositories($this->config->getArray('repositories'));
+            AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $this->config);
+            AssetPlugin::setVcsTypeRepositories($composer->getRepositoryManager());
 
-        AssetPlugin::addInstallers($this->config, $composer, $io);
+            $this->assetRepositoryManager->addRepositories($this->config->getArray('repositories'));
+
+            AssetPlugin::addInstallers($this->config, $composer, $io);
+        }
     }
 
     /**
@@ -101,10 +104,12 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPluginCommand(CommandEvent $event)
     {
-        ConfigBuilder::validate($this->io, $this->composer->getPackage(), $event->getCommandName());
+        if ($this->config->get('enabled', true)) {
+            ConfigBuilder::validate($this->io, $this->composer->getPackage(), $event->getCommandName());
 
-        if (!in_array($event->getCommandName(), array('install', 'update'))) {
-            $this->packageFilter->setEnabled(false);
+            if (!in_array($event->getCommandName(), array('install', 'update'))) {
+                $this->packageFilter->setEnabled(false);
+            }
         }
     }
 
@@ -115,7 +120,9 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function onPreDependenciesSolving(InstallerEvent $event)
     {
-        $this->assetRepositoryManager->setPool($event->getPool());
+        if ($this->config->get('enabled', true)) {
+            $this->assetRepositoryManager->setPool($event->getPool());
+        }
     }
 
     /**
