@@ -527,11 +527,37 @@ in the file of your choice:
 > But you can use the command `composer global config -e` to edit the global `composer.json`
 file with your text editor.
 
+### Define the config in a environment variable
+
+You can define each option (`config.fxp-asset.*`) directly in the PHP environment variables. For
+this, all variables will start with `FXP_ASSET__` and uppercased, and each `-` will replaced by `_`.
+
+The accepted value types are:
+
+- string
+- boolean
+- integer
+- JSON array or object
+
+**Example:**
+```json
+{
+    "config": {
+        "fxp-asset": {
+            "pattern-skip-version": "(-patch)"
+        }
+    }
+}
+```
+
+Can be overrided by `FXP_ASSET__PATTERN_SKIP_VERSION="(-build)"` environment variable.
+
 ### Config priority order
 
 The config values are retrieved in priority in:
 
-1. the project `composer.json` file
-2. the global `<COMPOSER_HOME>/config.json` file
-3. the global `<COMPOSER_HOME>/composer.json` file
-4. the deprecated config `extra.asset-*` of the project `composer.json` file
+1. the environment variables starting with `FXP_ASSET__`
+2. the project `composer.json` file
+3. the global `<COMPOSER_HOME>/config.json` file
+4. the global `<COMPOSER_HOME>/composer.json` file
+5. the deprecated config `extra.asset-*` of the project `composer.json` file
