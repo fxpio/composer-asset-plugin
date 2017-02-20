@@ -238,6 +238,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         // keep the name of the main identifier for all packages
         $data['name'] = $this->packageName ?: $data['name'];
         $data = (array) $this->assetType->getPackageConverter()->convert($data, $vcsRepos);
+        $this->assetRepositoryManager->addRepositories($vcsRepos);
 
         return $this->assetRepositoryManager->solveResolutions($data);
     }

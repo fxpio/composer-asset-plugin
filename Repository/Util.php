@@ -25,23 +25,28 @@ class Util
 {
     /**
      * Add repository config.
+     * The instance of repository is returned if the repository in't added in the pool.
      *
      * @param IOInterface       $io         The IO instance
-     * @param RepositoryManager $rm         The repository mamanger
+     * @param RepositoryManager $rm         The repository manager
      * @param array             $repos      The list of already repository added (passed by reference)
      * @param string            $name       The name of the new repository
      * @param array             $repoConfig The config of the new repository
      * @param Pool|null         $pool       The pool
+     *
+     * @return RepositoryInterface|null
      */
     public static function addRepository(IOInterface $io, RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
     {
         $repoConfig['name'] = $name;
         $repo = $rm->createRepository($repoConfig['type'], $repoConfig);
-        static::addRepositoryInstance($io, $rm, $repos, $name, $repo, $pool);
+
+        return static::addRepositoryInstance($io, $rm, $repos, $name, $repo, $pool);
     }
 
     /**
      * Add repository instance.
+     * The instance of repository is returned if the repository in't added in the pool.
      *
      * @param IOInterface         $io    The IO instance
      * @param RepositoryManager   $rm    The repository mamanger
@@ -49,18 +54,26 @@ class Util
      * @param string              $name  The name of the new repository
      * @param RepositoryInterface $repo  The repository instance
      * @param Pool|null           $pool  The pool
+     *
+     * @return RepositoryInterface|null
      */
     public static function addRepositoryInstance(IOInterface $io, RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
     {
+        $notAddedRepo = null;
+
         if (!isset($repos[$name])) {
             static::writeAddRepository($io, $name);
+            $notAddedRepo = $repo;
             $repos[$name] = $repo;
             $rm->addRepository($repo);
 
             if (null !== $pool) {
                 $pool->addRepository($repo);
+                $notAddedRepo = null;
             }
         }
+
+        return $notAddedRepo;
     }
 
     /**

@@ -54,6 +54,11 @@ class AssetRepositoryManager
     protected $repositories = array();
 
     /**
+     * @var array
+     */
+    protected $poolRepositories = array();
+
+    /**
      * Constructor.
      *
      * @param IOInterface       $io            The IO
@@ -87,6 +92,12 @@ class AssetRepositoryManager
     public function setPool(Pool $pool)
     {
         $this->pool = $pool;
+
+        foreach ($this->poolRepositories as $repo) {
+            $pool->addRepository($repo);
+        }
+
+        $this->poolRepositories = array();
 
         return $this;
     }
@@ -138,7 +149,11 @@ class AssetRepositoryManager
                 $repo['vcs-package-filter'] = $this->packageFilter;
             }
 
-            Util::addRepository($this->io, $this->rm, $this->repositories, $name, $repo, $this->pool);
+            $repoInstance = Util::addRepository($this->io, $this->rm, $this->repositories, $name, $repo, $this->pool);
+
+            if (null === $this->pool && $repoInstance instanceof RepositoryInterface) {
+                $this->poolRepositories[] = $repoInstance;
+            }
         }
     }
 

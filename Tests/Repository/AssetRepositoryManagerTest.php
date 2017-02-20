@@ -11,7 +11,9 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository;
 
+use Composer\DependencyResolver\Pool;
 use Composer\IO\IOInterface;
+use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\ResolutionManager;
@@ -25,6 +27,21 @@ use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
 class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var RepositoryManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $rm;
+
+    /**
+     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $io;
+
+    /**
+     * @var VcsPackageFilter|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $filter;
+
+    /**
      * @var ResolutionManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $resolutionManager;
@@ -36,15 +53,12 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        /* @var IOInterface|\PHPUnit_Framework_MockObject_MockObject $io */
-        $io = $this->getMockBuilder(IOInterface::class)->getMock();
-        /* @var RepositoryManager|\PHPUnit_Framework_MockObject_MockObject $rm */
-        $rm = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
-        /* @var VcsPackageFilter|\PHPUnit_Framework_MockObject_MockObject $filter */
-        $filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
+        $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
+        $this->rm = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $this->filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
 
         $this->resolutionManager = $this->getMockBuilder(ResolutionManager::class)->getMock();
-        $this->assertRepositoryManager = new AssetRepositoryManager($io, $rm, $filter);
+        $this->assertRepositoryManager = new AssetRepositoryManager($this->io, $this->rm, $this->filter);
     }
 
     public function getDataForSolveResolutions()
@@ -80,5 +94,38 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
         $data = $this->assertRepositoryManager->solveResolutions($expected);
 
         $this->assertSame($expected, $data);
+    }
+
+    public function testAddRepositoryInPool()
+    {
+        $repos = array(
+            array(
+                'name' => 'foo/bar',
+                'type' => 'asset-vcs',
+                'url' => 'https://github.com/helloguest/helloguest-ui-app.git',
+            ),
+        );
+
+        $repoConfigExpected = array_merge($repos[0], array(
+            'asset-repository-manager' => $this->assertRepositoryManager,
+            'vcs-package-filter' => $this->filter,
+        ));
+
+        $repo = $this->getMockBuilder(RepositoryInterface::class)->getMock();
+
+        $this->rm->expects($this->once())
+            ->method('createRepository')
+            ->with('asset-vcs', $repoConfigExpected)
+            ->willReturn($repo);
+
+        $this->assertRepositoryManager->addRepositories($repos);
+
+        /* @var Pool|\PHPUnit_Framework_MockObject_MockObject $pool */
+        $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $pool->expects($this->once())
+            ->method('addRepository')
+            ->with($repo);
+
+        $this->assertRepositoryManager->setPool($pool);
     }
 }
