@@ -49,8 +49,13 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
+        $assetConfig = new \Fxp\Composer\AssetPlugin\Config\Config(array());
+
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
             ->disableOriginalConstructor()->getMock();
+        $this->assetRepositoryManager->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($assetConfig);
     }
 
     public function tearDown()
