@@ -87,7 +87,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
             $this->composer = $composer;
             $this->io = $io;
             $this->packageFilter = new VcsPackageFilter($this->config, $composer->getPackage(), $composer->getInstallationManager(), $installedRepository);
-            $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->packageFilter);
+            $this->assetRepositoryManager = new AssetRepositoryManager($io, $composer->getRepositoryManager(), $this->config, $this->packageFilter);
             $this->assetRepositoryManager->setResolutionManager(new ResolutionManager($this->config->getArray('resolutions')));
 
             AssetPlugin::addRegistryRepositories($this->assetRepositoryManager, $this->packageFilter, $this->config);

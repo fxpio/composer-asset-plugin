@@ -15,6 +15,7 @@ use Composer\DependencyResolver\Pool;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Config\Config;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\ResolutionManager;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
@@ -37,6 +38,11 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * @var VcsPackageFilter|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $filter;
@@ -55,10 +61,11 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
         $this->rm = $this->getMockBuilder(RepositoryManager::class)->disableOriginalConstructor()->getMock();
+        $this->config = new Config(array());
         $this->filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
 
         $this->resolutionManager = $this->getMockBuilder(ResolutionManager::class)->getMock();
-        $this->assertRepositoryManager = new AssetRepositoryManager($this->io, $this->rm, $this->filter);
+        $this->assertRepositoryManager = new AssetRepositoryManager($this->io, $this->rm, $this->config, $this->filter);
     }
 
     public function getDataForSolveResolutions()
@@ -127,5 +134,10 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
             ->with($repo);
 
         $this->assertRepositoryManager->setPool($pool);
+    }
+
+    public function testGetConfig()
+    {
+        $this->assertSame($this->config, $this->assertRepositoryManager->getConfig());
     }
 }

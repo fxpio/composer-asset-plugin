@@ -17,6 +17,7 @@ use Composer\Downloader\TransportException;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Config\Config as AssetConfig;
 use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
@@ -45,7 +46,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     protected $rm;
 
     /**
-     * @var AssetRepositoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var AssetRepositoryManager
      */
     protected $assertRepositoryManager;
 
@@ -77,7 +78,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
         $rm = new RepositoryManager($io, $config);
         $rm->setRepositoryClass($this->getType().'-vcs', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\MockAssetRepository');
-        $this->assertRepositoryManager = new AssetRepositoryManager($io, $rm, $filter);
+        $this->assertRepositoryManager = new AssetRepositoryManager($io, $rm, new AssetConfig(array()), $filter);
         $repoConfig = array_merge(array(
             'asset-repository-manager' => $this->assertRepositoryManager,
             'asset-options' => array(

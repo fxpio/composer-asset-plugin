@@ -15,6 +15,7 @@ use Composer\DependencyResolver\Pool;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
+use Fxp\Composer\AssetPlugin\Config\Config;
 
 /**
  * The asset repository manager.
@@ -32,6 +33,11 @@ class AssetRepositoryManager
      * @var RepositoryManager
      */
     protected $rm;
+
+    /**
+     * @var Config
+     */
+    protected $config;
 
     /**
      * @var VcsPackageFilter
@@ -63,12 +69,14 @@ class AssetRepositoryManager
      *
      * @param IOInterface       $io            The IO
      * @param RepositoryManager $rm            The repository manager
+     * @param Config            $config        The asset config
      * @param VcsPackageFilter  $packageFilter The package filter
      */
-    public function __construct(IOInterface $io, RepositoryManager $rm, VcsPackageFilter $packageFilter)
+    public function __construct(IOInterface $io, RepositoryManager $rm, Config $config, VcsPackageFilter $packageFilter)
     {
         $this->io = $io;
         $this->rm = $rm;
+        $this->config = $config;
         $this->packageFilter = $packageFilter;
     }
 
@@ -80,6 +88,16 @@ class AssetRepositoryManager
     public function getRepositoryManager()
     {
         return $this->rm;
+    }
+
+    /**
+     * Get the asset config.
+     *
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
