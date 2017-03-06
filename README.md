@@ -107,7 +107,7 @@ License
 
 This composer plugin is under the MIT license. See the complete license in:
 
-[Resources/meta/LICENSE](Resources/meta/LICENSE)
+[LICENSE](LICENSE)
 
 About
 -----
