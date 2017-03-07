@@ -14,6 +14,8 @@ matrix:
           env: COMPOSER_VERSION=""
         - php: 7.0
           env: COMPOSER_VERSION=""
+        - php: 7.1
+          env: COMPOSER_VERSION=""
         - php: hhvm
           env: COMPOSER_VERSION=""
         - php: nightly
