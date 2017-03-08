@@ -36,8 +36,7 @@ class HgDriver extends BaseHgDriver
         parent::initialize();
 
         $cacheUrl = Filesystem::isLocalPath($this->url)
-            ? realpath($this->url)
-            : $this->url;
+            ? realpath($this->url) : $this->url;
 
         $this->cache = new Cache($this->io, $this->config->get('cache-repo-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $cacheUrl));
     }

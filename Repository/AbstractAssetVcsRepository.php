@@ -155,8 +155,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
                 $data = $driver->getComposerInformation($driver->getRootIdentifier());
                 $sc = new SemverConverter();
                 $this->rootPackageVersion = !empty($data['version'])
-                    ? $sc->convertVersion(ltrim($data['version'], '^~'))
-                    : null;
+                    ? $sc->convertVersion(ltrim($data['version'], '^~')) : null;
                 $this->rootData = $data;
 
                 if (null === $this->packageName) {

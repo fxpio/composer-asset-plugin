@@ -123,8 +123,7 @@ class BitbucketUtil
             if ($method !== 'getContents') {
                 $file = (array) JsonFile::parseJson((string) $composer, $resource);
                 $composer = empty($file) || !array_key_exists('data', $file)
-                    ? false
-                    : $file['data'];
+                    ? false : $file['data'];
             }
         } catch (\Exception $e) {
             $composer = false;
