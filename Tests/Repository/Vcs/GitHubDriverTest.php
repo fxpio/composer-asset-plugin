@@ -19,6 +19,7 @@ use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
 use Composer\Util\RemoteFilesystem;
+use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver;
 
 /**
@@ -33,6 +34,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     private $config;
 
+    /**
+     * @var AssetRepositoryManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $assetRepositoryManager;
+
     public function setUp()
     {
         $this->config = new Config();
@@ -42,6 +48,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
                 'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache',
             ),
         ));
+
+        $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
+            ->disableOriginalConstructor()->getMock();
     }
 
     public function tearDown()
@@ -141,6 +150,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -193,6 +203,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -259,6 +270,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -374,6 +386,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -422,6 +435,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'no-api' => true,
         );
@@ -474,6 +488,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -516,6 +531,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -571,6 +587,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -622,6 +639,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -674,6 +692,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -736,6 +755,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -836,6 +856,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -892,6 +913,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -977,6 +999,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'no-api' => true,
         );
@@ -1050,6 +1073,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
         );
@@ -1086,6 +1110,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $repoConfig = array(
             'url' => $repoUrl,
             'asset-type' => $type,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'filename' => $filename,
             'package-name' => $packageName,
             'vcs-driver-options' => array(

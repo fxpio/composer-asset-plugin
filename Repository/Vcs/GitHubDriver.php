@@ -140,6 +140,7 @@ class GitHubDriver extends AbstractGitHubDriver
                 'url' => $url,
                 'asset-type' => $this->repoConfig['asset-type'],
                 'filename' => $this->repoConfig['filename'],
+                'asset-repository-manager' => $this->repoConfig['asset-repository-manager'],
             ),
             $this->io,
             $this->config,
