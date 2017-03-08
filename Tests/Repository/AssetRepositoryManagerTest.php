@@ -55,7 +55,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var AssetRepositoryManager
      */
-    protected $assertRepositoryManager;
+    protected $assetRepositoryManager;
 
     protected function setUp()
     {
@@ -65,7 +65,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
         $this->filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
 
         $this->resolutionManager = $this->getMockBuilder(ResolutionManager::class)->getMock();
-        $this->assertRepositoryManager = new AssetRepositoryManager($this->io, $this->rm, $this->config, $this->filter);
+        $this->assetRepositoryManager = new AssetRepositoryManager($this->io, $this->rm, $this->config, $this->filter);
     }
 
     public function getDataForSolveResolutions()
@@ -88,7 +88,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         if ($withResolutionManager) {
-            $this->assertRepositoryManager->setResolutionManager($this->resolutionManager);
+            $this->assetRepositoryManager->setResolutionManager($this->resolutionManager);
             $this->resolutionManager->expects($this->once())
                 ->method('solveResolutions')
                 ->with($expected)
@@ -98,7 +98,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
                 ->method('solveResolutions');
         }
 
-        $data = $this->assertRepositoryManager->solveResolutions($expected);
+        $data = $this->assetRepositoryManager->solveResolutions($expected);
 
         $this->assertSame($expected, $data);
     }
@@ -114,7 +114,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $repoConfigExpected = array_merge($repos[0], array(
-            'asset-repository-manager' => $this->assertRepositoryManager,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'vcs-package-filter' => $this->filter,
         ));
 
@@ -125,7 +125,7 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
             ->with('asset-vcs', $repoConfigExpected)
             ->willReturn($repo);
 
-        $this->assertRepositoryManager->addRepositories($repos);
+        $this->assetRepositoryManager->addRepositories($repos);
 
         /* @var Pool|\PHPUnit_Framework_MockObject_MockObject $pool */
         $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
@@ -133,11 +133,11 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
             ->method('addRepository')
             ->with($repo);
 
-        $this->assertRepositoryManager->setPool($pool);
+        $this->assetRepositoryManager->setPool($pool);
     }
 
     public function testGetConfig()
     {
-        $this->assertSame($this->config, $this->assertRepositoryManager->getConfig());
+        $this->assertSame($this->config, $this->assetRepositoryManager->getConfig());
     }
 }

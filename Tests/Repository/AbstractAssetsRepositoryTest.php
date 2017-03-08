@@ -48,7 +48,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @var AssetRepositoryManager
      */
-    protected $assertRepositoryManager;
+    protected $assetRepositoryManager;
 
     /**
      * @var AbstractAssetsRepository
@@ -78,9 +78,9 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
         $filter = $this->getMockBuilder(VcsPackageFilter::class)->disableOriginalConstructor()->getMock();
         $rm = new RepositoryManager($io, $config);
         $rm->setRepositoryClass($this->getType().'-vcs', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\MockAssetRepository');
-        $this->assertRepositoryManager = new AssetRepositoryManager($io, $rm, new AssetConfig(array()), $filter);
+        $this->assetRepositoryManager = new AssetRepositoryManager($io, $rm, new AssetConfig(array()), $filter);
         $repoConfig = array_merge(array(
-            'asset-repository-manager' => $this->assertRepositoryManager,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'asset-options' => array(
                 'searchable' => true,
             ),
@@ -290,7 +290,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testSearchWithSearchDisabled()
     {
         $repoConfig = array(
-            'asset-repository-manager' => $this->assertRepositoryManager,
+            'asset-repository-manager' => $this->assetRepositoryManager,
             'asset-options' => array(
                 'searchable' => false,
             ),
