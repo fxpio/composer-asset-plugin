@@ -66,7 +66,6 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
     {
         $repoBaseUrl = 'https://bitbucket.org/composer-test/repo-name';
         $repoUrl = $repoBaseUrl.'.git';
-        $repoApiUrl = 'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name';
         $identifier = 'v0.0.0';
         $sha = 'SOMESHA';
 
@@ -79,19 +78,30 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(array($io))
             ->getMock();
 
-        $remoteFilesystem->expects($this->at(0))
+        $remoteFilesystem->expects($this->any())
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoApiUrl)), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('main_branch' => 'test_master'))));
-
-        $remoteFilesystem->expects($this->at(1))
-            ->method('getContents')
-            ->with(
-                $this->equalTo('bitbucket.org'),
-                $this->equalTo($repoApiUrl.'/src/'.$identifier.'/'.$filename),
-                $this->equalTo(false)
+            ->withConsecutive(
+                array(
+                    'bitbucket.org',
+                    'https://api.bitbucket.org/2.0/repositories/composer-test/repo-name?fields=-project%2C-owner',
+                    false,
+                ),
+                array(
+                    'bitbucket.org',
+                    'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name/main-branch',
+                    false,
+                ),
+                array(
+                    'bitbucket.org',
+                    'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name/src/v0.0.0/'.$filename,
+                    false,
+                )
             )
-            ->will($this->returnValue($this->createApiJsonWithRepoData(array())));
+            ->willReturnOnConsecutiveCalls(
+                '{"scm":"git","website":"","has_wiki":false,"name":"repo","links":{"branches":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/branches"},"tags":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/tags"},"clone":[{"href":"https:\/\/user@bitbucket.org\/composer-test\/repo-name.git","name":"https"},{"href":"ssh:\/\/git@bitbucket.org\/composer-test\/repo-name.git","name":"ssh"}],"html":{"href":"https:\/\/bitbucket.org\/composer-test\/repo-name"}},"language":"php","created_on":"2015-02-18T16:22:24.688+00:00","updated_on":"2016-05-17T13:20:21.993+00:00","is_private":true,"has_issues":false}',
+                '{"name": "test_master"}',
+                '{"name": "composer-test/repo-name","description": "test repo","license": "GPL","authors": [{"name": "Name","email": "local@domain.tld"}],"require": {"creator/package": "^1.0"},"require-dev": {"phpunit/phpunit": "~4.8"}}'
+            );
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -104,7 +114,6 @@ class GitBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
         $driver = new GitBitbucketDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $driver->initialize();
-        $this->setAttribute($driver, 'tags', array($identifier => $sha));
 
         $this->assertEquals('test_master', $driver->getRootIdentifier());
 

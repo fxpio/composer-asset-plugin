@@ -77,15 +77,30 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(array($io))
             ->getMock();
 
-        $remoteFilesystem->expects($this->at(0))
+        $remoteFilesystem->expects($this->any())
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme('https://bitbucket.org/api/1.0/repositories/composer-test/repo-name/tags')), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('tip' => array('raw_node' => 'test_master')))));
-
-        $remoteFilesystem->expects($this->at(1))
-            ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoUrl).'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array())));
+            ->withConsecutive(
+                array(
+                    'bitbucket.org',
+                    'https://api.bitbucket.org/2.0/repositories/composer-test/repo-name?fields=-project%2C-owner',
+                    false,
+                ),
+                array(
+                    'bitbucket.org',
+                    'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name/main-branch',
+                    false,
+                ),
+                array(
+                    'bitbucket.org',
+                    'https://bitbucket.org/composer-test/repo-name/raw/v0.0.0/'.$filename,
+                    false,
+                )
+            )
+            ->willReturnOnConsecutiveCalls(
+                '{"scm":"hg","website":"","has_wiki":false,"name":"repo","links":{"branches":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/branches"},"tags":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/tags"},"clone":[{"href":"https:\/\/user@bitbucket.org\/composer-test\/repo-name","name":"https"}],"html":{"href":"https:\/\/bitbucket.org\/composer-test\/repo-name"}},"language":"php","created_on":"2015-02-18T16:22:24.688+00:00","updated_on":"2016-05-17T13:20:21.993+00:00","is_private":true,"has_issues":false}',
+                '{"name": "test_master"}',
+                '{"name": "composer-test/repo-name","description": "test repo","license": "GPL","authors": [{"name": "Name","email": "local@domain.tld"}],"require": {"creator/package": "^1.0"},"require-dev": {"phpunit/phpunit": "~4.8"}}'
+            );
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -165,21 +180,6 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $attr = new \ReflectionProperty($object, $attribute);
         $attr->setAccessible(true);
         $attr->setValue($object, $value);
-    }
-
-    /**
-     * Creates the json composer content.
-     *
-     * @param array  $content The composer content
-     * @param string $name    The name of repository
-     *
-     * @return string The json content
-     */
-    protected function createJsonComposer(array $content, $name = 'repo-name')
-    {
-        return json_encode(array_merge_recursive($content, array(
-            'name' => $name,
-        )));
     }
 
     /**
