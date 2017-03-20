@@ -70,7 +70,10 @@ class NpmRepository extends AbstractAssetsRepository
      */
     protected function buildPackageUrl($packageName)
     {
-        return parent::buildPackageUrl(NpmPackageUtil::convertName($packageName));
+        $packageName = urlencode(NpmPackageUtil::revertName($packageName));
+        $packageName = str_replace('%40', '@', $packageName);
+
+        return parent::buildPackageUrl($packageName);
     }
 
     /**

@@ -35,6 +35,22 @@ abstract class NpmPackageUtil
     }
 
     /**
+     * Revert the npm package name from composer package name.
+     *
+     * @param string $name The npm package name
+     *
+     * @return string
+     */
+    public static function revertName($name)
+    {
+        if (false !== strpos($name, '--')) {
+            $name = '@'.str_replace('--', '/', $name);
+        }
+
+        return $name;
+    }
+
+    /**
      * Convert the author section.
      *
      * @param string|null $value The current value
