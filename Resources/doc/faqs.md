@@ -62,8 +62,7 @@ the plugin uses a caching system, allowing to not make new requests to retrieve 
 definitions of packages. The next commands install/update will be much faster.
 
 The performance to get the new package definitions could be even higher, but this requires
-a change directly into Composer ([see composer/composer#3282]
-(https://github.com/composer/composer/issues/3282)).
+a change directly into Composer ([see composer/composer#3282](https://github.com/composer/composer/issues/3282)).
 
 Why are the definitions from multiple versions of package retrieved to install?
 -------------------------------------------------------------------------------
@@ -112,8 +111,7 @@ Of course, 3 solutions can work around the problem:
 
 > The solution 1 is the easiest and fastest.
 
-See the documentation: [Disable the import filter using the installed packages]
-(index.md#disable-the-import-filter-using-the-installed-packages)
+See the documentation: [Disable the import filter using the installed packages](index.md#disable-the-import-filter-using-the-installed-packages)
 
 How to reduce the number of requests for getting the package definitions?
 -------------------------------------------------------------------------
@@ -132,14 +130,12 @@ course, all constraints of versions are functional (exact version, range, wildca
 operator). In this way, all versions are not accepted by the constraint of version and
 they will be skipped to the importation, and will not be injected in the `Pool`.
 
-See the documentation: [Reduce the number of requests for getting the package definitions]
-(index.md#reduce-the-number-of-requests-for-getting-the-package-definitions)
+See the documentation: [Reduce the number of requests for getting the package definitions](index.md#reduce-the-number-of-requests-for-getting-the-package-definitions)
 
 How to increase the PHP memory limit?
 -------------------------------------
 
-See the official documentation of Composer: [Memory limits errors]
-(https://getcomposer.org/doc/articles/troubleshooting.md#memory-limit-errors).
+See the official documentation of Composer: [Memory limits errors](https://getcomposer.org/doc/articles/troubleshooting.md#memory-limit-errors).
 
 Why should I create a token for Github?
 ---------------------------------------
@@ -152,14 +148,12 @@ The problem also exists using Nodejs NPM and Bower.
 If you want more details: [Github Personal API Tokens]
 (https://github.com/blog/1509-personal-api-tokens)
 
-See the official documentation of Composer: [API rate limit and OAuth tokens]
-(https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens).
+See the official documentation of Composer: [API rate limit and OAuth tokens](https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens).
 
 How to add a Github token in the configuration?
 -----------------------------------------------
 
-See the official documentation of Composer: [API rate limit and OAuth tokens]
-(https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens).
+See the official documentation of Composer: [API rate limit and OAuth tokens](https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens).
 
 Why the asset VCS repositories are placed in the 'config' section?
 ------------------------------------------------------------------
@@ -167,5 +161,4 @@ Why the asset VCS repositories are placed in the 'config' section?
 Because it's impossible to create the custom VCS repositories: Composer checks the type
 of VCS repository before the loading of plugins, so, an exception is thrown.
 
-The only way, is to put the config in `config` section (see the [doc]
-(https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/schema.md#configfxp-assetrepositories-root-only)).
+The only way, is to put the config in `config` section (see the [doc](https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/schema.md#configfxp-assetrepositories-root-only)).
