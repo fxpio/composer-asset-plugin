@@ -595,7 +595,23 @@ The accepted value types are:
 }
 ```
 
-Can be overrided by `FXP_ASSET__PATTERN_SKIP_VERSION="(-build)"` environment variable.
+Can be overridden by `FXP_ASSET__PATTERN_SKIP_VERSION="(-build)"` environment variable.
+
+**Example:**
+```json
+{
+    "config": {
+        "fxp-asset": {
+            "vcs-driver-options": {
+                "github-no-api": true
+            }
+        }
+    }
+}
+```
+
+Can be overridden by `FXP_ASSET__VCS_DRIVER_OPTIONS='{"github-no-api": true}'` environment variable.
+
 
 ### Config priority order
 
