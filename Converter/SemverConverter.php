@@ -132,6 +132,7 @@ class SemverConverter implements VersionConverterInterface
     {
         if (in_array($match, array('', '<', '>', '=', ','))) {
             $replace = in_array($match, array('<', '>')) ? $match : $replace;
+            $matches[$i] = '~' === $special && in_array($replace, array('<', '>')) ? '' : $matches[$i];
         } elseif ('~' === $match) {
             $special = $match;
         } elseif (in_array($match, array('EQUAL', '^'))) {
@@ -181,7 +182,7 @@ class SemverConverter implements VersionConverterInterface
             $match .= (false === strpos($match, '.') ? '.x' : '');
             $version = explode('.', $match);
             $change = count($version) - 2;
-            $version[$change] = intval($version[$change]) + 1;
+            $version[$change] = (int) ($version[$change]) + 1;
             $match = str_replace(array('*', 'x', 'X'), '0', implode('.', $version));
         } elseif (null === $special && $i === 0 && false === strpos($match, '.') && is_numeric($match)) {
             $match = isset($matches[$i + 1]) && (' - ' === $matches[$i + 1] || '-' === $matches[$i + 1])
@@ -209,6 +210,9 @@ class SemverConverter implements VersionConverterInterface
         $matches[$i] = $replace
             ? SemverUtil::replaceAlias($matches[$i], $replace)
             : $matches[$i];
+        $matches[$i] .= '~' === $special && in_array($replace, array('<', '>'))
+            ? ','.$replace.$matches[$i]
+            : '';
         $special = null;
         $replace = null;
     }

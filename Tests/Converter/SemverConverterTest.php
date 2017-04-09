@@ -144,6 +144,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
             array('~ 1.2', '~1.2'),
             array('~ 1', '~1'),
             array('^ 1.2.3', '>=1.2.3,<2.0.0'),
+            array('~> 1.2.3', '~1.2.3,>1.2.3'),
             array('1.2.3 - 2.3.4', '>=1.2.3,<=2.3.4'),
             array('1.0.0 - 1.3.x', '>=1.0.0,<1.4.0'),
             array('1.0 - 1.x', '>=1.0,<2.0'),
