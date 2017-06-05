@@ -139,13 +139,15 @@ abstract class PackageUtil
      */
     public static function convertDependencyVersion(AssetTypeInterface $assetType, $dependency, $version)
     {
+        $containsHash = strpos($version, '#') !== false;
         $version = str_replace('#', '', $version);
         $version = empty($version) ? '*' : $version;
         $version = trim($version);
         $searchVersion = str_replace(array(' ', '<', '>', '=', '^', '~'), '', $version);
 
-        // sha version or branch verison
-        if (preg_match('{^[0-9a-f]{40}$}', $version)) {
+        // sha version or branch version
+        // sha size: 4-40. See https://git-scm.com/book/tr/v2/Git-Tools-Revision-Selection#_short_sha_1
+        if ($containsHash && preg_match('{^[0-9a-f]{4,40}$}', $version)) {
             $version = 'dev-default#'.$version;
         } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType) && !static::depIsRange($version)) {
             $oldVersion = $version;
