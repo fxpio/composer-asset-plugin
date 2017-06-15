@@ -26,7 +26,7 @@ matrix:
 
 before_script:
     - composer self-update
-    - composer global require --prefer-source phpunit/phpunit:"^4.8 || 5.3.*" satooshi/php-coveralls:^1.0.0
+    - composer global require --prefer-source phpunit/phpunit:"^4.8 || ^5.7.0" satooshi/php-coveralls:^1.0.0
     - if [ "$COMPOSER_VERSION" == "" ]; then composer install --prefer-source; fi;
     - if [ "$COMPOSER_VERSION" != "" ]; then composer require "composer/composer:${COMPOSER_VERSION}" --no-update; fi;
     - if [ "$COMPOSER_VERSION" != "" ]; then composer update "composer/composer" --prefer-source; fi;
