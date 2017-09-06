@@ -16,6 +16,7 @@ use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\ArrayRepository;
 use Fxp\Composer\AssetPlugin\Converter\NpmPackageUtil;
+use Fxp\Composer\AssetPlugin\Converter\PackageUtil;
 use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
 
 /**
@@ -82,6 +83,14 @@ class NpmRepository extends AbstractAssetsRepository
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
+
+        // Add release date in $packageConfigs
+        if (isset($data['versions']) && isset($data['time'])) {
+            $time = $data['time'];
+            array_walk($data['versions'], function (&$packageConfigs, $version) use ($time) {
+                PackageUtil::convertStringKey($time, $version, $packageConfigs, 'time');
+            });
+        }
 
         return array(
             'type' => $this->assetType->getName().'-'.$type,

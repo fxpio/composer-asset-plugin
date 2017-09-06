@@ -96,6 +96,9 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                         ),
                     ),
                 ),
+                'time' => array(
+                    '1.0.0' => '2016-09-20T13:48:47.730Z',
+                ),
             ))));
 
         $this->assertCount(0, $this->rm->getRepositories());
