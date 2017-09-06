@@ -39,6 +39,7 @@ class BowerPackageConverter extends AbstractPackageConverter
             'description' => 'description',
             'keywords' => 'keywords',
             'license' => 'license',
+            'time' => 'time',
             'bin' => 'bin',
         );
     }
