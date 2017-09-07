@@ -49,6 +49,16 @@ The plugin can override the main file definitions of the Bower packages. To over
 definitions specify the packages and their main file array as name/value pairs. For an example
 see the [usage informations](index.md#override-the-main-files-for-bower).
 
+##### config.fxp-asset.git-skip-update (root-only)
+
+The plugin can skip updating meta-data in git repositories for given amount of time, i.e. `6 hours`, `3 days` or `1 week`.
+
+    "config": {
+        "fxp-asset": {
+            "git-skip-update": "2 days"
+        }
+    }
+
 ### Mapping asset file to composer package
 
 ##### NPM mapping
