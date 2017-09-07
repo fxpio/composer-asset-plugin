@@ -49,7 +49,7 @@ class GitDriver extends BaseGitDriver
 
         $skipSync = false;
         if (null !== ($skip = $arm->getConfig()->get('git-skip-update'))) {
-            $localUrl = $this->config->get('cache-vcs-dir') . '/' . preg_replace('{[^a-z0-9.]}i', '-', $this->url) . '/';
+            $localUrl = $this->config->get('cache-vcs-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $this->url).'/';
             // check if local copy exists and if it is a git repository and that modification time is within threshold
             if (is_dir($localUrl) && is_file($localUrl.'/config') && filemtime($localUrl) > strtotime('-'.$skip)) {
                 $skipSync = true;
