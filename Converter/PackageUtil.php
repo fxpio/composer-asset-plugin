@@ -139,10 +139,9 @@ abstract class PackageUtil
      */
     public static function convertDependencyVersion(AssetTypeInterface $assetType, $dependency, $version)
     {
-        $containsHash = strpos($version, '#') !== false;
+        $containsHash = false !== strpos($version, '#');
         $version = str_replace('#', '', $version);
-        $version = empty($version) ? '*' : $version;
-        $version = trim($version);
+        $version = empty($version) ? '*' : trim($version);
         $searchVersion = str_replace(array(' ', '<', '>', '=', '^', '~'), '', $version);
 
         // sha version or branch version
@@ -150,12 +149,7 @@ abstract class PackageUtil
         if ($containsHash && preg_match('{^[0-9a-f]{4,40}$}', $version)) {
             $version = 'dev-default#'.$version;
         } elseif ('*' !== $version && !Validator::validateTag($searchVersion, $assetType) && !static::depIsRange($version)) {
-            $oldVersion = $version;
-            $version = 'dev-'.$assetType->getVersionConverter()->convertVersion($version);
-
-            if (!Validator::validateBranch($oldVersion)) {
-                $version .= ' || '.$oldVersion;
-            }
+            $version = static::convertBrachVersion($assetType, $version);
         }
 
         return array($dependency, $version);
@@ -303,5 +297,25 @@ abstract class PackageUtil
         $version = trim($version);
 
         return (bool) preg_match('/[\<\>\=\^\~\ ]/', $version);
+    }
+
+    /**
+     * Convert the dependency branch version.
+     *
+     * @param AssetTypeInterface $assetType The asset type
+     * @param string             $version   The version
+     *
+     * @return string
+     */
+    protected static function convertBrachVersion(AssetTypeInterface $assetType, $version)
+    {
+        $oldVersion = $version;
+        $version = 'dev-'.$assetType->getVersionConverter()->convertVersion($version);
+
+        if (!Validator::validateBranch($oldVersion)) {
+            $version .= ' || '.$oldVersion;
+        }
+
+        return $version;
     }
 }
