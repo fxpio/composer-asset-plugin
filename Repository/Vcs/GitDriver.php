@@ -40,7 +40,7 @@ class GitDriver extends BaseGitDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize()
     {
