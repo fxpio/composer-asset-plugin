@@ -147,10 +147,18 @@ class NpmRepository extends AbstractAssetsRepository
         $loader = new ArrayLoader();
 
         foreach ($packageConfigs as $version => $config) {
-            $config['version'] = $version;
-            $config = $this->assetType->getPackageConverter()->convert($config);
-            $config = $this->assetRepositoryManager->solveResolutions($config);
-            $packages[] = $loader->load($config);
+            try {
+                $config['version'] = $version;
+                $config = $this->assetType->getPackageConverter()->convert($config);
+                $config = $this->assetRepositoryManager->solveResolutions($config);
+                $packages[] = $loader->load($config);
+            } catch (\UnexpectedValueException $exception) {
+                // Most probably version constraint is broken.
+                // Skip this version and hope that another one will be OK
+                continue;
+            } catch (\Exception $exception) {
+                throw $exception;
+            }
         }
 
         return $packages;
