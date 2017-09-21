@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Repository;
 
 use Composer\DependencyResolver\Pool;
+use Composer\IO\IOInterface;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Repository\ArrayRepository;
@@ -155,6 +156,7 @@ class NpmRepository extends AbstractAssetsRepository
             } catch (\UnexpectedValueException $exception) {
                 // Most probably version constraint is broken.
                 // Skip this version and hope that another one will be OK
+                $this->io->write("<warning>Skipped {$config['name']} version {$version}: {$exception->getMessage()}</warning>", IOInterface::VERBOSE);
                 continue;
             } catch (\Exception $exception) {
                 throw $exception;
