@@ -158,8 +158,6 @@ class NpmRepository extends AbstractAssetsRepository
                 // Skip this version and hope that another one will be OK
                 $this->io->write("<warning>Skipped {$config['name']} version {$version}: {$exception->getMessage()}</warning>", IOInterface::VERBOSE);
                 continue;
-            } catch (\Exception $exception) {
-                throw $exception;
             }
         }
 
