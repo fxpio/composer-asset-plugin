@@ -132,7 +132,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                         'version' => '0.0.1',
                         'dependencies' => array(
                             // This constraint is invalid. Whole version package version should be skipped.
-                            'library1' => '^1.2,,<2.0'
+                            'library1' => '^1.2,,<2.0',
                         ),
                         'dist' => array(
                             'shasum' => '1d408b3fdb76923b9543d96fb4c9acd535d9cb7a',
@@ -143,7 +143,7 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                         'name' => 'foobar',
                         'version' => '0.0.1',
                         'dependencies' => array(
-                            'library1' => '^1.2,<2.0'
+                            'library1' => '^1.2,<2.0',
                         ),
                         'dist' => array(
                             'shasum' => '1d408b3fdb76923b9543d96fb4c9acd535d9cb7a',
