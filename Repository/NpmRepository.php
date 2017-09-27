@@ -138,6 +138,10 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * Create the array repository with the asset configs.
      *
+     * A warning message is displayed if the constraint versions of packages
+     * are broken. These versions are skipped and the plugin hope that other
+     * versions will be OK.
+     *
      * @param array $packageConfigs The configs of assets package versions
      *
      * @return CompletePackageInterface[]
@@ -154,10 +158,7 @@ class NpmRepository extends AbstractAssetsRepository
                 $config = $this->assetRepositoryManager->solveResolutions($config);
                 $packages[] = $loader->load($config);
             } catch (\UnexpectedValueException $exception) {
-                // Most probably version constraint is broken.
-                // Skip this version and hope that another one will be OK
                 $this->io->write("<warning>Skipped {$config['name']} version {$version}: {$exception->getMessage()}</warning>", IOInterface::VERBOSE);
-                continue;
             }
         }
 
