@@ -31,7 +31,7 @@ class BowerRepository extends AbstractAssetsRepository
      */
     protected function getUrl()
     {
-        return 'https://bower.herokuapp.com/packages';
+        return 'https://registry.bower.io/packages';
     }
 
     /**
