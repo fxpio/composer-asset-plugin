@@ -201,6 +201,10 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         try {
             $data = $this->driver->getComposerInformation($this->identifier);
             $valid = is_array($data);
+            if ($this->verbose) {
+                $this->io->write('Importing data is : '.($valid ? 'full' : 'empty '));
+                $this->io->write('Importing data is : '.print_r($date,true));
+            }
             $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
 
             if ($this->verbose) {

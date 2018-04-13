@@ -1,7 +1,15 @@
 {
-    "name": "fxp/composer-asset-plugin",
+    "name": "PommeVerte/composer-asset-plugin",
     "description": "NPM/Bower Dependency Manager for Composer",
-    "keywords": ["npm", "bower", "dependency manager", "package", "asset", "composer", "nodejs"],
+    "keywords": [
+        "npm",
+        "bower",
+        "dependency manager",
+        "package",
+        "asset",
+        "composer",
+        "nodejs"
+    ],
     "homepage": "https://github.com/fxpio/composer-asset-plugin",
     "type": "composer-plugin",
     "license": "MIT",
@@ -27,7 +35,9 @@
         ]
     },
     "autoload-dev": {
-        "psr-0": { "Composer\\Test": "vendor/composer/composer/tests/" }
+        "psr-0": {
+            "Composer\\Test": "vendor/composer/composer/tests/"
+        }
     },
     "extra": {
         "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
