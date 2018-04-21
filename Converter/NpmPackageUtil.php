@@ -126,9 +126,22 @@ abstract class NpmPackageUtil
 
         if ('shasum' === $type) {
             $value[$type] = $url;
-        } else {
-            $value['type'] = 'tarball' === $type ? 'tar' : $type;
+        } elseif ('tarball' === $type) {
+            $value['type'] = 'tar';
+            $value['url'] = $url;
+        } elseif (in_array($type, self::getDownloaderTypes(), true)) {
+            $value['type'] = $type;
             $value['url'] = $url;
         }
+    }
+
+    /**
+     * Get downloader types in Composer.
+     *
+     * @return array
+     */
+    private static function getDownloaderTypes()
+    {
+        return array('git', 'svn', 'fossil', 'hg', 'perforce', 'zip', 'rar', 'tar', 'gzip', 'xz', 'phar', 'file', 'path');
     }
 }

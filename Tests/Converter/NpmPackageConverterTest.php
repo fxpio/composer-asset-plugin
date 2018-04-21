@@ -189,9 +189,13 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
     {
         return array(
             array(array('type' => null), array()),
-            array(array('type' => 'http://example.com'), array('type' => 'type', 'url' => 'https://example.com')),
+            array(array('foo' => 'http://example.com'), array()), // unknown downloader type
+            array(array('gzip' => 'http://example.com'), array('type' => 'gzip', 'url' => 'https://example.com')),
             array(array('tarball' => 'http://example.com'), array('type' => 'tar', 'url' => 'https://example.com')),
-            array(array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01'), array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01')),
+            array(
+                array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01'),
+                array('shasum' => 'abcdef0123456789abcdef0123456789abcdef01'),
+            ),
         );
     }
 
