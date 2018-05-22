@@ -14,6 +14,17 @@ without installing NPM or Bower.
 This plugin works by transposing package information from NPM or Bower to a compatible version for Composer.
 This allows you to manage asset dependencies in a PHP based project very easily.
 
+> **Important:**
+>
+> The next major version of Composer Asset Plugin is so different, but also incompatible with the current version,
+> that it became a new project named [Foxy](https://github.com/fxpio/foxy).
+>
+> Foxy is the new way to manage the assets of PHP libraries, because it works nativelly with all the features of
+> NPM or Yarn. However, this plugin will continue to be maintained by the community, without having new features.
+>
+> You can read [the reasons for this new version](https://github.com/yiisoft/yii2/issues/14297#issuecomment-327565136),
+> or [the difference between Foxy and Fxp Composer Asset Plugin](https://github.com/fxpio/foxy/blob/master/Resources/doc/faqs.md#what-is-the-difference-between-foxy-and-fxp-composer-asset-plugin),
+> but also [how does Foxy work](https://github.com/fxpio/foxy/blob/master/Resources/doc/faqs.md#how-does-the-plugin-work).
 
 ##### Features include:
 
