@@ -19,10 +19,10 @@ use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
-use Composer\TestCase;
 use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Installer\BowerInstaller;
+use Fxp\Composer\AssetPlugin\Tests\TestCase;
 use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
 use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
 

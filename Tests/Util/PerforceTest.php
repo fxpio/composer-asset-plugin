@@ -12,7 +12,6 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Util;
 
 use Composer\IO\IOInterface;
-use Composer\Test\Util\PerforceTest as BasePerforceTest;
 use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
 use Fxp\Composer\AssetPlugin\Util\Perforce;
@@ -22,7 +21,7 @@ use Fxp\Composer\AssetPlugin\Util\Perforce;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class PerforceTest extends BasePerforceTest
+class PerforceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Perforce
@@ -39,6 +38,18 @@ class PerforceTest extends BasePerforceTest
      */
     protected $repoConfig;
 
+    /**
+     * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $io;
+
+    const TEST_DEPOT = 'depot';
+    const TEST_BRANCH = 'branch';
+    const TEST_P4USER = 'user';
+    const TEST_CLIENT_NAME = 'TEST';
+    const TEST_PORT = 'port';
+    const TEST_PATH = 'path';
+
     protected function setUp()
     {
         $this->processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
@@ -49,10 +60,30 @@ class PerforceTest extends BasePerforceTest
 
     protected function tearDown()
     {
-        parent::tearDown();
+        $this->perforce = null;
+        $this->io = null;
+        $this->repoConfig = null;
+        $this->processExecutor = null;
 
         $fs = new Filesystem();
         $fs->remove($this::TEST_PATH);
+    }
+
+    public static function getComposerJson()
+    {
+        $composer_json = array(
+            '{',
+            '"name": "test/perforce",',
+            '"description": "Basic project for testing",',
+            '"minimum-stability": "dev",',
+            '"autoload": {',
+            '"psr-0" : {',
+            '}',
+            '}',
+            '}',
+        );
+
+        return implode($composer_json);
     }
 
     /**
@@ -72,16 +103,20 @@ class PerforceTest extends BasePerforceTest
             'p4password' => 'TEST_PASSWORD',
             'filename' => 'ASSET.json',
         );
-        $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false, $this->getMockIOInterface(), 'TEST');
+        $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false, $this->getMockIOInterface());
         $password = $this->perforce->queryP4Password();
         $this->assertEquals('TEST_PASSWORD', $password);
     }
 
     public function getTestRepoConfig()
     {
-        return array_merge(parent::getTestRepoConfig(), array(
+        return array(
+            'depot' => self::TEST_DEPOT,
+            'branch' => self::TEST_BRANCH,
+            'p4user' => self::TEST_P4USER,
+            'unique_perforce_client_name' => self::TEST_CLIENT_NAME,
             'filename' => 'ASSET.json',
-        ));
+        );
     }
 
     public function testGetComposerInformationWithoutLabelWithoutStream()

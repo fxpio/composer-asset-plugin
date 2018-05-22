@@ -101,6 +101,14 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return null !== $this->packages ? count($this->packages) : 0;
+    }
+
+    /**
      * Gets the package name of this repository.
      *
      * @return string

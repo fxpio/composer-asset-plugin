@@ -11,8 +11,10 @@
 
 namespace Fxp\Composer\AssetPlugin\Tests\Repository\Vcs;
 
-use Composer\Test\Repository\Vcs\PerforceDriverTest as BasePerforceDriverTest;
+use Composer\Config;
+use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Repository\Vcs\PerforceDriver;
+use Fxp\Composer\AssetPlugin\Tests\TestCase;
 use Fxp\Composer\AssetPlugin\Util\Perforce;
 
 /**
@@ -20,24 +22,56 @@ use Fxp\Composer\AssetPlugin\Util\Perforce;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class PerforceDriverTest extends BasePerforceDriverTest
+class PerforceDriverTest extends TestCase
 {
+    protected $config;
+    protected $io;
+    protected $process;
+    protected $remoteFileSystem;
+    protected $testPath;
+
     /**
      * @var PerforceDriver
      */
     protected $driver;
+
+    protected $repoConfig;
 
     /**
      * @var Perforce|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $perforce;
 
+    const TEST_URL = 'TEST_PERFORCE_URL';
+    const TEST_DEPOT = 'TEST_DEPOT_CONFIG';
+    const TEST_BRANCH = 'TEST_BRANCH_CONFIG';
+
     protected function setUp()
     {
-        parent::setUp();
-
+        $this->testPath = $this->getUniqueTmpDirectory();
+        $this->config = $this->getTestConfig($this->testPath);
+        $this->repoConfig = $this->getTestRepoConfig();
+        $this->io = $this->getMockIOInterface();
+        $this->process = $this->getMockProcessExecutor();
+        $this->remoteFileSystem = $this->getMockRemoteFilesystem();
+        $this->perforce = $this->getMockPerforce();
         $this->driver = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
         $this->overrideDriverInternalPerforce($this->perforce);
+    }
+
+    protected function tearDown()
+    {
+        //cleanup directory under test path
+        $fs = new Filesystem();
+        $fs->removeDirectory($this->testPath);
+        $this->driver = null;
+        $this->perforce = null;
+        $this->remoteFileSystem = null;
+        $this->process = null;
+        $this->io = null;
+        $this->repoConfig = null;
+        $this->config = null;
+        $this->testPath = null;
     }
 
     protected function getMockIOInterface()
@@ -48,6 +82,27 @@ class PerforceDriverTest extends BasePerforceDriverTest
     protected function getMockProcessExecutor()
     {
         return $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+    }
+
+    protected function getMockRemoteFilesystem()
+    {
+        return $this->getMockBuilder('Composer\Util\RemoteFilesystem')->disableOriginalConstructor()->getMock();
+    }
+
+    protected function overrideDriverInternalPerforce(Perforce $perforce)
+    {
+        $reflectionClass = new \ReflectionClass($this->driver);
+        $property = $reflectionClass->getProperty('perforce');
+        $property->setAccessible(true);
+        $property->setValue($this->driver, $perforce);
+    }
+
+    protected function getTestConfig($testPath)
+    {
+        $config = new Config();
+        $config->merge(array('config' => array('home' => $testPath)));
+
+        return $config;
     }
 
     public function testInitializeCapturesVariablesFromRepoConfig()
@@ -139,10 +194,13 @@ class PerforceDriverTest extends BasePerforceDriverTest
 
     protected function getTestRepoConfig()
     {
-        return array_merge(parent::getTestRepoConfig(), array(
+        return array(
+            'url' => self::TEST_URL,
+            'depot' => self::TEST_DEPOT,
+            'branch' => self::TEST_BRANCH,
             'asset-type' => 'ASSET',
             'filename' => 'ASSET.json',
-        ));
+        );
     }
 
     protected function getMockPerforce()

@@ -105,9 +105,7 @@ class FilterUtil
             return static::findFlagStabilityName($flags[$require->getTarget()]);
         }
 
-        return $package->getPreferStable()
-            ? 'stable'
-            : $package->getMinimumStability();
+        return $package->getPreferStable() ? 'stable' : $package->getMinimumStability();
     }
 
     /**
