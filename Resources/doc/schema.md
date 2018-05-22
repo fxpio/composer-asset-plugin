@@ -77,7 +77,7 @@ The `package.json` of asset repository is automatically converted to a Complete 
 | author               | authors [0]                           |
 | contributors         | authors [n], merging with `author`    |
 | dependencies         | require                               |
-| devDependencies      | require-dev                           |
+| devDependencies      | require-dev (removed in 1.4.3 and up) |
 | bin                  | bin                                   |
 | bugs                 | extra.npm-asset-bugs                  |
 | files                | extra.npm-asset-files                 |
@@ -122,7 +122,7 @@ The `bower.json` of asset repository is automatically converted to a Complete Pa
 | keywords             | keywords                              |
 | license              | license                               |
 | dependencies         | require                               |
-| devDependencies      | require-dev                           |
+| devDependencies      | require-dev (removed in 1.4.3 and up) |
 | bin                  | bin                                   |
 | main                 | extra.bower-asset-main                |
 | ignore               | extra.bower-asset-ignore              |

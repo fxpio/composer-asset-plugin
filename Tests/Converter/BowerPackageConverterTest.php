@@ -75,12 +75,7 @@ class BowerPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/test-library20-file' => '*',
         ), $composer['require']);
 
-        $this->assertArrayHasKey('require-dev', $composer);
-        $this->assertSame(array(
-            'ASSET/dev-library1' => '>= 1.0.0',
-            'ASSET/dev-library2' => '>= 1.0.0',
-            'ASSET/dev-library2-0.9.0' => '0.9.0',
-        ), $composer['require-dev']);
+        $this->assertArrayNotHasKey('require-dev', $composer);
 
         $this->assertArrayHasKey('license', $composer);
         $this->assertSame($this->asset['license'], $composer['license']);

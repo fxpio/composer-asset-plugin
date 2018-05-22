@@ -86,14 +86,7 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/library21' => '1 || 2',
         ), $composer['require']);
 
-        $this->assertArrayHasKey('require-dev', $composer);
-        $validDevRequires = $composer['require-dev'];
-        unset($validDevRequires['ASSET/library3']);
-        $this->assertSame(array(
-            'ASSET/dev-library1' => '>= 1.0.0',
-            'ASSET/dev-library2' => '>= 1.0.0',
-            'ASSET/dev-library2-0.9.0' => '0.9.0',
-        ), $validDevRequires);
+        $this->assertArrayNotHasKey('require-dev', $composer);
 
         $this->assertArrayHasKey('bin', $composer);
         $this->assertInternalType('array', $composer['bin']);
@@ -179,10 +172,7 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/scope2--library2' => '>= 1.0.0',
         ), $composer['require']);
 
-        $this->assertArrayHasKey('require-dev', $composer);
-        $this->assertSame(array(
-            'ASSET/scope3--dev-library1' => '>= 1.0.0',
-        ), $composer['require-dev']);
+        $this->assertArrayNotHasKey('require-dev', $composer);
     }
 
     public function getConvertDistData()

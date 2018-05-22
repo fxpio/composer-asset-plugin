@@ -179,7 +179,6 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     {
         return array(
             'dependencies' => 'require',
-            'devDependencies' => 'require-dev',
         );
     }
 
