@@ -107,8 +107,8 @@ class SemverConverter implements VersionConverterInterface
         if (' - ' === $match) {
             $matches[$i - 1] = '>='.str_replace(array('*', 'x', 'X'), '0', $matches[$i - 1]);
 
-            if (false !== strpos($matches[$i + 1], '.') && strpos($matches[$i + 1], '*') === false
-                    && strpos($matches[$i + 1], 'x') === false && strpos($matches[$i + 1], 'X') === false) {
+            if (false !== strpos($matches[$i + 1], '.') && false === strpos($matches[$i + 1], '*')
+                    && false === strpos($matches[$i + 1], 'x') && false === strpos($matches[$i + 1], 'X')) {
                 $matches[$i] = ',<=';
             } else {
                 $matches[$i] = ',<';
@@ -177,14 +177,14 @@ class SemverConverter implements VersionConverterInterface
      */
     protected function matchRangeTokenStep4($i, $match, array &$matches, &$special, &$replace)
     {
-        if ($special === ',<~') {
+        if (',<~' === $special) {
             // Version range contains x in last place.
             $match .= (false === strpos($match, '.') ? '.x' : '');
             $version = explode('.', $match);
             $change = count($version) - 2;
             $version[$change] = (int) ($version[$change]) + 1;
             $match = str_replace(array('*', 'x', 'X'), '0', implode('.', $version));
-        } elseif (null === $special && $i === 0 && false === strpos($match, '.') && is_numeric($match)) {
+        } elseif (null === $special && 0 === $i && false === strpos($match, '.') && is_numeric($match)) {
             $match = isset($matches[$i + 1]) && (' - ' === $matches[$i + 1] || '-' === $matches[$i + 1])
                 ? $match
                 : '~'.$match;

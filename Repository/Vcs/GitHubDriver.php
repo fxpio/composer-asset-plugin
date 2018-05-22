@@ -95,7 +95,7 @@ class GitHubDriver extends AbstractGitHubDriver
     protected function parseComposerContent($resource)
     {
         $composer = (array) JsonFile::parseJson($this->getContents($resource));
-        if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
+        if (empty($composer['content']) || 'base64' !== $composer['encoding'] || !($composer = base64_decode($composer['content']))) {
             throw new \RuntimeException('Could not retrieve '.$this->repoConfig['filename'].' from '.$resource);
         }
 

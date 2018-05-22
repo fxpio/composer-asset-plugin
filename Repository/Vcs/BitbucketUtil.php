@@ -120,7 +120,7 @@ class BitbucketUtil
             $meth->setAccessible(true);
             $composer = $meth->invoke($driver, $resource);
 
-            if ($method !== 'getContents') {
+            if ('getContents' !== $method) {
                 $file = (array) JsonFile::parseJson((string) $composer, $resource);
                 $composer = empty($file) || !array_key_exists('data', $file)
                     ? false : $file['data'];
