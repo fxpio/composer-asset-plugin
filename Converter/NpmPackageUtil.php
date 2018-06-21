@@ -51,6 +51,35 @@ abstract class NpmPackageUtil
     }
 
     /**
+     * Convert the npm licenses list.
+     *
+     * @param array|string $licenses The npm package licenses list
+     *
+     * @return array|string
+     */
+    public static function convertLicenses($licenses)
+    {
+        if (!is_array($licenses)) {
+            return $licenses;
+        }
+
+        $result = [];
+        foreach ($licenses as $license) {
+            if (is_array($license)) {
+                if (!empty($license['type'])) {
+                    $result[] = $license['type'];
+                } elseif (!empty($license['name'])) {
+                    $result[] = $license['name'];
+                }
+            } else {
+                $result[] = $license;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Convert the author section.
      *
      * @param string|null $value The current value
