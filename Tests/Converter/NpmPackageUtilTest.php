@@ -35,4 +35,24 @@ class NpmPackageUtilTest extends AbstractPackageConverterTest
 
         $this->assertSame($expected, NpmPackageUtil::revertName($packageName));
     }
+
+    public function getLicenses()
+    {
+        return array(
+            array(array('MIT'), array('MIT')),
+            array(array('type' => 'MIT'), array('MIT')),
+            array(array('name' => 'MIT'), array('MIT')),
+        );
+    }
+
+    /**
+     * @dataProvider getLicenses
+     *
+     * @param array|string $licenses
+     * @param array|string $expected
+     */
+    public function testLicenses($licenses, $expected)
+    {
+        $this->assertSame($expected, NpmPackageUtil::convertLicenses($licenses));
+    }
 }
