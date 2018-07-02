@@ -39,7 +39,9 @@ class NpmPackageConverter extends AbstractPackageConverter
             'description' => 'description',
             'keywords' => 'keywords',
             'homepage' => 'homepage',
-            'license' => 'license',
+            'license' => array('license', function ($value) {
+                return NpmPackageUtil::convertLicenses($value);
+            }),
             'time' => 'time',
             'author' => array('authors', function ($value) {
                 return NpmPackageUtil::convertAuthor($value);
