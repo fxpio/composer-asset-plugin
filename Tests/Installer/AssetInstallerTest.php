@@ -160,7 +160,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         $io = $this->io;
         /* @var AssetTypeInterface $type */
         $type = $this->type;
-        $vendorDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test'.DIRECTORY_SEPARATOR.'vendor';
+        $vendorDir = realpath(sys_get_temp_dir()).\DIRECTORY_SEPARATOR.'composer-test'.\DIRECTORY_SEPARATOR.'vendor';
 
         $this->composer->setPackage($rootPackage);
 
@@ -180,7 +180,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
         $dm->expects($this->once())
             ->method('download')
-            ->with($package, $vendorDir.DIRECTORY_SEPARATOR.'foo-asset/package');
+            ->with($package, $vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package');
 
         $repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface')->getMock();
         $repository->expects($this->once())

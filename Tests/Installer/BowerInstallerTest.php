@@ -86,10 +86,10 @@ class BowerInstallerTest extends TestCase
         $this->config = new Config();
         $this->composer->setConfig($this->config);
 
-        $this->vendorDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test-vendor';
+        $this->vendorDir = realpath(sys_get_temp_dir()).\DIRECTORY_SEPARATOR.'composer-test-vendor';
         $this->ensureDirectoryExistsAndClear($this->vendorDir);
 
-        $this->binDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test-bin';
+        $this->binDir = realpath(sys_get_temp_dir()).\DIRECTORY_SEPARATOR.'composer-test-bin';
         $this->ensureDirectoryExistsAndClear($this->binDir);
 
         $this->config->merge(array(
@@ -264,7 +264,7 @@ class BowerInstallerTest extends TestCase
         $dm
             ->expects($this->once())
             ->method('download')
-            ->with($package, $this->vendorDir.DIRECTORY_SEPARATOR.'foo-asset/package');
+            ->with($package, $this->vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package');
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $repository */
         $repository = $this->repository;
@@ -367,7 +367,7 @@ class BowerInstallerTest extends TestCase
         $dm
             ->expects($this->once())
             ->method('remove')
-            ->with($package, $this->vendorDir.DIRECTORY_SEPARATOR.'foo-asset/pkg');
+            ->with($package, $this->vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/pkg');
 
         /* @var InstalledRepositoryInterface $repository */
         /* @var PackageInterface $package */
