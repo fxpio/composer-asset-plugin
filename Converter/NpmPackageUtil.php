@@ -63,7 +63,7 @@ abstract class NpmPackageUtil
             return $licenses;
         }
 
-        $result = [];
+        $result = array();
         foreach ($licenses as $license) {
             if (is_array($license)) {
                 if (!empty($license['type'])) {
