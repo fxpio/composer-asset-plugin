@@ -84,13 +84,13 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param array        $asset       The asset data
      * @param string       $assetKey    The asset key
      * @param array        $composer    The composer data
-     * @param string|array $composerKey The composer key or array with composer key name and closure
+     * @param array|string $composerKey The composer key or array with composer key name and closure
      *
      * @throws InvalidArgumentException When the 'composerKey' argument of asset packager converter is not an string or an array with the composer key and closure
      */
     protected function convertKey(array $asset, $assetKey, array &$composer, $composerKey)
     {
-        if (is_array($composerKey)) {
+        if (\is_array($composerKey)) {
             PackageUtil::convertArrayKey($asset, $assetKey, $composer, $composerKey);
         } else {
             PackageUtil::convertStringKey($asset, $assetKey, $composer, $composerKey);
@@ -103,7 +103,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      * @param array        $asset       The asset data
      * @param string       $assetKey    The asset extra key
      * @param array        $composer    The composer data
-     * @param string|array $composerKey The composer extra key or array with composer extra key name and closure
+     * @param array|string $composerKey The composer extra key or array with composer extra key name and closure
      * @param string       $extraKey    The extra key name
      */
     protected function convertExtraKey(array $asset, $assetKey, array &$composer, $composerKey, $extraKey = 'extra')
@@ -112,7 +112,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
 
         $this->convertKey($asset, $assetKey, $extra, $composerKey);
 
-        if (count($extra) > 0) {
+        if (\count($extra) > 0) {
             $composer[$extraKey] = $extra;
         }
     }
@@ -128,7 +128,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
      */
     protected function convertDependencies(array $asset, $assetKey, array &$composer, $composerKey, array &$vcsRepos = array())
     {
-        if (isset($asset[$assetKey]) && is_array($asset[$assetKey])) {
+        if (isset($asset[$assetKey]) && \is_array($asset[$assetKey])) {
             $newDependencies = array();
 
             foreach ($asset[$assetKey] as $dependency => $version) {

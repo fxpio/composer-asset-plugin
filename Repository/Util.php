@@ -32,9 +32,9 @@ class Util
      * @param array             $repos      The list of already repository added (passed by reference)
      * @param string            $name       The name of the new repository
      * @param array             $repoConfig The config of the new repository
-     * @param Pool|null         $pool       The pool
+     * @param null|Pool         $pool       The pool
      *
-     * @return RepositoryInterface|null
+     * @return null|RepositoryInterface
      */
     public static function addRepository(IOInterface $io, RepositoryManager $rm, array &$repos, $name, array $repoConfig, Pool $pool = null)
     {
@@ -53,9 +53,9 @@ class Util
      * @param array               $repos The list of already repository added (passed by reference)
      * @param string              $name  The name of the new repository
      * @param RepositoryInterface $repo  The repository instance
-     * @param Pool|null           $pool  The pool
+     * @param null|Pool           $pool  The pool
      *
-     * @return RepositoryInterface|null
+     * @return null|RepositoryInterface
      */
     public static function addRepositoryInstance(IOInterface $io, RepositoryManager $rm, array &$repos, $name, RepositoryInterface $repo, Pool $pool = null)
     {
@@ -86,7 +86,7 @@ class Util
     public static function cleanPackageName($name)
     {
         if (preg_match('/^[a-z]+\-asset\//', $name, $matches)) {
-            $name = substr($name, strlen($matches[0]));
+            $name = substr($name, \strlen($matches[0]));
         }
 
         return $name;
@@ -119,7 +119,7 @@ class Util
      */
     public static function getArrayValue(array $array, $name, $default = null)
     {
-        return array_key_exists($name, $array)
+        return \array_key_exists($name, $array)
             ? $array[$name]
             : $default;
     }

@@ -45,7 +45,7 @@ class AssetRepositoryManager
     protected $packageFilter;
 
     /**
-     * @var Pool|null
+     * @var null|Pool
      */
     protected $pool;
 
@@ -161,7 +161,7 @@ class AssetRepositoryManager
             if ('package' === $repo['type']) {
                 $name = $repo['package']['name'];
             } else {
-                $name = is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
+                $name = \is_int($index) ? preg_replace('{^https?://}i', '', $repo['url']) : $index;
                 $name = isset($repo['name']) ? $repo['name'] : $name;
                 $repo['asset-repository-manager'] = $this;
                 $repo['vcs-package-filter'] = $this->packageFilter;
@@ -179,14 +179,14 @@ class AssetRepositoryManager
      * Validates the config of repositories.
      *
      * @param int|string  $index The index
-     * @param mixed|array $repo  The config repo
+     * @param array|mixed $repo  The config repo
      *
      * @throws \UnexpectedValueException
      */
     protected function validateRepositories($index, $repo)
     {
-        if (!is_array($repo)) {
-            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') should be an array, '.gettype($repo).' given');
+        if (!\is_array($repo)) {
+            throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') should be an array, '.\gettype($repo).' given');
         }
         if (!isset($repo['type'])) {
             throw new \UnexpectedValueException('Repository '.$index.' ('.json_encode($repo).') must have a type defined');
@@ -200,7 +200,7 @@ class AssetRepositoryManager
      * Validates the config of package repositories.
      *
      * @param int|string  $index The index
-     * @param mixed|array $repo  The config repo
+     * @param array|mixed $repo  The config repo
      *
      * @throws \UnexpectedValueException
      */
@@ -225,7 +225,7 @@ class AssetRepositoryManager
      * Validates the config of vcs repositories.
      *
      * @param int|string  $index The index
-     * @param mixed|array $repo  The config repo
+     * @param array|mixed $repo  The config repo
      *
      * @throws \UnexpectedValueException
      */

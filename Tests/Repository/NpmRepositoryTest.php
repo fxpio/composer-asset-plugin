@@ -21,53 +21,19 @@ use Fxp\Composer\AssetPlugin\Repository\NpmRepository;
  * Tests of NPM repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class NpmRepositoryTest extends AbstractAssetsRepositoryTest
+final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getType()
-    {
-        return 'npm';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
-    {
-        return new NpmRepository($repoConfig, $io, $config, $eventDispatcher);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getMockPackageForVcsConfig()
-    {
-        return array(
-            'repository' => array(
-                'type' => 'vcs',
-                'url' => 'http://foo.tld',
-            ),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getMockSearchResult($name = 'mock-package')
-    {
-        return array();
-    }
-
     public function testWhatProvidesWithCamelcasePackageName()
     {
         $name = $this->getType().'-asset/CamelCasePackage';
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found', 404)));
+            ->will($this->throwException(new TransportException('Package not found', 404)))
+        ;
 
         $this->assertCount(0, $this->rm->getRepositories());
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
@@ -99,7 +65,8 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 'time' => array(
                     '1.0.0' => '2016-09-20T13:48:47.730Z',
                 ),
-            ))));
+            ))))
+        ;
 
         $this->assertCount(0, $this->rm->getRepositories());
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
@@ -154,7 +121,8 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 'time' => array(
                     '1.0.0' => '2016-09-20T13:48:47.730Z',
                 ),
-            ))));
+            ))))
+        ;
 
         $this->assertCount(0, $this->rm->getRepositories());
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
@@ -173,7 +141,8 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         $rfs = $this->replaceRegistryRfsByMock();
         $rfs->expects($this->any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array())));
+            ->will($this->returnValue(json_encode(array())))
+        ;
 
         $this->assertCount(0, $this->rm->getRepositories());
 
@@ -191,11 +160,49 @@ class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                     'type' => 'vcs',
                     'url' => 'git+https://foo.tld',
                 ),
-            ))));
+            ))))
+        ;
 
         $this->assertCount(0, $this->rm->getRepositories());
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
         $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
         $this->assertCount(1, $this->rm->getRepositories());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getType()
+    {
+        return 'npm';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
+    {
+        return new NpmRepository($repoConfig, $io, $config, $eventDispatcher);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMockPackageForVcsConfig()
+    {
+        return array(
+            'repository' => array(
+                'type' => 'vcs',
+                'url' => 'http://foo.tld',
+            ),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMockSearchResult($name = 'mock-package')
+    {
+        return array();
     }
 }

@@ -18,8 +18,10 @@ use Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface;
  * Tests for the conversion of Semver syntax to composer syntax.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class SemverConverterTest extends \PHPUnit_Framework_TestCase
+final class SemverConverterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var VersionConverterInterface
@@ -46,7 +48,7 @@ class SemverConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($composer, $this->converter->convertVersion($semver));
 
-        if (!ctype_alpha($semver) && !in_array($semver, array(null, ''))) {
+        if (!ctype_alpha($semver) && !\in_array($semver, array(null, ''), true)) {
             $this->assertEquals('v'.$composer, $this->converter->convertVersion('v'.$semver));
         }
     }

@@ -37,9 +37,17 @@ class BitbucketUtil
      *
      * @return array The composer
      */
-    public static function getComposerInformation(Cache $cache, array &$infoCache, $scheme,
-        array $repoConfig, $identifier, $owner, $repository, VcsDriverInterface $driver, $method = 'getContents')
-    {
+    public static function getComposerInformation(
+        Cache $cache,
+        array &$infoCache,
+        $scheme,
+        array $repoConfig,
+        $identifier,
+        $owner,
+        $repository,
+        VcsDriverInterface $driver,
+        $method = 'getContents'
+    ) {
         $infoCache[$identifier] = Util::readCache($infoCache, $cache, $repoConfig['asset-type'], $identifier);
 
         if (!isset($infoCache[$identifier])) {
@@ -65,10 +73,15 @@ class BitbucketUtil
      *
      * @return string
      */
-    protected static function getUrlResource($scheme, array $repoConfig, $identifier, $owner, $repository,
-                                             VcsDriverInterface $driver)
-    {
-        if (false === strpos(get_class($driver), 'Git')) {
+    protected static function getUrlResource(
+        $scheme,
+        array $repoConfig,
+        $identifier,
+        $owner,
+        $repository,
+        VcsDriverInterface $driver
+    ) {
+        if (false === strpos(\get_class($driver), 'Git')) {
             return $scheme.'://bitbucket.org/'.$owner.'/'.$repository.'/raw/'.$identifier.'/'.$repoConfig['filename'];
         }
 
@@ -88,9 +101,15 @@ class BitbucketUtil
      *
      * @return array
      */
-    protected static function getComposerContent($resource, $identifier, $scheme, $owner, $repository,
-                                                 VcsDriverInterface $driver, $method)
-    {
+    protected static function getComposerContent(
+        $resource,
+        $identifier,
+        $scheme,
+        $owner,
+        $repository,
+        VcsDriverInterface $driver,
+        $method
+    ) {
         $composer = static::getComposerContentOfFile($resource, $driver, $method);
 
         if (false !== $composer) {
@@ -110,7 +129,7 @@ class BitbucketUtil
      * @param VcsDriverInterface $driver   The vcs driver
      * @param string             $method   The method for get content
      *
-     * @return string|false
+     * @return false|string
      */
     protected static function getComposerContentOfFile($resource, VcsDriverInterface $driver, $method)
     {
@@ -122,7 +141,7 @@ class BitbucketUtil
 
             if ('getContents' !== $method) {
                 $file = (array) JsonFile::parseJson((string) $composer, $resource);
-                $composer = empty($file) || !array_key_exists('data', $file)
+                $composer = empty($file) || !\array_key_exists('data', $file)
                     ? false : $file['data'];
             }
         } catch (\Exception $e) {
@@ -148,8 +167,7 @@ class BitbucketUtil
     protected static function formatComposerContent(array $composer, $identifier, $scheme, $owner, $repository, $driver, $method)
     {
         $resource = $scheme.'://api.bitbucket.org/1.0/repositories/'.$owner.'/'.$repository.'/changesets/'.$identifier;
-        $composer = Util::addComposerTime($composer, 'timestamp', $resource, $driver, $method);
 
-        return $composer;
+        return Util::addComposerTime($composer, 'timestamp', $resource, $driver, $method);
     }
 }

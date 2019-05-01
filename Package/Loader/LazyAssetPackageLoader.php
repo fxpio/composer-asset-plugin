@@ -181,7 +181,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     protected function validateConfig()
     {
         foreach (array('assetType', 'loader', 'driver', 'io') as $property) {
-            if (null === $this->$property) {
+            if (null === $this->{$property}) {
                 throw new InvalidArgumentException(sprintf('The "%s" property must be defined', $property));
             }
         }
@@ -200,14 +200,14 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
         try {
             $data = $this->driver->getComposerInformation($this->identifier);
-            $valid = is_array($data);
+            $valid = \is_array($data);
             $data = $this->preProcess($this->driver, $this->validateData($data), $this->identifier);
 
             if ($this->verbose) {
                 $this->io->write('Importing '.($valid ? '' : 'empty ').$this->type.' '.$data['version'].' ('.$data['version_normalized'].')');
             }
 
-            /* @var CompletePackageInterface $realPackage */
+            /** @var CompletePackageInterface $realPackage */
             $realPackage = $this->loader->load($data);
         } catch (\Exception $e) {
             if ($this->verbose) {
@@ -227,7 +227,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      */
     protected function validateData($data)
     {
-        return is_array($data) ? $data : array();
+        return \is_array($data) ? $data : array();
     }
 
     /**

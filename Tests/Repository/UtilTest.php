@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Repository\Util;
  * Repository Util Tests.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class UtilTest extends \PHPUnit_Framework_TestCase
+final class UtilTest extends \PHPUnit\Framework\TestCase
 {
     public function getPackageNames()
     {

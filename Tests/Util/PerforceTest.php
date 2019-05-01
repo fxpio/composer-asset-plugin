@@ -21,16 +21,24 @@ use Fxp\Composer\AssetPlugin\Util\Perforce;
  * Tests for the perforce.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class PerforceTest extends \PHPUnit_Framework_TestCase
+final class PerforceTest extends \PHPUnit\Framework\TestCase
 {
+    const TEST_DEPOT = 'depot';
+    const TEST_BRANCH = 'branch';
+    const TEST_P4USER = 'user';
+    const TEST_CLIENT_NAME = 'TEST';
+    const TEST_PORT = 'port';
+    const TEST_PATH = 'path';
     /**
      * @var Perforce
      */
     protected $perforce;
 
     /**
-     * @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ProcessExecutor
      */
     protected $processExecutor;
 
@@ -43,13 +51,6 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
      * @var IOInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $io;
-
-    const TEST_DEPOT = 'depot';
-    const TEST_BRANCH = 'branch';
-    const TEST_P4USER = 'user';
-    const TEST_CLIENT_NAME = 'TEST';
-    const TEST_PORT = 'port';
-    const TEST_PATH = 'path';
 
     protected function setUp()
     {
@@ -84,7 +85,7 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
             '}',
         );
 
-        return implode($composer_json);
+        return implode('', $composer_json);
     }
 
     /**
@@ -137,7 +138,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot');
         $expected = array(
@@ -166,7 +168,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $expectedCommand = ComposerUtil::getValueByVersion(array(
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print '.escapeshellarg('//depot/ASSET.json@10001'),
@@ -183,7 +186,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot@0.0.1');
 
@@ -215,7 +219,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch');
 
@@ -246,7 +251,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $expectedCommand = ComposerUtil::getValueByVersion(array(
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print '.escapeshellarg('//depot/branch/ASSET.json@10001'),
@@ -263,7 +269,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
@@ -294,7 +301,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
@@ -319,7 +327,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                         return $command ? true : true;
                     }
                 )
-            );
+            )
+        ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
@@ -328,7 +337,7 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckServerExists()
     {
-        /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|ProcessExecutor $processExecutor */
         $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
 
         $expectedCommand = ComposerUtil::getValueByVersion(array(
@@ -338,7 +347,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand), $this->equalTo(null))
-            ->will($this->returnValue(0));
+            ->will($this->returnValue(0))
+        ;
 
         $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
         $this->assertTrue($result);
@@ -351,7 +361,7 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckServerClientError()
     {
-        /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|ProcessExecutor $processExecutor */
         $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
 
         $expectedCommand = ComposerUtil::getValueByVersion(array(
@@ -361,7 +371,8 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand), $this->equalTo(null))
-            ->will($this->returnValue(127));
+            ->will($this->returnValue(127))
+        ;
 
         $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
         $this->assertFalse($result);
@@ -369,7 +380,7 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
 
     public function testCleanupClientSpecShouldDeleteClient()
     {
-        /* @var Filesystem|\PHPUnit_Framework_MockObject_MockObject $fs */
+        /** @var Filesystem|\PHPUnit_Framework_MockObject_MockObject $fs */
         $fs = $this->getMockBuilder('Composer\Util\Filesystem')->getMock();
         $this->perforce->setFilesystem($fs);
 

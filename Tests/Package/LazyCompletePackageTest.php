@@ -20,8 +20,10 @@ use Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface;
  * Tests of lazy asset package loader.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
+final class LazyCompletePackageTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var LazyPackageInterface
@@ -56,15 +58,19 @@ class LazyCompletePackageTest extends \PHPUnit_Framework_TestCase
     {
         if (null !== $lazyType) {
             $lp = 'lazy' === $lazyType
-                ? new CompletePackage($this->package->getName(),
-                    $this->package->getVersion(), $this->package->getPrettyVersion())
+                ? new CompletePackage(
+                    $this->package->getName(),
+                    $this->package->getVersion(),
+                    $this->package->getPrettyVersion()
+                )
                 : false;
 
             $loader = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Package\Loader\LazyLoaderInterface')->getMock();
             $loader
                 ->expects($this->any())
                 ->method('load')
-                ->will($this->returnValue($lp));
+                ->will($this->returnValue($lp))
+            ;
 
             /* @var LazyLoaderInterface$loader */
             $this->package->setLoader($loader);

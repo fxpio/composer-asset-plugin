@@ -18,14 +18,16 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  * Tests of bower package converter.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class BowerPackageConverterTest extends AbstractPackageConverterTest
+final class BowerPackageConverterTest extends AbstractPackageConverterTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        /* @var AssetTypeInterface $type */
+        /** @var AssetTypeInterface $type */
         $type = $this->type;
         $this->converter = new BowerPackageConverter($type);
         $this->asset = (array) json_decode(file_get_contents(__DIR__.'/../Fixtures/package/bower.json'), true);

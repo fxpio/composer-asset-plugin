@@ -26,8 +26,10 @@ use Fxp\Composer\AssetPlugin\Repository\Vcs\GitHubDriver;
  * Tests of vcs github repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class GitHubDriverTest extends \PHPUnit_Framework_TestCase
+final class GitHubDriverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
@@ -39,7 +41,7 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
      */
     private $assetRepositoryManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->config = new Config();
         $this->config->merge(array(
@@ -55,10 +57,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
         $this->assetRepositoryManager->expects($this->any())
             ->method('getConfig')
-            ->willReturn($assetConfig);
+            ->willReturn($assetConfig)
+        ;
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $fs = new Filesystem();
         $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
@@ -91,54 +94,65 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('execute')
-            ->will($this->returnValue(1));
+            ->will($this->returnValue(1))
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $io->expects($this->once())
             ->method('askAndHideAnswer')
             ->with($this->equalTo('Token (hidden): '))
-            ->will($this->returnValue('sometoken'));
+            ->will($this->returnValue('sometoken'))
+        ;
 
         $io->expects($this->any())
             ->method('setAuthentication')
-            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'));
+            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://github.com/composer-test/repo-name'), $this->equalTo(false))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(4))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/'), $this->equalTo(false))
-            ->will($this->returnValue('{}'));
+            ->will($this->returnValue('{}'))
+        ;
 
         $remoteFilesystem->expects($this->at(5))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master', 'private' => true))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master', 'private' => true))))
+        ;
 
         $configSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
         $authConfigSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
@@ -194,16 +208,19 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -214,9 +231,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
         $this->setAttribute($gitHubDriver, 'tags', array($identifier => $sha));
@@ -251,26 +267,31 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref=feature%2F3.2-foo'), $this->equalTo(false))
-            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {"source": "'.$repoUrl.'" }}').'"}'));
+            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {"source": "'.$repoUrl.'" }}').'"}'))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/feature%2F3.2-foo'), $this->equalTo(false))
-            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
+            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -281,9 +302,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
         $this->setAttribute($gitHubDriver, 'tags', array($identifier => $sha));
@@ -320,35 +340,42 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(false));
+            ->will($this->returnValue(false))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://github.com/composer-test/repo-name'), $this->equalTo(false))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         // clean local clone if present
         $fs = new Filesystem();
@@ -357,36 +384,44 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo('git config github.accesstoken'))
-            ->will($this->returnValue(1));
+            ->will($this->returnValue(1))
+        ;
 
         $process->expects($this->at(1))
             ->method('execute')
             ->with($this->stringContains($repoSshUrl))
-            ->will($this->returnValue(0));
+            ->will($this->returnValue(0))
+        ;
 
         $process->expects($this->at(2))
             ->method('execute')
-            ->with($this->stringContains('git show-ref --tags'));
+            ->with($this->stringContains('git show-ref --tags'))
+        ;
 
         $process->expects($this->at(3))
             ->method('splitLines')
-            ->will($this->returnValue(array($sha.' refs/tags/'.$identifier)));
+            ->will($this->returnValue(array($sha.' refs/tags/'.$identifier)))
+        ;
 
         $process->expects($this->at(4))
             ->method('execute')
-            ->with($this->stringContains('git branch --no-color --no-abbrev -v'));
+            ->with($this->stringContains('git branch --no-color --no-abbrev -v'))
+        ;
 
         $process->expects($this->at(5))
             ->method('splitLines')
-            ->will($this->returnValue(array('  test_master     edf93f1fccaebd8764383dc12016d0a1a9672d89 Fix test & behavior')));
+            ->will($this->returnValue(array('  test_master     edf93f1fccaebd8764383dc12016d0a1a9672d89 Fix test & behavior')))
+        ;
 
         $process->expects($this->at(6))
             ->method('execute')
-            ->with($this->stringContains('git branch --no-color'));
+            ->with($this->stringContains('git branch --no-color'))
+        ;
 
         $process->expects($this->at(7))
             ->method('splitLines')
-            ->will($this->returnValue(array('* test_master')));
+            ->will($this->returnValue(array('* test_master')))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -396,10 +431,9 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
+        /** @var ProcessExecutor $process */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, $remoteFilesystem);
         $gitHubDriver->initialize();
 
@@ -435,7 +469,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -448,16 +483,17 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
         $gitHubDriver->initialize();
 
@@ -485,10 +521,11 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $remoteFilesystem = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, false);
         $repoConfig = array(
             'url' => $repoUrl,
@@ -526,12 +563,13 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem1 */
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem1 */
         $remoteFilesystem1 = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, false);
-        /* @var RemoteFilesystem $remoteFilesystem2 */
+        /** @var RemoteFilesystem $remoteFilesystem2 */
         $remoteFilesystem2 = $this->createMockRremoteFilesystem($io, $repoApiUrl, $filename, $sha, true);
         $repoConfig = array(
             'url' => $repoUrl,
@@ -573,21 +611,25 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Not Found', 404)));
+            ->will($this->throwException(new TransportException('Not Found', 404)))
+        ;
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Not Found', 404)));
+            ->will($this->throwException(new TransportException('Not Found', 404)))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -597,9 +639,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
 
@@ -629,17 +670,20 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->returnValue('{"encoding":"base64","content":""}'));
+            ->will($this->returnValue('{"encoding":"base64","content":""}'))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -649,9 +693,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
 
@@ -677,22 +720,26 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Mock exception code 404', 404)));
+            ->will($this->throwException(new TransportException('Mock exception code 404', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Mock exception code 400', 400)));
+            ->will($this->throwException(new TransportException('Mock exception code 400', 400)))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -702,9 +749,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
 
@@ -728,21 +774,25 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://github.com/composer-test/repo-name'), $this->equalTo(false))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getLastHeaders')
@@ -750,12 +800,14 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
                 'HTTP/1.1 301 Moved Permanently',
                 'Header-parameter: test',
                 'Location: '.$repoUrl.'-new',
-            )));
+            )))
+        ;
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl.'-new'), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -766,9 +818,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
         $this->setAttribute($gitHubDriver, 'tags', array($identifier => $sha));
@@ -804,50 +855,60 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $io->expects($this->once())
             ->method('askAndHideAnswer')
             ->with($this->equalTo('Token (hidden): '))
-            ->will($this->returnValue('sometoken'));
+            ->will($this->returnValue('sometoken'))
+        ;
 
         $io->expects($this->any())
             ->method('setAuthentication')
-            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'));
+            ->with($this->equalTo('github.com'), $this->matchesRegularExpression('{sometoken|abcdef}'), $this->matchesRegularExpression('{x-oauth-basic}'))
+        ;
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://github.com/composer-test/repo-name'), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(3))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/'), $this->equalTo(false))
-            ->will($this->returnValue('{}'));
+            ->will($this->returnValue('{}'))
+        ;
 
         $remoteFilesystem->expects($this->at(4))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $remoteFilesystem->expects($this->at(5))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl.'/contents/'.$filename.'?ref='.$identifier), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)));
+            ->will($this->throwException(new TransportException('HTTP/1.1 404 Not Found', 404)))
+        ;
 
         $configSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
         $authConfigSource = $this->getMockBuilder('Composer\Config\ConfigSourceInterface')->getMock();
@@ -866,9 +927,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $firstNonexistent = false;
 
@@ -904,16 +964,19 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrlNew), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -924,9 +987,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         );
         $repoUrl = 'https://github.com/composer-test/repo-name.git';
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $cache = new Cache($io, $this->config->get('cache-repo-dir').'/'.$originUrl.'/'.$owner.'/'.$repository);
         $cache->write('redirect-api', $repoApiUrlNew);
 
@@ -999,7 +1061,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -1012,16 +1075,17 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue($gitBranches));
+            ->will($this->returnValue($gitBranches))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
         $gitHubDriver->initialize();
 
@@ -1046,20 +1110,24 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'gh-pages'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'gh-pages'))))
+        ;
 
         $remoteFilesystem->expects($this->any())
             ->method('getLastHeaders')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
 
         $githubBranches = array();
         foreach ($branches as $branch => $sha) {
@@ -1073,7 +1141,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
-            ->will($this->returnValue(json_encode($githubBranches)));
+            ->will($this->returnValue(json_encode($githubBranches)))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -1083,9 +1152,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
             'package-name' => $packageName,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $gitHubDriver->initialize();
         $this->setAttribute($gitHubDriver, 'tags', array($identifier => $sha));
@@ -1110,7 +1178,8 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -1126,16 +1195,17 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue($gitBranches));
+            ->will($this->returnValue($gitBranches))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitHubDriver = new GitHubDriver($repoConfig, $io, $this->config, $process, null);
         $gitHubDriver->initialize();
 
@@ -1186,12 +1256,14 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
     {
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo($repoApiUrl), $this->equalTo(false))
-            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))));
+            ->will($this->returnValue($this->createJsonComposer(array('master_branch' => 'test_master'))))
+        ;
 
         if ($forCache) {
             return $remoteFilesystem;
@@ -1200,12 +1272,14 @@ class GitHubDriverTest extends \PHPUnit_Framework_TestCase
         $remoteFilesystem->expects($this->at(1))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/contents/'.$filename.'?ref='.$sha), $this->equalTo(false))
-            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {}}').'"}'));
+            ->will($this->returnValue('{"encoding":"base64","content":"'.base64_encode('{"support": {}}').'"}'))
+        ;
 
         $remoteFilesystem->expects($this->at(2))
             ->method('getContents')
             ->with($this->equalTo('github.com'), $this->equalTo('https://api.github.com/repos/composer-test/repo-name/commits/'.$sha), $this->equalTo(false))
-            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'));
+            ->will($this->returnValue('{"commit": {"committer":{ "date": "2012-09-10"}}}'))
+        ;
 
         return $remoteFilesystem;
     }

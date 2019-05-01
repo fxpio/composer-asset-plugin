@@ -41,11 +41,11 @@ class Util
      * @param string $identifier The identifier
      * @param bool   $force      Force the read
      *
-     * @return array|null
+     * @return null|array
      */
     public static function readCache(array $cacheCode, Cache $cache, $type, $identifier, $force = false)
     {
-        if (array_key_exists($identifier, $cacheCode)) {
+        if (\array_key_exists($identifier, $cacheCode)) {
             return $cacheCode[$identifier];
         }
 

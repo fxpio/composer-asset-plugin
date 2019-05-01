@@ -58,6 +58,18 @@ class SvnDriver extends BaseSvnDriver
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function supports(IOInterface $io, Config $config, $url, $deep = false)
+    {
+        if (0 === strpos($url, 'http') && preg_match('/\/svn|svn\//i', $url)) {
+            $url = 'svn'.substr($url, strpos($url, '://'));
+        }
+
+        return parent::supports($io, $config, $url, $deep);
+    }
+
+    /**
      * Get path and rev.
      *
      * @param string $identifier The identifier
@@ -85,9 +97,9 @@ class SvnDriver extends BaseSvnDriver
      * @param string $resource The resource
      * @param string $rev      The rev
      *
-     * @return null|string The composer content
-     *
      * @throws TransportException
+     *
+     * @return null|string The composer content
      */
     protected function getComposerContent($resource, $rev)
     {
@@ -105,7 +117,7 @@ class SvnDriver extends BaseSvnDriver
     /**
      * Parse the content of composer.
      *
-     * @param string|null $output   The output of process executor
+     * @param null|string $output   The output of process executor
      * @param string      $resource The resouce
      * @param string      $path     The path
      * @param string      $rev      The rev
@@ -141,24 +153,13 @@ class SvnDriver extends BaseSvnDriver
                 if ($line && preg_match('{^Last Changed Date: ([^(]+)}', $line, $match)) {
                     $date = new \DateTime($match[1], new \DateTimeZone('UTC'));
                     $composer['time'] = $date->format('Y-m-d H:i:s');
+
                     break;
                 }
             }
         }
 
         return $composer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function supports(IOInterface $io, Config $config, $url, $deep = false)
-    {
-        if (0 === strpos($url, 'http') && preg_match('/\/svn|svn\//i', $url)) {
-            $url = 'svn'.substr($url, strpos($url, '://'));
-        }
-
-        return parent::supports($io, $config, $url, $deep);
     }
 
     /**

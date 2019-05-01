@@ -45,7 +45,7 @@ class GitDriver extends BaseGitDriver
      */
     public function initialize()
     {
-        /* @var AssetRepositoryManager $arm */
+        /** @var AssetRepositoryManager $arm */
         $arm = $this->repoConfig['asset-repository-manager'];
         $skipSync = false;
 
@@ -92,10 +92,10 @@ class GitDriver extends BaseGitDriver
         GitUtil::cleanEnv();
 
         $fs = new Filesystem();
-        $fs->ensureDirectoryExists(dirname($this->repoDir));
+        $fs->ensureDirectoryExists(\dirname($this->repoDir));
 
-        if (!is_writable(dirname($this->repoDir))) {
-            throw new \RuntimeException('Can not clone '.$this->url.' to access package information. The "'.dirname($this->repoDir).'" directory is not writable by the current user.');
+        if (!is_writable(\dirname($this->repoDir))) {
+            throw new \RuntimeException('Can not clone '.$this->url.' to access package information. The "'.\dirname($this->repoDir).'" directory is not writable by the current user.');
         }
 
         if (preg_match('{^ssh://[^@]+@[^:]+:[^0-9]+}', $this->url)) {

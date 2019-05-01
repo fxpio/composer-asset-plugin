@@ -86,7 +86,7 @@ class MockIO extends BaseIO
      */
     public function write($messages, $newline = true, $verbosity = self::NORMAL)
     {
-        $pos = max(count($this->traces) - 1, 0);
+        $pos = max(\count($this->traces) - 1, 0);
         if (isset($this->traces[$pos])) {
             $messages = $this->traces[$pos].$messages;
         }
@@ -109,7 +109,7 @@ class MockIO extends BaseIO
      */
     public function overwrite($messages, $newline = true, $size = 80, $verbosity = self::NORMAL)
     {
-        $pos = max(count($this->traces) - 1, 0);
+        $pos = max(\count($this->traces) - 1, 0);
         $this->traces[$pos] = $messages;
         if ($newline) {
             $this->traces[] = '';
@@ -150,7 +150,6 @@ class MockIO extends BaseIO
      */
     public function askAndHideAnswer($question)
     {
-        return;
     }
 
     /**

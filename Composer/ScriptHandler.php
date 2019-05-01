@@ -78,7 +78,7 @@ class ScriptHandler
      *
      * @param OperationInterface $operation The operation
      *
-     * @return PackageInterface|null Return NULL if the package is an asset
+     * @return null|PackageInterface Return NULL if the package is an asset
      */
     protected static function getLibraryPackage(OperationInterface $operation)
     {
@@ -97,7 +97,7 @@ class ScriptHandler
      *
      * @param OperationInterface $operation The operation
      *
-     * @return PackageInterface|null Return NULL if the operation is not INSTALL or UPDATE
+     * @return null|PackageInterface Return NULL if the operation is not INSTALL or UPDATE
      */
     protected static function getOperationPackage(OperationInterface $operation)
     {

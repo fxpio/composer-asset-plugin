@@ -88,7 +88,7 @@ class PerforceDriver extends BasePerforceDriver
     {
         $composer = $this->perforce->getComposerInformation($identifier);
 
-        if (empty($composer) || !is_array($composer)) {
+        if (empty($composer) || !\is_array($composer)) {
             $composer = array('_nonexistent_package' => true);
         }
 

@@ -53,11 +53,12 @@ class FilterUtil
     {
         $stability = 'dev';
 
-        /* @var string $stabilityName */
-        /* @var int    $stabilityLevel */
+        /** @var string $stabilityName */
+        /** @var int $stabilityLevel */
         foreach (Package::$stabilities as $stabilityName => $stabilityLevel) {
             if ($stabilityLevel === $level) {
                 $stability = $stabilityName;
+
                 break;
             }
         }

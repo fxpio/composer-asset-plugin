@@ -64,9 +64,8 @@ class Perforce extends BasePerforce
      */
     public static function create($repoConfig, $port, $path, ProcessExecutor $process, IOInterface $io)
     {
-        $isWindows = defined('PHP_WINDOWS_VERSION_BUILD');
-        $perforce = new self($repoConfig, $port, $path, $process, $isWindows, $io);
+        $isWindows = \defined('PHP_WINDOWS_VERSION_BUILD');
 
-        return $perforce;
+        return new self($repoConfig, $port, $path, $process, $isWindows, $io);
     }
 }

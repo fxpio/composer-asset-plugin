@@ -77,7 +77,7 @@ class VcsPackageFilter
      * @param Config                             $config              The plugin config
      * @param RootPackageInterface               $package             The root package
      * @param InstallationManager                $installationManager The installation manager
-     * @param InstalledFilesystemRepository|null $installedRepository The installed repository
+     * @param null|InstalledFilesystemRepository $installedRepository The installed repository
      */
     public function __construct(Config $config, RootPackageInterface $package, InstallationManager $installationManager, InstalledFilesystemRepository $installedRepository = null)
     {
@@ -153,7 +153,7 @@ class VcsPackageFilter
             return false;
         }
 
-        /* @var Link $require */
+        /** @var Link $require */
         $require = $this->requires[$name];
 
         return !$this->satisfy($require, $normalizedVersion) && $this->isEnabled();
@@ -176,13 +176,13 @@ class VcsPackageFilter
     /**
      * Check if the filter must be skipped the version by pattern or not.
      *
-     * @return string|false Return the pattern or FALSE for disable the feature
+     * @return false|string Return the pattern or FALSE for disable the feature
      */
     protected function skipByPattern()
     {
         $skip = $this->config->get('pattern-skip-version', false);
 
-        return is_string($skip)
+        return \is_string($skip)
             ? trim($skip, '/')
             : false;
     }
@@ -274,10 +274,10 @@ class VcsPackageFilter
      */
     private function initInstalledPackages()
     {
-        /* @var PackageInterface $package */
+        /** @var PackageInterface $package */
         foreach ($this->installedRepository->getPackages() as $package) {
             $operator = $this->getFilterOperator($package);
-            /* @var Link $link */
+            /** @var Link $link */
             $link = current($this->arrayLoader->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 
@@ -297,7 +297,7 @@ class VcsPackageFilter
     private function includeRootConstraint(PackageInterface $package, Link $link)
     {
         if (isset($this->requires[$package->getName()])) {
-            /* @var Link $rLink */
+            /** @var Link $rLink */
             $rLink = $this->requires[$package->getName()];
             $useConjunctive = FilterUtil::checkConfigOption($this->config, 'optimize-with-conjunctive');
             $constraint = new MultiConstraint(array($rLink->getConstraint(), $link->getConstraint()), $useConjunctive);

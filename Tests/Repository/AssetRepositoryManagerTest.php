@@ -24,11 +24,13 @@ use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
  * Tests of Asset Repository Manager.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
+final class AssetRepositoryManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var RepositoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|RepositoryManager
      */
     protected $rm;
 
@@ -43,12 +45,12 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
     protected $config;
 
     /**
-     * @var VcsPackageFilter|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|VcsPackageFilter
      */
     protected $filter;
 
     /**
-     * @var ResolutionManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ResolutionManager
      */
     protected $resolutionManager;
 
@@ -92,10 +94,12 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
             $this->resolutionManager->expects($this->once())
                 ->method('solveResolutions')
                 ->with($expected)
-                ->willReturn($expected);
+                ->willReturn($expected)
+            ;
         } else {
             $this->resolutionManager->expects($this->never())
-                ->method('solveResolutions');
+                ->method('solveResolutions')
+            ;
         }
 
         $data = $this->assetRepositoryManager->solveResolutions($expected);
@@ -123,15 +127,17 @@ class AssetRepositoryManagerTest extends \PHPUnit_Framework_TestCase
         $this->rm->expects($this->once())
             ->method('createRepository')
             ->with('asset-vcs', $repoConfigExpected)
-            ->willReturn($repo);
+            ->willReturn($repo)
+        ;
 
         $this->assetRepositoryManager->addRepositories($repos);
 
-        /* @var Pool|\PHPUnit_Framework_MockObject_MockObject $pool */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Pool $pool */
         $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $pool->expects($this->once())
             ->method('addRepository')
-            ->with($repo);
+            ->with($repo)
+        ;
 
         $this->assetRepositoryManager->setPool($pool);
     }

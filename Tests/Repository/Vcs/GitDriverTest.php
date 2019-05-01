@@ -22,8 +22,10 @@ use Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver;
  * Tests of vcs git repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class GitDriverTest extends \PHPUnit_Framework_TestCase
+final class GitDriverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
@@ -35,7 +37,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
      */
     private $assetRepositoryManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $assetConfig = new \Fxp\Composer\AssetPlugin\Config\Config(array('git-skip-update' => '1 hour'));
 
@@ -43,7 +45,8 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)->disableOriginalConstructor()->getMock();
         $this->assetRepositoryManager->expects($this->any())
             ->method('getConfig')
-            ->willReturn($assetConfig);
+            ->willReturn($assetConfig)
+        ;
 
         $this->config = new Config();
         $this->config->merge(array(
@@ -60,7 +63,7 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         file_put_contents(sys_get_temp_dir().'/composer-test-cache/https---github.com-fxpio-composer-asset-plugin.git/config', '');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $fs = new Filesystem();
         $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
@@ -97,16 +100,17 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitDriver = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver->initialize();
 
@@ -139,7 +143,8 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
@@ -151,11 +156,11 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitDriver1 = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver1->initialize();
 
@@ -196,7 +201,8 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
@@ -208,11 +214,11 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitDriver = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver->initialize();
         $composer1 = $gitDriver->getComposerInformation($identifier);
@@ -243,7 +249,8 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
@@ -255,11 +262,11 @@ class GitDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $gitDriver1 = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver2 = new GitDriver($repoConfig, $io, $this->config, $process, null);
         $gitDriver1->initialize();

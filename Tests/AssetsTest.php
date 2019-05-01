@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Assets;
  * Tests of assets factory.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class AssetsTest extends \PHPUnit_Framework_TestCase
+final class AssetsTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetTypes()
     {

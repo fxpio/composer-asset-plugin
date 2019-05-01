@@ -30,7 +30,7 @@ class MockVcsDriver implements VcsDriverInterface
     /**
      * @var mixed
      */
-    public $contents = null;
+    public $contents;
 
     /**
      * {@inheritdoc}
@@ -45,7 +45,6 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getComposerInformation($identifier)
     {
-        return;
     }
 
     /**
@@ -53,7 +52,6 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getRootIdentifier()
     {
-        return;
     }
 
     /**
@@ -77,7 +75,6 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getDist($identifier)
     {
-        return;
     }
 
     /**
@@ -85,7 +82,6 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getSource($identifier)
     {
-        return;
     }
 
     /**
@@ -93,7 +89,6 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public function getUrl()
     {
-        return;
     }
 
     /**
@@ -121,14 +116,6 @@ class MockVcsDriver implements VcsDriverInterface
     }
 
     /**
-     * @return mixed
-     */
-    protected function getContents()
-    {
-        return $this->contents;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFileContent($file, $identifier)
@@ -141,5 +128,13 @@ class MockVcsDriver implements VcsDriverInterface
     public function getChangeDate($identifier)
     {
         return new \DateTime();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getContents()
+    {
+        return $this->contents;
     }
 }

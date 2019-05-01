@@ -82,7 +82,7 @@ abstract class SemverRangeUtil
      */
     protected static function increaseSubVersion($i, array &$exp, &$increase)
     {
-        $iNext = min(min($i + 1, 3), count($exp) - 1);
+        $iNext = min(min($i + 1, 3), \count($exp) - 1);
 
         if (($iNext !== $i && ($exp[$i] > 0 || (int) $exp[$iNext] > 9999998)) || $iNext === $i) {
             $exp[$i] = (int) $exp[$i] + 1;
@@ -93,17 +93,17 @@ abstract class SemverRangeUtil
     /**
      * Standardize the version.
      *
-     * @param string|array $version The version or the splitted version
+     * @param array|string $version The version or the splitted version
      *
      * @return string
      */
     protected static function standardizeVersion($version)
     {
-        if (is_string($version)) {
+        if (\is_string($version)) {
             $version = explode('.', $version);
         }
 
-        while (count($version) < 3) {
+        while (\count($version) < 3) {
             $version[] = '0';
         }
 

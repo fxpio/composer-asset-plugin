@@ -31,8 +31,10 @@ use Fxp\Composer\AssetPlugin\FxpAssetPlugin;
  * Tests for the composer script handler.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
+final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Composer|\PHPUnit_Framework_MockObject_MockObject
@@ -50,7 +52,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
-     * @var OperationInterface|InstallOperation|UpdateOperation|\PHPUnit_Framework_MockObject_MockObject
+     * @var InstallOperation|OperationInterface|\PHPUnit_Framework_MockObject_MockObject|UpdateOperation
      */
     protected $operation;
 
@@ -59,7 +61,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $package;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
@@ -79,33 +81,39 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return $val;
-            }));
+            }))
+        ;
 
         $rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config));
+            ->will($this->returnValue($this->config))
+        ;
         $this->composer->expects($this->any())
             ->method('getPackage')
-            ->will($this->returnValue($rootPackage));
+            ->will($this->returnValue($rootPackage))
+        ;
 
         $plugin = $this->getMockBuilder(FxpAssetPlugin::class)->disableOriginalConstructor()->getMock();
         $plugin->expects($this->any())
             ->method('getConfig')
-            ->willReturn(new Config(array()));
+            ->willReturn(new Config(array()))
+        ;
 
         $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
         $pm->expects($this->any())
             ->method('getPlugins')
-            ->willReturn(array($plugin));
+            ->willReturn(array($plugin))
+        ;
 
         $this->composer->expects($this->any())
             ->method('getPluginManager')
-            ->will($this->returnValue($pm));
+            ->will($this->returnValue($pm))
+        ;
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->composer = null;
         $this->io = null;
@@ -144,7 +152,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\InstallOperation')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
@@ -159,7 +168,8 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\UpdateOperation')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
@@ -180,19 +190,23 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->composer->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config));
+            ->will($this->returnValue($this->config))
+        ;
         $this->composer->expects($this->any())
             ->method('getPackage')
-            ->will($this->returnValue($rootPackage));
+            ->will($this->returnValue($rootPackage))
+        ;
 
         $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
         $pm->expects($this->any())
             ->method('getPlugins')
-            ->willReturn(array());
+            ->willReturn(array())
+        ;
 
         $this->composer->expects($this->any())
             ->method('getPluginManager')
-            ->will($this->returnValue($pm));
+            ->will($this->returnValue($pm))
+        ;
 
         $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock();
 
@@ -208,27 +222,30 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->package->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($composerType));
+            ->will($this->returnValue($composerType))
+        ;
 
         if ($this->operation instanceof UpdateOperation) {
             $this->operation->expects($this->any())
                 ->method('getTargetPackage')
-                ->will($this->returnValue($this->package));
+                ->will($this->returnValue($this->package))
+            ;
         }
 
         if ($this->operation instanceof InstallOperation) {
             $this->operation->expects($this->any())
                 ->method('getPackage')
-                ->will($this->returnValue($this->package));
+                ->will($this->returnValue($this->package))
+            ;
         }
 
-        /* @var PolicyInterface $policy */
+        /** @var PolicyInterface $policy */
         $policy = $this->getMockBuilder('Composer\DependencyResolver\PolicyInterface')->getMock();
-        /* @var Pool $pool */
+        /** @var Pool $pool */
         $pool = $this->getMockBuilder('Composer\DependencyResolver\Pool')->disableOriginalConstructor()->getMock();
-        /* @var CompositeRepository $installedRepo */
+        /** @var CompositeRepository $installedRepo */
         $installedRepo = $this->getMockBuilder('Composer\Repository\CompositeRepository')->disableOriginalConstructor()->getMock();
-        /* @var Request $request */
+        /** @var Request $request */
         $request = $this->getMockBuilder('Composer\DependencyResolver\Request')->disableOriginalConstructor()->getMock();
         $operations = array($this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock());
 

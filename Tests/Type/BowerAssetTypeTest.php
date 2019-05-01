@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Type\BowerAssetType;
  * Tests of bower asset type.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class BowerAssetTypeTest extends AbstractAssetTypeTest
+final class BowerAssetTypeTest extends AbstractAssetTypeTest
 {
     protected function setUp()
     {

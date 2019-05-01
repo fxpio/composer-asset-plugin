@@ -30,7 +30,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
     protected $cache;
 
     /**
-     * @var string|null|false
+     * @var null|false|string
      */
     protected $redirectApi;
 
@@ -41,6 +41,26 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         }
 
         parent::initialize();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBranches()
+    {
+        if ($this->gitDriver) {
+            return $this->gitDriver->getBranches();
+        }
+
+        if (null === $this->branches) {
+            $this->branches = array();
+            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
+            $branchBlacklist = 'gh-pages' === $this->getRootIdentifier() ? array() : array('gh-pages');
+
+            $this->doAddBranches($resource, $branchBlacklist);
+        }
+
+        return $this->branches;
     }
 
     /**
@@ -55,7 +75,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         $noApiOpt = RepoUtil::getArrayValue($opts, 'github-no-api', array());
         $defaultValue = false;
 
-        if (is_bool($noApiOpt)) {
+        if (\is_bool($noApiOpt)) {
             $defaultValue = $noApiOpt;
             $noApiOpt = array();
         }
@@ -107,8 +127,8 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
             $this->redirectApi = $redirectApi;
         }
 
-        if (is_string($this->redirectApi) && 0 === strpos($url, $this->getRepositoryApiUrl())) {
-            $url = $this->redirectApi.substr($url, strlen($this->getRepositoryApiUrl()));
+        if (\is_string($this->redirectApi) && 0 === strpos($url, $this->getRepositoryApiUrl())) {
+            $url = $this->redirectApi.substr($url, \strlen($this->getRepositoryApiUrl()));
         }
 
         return $url;
@@ -126,18 +146,18 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         if (null === $this->redirectApi && 0 === strpos($url, $this->getRepositoryApiUrl())) {
             $this->redirectApi = $this->getNewRepositoryUrl();
 
-            if (is_string($this->redirectApi)) {
+            if (\is_string($this->redirectApi)) {
                 $this->cache->write('redirect-api', $this->redirectApi);
             }
         }
 
-        return is_string($this->redirectApi);
+        return \is_string($this->redirectApi);
     }
 
     /**
      * Get the new url of repository.
      *
-     * @return string|false The new url or false if there is not a new url
+     * @return false|string The new url or false if there is not a new url
      */
     protected function getNewRepositoryUrl()
     {
@@ -162,7 +182,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
      *
      * @param array $headers The http header
      *
-     * @return string|false
+     * @return false|string
      */
     protected function findNewLocationInHeader(array $headers)
     {
@@ -175,8 +195,9 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
                 $owner = $match[3];
                 $repository = $match[4];
                 $paramPos = strpos($repository, '?');
-                $repository = is_int($paramPos) ? substr($match[4], 0, $paramPos) : $repository;
+                $repository = \is_int($paramPos) ? substr($match[4], 0, $paramPos) : $repository;
                 $url = $this->getRepositoryApiUrl($owner, $repository);
+
                 break;
             }
         }
@@ -213,26 +234,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getBranches()
-    {
-        if ($this->gitDriver) {
-            return $this->gitDriver->getBranches();
-        }
-
-        if (null === $this->branches) {
-            $this->branches = array();
-            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
-            $branchBlacklist = 'gh-pages' === $this->getRootIdentifier() ? array() : array('gh-pages');
-
-            $this->doAddBranches($resource, $branchBlacklist);
-        }
-
-        return $this->branches;
-    }
-
-    /**
      * Push the list of all branch.
      *
      * @param string $resource
@@ -246,7 +247,7 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
             foreach ($branchData as $branch) {
                 $name = substr($branch['ref'], 11);
 
-                if (!in_array($name, $branchBlacklist)) {
+                if (!\in_array($name, $branchBlacklist, true)) {
                     $this->branches[$name] = $branch['object']['sha'];
                 }
             }

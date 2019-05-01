@@ -28,8 +28,8 @@ class IgnoreFactory
      * @param Config           $config     The plugin config
      * @param Composer         $composer   The composer instance
      * @param PackageInterface $package    The package instance
-     * @param string|null      $installDir The custom installation directory
-     * @param string|null      $section    The config section of ignore patterns
+     * @param null|string      $installDir The custom installation directory
+     * @param null|string      $section    The config section of ignore patterns
      *
      * @return IgnoreManager
      */
@@ -42,6 +42,7 @@ class IgnoreFactory
         foreach ($config as $packageName => $patterns) {
             if ($packageName === $package->getName()) {
                 static::addPatterns($manager, $patterns);
+
                 break;
             }
         }
@@ -54,7 +55,7 @@ class IgnoreFactory
      *
      * @param Composer         $composer   The composer instance
      * @param PackageInterface $package    The package instance
-     * @param string|null      $installDir The custom installation directory
+     * @param null|string      $installDir The custom installation directory
      *
      * @return string The installation directory
      */
@@ -71,14 +72,14 @@ class IgnoreFactory
      * Add ignore file patterns in the ignore manager.
      *
      * @param IgnoreManager $manager  The ignore files manager
-     * @param bool|array    $patterns The patterns for ignore files
+     * @param array|bool    $patterns The patterns for ignore files
      */
     protected static function addPatterns(IgnoreManager $manager, $patterns)
     {
         $enabled = false === $patterns ? false : true;
         $manager->setEnabled($enabled);
 
-        if (is_array($patterns)) {
+        if (\is_array($patterns)) {
             foreach ($patterns as $pattern) {
                 $manager->addPattern($pattern);
             }

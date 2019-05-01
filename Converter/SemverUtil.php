@@ -71,8 +71,12 @@ abstract class SemverUtil
     {
         $version = str_replace(self::$cleanPatterns, '', $version);
 
-        if (preg_match_all(self::createPattern('([a-zA-Z]+|(\-|\+)[a-zA-Z]+|(\-|\+)[0-9]+)'),
-            $version, $matches, PREG_OFFSET_CAPTURE)) {
+        if (preg_match_all(
+            self::createPattern('([a-zA-Z]+|(\-|\+)[a-zA-Z]+|(\-|\+)[0-9]+)'),
+            $version,
+            $matches,
+            PREG_OFFSET_CAPTURE
+        )) {
             list($type, $version, $end) = self::cleanVersion(strtolower($version), $matches);
             list($version, $patchVersion) = self::matchVersion($version, $type);
 
@@ -130,7 +134,7 @@ abstract class SemverUtil
      */
     protected static function cleanVersion($version, array $matches)
     {
-        $end = substr($version, strlen($matches[1][0][0]));
+        $end = substr($version, \strlen($matches[1][0][0]));
         $version = $matches[1][0][0].'-';
 
         $matches = array();
@@ -141,7 +145,7 @@ abstract class SemverUtil
         $matches = array();
         preg_match('/^[a-z]+/', $end, $matches);
         $type = isset($matches[0]) ? VersionParser::normalizeStability($matches[0]) : null;
-        $end = substr($end, strlen($type));
+        $end = substr($end, \strlen($type));
 
         return array($type, $version, $end);
     }
@@ -158,14 +162,14 @@ abstract class SemverUtil
     {
         $patchVersion = true;
 
-        if (in_array($type, array('dev', 'snapshot'))) {
+        if (\in_array($type, array('dev', 'snapshot'), true)) {
             $type = 'dev';
             $patchVersion = false;
         } elseif ('a' === $type) {
             $type = 'alpha';
-        } elseif (in_array($type, array('b', 'pre'))) {
+        } elseif (\in_array($type, array('b', 'pre'), true)) {
             $type = 'beta';
-        } elseif (!in_array($type, array('alpha', 'beta', 'RC'))) {
+        } elseif (!\in_array($type, array('alpha', 'beta', 'RC'), true)) {
             $type = 'patch';
         }
 

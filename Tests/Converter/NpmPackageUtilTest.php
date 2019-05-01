@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Converter\NpmPackageUtil;
  * Tests of npm package util.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class NpmPackageUtilTest extends AbstractPackageConverterTest
+final class NpmPackageUtilTest extends AbstractPackageConverterTest
 {
     public function testConvertName()
     {

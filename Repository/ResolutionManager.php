@@ -43,9 +43,8 @@ class ResolutionManager
     public function solveResolutions(array $data)
     {
         $data = $this->doSolveResolutions($data, 'require');
-        $data = $this->doSolveResolutions($data, 'require-dev');
 
-        return $data;
+        return $this->doSolveResolutions($data, 'require-dev');
     }
 
     /**
@@ -58,7 +57,7 @@ class ResolutionManager
      */
     protected function doSolveResolutions(array $data, $section)
     {
-        if (array_key_exists($section, $data) && is_array($data[$section])) {
+        if (\array_key_exists($section, $data) && \is_array($data[$section])) {
             foreach ($data[$section] as $dependency => &$range) {
                 foreach ($this->resolutions as $resolutionDependency => $resolutionRange) {
                     if ($dependency === $resolutionDependency) {

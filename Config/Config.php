@@ -57,24 +57,23 @@ final class Config
      * Get the config value.
      *
      * @param string     $key     The config key
-     * @param mixed|null $default The default value
+     * @param null|mixed $default The default value
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function get($key, $default = null)
     {
-        if (array_key_exists($key, $this->cacheEnv)) {
+        if (\array_key_exists($key, $this->cacheEnv)) {
             return $this->cacheEnv[$key];
-        } else {
-            $envKey = $this->convertEnvKey($key);
-            $envValue = getenv($envKey);
+        }
+        $envKey = $this->convertEnvKey($key);
+        $envValue = getenv($envKey);
 
-            if (false !== $envValue) {
-                return $this->cacheEnv[$key] = $this->convertEnvValue($envValue, $envKey);
-            }
+        if (false !== $envValue) {
+            return $this->cacheEnv[$key] = $this->convertEnvValue($envValue, $envKey);
         }
 
-        return array_key_exists($key, $this->config)
+        return \array_key_exists($key, $this->config)
             ? $this->config[$key]
             : $default;
     }
@@ -97,7 +96,7 @@ final class Config
      * @param string $value               The value of environment variable
      * @param string $environmentVariable The environment variable name
      *
-     * @return string|bool|int|array
+     * @return array|bool|int|string
      */
     private function convertEnvValue($value, $environmentVariable)
     {
@@ -125,7 +124,7 @@ final class Config
     {
         $value = strtolower($value);
 
-        return in_array($value, array('true', 'false', '1', '0', 'yes', 'no', 'y', 'n'), true);
+        return \in_array($value, array('true', 'false', '1', '0', 'yes', 'no', 'y', 'n'), true);
     }
 
     /**
@@ -137,7 +136,7 @@ final class Config
      */
     private function convertBoolean($value)
     {
-        return in_array($value, array('true', '1', 'yes', 'y'), true);
+        return \in_array($value, array('true', '1', 'yes', 'y'), true);
     }
 
     /**

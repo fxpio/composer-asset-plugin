@@ -30,11 +30,14 @@ class MockAssetRepository implements RepositoryInterface
      * @param array                $repoConfig
      * @param IOInterface          $io
      * @param Config               $config
-     * @param EventDispatcher|null $eventDispatcher
+     * @param null|EventDispatcher $eventDispatcher
      */
-    public function __construct(array $repoConfig, IOInterface $io, Config $config,
-                                EventDispatcher $eventDispatcher = null)
-    {
+    public function __construct(
+        array $repoConfig,
+        IOInterface $io,
+        Config $config,
+        EventDispatcher $eventDispatcher = null
+    ) {
     }
 
     /**
@@ -50,7 +53,6 @@ class MockAssetRepository implements RepositoryInterface
      */
     public function findPackage($name, $version)
     {
-        return;
     }
 
     /**

@@ -82,7 +82,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         $this->config = ConfigBuilder::build($composer, $io);
 
         if ($this->config->get('enabled', true)) {
-            /* @var InstalledFilesystemRepository $installedRepository */
+            /** @var InstalledFilesystemRepository $installedRepository */
             $installedRepository = $composer->getRepositoryManager()->getLocalRepository();
             $this->composer = $composer;
             $this->io = $io;
@@ -109,7 +109,7 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         if ($this->config->get('enabled', true)) {
             ConfigBuilder::validate($this->io, $this->composer->getPackage(), $event->getCommandName());
 
-            if (!in_array($event->getCommandName(), array('install', 'update'))) {
+            if (!\in_array($event->getCommandName(), array('install', 'update'), true)) {
                 $this->packageFilter->setEnabled(false);
             }
         }

@@ -21,15 +21,17 @@ use Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver;
  * Tests of vcs mercurial repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class HgDriverTest extends \PHPUnit_Framework_TestCase
+final class HgDriverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
      */
     private $config;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->config = new Config();
         $this->config->merge(array(
@@ -40,7 +42,7 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $fs = new Filesystem();
         $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
@@ -76,16 +78,17 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new HgDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
 
@@ -115,7 +118,8 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
@@ -127,11 +131,11 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new HgDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
         $composer1 = $driver->getComposerInformation($identifier);
@@ -161,7 +165,8 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
@@ -173,11 +178,11 @@ class HgDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver1 = new HgDriver($repoConfig, $io, $this->config, $process, null);
         $driver2 = new HgDriver($repoConfig, $io, $this->config, $process, null);
         $driver1->initialize();

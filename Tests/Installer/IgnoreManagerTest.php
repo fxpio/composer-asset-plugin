@@ -18,8 +18,10 @@ use Fxp\Composer\AssetPlugin\Installer\IgnoreManager;
  * Tests of manager of ignore patterns.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ *
+ * @internal
  */
-class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
+final class IgnoreManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string
@@ -33,7 +35,7 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
 
         foreach ($this->getFixtureFiles() as $filename) {
             $path = $this->target.'/'.$filename;
-            $fs->ensureDirectoryExists(dirname($path));
+            $fs->ensureDirectoryExists(\dirname($path));
             @file_put_contents($path, '');
         }
     }
@@ -42,31 +44,6 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->target);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getFixtureFiles()
-    {
-        return array(
-            '.hidden',
-            'CHANGELOG',
-            'README',
-            'lib/autoload.php',
-            'src/.hidden',
-            'src/doc',
-            'src/foo/.hidden',
-            'src/foo/empty.html',
-            'src/foo/empty.md',
-            'src/foo/empty.txt',
-            'src/foo/small.txt',
-            'src/lib/empty.txt',
-            'src/lib/foo/empty.txt',
-            'src/lib/foo/small.txt',
-            'src/tests/empty.html',
-            'tests/bootstrap.php',
-        );
     }
 
     public function testDeleteIgnoredFiles()
@@ -246,5 +223,30 @@ class IgnoreManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFileNotExists($this->target.'/tests/bootstrap.php');
         $this->assertFileNotExists($this->target.'/tests');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getFixtureFiles()
+    {
+        return array(
+            '.hidden',
+            'CHANGELOG',
+            'README',
+            'lib/autoload.php',
+            'src/.hidden',
+            'src/doc',
+            'src/foo/.hidden',
+            'src/foo/empty.html',
+            'src/foo/empty.md',
+            'src/foo/empty.txt',
+            'src/foo/small.txt',
+            'src/lib/empty.txt',
+            'src/lib/foo/empty.txt',
+            'src/lib/foo/small.txt',
+            'src/tests/empty.html',
+            'tests/bootstrap.php',
+        );
     }
 }

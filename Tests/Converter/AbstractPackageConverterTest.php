@@ -20,7 +20,7 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractPackageConverterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var AssetTypeInterface
@@ -44,27 +44,33 @@ abstract class AbstractPackageConverterTest extends \PHPUnit_Framework_TestCase
             ->method('convertVersion')
             ->will($this->returnCallback(function ($value) {
                 return $value;
-            }));
+            }))
+        ;
         $versionConverter->expects($this->any())
             ->method('convertRange')
             ->will($this->returnCallback(function ($value) {
                 return $value;
-            }));
+            }))
+        ;
         $type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
         $type->expects($this->any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('ASSET'));
+            ->will($this->returnValue('ASSET'))
+        ;
         $type->expects($this->any())
             ->method('getComposerType')
-            ->will($this->returnValue('ASSET_TYPE'));
+            ->will($this->returnValue('ASSET_TYPE'))
+        ;
         $type->expects($this->any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($versionConverter));
+            ->will($this->returnValue($versionConverter))
+        ;
         $type->expects($this->any())
             ->method('formatComposerName')
             ->will($this->returnCallback(function ($value) {
                 return 'ASSET/'.$value;
-            }));
+            }))
+        ;
 
         $this->type = $type;
     }

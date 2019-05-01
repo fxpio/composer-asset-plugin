@@ -29,11 +29,6 @@ class IgnoreManager
     protected $installDir;
 
     /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
      * @var bool
      */
     protected $enabled;
@@ -44,6 +39,11 @@ class IgnoreManager
     protected $hasPattern;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
      * @var Finder
      */
     private $finder;
@@ -52,7 +52,7 @@ class IgnoreManager
      * Constructor.
      *
      * @param string          $installDir The install dir
-     * @param Filesystem|null $filesystem The filesystem
+     * @param null|Filesystem $filesystem The filesystem
      */
     public function __construct($installDir, Filesystem $filesystem = null)
     {
@@ -116,7 +116,7 @@ class IgnoreManager
         if ($this->isEnabled() && $this->hasPattern() && realpath($this->installDir)) {
             $paths = iterator_to_array($this->finder->in($this->installDir));
 
-            /* @var \SplFileInfo $path */
+            /** @var \SplFileInfo $path */
             foreach ($paths as $path) {
                 $this->filesystem->remove($path);
             }
@@ -136,8 +136,8 @@ class IgnoreManager
 
             $pathComponents = explode('/', $searchPattern);
 
-            if (1 < count($pathComponents)) {
-                $parentDirectories = array_slice($pathComponents, 0, -1);
+            if (1 < \count($pathComponents)) {
+                $parentDirectories = \array_slice($pathComponents, 0, -1);
                 $basePath = '';
 
                 foreach ($parentDirectories as $dir) {
@@ -163,7 +163,7 @@ class IgnoreManager
         $searchPattern = trim(ltrim($pattern, '!'), '/');
         $pattern = $prefix.$searchPattern;
 
-        if (in_array($searchPattern, array('*', '*.*'))) {
+        if (\in_array($searchPattern, array('*', '*.*'), true)) {
             $this->doAddPattern($prefix.'.*');
         } elseif (0 === strpos($searchPattern, '**/')) {
             $this->doAddPattern($prefix.'**/'.$searchPattern);
@@ -190,7 +190,7 @@ class IgnoreManager
             $this->finder->path('/.*/');
             $this->finder->notPath('/^\..*(?!\/)/');
         } elseif (preg_match('/\/\*$|\/\*\*$/', $pattern, $matches)) {
-            $this->doAddPattern(substr($pattern, 0, strlen($pattern) - strlen($matches[0])));
+            $this->doAddPattern(substr($pattern, 0, \strlen($pattern) - \strlen($matches[0])));
         }
     }
 }

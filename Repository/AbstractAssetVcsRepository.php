@@ -61,12 +61,12 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     protected $rootPackageVersion;
 
     /**
-     * @var array|null
+     * @var null|array
      */
     protected $rootData;
 
     /**
-     * @var VcsPackageFilter|null
+     * @var null|VcsPackageFilter
      */
     protected $filter;
 
@@ -105,7 +105,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
      */
     public function count()
     {
-        return null !== $this->packages ? count($this->packages) : 0;
+        return null !== $this->packages ? \count($this->packages) : 0;
     }
 
     /**
@@ -125,9 +125,9 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     /**
      * Initializes the driver.
      *
-     * @return VcsDriverInterface
-     *
      * @throws InvalidArgumentException When not driver found
+     *
+     * @return VcsDriverInterface
      */
     protected function initDriver()
     {

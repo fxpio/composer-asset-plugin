@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Type\NpmAssetType;
  * Tests of npm asset type.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class NpmAssetTypeTest extends AbstractAssetTypeTest
+final class NpmAssetTypeTest extends AbstractAssetTypeTest
 {
     protected function setUp()
     {

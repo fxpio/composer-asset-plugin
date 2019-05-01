@@ -59,13 +59,13 @@ abstract class NpmPackageUtil
      */
     public static function convertLicenses($licenses)
     {
-        if (!is_array($licenses)) {
+        if (!\is_array($licenses)) {
             return $licenses;
         }
 
         $result = array();
         foreach ($licenses as $license) {
-            if (is_array($license)) {
+            if (\is_array($license)) {
                 if (!empty($license['type'])) {
                     $result[] = $license['type'];
                 } elseif (!empty($license['name'])) {
@@ -82,7 +82,7 @@ abstract class NpmPackageUtil
     /**
      * Convert the author section.
      *
-     * @param string|null $value The current value
+     * @param null|string $value The current value
      *
      * @return array
      */
@@ -98,17 +98,17 @@ abstract class NpmPackageUtil
     /**
      * Convert the contributors section.
      *
-     * @param string|null $value     The current value
-     * @param string|null $prevValue The previous value
+     * @param null|string $value     The current value
+     * @param null|string $prevValue The previous value
      *
      * @return array
      */
     public static function convertContributors($value, $prevValue)
     {
-        $mergeValue = is_array($prevValue) ? $prevValue : array();
-        $mergeValue = array_merge($mergeValue, is_array($value) ? $value : array());
+        $mergeValue = \is_array($prevValue) ? $prevValue : array();
+        $mergeValue = array_merge($mergeValue, \is_array($value) ? $value : array());
 
-        if (count($mergeValue) > 0) {
+        if (\count($mergeValue) > 0) {
             $value = $mergeValue;
         }
 
@@ -118,18 +118,18 @@ abstract class NpmPackageUtil
     /**
      * Convert the dist section.
      *
-     * @param string|null $value The current value
+     * @param null|string $value The current value
      *
      * @return array
      */
     public static function convertDist($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             $data = (array) $value;
             $value = array();
 
             foreach ($data as $type => $url) {
-                if (is_string($url)) {
+                if (\is_string($url)) {
                     self::convertDistEntry($value, $type, $url);
                 }
             }
@@ -150,7 +150,7 @@ abstract class NpmPackageUtil
         $httpPrefix = 'http://';
 
         if (0 === strpos($url, $httpPrefix)) {
-            $url = 'https://'.substr($url, strlen($httpPrefix));
+            $url = 'https://'.substr($url, \strlen($httpPrefix));
         }
 
         if ('shasum' === $type) {
@@ -158,7 +158,7 @@ abstract class NpmPackageUtil
         } elseif ('tarball' === $type) {
             $value['type'] = 'tar';
             $value['url'] = $url;
-        } elseif (in_array($type, self::getDownloaderTypes(), true)) {
+        } elseif (\in_array($type, self::getDownloaderTypes(), true)) {
             $value['type'] = $type;
             $value['url'] = $url;
         }

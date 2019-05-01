@@ -30,6 +30,14 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
+    public function search($query, $mode = 0, $type = null)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getType()
     {
         return 'npm';
@@ -62,14 +70,6 @@ class NpmRepository extends AbstractAssetsRepository
     /**
      * {@inheritdoc}
      */
-    public function search($query, $mode = 0, $type = null)
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function buildPackageUrl($packageName)
     {
         $packageName = urlencode(NpmPackageUtil::revertName($packageName));
@@ -86,7 +86,7 @@ class NpmRepository extends AbstractAssetsRepository
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
 
         // Add release date in $packageConfigs
-        if (isset($data['versions']) && isset($data['time'])) {
+        if (isset($data['versions'], $data['time'])) {
             $time = $data['time'];
             array_walk($data['versions'], function (&$packageConfigs, $version) use ($time) {
                 PackageUtil::convertStringKey($time, $version, $packageConfigs, 'time');
@@ -171,9 +171,9 @@ class NpmRepository extends AbstractAssetsRepository
      * @param array  $data         The repository config
      * @param string $registryName The package name in asset registry
      *
-     * @return string
-     *
      * @throws InvalidCreateRepositoryException When the repository.url parameter does not exist
+     *
+     * @return string
      */
     protected function getVcsRepositoryUrl(array $data, $registryName = null)
     {

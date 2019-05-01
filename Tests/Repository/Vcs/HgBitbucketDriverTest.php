@@ -23,15 +23,17 @@ use Fxp\Composer\AssetPlugin\Tests\ComposerUtil;
  * Tests of vcs mercurial bitbucket repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
+final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
      */
     private $config;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->config = new Config();
         $this->config->merge(array(
@@ -42,7 +44,7 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $fs = new Filesystem();
         $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
@@ -72,11 +74,13 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $io->expects($this->any())
             ->method('isInteractive')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->any())
             ->method('getContents')
@@ -104,7 +108,8 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
                 '{"scm":"hg","website":"","has_wiki":false,"name":"repo","links":{"branches":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/branches"},"tags":{"href":"https:\/\/api.bitbucket.org\/2.0\/repositories\/composer-test\/repo-name\/refs\/tags"},"clone":[{"href":"https:\/\/user@bitbucket.org\/composer-test\/repo-name","name":"https"}],"html":{"href":"https:\/\/bitbucket.org\/composer-test\/repo-name"}},"language":"php","created_on":"2015-02-18T16:22:24.688+00:00","updated_on":"2016-05-17T13:20:21.993+00:00","is_private":true,"has_issues":false}',
                 '{"name": "test_master"}',
                 '{"name": "composer-test/repo-name","description": "test repo","license": "GPL","authors": [{"name": "Name","email": "local@domain.tld"}],"require": {"creator/package": "^1.0"},"require-dev": {"phpunit/phpunit": "~4.8"}}'
-            );
+            )
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -112,9 +117,8 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => $filename,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $driver = new HgBitbucketDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $driver->initialize();
         $this->setAttribute($driver, 'tags', array($identifier => $sha));
@@ -152,12 +156,14 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
             ->setConstructorArgs(array($io))
-            ->getMock();
+            ->getMock()
+        ;
 
         $remoteFilesystem->expects($this->at(0))
             ->method('getContents')
             ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoUrl).'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Not Found', 404)));
+            ->will($this->throwException(new TransportException('Not Found', 404)))
+        ;
 
         $repoConfig = array(
             'url' => $repoUrl,
@@ -165,9 +171,8 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => $filename,
         );
 
-        /* @var IOInterface $io */
-        /* @var RemoteFilesystem $remoteFilesystem */
-
+        /** @var IOInterface $io */
+        /** @var RemoteFilesystem $remoteFilesystem */
         $driver = new HgBitbucketDriver($repoConfig, $io, $this->config, null, $remoteFilesystem);
         $driver->initialize();
 
@@ -199,7 +204,7 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getScheme($url)
     {
-        if (extension_loaded('openssl')) {
+        if (\extension_loaded('openssl')) {
             return $url;
         }
 

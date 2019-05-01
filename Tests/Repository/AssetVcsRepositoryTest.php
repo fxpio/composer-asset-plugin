@@ -27,8 +27,10 @@ use Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriver;
  * Tests of asset vcs repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
+final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
@@ -58,20 +60,23 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->config = new Config();
-        /* @var EventDispatcher $dispatcher */
+        /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->getMockBuilder('Composer\EventDispatcher\EventDispatcher')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
         $this->dispatcher = $dispatcher;
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->assetRepositoryManager->expects($this->any())
             ->method('solveResolutions')
             ->willReturnCallback(function ($value) {
                 return $value;
-            });
+            })
+        ;
     }
 
     protected function tearDown()
@@ -250,7 +255,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->init(true, $type, $url, $class, $verbose);
 
-        /* @var PackageInterface[] $packages */
+        /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(7, $packages);
 
@@ -302,7 +307,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->init(true, $type, $url, $class, $verbose);
 
-        /* @var PackageInterface[] $packages */
+        /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(7, $packages);
 
@@ -339,7 +344,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->init(true, $type, $url, $class, $verbose, null, 'registry-foobar');
 
-        /* @var PackageInterface[] $packages */
+        /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(7, $packages);
 
@@ -373,16 +378,18 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $filter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $filter->expects($this->any())
             ->method('skip')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue(true))
+        ;
 
         /* @var VcsPackageFilter $filter */
         $this->init(true, $type, $url, $class, $verbose, null, 'registry-foobar', $filter);
 
-        /* @var PackageInterface[] $packages */
+        /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(5, $packages);
 
@@ -422,7 +429,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->init(true, $type, $url, $class, false, null, 'registry-foobar', null, $registryPackages);
 
-        /* @var PackageInterface[] $packages */
+        /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
         $this->assertCount(10, $packages);
         $this->assertSame($registryPackages, $packages);
@@ -436,9 +443,9 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
      * @param string                $url
      * @param string                $class
      * @param bool                  $verbose
-     * @param array|null            $drivers
-     * @param string|null           $registryName
-     * @param VcsPackageFilter|null $vcsPackageFilter
+     * @param null|array            $drivers
+     * @param null|string           $registryName
+     * @param null|VcsPackageFilter $vcsPackageFilter
      * @param array                 $registryPackages
      */
     protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null, VcsPackageFilter $vcsPackageFilter = null, array $registryPackages = array())
@@ -453,7 +460,7 @@ class AssetVcsRepositoryTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        if (count($registryPackages) > 0) {
+        if (\count($registryPackages) > 0) {
             $repoConfig['registry-versions'] = $registryPackages;
         }
 

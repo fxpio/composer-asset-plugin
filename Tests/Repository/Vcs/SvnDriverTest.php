@@ -21,15 +21,17 @@ use Fxp\Composer\AssetPlugin\Repository\Vcs\SvnDriver;
  * Tests of vcs svn repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class SvnDriverTest extends \PHPUnit_Framework_TestCase
+final class SvnDriverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Config
      */
     private $config;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->config = new Config();
         $this->config->merge(array(
@@ -41,7 +43,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $fs = new Filesystem();
         $fs->removeDirectory(sys_get_temp_dir().'/composer-test');
@@ -79,16 +81,17 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
 
@@ -132,16 +135,17 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
 
@@ -173,8 +177,9 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnCallback(function ($value) {
-                return is_string($value) ? preg_split('{\r?\n}', $value) : array();
-            }));
+                return \is_string($value) ? preg_split('{\r?\n}', $value) : array();
+            }))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
@@ -193,11 +198,11 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
         $composer1 = $driver->getComposerInformation($identifier);
@@ -230,8 +235,9 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process->expects($this->any())
             ->method('splitLines')
             ->will($this->returnCallback(function ($value) {
-                return is_string($value) ? preg_split('{\r?\n}', $value) : array();
-            }));
+                return \is_string($value) ? preg_split('{\r?\n}', $value) : array();
+            }))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
@@ -250,11 +256,11 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
                 }
 
                 return 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver1 = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver2 = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver1->initialize();
@@ -291,16 +297,17 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
         $process->expects($this->any())
             ->method('splitLines')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array()))
+        ;
         $process->expects($this->any())
             ->method('execute')
             ->will($this->returnCallback(function ($command) {
                 return 0 === strpos($command, 'svn cat ') ? 1 : 0;
-            }));
+            }))
+        ;
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
         $driver->getComposerInformation($identifier);
@@ -334,7 +341,7 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupports($url, $supperted, $urlUsed)
     {
-        /* @var IOInterface $io */
+        /** @var IOInterface $io */
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $this->assertSame($supperted, SvnDriver::supports($io, $this->config, $url, false));
@@ -348,7 +355,8 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             ->method('execute')
             ->will($this->returnCallback(function () {
                 return 0;
-            }));
+            }))
+        ;
 
         $repoConfig = array(
             'url' => $url,
@@ -356,9 +364,8 @@ class SvnDriverTest extends \PHPUnit_Framework_TestCase
             'filename' => 'bower.json',
         );
 
-        /* @var IOInterface $io */
-        /* @var ProcessExecutor $process */
-
+        /** @var IOInterface $io */
+        /** @var ProcessExecutor $process */
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
 

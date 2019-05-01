@@ -23,7 +23,7 @@ use Symfony\Component\Process\ExecutableFinder;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     private static $parser;
     private static $executableCache = array();

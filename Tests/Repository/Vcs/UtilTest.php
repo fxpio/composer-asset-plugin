@@ -18,8 +18,10 @@ use Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriver;
  * Tests of util.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class UtilTest extends \PHPUnit_Framework_TestCase
+final class UtilTest extends \PHPUnit\Framework\TestCase
 {
     public function getDataProvider()
     {
@@ -44,7 +46,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
         $value = null;
         $keys = explode('.', $resourceKey);
-        $start = count($keys) - 1;
+        $start = \count($keys) - 1;
 
         for ($i = $start; $i >= 0; --$i) {
             if (null === $value) {
@@ -56,7 +58,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
         $driver->contents = json_encode($value);
         $composerValid = array_merge($composer, array(
-            'time' => 'level '.(count($keys) - 1),
+            'time' => 'level '.(\count($keys) - 1),
         ));
 
         $composer = Util::addComposerTime($composer, $resourceKey, 'http://example.tld', $driver);

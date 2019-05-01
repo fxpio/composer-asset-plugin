@@ -38,10 +38,18 @@ class ProcessUtil
      *
      * @return array The composer
      */
-    public static function getComposerInformation(Cache $cache, array &$infoCache,
-        $assetType, ProcessExecutor $process, $identifier, $resource, $cmdGet,
-        $cmdLog, $repoDir, $datetimePrefix = '')
-    {
+    public static function getComposerInformation(
+        Cache $cache,
+        array &$infoCache,
+        $assetType,
+        ProcessExecutor $process,
+        $identifier,
+        $resource,
+        $cmdGet,
+        $cmdLog,
+        $repoDir,
+        $datetimePrefix = ''
+    ) {
         $infoCache[$identifier] = Util::readCache($infoCache, $cache, $assetType, $identifier);
 
         if (!isset($infoCache[$identifier])) {

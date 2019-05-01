@@ -17,8 +17,10 @@ use Fxp\Composer\AssetPlugin\Repository\ResolutionManager;
  * Tests of Resolution Manager.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class ResolutionManagerTest extends \PHPUnit_Framework_TestCase
+final class ResolutionManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function testSolveResolutions()
     {

@@ -54,11 +54,11 @@ class GitHubDriver extends AbstractGitHubDriver
      *
      * @param string $resource
      *
-     * @return null|false|array
-     *
      * @throws \RuntimeException
      * @throws \Composer\Downloader\TransportException
      * @throws \Exception
+     *
+     * @return null|array|false
      */
     protected function getComposerContent($resource)
     {
@@ -68,6 +68,7 @@ class GitHubDriver extends AbstractGitHubDriver
         while ($notFoundRetries) {
             try {
                 $composer = $this->parseComposerContent($resource);
+
                 break;
             } catch (TransportException $e) {
                 if (404 !== $e->getCode()) {
@@ -88,14 +89,14 @@ class GitHubDriver extends AbstractGitHubDriver
      *
      * @param string $resource
      *
-     * @return array
-     *
      * @throws \RuntimeException When the resource could not be retrieved
+     *
+     * @return array
      */
     protected function parseComposerContent($resource)
     {
         $composer = (array) JsonFile::parseJson($this->getContents($resource));
-        if (empty($composer['content']) || 'base64' !== $composer['encoding'] || !($composer = base64_decode($composer['content']))) {
+        if (empty($composer['content']) || 'base64' !== $composer['encoding'] || !($composer = base64_decode($composer['content'], true))) {
             throw new \RuntimeException('Could not retrieve '.$this->repoConfig['filename'].' from '.$resource);
         }
 
@@ -118,7 +119,7 @@ class GitHubDriver extends AbstractGitHubDriver
         $composer = Util::addComposerTime($composer, 'commit.committer.date', $resource, $this);
 
         if (!isset($composer['support']['source'])) {
-            $label = array_search($identifier, $this->getTags()) ?: array_search($identifier, $this->getBranches()) ?: $identifier;
+            $label = array_search($identifier, $this->getTags(), true) ?: array_search($identifier, $this->getBranches(), true) ?: $identifier;
             $composer['support']['source'] = sprintf('https://%s/%s/%s/tree/%s', $this->originUrl, $this->owner, $this->repository, $label);
         }
         if (!isset($composer['support']['issues']) && $this->hasIssues) {

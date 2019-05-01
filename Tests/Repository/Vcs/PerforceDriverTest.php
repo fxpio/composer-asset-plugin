@@ -21,9 +21,14 @@ use Fxp\Composer\AssetPlugin\Util\Perforce;
  * Tests of vcs perforce repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class PerforceDriverTest extends TestCase
+final class PerforceDriverTest extends TestCase
 {
+    const TEST_URL = 'TEST_PERFORCE_URL';
+    const TEST_DEPOT = 'TEST_DEPOT_CONFIG';
+    const TEST_BRANCH = 'TEST_BRANCH_CONFIG';
     protected $config;
     protected $io;
     protected $process;
@@ -41,10 +46,6 @@ class PerforceDriverTest extends TestCase
      * @var Perforce|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $perforce;
-
-    const TEST_URL = 'TEST_PERFORCE_URL';
-    const TEST_DEPOT = 'TEST_DEPOT_CONFIG';
-    const TEST_BRANCH = 'TEST_BRANCH_CONFIG';
 
     protected function setUp()
     {
@@ -72,37 +73,6 @@ class PerforceDriverTest extends TestCase
         $this->repoConfig = null;
         $this->config = null;
         $this->testPath = null;
-    }
-
-    protected function getMockIOInterface()
-    {
-        return $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
-    }
-
-    protected function getMockProcessExecutor()
-    {
-        return $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-    }
-
-    protected function getMockRemoteFilesystem()
-    {
-        return $this->getMockBuilder('Composer\Util\RemoteFilesystem')->disableOriginalConstructor()->getMock();
-    }
-
-    protected function overrideDriverInternalPerforce(Perforce $perforce)
-    {
-        $reflectionClass = new \ReflectionClass($this->driver);
-        $property = $reflectionClass->getProperty('perforce');
-        $property->setAccessible(true);
-        $property->setValue($this->driver, $perforce);
-    }
-
-    protected function getTestConfig($testPath)
-    {
-        $config = new Config();
-        $config->merge(array('config' => array('home' => $testPath)));
-
-        return $config;
     }
 
     public function testInitializeCapturesVariablesFromRepoConfig()
@@ -140,7 +110,8 @@ class PerforceDriverTest extends TestCase
         $this->perforce->expects($this->any())
             ->method('getComposerInformation')
             ->with($this->equalTo($identifier))
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(''))
+        ;
 
         $this->driver->initialize();
         $validEmpty = array(
@@ -156,7 +127,8 @@ class PerforceDriverTest extends TestCase
         $this->perforce->expects($this->any())
             ->method('getComposerInformation')
             ->with($this->equalTo($identifier))
-            ->will($this->returnValue(array('name' => 'foo')));
+            ->will($this->returnValue(array('name' => 'foo')))
+        ;
 
         $this->driver->initialize();
         $composer1 = $this->driver->getComposerInformation($identifier);
@@ -173,7 +145,8 @@ class PerforceDriverTest extends TestCase
         $this->perforce->expects($this->any())
             ->method('getComposerInformation')
             ->with($this->equalTo($identifier))
-            ->will($this->returnValue(array('name' => 'foo')));
+            ->will($this->returnValue(array('name' => 'foo')))
+        ;
 
         $driver2 = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
         $reflectionClass = new \ReflectionClass($driver2);
@@ -190,6 +163,37 @@ class PerforceDriverTest extends TestCase
         $this->assertNotNull($composer1);
         $this->assertNotNull($composer2);
         $this->assertSame($composer1, $composer2);
+    }
+
+    protected function getMockIOInterface()
+    {
+        return $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
+    }
+
+    protected function getMockProcessExecutor()
+    {
+        return $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
+    }
+
+    protected function getMockRemoteFilesystem()
+    {
+        return $this->getMockBuilder('Composer\Util\RemoteFilesystem')->disableOriginalConstructor()->getMock();
+    }
+
+    protected function overrideDriverInternalPerforce(Perforce $perforce)
+    {
+        $reflectionClass = new \ReflectionClass($this->driver);
+        $property = $reflectionClass->getProperty('perforce');
+        $property->setAccessible(true);
+        $property->setValue($this->driver, $perforce);
+    }
+
+    protected function getTestConfig($testPath)
+    {
+        $config = new Config();
+        $config->merge(array('config' => array('home' => $testPath)));
+
+        return $config;
     }
 
     protected function getTestRepoConfig()
@@ -210,6 +214,7 @@ class PerforceDriverTest extends TestCase
         return $this->getMockBuilder('Fxp\Composer\AssetPlugin\Util\Perforce')
             ->disableOriginalConstructor()
             ->setMethods($methods)
-            ->getMock();
+            ->getMock()
+        ;
     }
 }

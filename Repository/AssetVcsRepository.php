@@ -145,8 +145,9 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     protected function initBranches(VcsDriverInterface $driver)
     {
         foreach ($driver->getBranches() as $branch => $identifier) {
-            if (is_array($this->rootData) && $branch === $driver->getRootIdentifier()) {
+            if (\is_array($this->rootData) && $branch === $driver->getRootIdentifier()) {
                 $this->preInitBranchPackage($driver, $this->rootData, $branch, $identifier);
+
                 continue;
             }
 
@@ -238,7 +239,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     {
         $packageClass = 'Fxp\Composer\AssetPlugin\Package\LazyCompletePackage';
         $packageData = $this->preProcessAsset($data);
-        /* @var LazyCompletePackage $package */
+        /** @var LazyCompletePackage $package */
         $package = $this->loader->load($packageData, $packageClass);
         $lazyLoader = $this->createLazyLoader('branch', $identifier, $packageData, $driver);
         $package->setLoader($lazyLoader);
@@ -255,7 +256,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
      * @param PackageInterface   $package The package instance
      * @param string             $branch  The branch name
      *
-     * @return PackageInterface|AliasPackage
+     * @return AliasPackage|PackageInterface
      */
     protected function includeBranchAlias(VcsDriverInterface $driver, PackageInterface $package, $branch)
     {
@@ -295,7 +296,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     protected function initRegistryVersions()
     {
         if (isset($this->repoConfig['registry-versions'])) {
-            /* @var CompletePackageInterface $package */
+            /** @var CompletePackageInterface $package */
             foreach ($this->repoConfig['registry-versions'] as $package) {
                 $this->addPackage($package);
             }

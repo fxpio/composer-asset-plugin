@@ -18,8 +18,10 @@ use Fxp\Composer\AssetPlugin\Util\Validator;
  * Tests for the validator.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+final class ValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testValidBranch()
     {

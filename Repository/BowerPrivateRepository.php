@@ -93,9 +93,9 @@ class BowerPrivateRepository extends AbstractAssetsRepository
      * @param array  $data         The repository config
      * @param string $registryName The package name in asset registry
      *
-     * @return string
-     *
      * @throws InvalidCreateRepositoryException When the repository.url parameter does not exist
+     *
+     * @return string
      */
     protected function getVcsRepositoryUrl(array $data, $registryName = null)
     {

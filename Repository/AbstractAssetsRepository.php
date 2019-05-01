@@ -110,7 +110,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $data = JsonFile::parseJson($json, $url);
         $results = array();
 
-        /* @var array $item */
+        /** @var array $item */
         foreach ($data as $item) {
             $results[] = $this->createSearchItem($item);
         }
@@ -174,7 +174,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      *
      * @param string $name
      *
-     * @return array|null
+     * @return null|array
      */
     protected function findWhatProvides($name)
     {
@@ -237,7 +237,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      */
     protected function getOption(array $options, $key, $default = null)
     {
-        if (array_key_exists($key, $options)) {
+        if (\array_key_exists($key, $options)) {
             return $options[$key];
         }
 
@@ -299,6 +299,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
             foreach ($results as $item) {
                 if ($name === strtolower($item['name'])) {
                     $providers = $this->whatProvides($pool, $item['name']);
+
                     break;
                 }
             }

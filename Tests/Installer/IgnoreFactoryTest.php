@@ -23,8 +23,10 @@ use Fxp\Composer\AssetPlugin\Installer\IgnoreManager;
  * Tests of ignore factory.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
+final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Composer|\PHPUnit_Framework_MockObject_MockObject
@@ -37,7 +39,7 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
     protected $config;
 
     /**
-     * @var RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|RootPackageInterface
      */
     protected $rootPackage;
 
@@ -46,7 +48,7 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $package;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->config = $this->getMockBuilder('Composer\Config')->getMock();
         $this->config->expects($this->any())
@@ -57,31 +59,37 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
                 switch ($key) {
                     case 'cache-repo-dir':
                         $value = sys_get_temp_dir().'/composer-test-repo-cache';
+
                         break;
                     case 'vendor-dir':
                         $value = sys_get_temp_dir().'/composer-test/vendor';
+
                         break;
                 }
 
                 return $value;
-            }));
+            }))
+        ;
 
         $this->rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
         $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
         $this->package->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('foo-asset/foo'));
+            ->will($this->returnValue('foo-asset/foo'))
+        ;
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->composer->expects($this->any())
             ->method('getPackage')
-            ->will($this->returnValue($this->rootPackage));
+            ->will($this->returnValue($this->rootPackage))
+        ;
         $this->composer->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config));
+            ->will($this->returnValue($this->config))
+        ;
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->composer = null;
         $this->config = null;
@@ -114,7 +122,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->rootPackage->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($config))
+        ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
@@ -148,7 +157,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->rootPackage->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($config))
+        ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
@@ -171,7 +181,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->rootPackage->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($config))
+        ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
@@ -196,7 +207,8 @@ class IgnoreFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->rootPackage->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($config))
+        ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package, null, 'custom-ignore-files');

@@ -78,9 +78,9 @@ class Assets
      *
      * @param string $type
      *
-     * @return AssetTypeInterface
-     *
      * @throws InvalidArgumentException When the asset type does not exist
+     *
+     * @return AssetTypeInterface
      */
     public static function createType($type)
     {

@@ -93,7 +93,7 @@ abstract class PackageUtil
     {
         if (0 === strpos($url, 'http')) {
             foreach (self::$extensions as $extension) {
-                if (substr($url, -strlen($extension)) === $extension) {
+                if (substr($url, -\strlen($extension)) === $extension) {
                     return true;
                 }
             }
@@ -182,8 +182,8 @@ abstract class PackageUtil
      */
     public static function convertArrayKey(array $asset, $assetKey, array &$composer, $composerKey)
     {
-        if (2 !== count($composerKey)
-            || !is_string($composerKey[0]) || !$composerKey[1] instanceof \Closure) {
+        if (2 !== \count($composerKey)
+            || !\is_string($composerKey[0]) || !$composerKey[1] instanceof \Closure) {
             throw new InvalidArgumentException('The "composerKey" argument of asset packager converter must be an string or an array with the composer key and closure');
         }
 
@@ -233,7 +233,7 @@ abstract class PackageUtil
     protected static function getUrlFileDependencyName(AssetTypeInterface $assetType, array $composer, $dependency)
     {
         $prefix = isset($composer['name'])
-            ? substr($composer['name'], strlen($assetType->getComposerVendorName()) + 1).'-'
+            ? substr($composer['name'], \strlen($assetType->getComposerVendorName()) + 1).'-'
             : '';
 
         return $prefix.$dependency.'-file';
@@ -273,7 +273,7 @@ abstract class PackageUtil
         $io = new NullIO();
         $config = new Config();
 
-        /* @var VcsDriverInterface $driver */
+        /** @var VcsDriverInterface $driver */
         foreach (Assets::getVcsDrivers() as $driver) {
             $supported = $driver::supports($io, $config, $url);
 

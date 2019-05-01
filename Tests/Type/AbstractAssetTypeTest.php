@@ -20,7 +20,7 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-abstract class AbstractAssetTypeTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractAssetTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var PackageConverterInterface

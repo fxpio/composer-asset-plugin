@@ -19,14 +19,16 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  * Tests of npm package converter.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class NpmPackageConverterTest extends AbstractPackageConverterTest
+final class NpmPackageConverterTest extends AbstractPackageConverterTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        /* @var AssetTypeInterface $type */
+        /** @var AssetTypeInterface $type */
         $type = $this->type;
         $this->converter = new NpmPackageConverter($type);
         $this->asset = $this->loadPackage();

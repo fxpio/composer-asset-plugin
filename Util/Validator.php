@@ -25,7 +25,7 @@ class Validator
      * Validates the branch.
      *
      * @param string             $branch
-     * @param VersionParser|null $parser
+     * @param null|VersionParser $parser
      *
      * @return false|string
      */
@@ -49,13 +49,13 @@ class Validator
      *
      * @param string             $tag
      * @param AssetTypeInterface $assetType
-     * @param VersionParser|null $parser
+     * @param null|VersionParser $parser
      *
      * @return false|string
      */
     public static function validateTag($tag, AssetTypeInterface $assetType, VersionParser $parser = null)
     {
-        if (in_array($tag, array('master', 'trunk', 'default'))) {
+        if (\in_array($tag, array('master', 'trunk', 'default'), true)) {
             return false;
         }
 

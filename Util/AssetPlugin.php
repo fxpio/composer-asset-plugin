@@ -59,7 +59,7 @@ class AssetPlugin
 
         foreach ($config as $key => $value) {
             if (0 === strpos($key, $assetType.'-')) {
-                $key = substr($key, strlen($assetType) + 1);
+                $key = substr($key, \strlen($assetType) + 1);
                 $options[$key] = $value;
             }
         }
@@ -100,7 +100,7 @@ class AssetPlugin
             $ref = new \ReflectionClass($factoryClass);
 
             if ($ref->implementsInterface('Fxp\Composer\AssetPlugin\Repository\RegistryFactoryInterface')) {
-                call_user_func(array($factoryClass, 'create'), $arm, $filter, $config);
+                \call_user_func(array($factoryClass, 'create'), $arm, $filter, $config);
             }
         }
     }
@@ -137,6 +137,7 @@ class AssetPlugin
             foreach ($rootMainFiles as $packageName => $files) {
                 if ($packageName === $package->getName()) {
                     $packageExtra['bower-asset-main'] = $files;
+
                     break;
                 }
             }

@@ -78,7 +78,7 @@ class BowerPackageConverter extends AbstractPackageConverter
     {
         if (preg_match('/^[A-Za-z0-9\-_]+\/[A-Za-z0-9\-_.]+/', $version)) {
             $pos = strpos($version, '#');
-            $pos = false === $pos ? strlen($version) : $pos;
+            $pos = false === $pos ? \strlen($version) : $pos;
             $realVersion = substr($version, $pos);
             $version = 'git://github.com/'.substr($version, 0, $pos).'.git'.$realVersion;
         }

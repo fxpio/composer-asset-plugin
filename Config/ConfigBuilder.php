@@ -50,11 +50,11 @@ abstract class ConfigBuilder
      */
     public static function validate(IOInterface $io, RootPackageInterface $package, $commandName = null)
     {
-        if (null === $commandName || in_array($commandName, array('install', 'update', 'validate', 'require', 'remove'))) {
+        if (null === $commandName || \in_array($commandName, array('install', 'update', 'validate', 'require', 'remove'), true)) {
             $extra = (array) $package->getExtra();
 
             foreach (self::$deprecatedOptions as $new => $old) {
-                if (array_key_exists($old, $extra)) {
+                if (\array_key_exists($old, $extra)) {
                     $io->write(sprintf('<warning>The "extra.%s" option is deprecated, use the "config.fxp-asset.%s" option</warning>', $old, $new));
                 }
             }
@@ -65,7 +65,7 @@ abstract class ConfigBuilder
      * Build the config of plugin.
      *
      * @param Composer         $composer The composer
-     * @param IOInterface|null $io       The composer input/output
+     * @param null|IOInterface $io       The composer input/output
      *
      * @return Config
      */
@@ -88,7 +88,7 @@ abstract class ConfigBuilder
     private static function injectDeprecatedConfig(array $config, array $extra)
     {
         foreach (self::$deprecatedOptions as $key => $deprecatedKey) {
-            if (array_key_exists($deprecatedKey, $extra) && !array_key_exists($key, $config)) {
+            if (\array_key_exists($deprecatedKey, $extra) && !\array_key_exists($key, $config)) {
                 $config[$key] = $extra[$deprecatedKey];
             }
         }
@@ -100,7 +100,7 @@ abstract class ConfigBuilder
      * Get the base of data.
      *
      * @param Composer         $composer The composer
-     * @param IOInterface|null $io       The composer input/output
+     * @param null|IOInterface $io       The composer input/output
      *
      * @return array
      */
@@ -109,7 +109,7 @@ abstract class ConfigBuilder
         $globalPackageConfig = self::getGlobalConfig($composer, 'composer', $io);
         $globalConfig = self::getGlobalConfig($composer, 'config', $io);
         $packageConfig = $composer->getPackage()->getConfig();
-        $packageConfig = isset($packageConfig['fxp-asset']) && is_array($packageConfig['fxp-asset'])
+        $packageConfig = isset($packageConfig['fxp-asset']) && \is_array($packageConfig['fxp-asset'])
             ? $packageConfig['fxp-asset']
             : array();
 
@@ -121,7 +121,7 @@ abstract class ConfigBuilder
      *
      * @param Composer         $composer The composer
      * @param string           $filename The filename
-     * @param IOInterface|null $io       The composer input/output
+     * @param null|IOInterface $io       The composer input/output
      *
      * @return array
      */
@@ -134,7 +134,7 @@ abstract class ConfigBuilder
         if ($file->exists()) {
             $data = $file->read();
 
-            if (isset($data['config']['fxp-asset']) && is_array($data['config']['fxp-asset'])) {
+            if (isset($data['config']['fxp-asset']) && \is_array($data['config']['fxp-asset'])) {
                 $config = $data['config']['fxp-asset'];
 
                 if ($io instanceof IOInterface && $io->isDebug()) {

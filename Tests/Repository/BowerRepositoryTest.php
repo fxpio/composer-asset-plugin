@@ -20,8 +20,10 @@ use Fxp\Composer\AssetPlugin\Repository\BowerRepository;
  * Tests of Bower repository.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class BowerRepositoryTest extends AbstractAssetsRepositoryTest
+final class BowerRepositoryTest extends AbstractAssetsRepositoryTest
 {
     /**
      * {@inheritdoc}

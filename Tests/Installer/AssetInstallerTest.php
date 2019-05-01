@@ -26,8 +26,10 @@ use Fxp\Composer\AssetPlugin\Type\AssetTypeInterface;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class AssetInstallerTest extends \PHPUnit_Framework_TestCase
+final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Composer|\PHPUnit_Framework_MockObject_MockObject
@@ -40,7 +42,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
-     * @var RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|RootPackageInterface
      */
     protected $package;
 
@@ -61,44 +63,55 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
                 switch ($key) {
                     case 'cache-repo-dir':
                         $value = sys_get_temp_dir().'/composer-test-repo-cache';
+
                         break;
                     case 'vendor-dir':
                         $value = sys_get_temp_dir().'/composer-test/vendor';
+
                         break;
                 }
 
                 return $value;
-            }));
+            }))
+        ;
 
         $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
         $this->composer->expects($this->any())
             ->method('getPackage')
-            ->will($this->returnValue($this->package));
+            ->will($this->returnValue($this->package))
+        ;
         $this->composer->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue($config));
+            ->will($this->returnValue($config))
+        ;
 
         $this->type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
         $this->type->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('foo'));
+            ->will($this->returnValue('foo'))
+        ;
         $this->type->expects($this->any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('foo-asset'));
+            ->will($this->returnValue('foo-asset'))
+        ;
         $this->type->expects($this->any())
             ->method('getComposerType')
-            ->will($this->returnValue('foo-asset-library'));
+            ->will($this->returnValue('foo-asset-library'))
+        ;
         $this->type->expects($this->any())
             ->method('getFilename')
-            ->will($this->returnValue('foo.json'));
+            ->will($this->returnValue('foo.json'))
+        ;
         $this->type->expects($this->any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock()));
+            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock()))
+        ;
         $this->type->expects($this->any())
             ->method('getPackageConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock()));
+            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock()))
+        ;
     }
 
     protected function tearDown()
@@ -139,7 +152,8 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
                 'asset-installer-paths' => array(
                     $this->type->getComposerType() => $vendorDir,
                 ),
-            )));
+            )))
+        ;
 
         $installer = $this->createInstaller();
 
@@ -154,11 +168,11 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
     public function testInstall()
     {
-        /* @var RootPackageInterface $rootPackage */
+        /** @var RootPackageInterface $rootPackage */
         $rootPackage = $this->createRootPackageMock();
-        /* @var IOInterface $io */
+        /** @var IOInterface $io */
         $io = $this->io;
-        /* @var AssetTypeInterface $type */
+        /** @var AssetTypeInterface $type */
         $type = $this->type;
         $vendorDir = realpath(sys_get_temp_dir()).\DIRECTORY_SEPARATOR.'composer-test'.\DIRECTORY_SEPARATOR.'vendor';
 
@@ -166,26 +180,30 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
 
         $dm = $this->getMockBuilder('Composer\Downloader\DownloadManager')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->composer->expects($this->any())
             ->method('getDownloadManager')
-            ->will($this->returnValue($dm));
+            ->will($this->returnValue($dm))
+        ;
 
-        /* @var \PHPUnit_Framework_MockObject_MockObject $package */
+        /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock('foo-asset/package');
 
-        /* @var PackageInterface $package */
+        /** @var PackageInterface $package */
         $packageDir = $vendorDir.'/'.$package->getPrettyName();
 
         $dm->expects($this->once())
             ->method('download')
-            ->with($package, $vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package');
+            ->with($package, $vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package')
+        ;
 
         $repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface')->getMock();
         $repository->expects($this->once())
             ->method('addPackage')
-            ->with($package);
+            ->with($package)
+        ;
 
         $config = ConfigBuilder::build($this->composer);
         $library = new AssetInstaller($config, $io, $this->composer, $type);
@@ -204,15 +222,42 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createInstaller()
     {
-        /* @var IOInterface $io */
+        /** @var IOInterface $io */
         $io = $this->io;
-        /* @var Composer $composer */
+        /** @var Composer $composer */
         $composer = $this->composer;
-        /* @var AssetTypeInterface $type */
+        /** @var AssetTypeInterface $type */
         $type = $this->type;
         $config = ConfigBuilder::build($composer);
 
         return new AssetInstaller($config, $io, $composer, $type);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|RootPackageInterface
+     */
+    protected function createRootPackageMock()
+    {
+        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')
+            ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
+            ->getMock()
+        ;
+
+        $package->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue(array()))
+        ;
+
+        return $package;
+    }
+
+    protected function ensureDirectoryExistsAndClear($directory)
+    {
+        $fs = new Filesystem();
+        if (is_dir($directory)) {
+            $fs->removeDirectory($directory);
+        }
+        mkdir($directory, 0777, true);
     }
 
     /**
@@ -227,31 +272,7 @@ class AssetInstallerTest extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder('Composer\Package\Package')
             ->setConstructorArgs(array($name, '1.0.0.0', '1.0.0'))
             ->enableProxyingToOriginalMethods()
-            ->getMock();
-    }
-
-    /**
-     * @return RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function createRootPackageMock()
-    {
-        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')
-            ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
-            ->getMock();
-
-        $package->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue(array()));
-
-        return $package;
-    }
-
-    protected function ensureDirectoryExistsAndClear($directory)
-    {
-        $fs = new Filesystem();
-        if (is_dir($directory)) {
-            $fs->removeDirectory($directory);
-        }
-        mkdir($directory, 0777, true);
+            ->getMock()
+        ;
     }
 }
