@@ -17,6 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
 use Composer\Util\RemoteFilesystem;
 use Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver;
+use Fxp\Composer\AssetPlugin\Tests\ComposerUtil;
 
 /**
  * Tests of vcs mercurial bitbucket repository.
@@ -87,7 +88,10 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'bitbucket.org',
-                    'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name/main-branch',
+                    ComposerUtil::getValueByVersion(array(
+                        '^1.7.0' => 'https://api.bitbucket.org/2.0/repositories/composer-test/repo-name?fields=mainbranch',
+                        '1.6.*' => 'https://api.bitbucket.org/1.0/repositories/composer-test/repo-name/main-branch',
+                    )),
                     false,
                 ),
                 array(
@@ -115,7 +119,11 @@ class HgBitbucketDriverTest extends \PHPUnit_Framework_TestCase
         $driver->initialize();
         $this->setAttribute($driver, 'tags', array($identifier => $sha));
 
-        $this->assertEquals('test_master', $driver->getRootIdentifier());
+        $expectedRootIdentifier = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'default',
+            '1.6.*' => 'test_master',
+        ));
+        $this->assertEquals($expectedRootIdentifier, $driver->getRootIdentifier());
 
         $dist = $driver->getDist($sha);
         $this->assertEquals('zip', $dist['type']);

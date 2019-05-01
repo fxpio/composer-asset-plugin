@@ -14,6 +14,7 @@ namespace Fxp\Composer\AssetPlugin\Tests\Util;
 use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
+use Fxp\Composer\AssetPlugin\Tests\ComposerUtil;
 use Fxp\Composer\AssetPlugin\Util\Perforce;
 
 /**
@@ -121,7 +122,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetComposerInformationWithoutLabelWithoutStream()
     {
-        $expectedCommand = 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print '.escapeshellarg('//depot/ASSET.json'),
+            '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -147,7 +151,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetComposerInformationWithLabelWithoutStream()
     {
-        $expectedCommand = 'p4 -u user -p port  files //depot/ASSET.json@0.0.1';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/ASSET.json@0.0.1'),
+            '1.6.*' => 'p4 -u user -p port  files //depot/ASSET.json@0.0.1',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -161,7 +168,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $expectedCommand = 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json@10001';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print '.escapeshellarg('//depot/ASSET.json@10001'),
+            '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json@10001',
+        ));
         $this->processExecutor->expects($this->at(1))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -190,7 +200,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
     {
         $this->setAssetPerforceToStream();
 
-        $expectedCommand = 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print '.escapeshellarg('//depot/branch/ASSET.json'),
+            '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -218,7 +231,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
     public function testGetComposerInformationWithLabelWithStream()
     {
         $this->setAssetPerforceToStream();
-        $expectedCommand = 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
+            '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -232,7 +248,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $expectedCommand = 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json@10001';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print '.escapeshellarg('//depot/branch/ASSET.json@10001'),
+            '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json@10001',
+        ));
         $this->processExecutor->expects($this->at(1))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -260,7 +279,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
     public function testGetComposerInformationWithLabelButNoSuchFile()
     {
         $this->setAssetPerforceToStream();
-        $expectedCommand = 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
+            '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -282,7 +304,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
     public function testGetComposerInformationWithLabelWithStreamWithNoChange()
     {
         $this->setAssetPerforceToStream();
-        $expectedCommand = 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
+            '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
+        ));
         $this->processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand))
@@ -306,7 +331,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
         /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
         $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
 
-        $expectedCommand = 'p4 -p perforce.does.exist:port info -s';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -p '.escapeshellarg('perforce.does.exist:port').' info -s',
+            '1.6.*' => 'p4 -p perforce.does.exist:port info -s',
+        ));
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand), $this->equalTo(null))
@@ -326,7 +354,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
         /* @var ProcessExecutor|\PHPUnit_Framework_MockObject_MockObject $processExecutor */
         $processExecutor = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
 
-        $expectedCommand = 'p4 -p perforce.does.exist:port info -s';
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -p '.escapeshellarg('perforce.does.exist:port').' info -s',
+            '1.6.*' => 'p4 -p perforce.does.exist:port info -s',
+        ));
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($expectedCommand), $this->equalTo(null))
@@ -343,7 +374,10 @@ class PerforceTest extends \PHPUnit_Framework_TestCase
         $this->perforce->setFilesystem($fs);
 
         $testClient = $this->perforce->getClient();
-        $expectedCommand = 'p4 -u '.self::TEST_P4USER.' -p '.self::TEST_PORT.' client -d '.$testClient;
+        $expectedCommand = ComposerUtil::getValueByVersion(array(
+            '^1.7.0' => 'p4 -u '.self::TEST_P4USER.' -p '.self::TEST_PORT.' client -d '.escapeshellarg($testClient),
+            '1.6.*' => 'p4 -u '.self::TEST_P4USER.' -p '.self::TEST_PORT.' client -d '.$testClient,
+        ));
         $this->processExecutor->expects($this->once())->method('execute')->with($this->equalTo($expectedCommand));
 
         $fs->expects($this->once())->method('remove')->with($this->perforce->getP4ClientSpec());
