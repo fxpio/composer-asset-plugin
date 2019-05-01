@@ -10,18 +10,46 @@ matrix:
     include:
         - php: 5.5
           env: COMPOSER_VERSION="1.6.*"
+        - php: 5.5
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 5.5
+          env: COMPOSER_VERSION="1.8.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.6.*"
+        - php: 5.6
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 5.6
+          env: COMPOSER_VERSION="1.8.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.6.*"
+        - php: 7.0
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.0
+          env: COMPOSER_VERSION="1.8.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.6.*"
+        - php: 7.1
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.1
+          env: COMPOSER_VERSION="1.8.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.6.*"
+        - php: 7.2
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.2
+          env: COMPOSER_VERSION="1.8.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.6.*"
+        - php: 7.3
+          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.3
+          env: COMPOSER_VERSION="1.8.*"
         - php: nightly
           env: COMPOSER_VERSION="1.6.*"
+        - php: nightly
+          env: COMPOSER_VERSION="1.7.*"
+        - php: nightly
+          env: COMPOSER_VERSION="1.8.*"
 
     allow_failures:
         - php: nightly
