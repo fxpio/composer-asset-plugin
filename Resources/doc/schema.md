@@ -144,13 +144,13 @@ The `bower.json` of asset repository is automatically converted to a Complete Pa
 
 ##### Verison conversion
 
-NPM and Bower use [Semver](http://semver.org) for formatting the versions, which is not
-the case for Composer. It is therefore necessary to perform a conversion, but it's not
-perfect because of the differences in operation between Semver and Composer.
+NPM, Bower, and Composer use slightly different syntax for representing versions.
+It is therefore necessary to perform a conversion, but it's not
+perfect because of the differences in operation between NPM/Bower and Composer.
 
 Here are the matches currently validated:
 
-| Semver version   | Composer version |
+| NPM/Bower version| Composer version |
 | ---------------- | ---------------- |
 | 1.2.3            | 1.2.3            |
 | 20170124.0.0     | 20170124.000000  |
@@ -195,13 +195,13 @@ Here are the matches currently validated:
 
 ##### Range verison conversion
 
-NPM and Bower use [Semver](http://semver.org) for formatting the range versions, which is not
-the case for Composer. It is therefore necessary to perform a conversion, but it's not
-perfect because of the differences in operation between Semver and Composer.
+NPM, Bower, and Composer use slightly different syntax for representing version ranges.
+It is therefore necessary to perform a conversion, but it's not
+perfect because of the differences in operation between NPM/Bower and Composer.
 
 Here are the matches currently validated:
 
-| Semver range version | Composer range version |
+| NPM/Bower range version | Composer range version |
 | -------------------- | ---------------------- |
 | >1.2.3               | >1.2.3                 |
 | > 1.2.3              | >1.2.3                 |
