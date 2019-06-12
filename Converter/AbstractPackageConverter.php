@@ -75,6 +75,11 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             $this->convertExtraKey($asset, $assetKey, $composer, $composerKey);
         }
 
+        $provide = str_replace($this->assetType->getComposerVendorName() . '/' , '', $composer['name']);
+        $composer['provide'] = array(
+            "{$provide}/{$provide}-implementation" => $composer['version']
+        );
+
         return $composer;
     }
 

@@ -94,6 +94,11 @@ final class NpmPackageConverterTest extends AbstractPackageConverterTest
         $this->assertInternalType('array', $composer['bin']);
         $this->assertSame($this->asset['bin'], $composer['bin'][0]);
 
+        $this->assertArrayHasKey('provide', $composer);
+        $this->assertInternalType('array', $composer['provide']);
+        $this->assertArrayHasKey("{$this->asset['name']}/{$this->asset['name']}-implementation", $composer['provide']);
+        $this->assertEquals($composer['version'], $composer['provide']["{$this->asset['name']}/{$this->asset['name']}-implementation"]);
+
         $this->assertArrayHasKey('extra', $composer);
 
         $this->assertArrayHasKey('npm-asset-bugs', $composer['extra']);
@@ -151,7 +156,6 @@ final class NpmPackageConverterTest extends AbstractPackageConverterTest
         $this->assertArrayNotHasKey('support', $composer);
         $this->assertArrayNotHasKey('conflict', $composer);
         $this->assertArrayNotHasKey('replace', $composer);
-        $this->assertArrayNotHasKey('provide', $composer);
         $this->assertArrayNotHasKey('suggest', $composer);
         $this->assertArrayNotHasKey('autoload', $composer);
         $this->assertArrayNotHasKey('autoload-dev', $composer);

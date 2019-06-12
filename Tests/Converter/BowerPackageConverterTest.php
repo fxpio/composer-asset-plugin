@@ -85,6 +85,11 @@ final class BowerPackageConverterTest extends AbstractPackageConverterTest
         $this->assertArrayHasKey('bin', $composer);
         $this->assertSame($this->asset['bin'], $composer['bin']);
 
+        $this->assertArrayHasKey('provide', $composer);
+        $this->assertInternalType('array', $composer['provide']);
+        $this->assertArrayHasKey("{$this->asset['name']}/{$this->asset['name']}-implementation", $composer['provide']);
+        $this->assertEquals($composer['version'], $composer['provide']["{$this->asset['name']}/{$this->asset['name']}-implementation"]);
+
         $this->assertArrayHasKey('extra', $composer);
 
         $this->assertArrayHasKey('bower-asset-main', $composer['extra']);
@@ -102,7 +107,6 @@ final class BowerPackageConverterTest extends AbstractPackageConverterTest
         $this->assertArrayNotHasKey('support', $composer);
         $this->assertArrayNotHasKey('conflict', $composer);
         $this->assertArrayNotHasKey('replace', $composer);
-        $this->assertArrayNotHasKey('provide', $composer);
         $this->assertArrayNotHasKey('suggest', $composer);
         $this->assertArrayNotHasKey('autoload', $composer);
         $this->assertArrayNotHasKey('autoload-dev', $composer);
