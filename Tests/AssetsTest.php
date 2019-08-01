@@ -49,6 +49,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
             'hg',
             'perforce',
             'svn',
+            'url',
         ), array_keys(Assets::getVcsRepositoryDrivers()));
     }
 
@@ -61,6 +62,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
             'hg-bitbucket',
             'hg',
             'perforce',
+            'url',
             'svn',
         ), array_keys(Assets::getVcsDrivers()));
     }

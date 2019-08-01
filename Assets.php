@@ -57,6 +57,7 @@ class Assets
         'hg' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'perforce' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
         'svn' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
+        'url' => 'Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository',
     );
 
     /**
@@ -69,6 +70,7 @@ class Assets
         'hg-bitbucket' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgBitbucketDriver',
         'hg' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\HgDriver',
         'perforce' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\PerforceDriver',
+        'url' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\GitDriver',
         // svn must be last because identifying a subversion server for sure is practically impossible
         'svn' => 'Fxp\Composer\AssetPlugin\Repository\Vcs\SvnDriver',
     );
