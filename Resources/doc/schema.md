@@ -100,7 +100,7 @@ The `package.json` of asset repository is automatically converted to a Complete 
 | `not used`           | support                               |
 | `not used`           | conflict                              |
 | `not used`           | replace                               |
-| `not used`           | provide                               |
+| `not used`           | provide (`{name}/{name}-implementation => {version}`)                                |
 | `not used`           | suggest                               |
 | `not used`           | autoload                              |
 | `not used`           | autoload-dev                          |
@@ -133,7 +133,7 @@ The `bower.json` of asset repository is automatically converted to a Complete Pa
 | `not used`           | support                               |
 | `not used`           | conflict                              |
 | `not used`           | replace                               |
-| `not used`           | provide                               |
+| `not used`           | provide (`{name}/{name}-implementation => {version}`)                                |
 | `not used`           | suggest                               |
 | `not used`           | autoload                              |
 | `not used`           | autoload-dev                          |
