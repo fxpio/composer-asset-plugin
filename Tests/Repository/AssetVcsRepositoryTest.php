@@ -71,7 +71,7 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->assetRepositoryManager->expects($this->any())
+        $this->assetRepositoryManager->expects(static::any())
             ->method('solveResolutions')
             ->willReturnCallback(function ($value) {
                 return $value;
@@ -111,7 +111,7 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
     public function testDefaultConstructor($type, $url)
     {
         $this->init(false, $type, $url, '', false, array());
-        $this->assertEquals(0, $this->repository->count());
+        static::assertEquals(0, $this->repository->count());
     }
 
     /**
@@ -198,7 +198,7 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
         } catch (InvalidRepositoryException $e) {
             // for analysis the IO traces
         }
-        $this->assertSame($validTraces, $this->io->getTraces());
+        static::assertSame($validTraces, $this->io->getTraces());
     }
 
     /**
@@ -231,7 +231,7 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         $this->init(true, $type, $url, $class, $verbose, null, $packageName);
 
-        $this->assertEquals($valid, $this->repository->getComposerPackageName());
+        static::assertEquals($valid, $this->repository->getComposerPackageName());
     }
 
     /**
@@ -257,18 +257,18 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(7, $packages);
+        static::assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
                 $package = $package->getAliasOf();
             }
 
-            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName, $package->getName());
+            static::assertInstanceOf('Composer\Package\CompletePackage', $package);
+            static::assertSame($validPackageName, $package->getName());
         }
 
-        $this->assertSame($validTraces, $this->io->getTraces());
+        static::assertSame($validTraces, $this->io->getTraces());
     }
 
     /**
@@ -309,18 +309,18 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(7, $packages);
+        static::assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
                 $package = $package->getAliasOf();
             }
 
-            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName, $package->getName());
+            static::assertInstanceOf('Composer\Package\CompletePackage', $package);
+            static::assertSame($validPackageName, $package->getName());
         }
 
-        $this->assertSame($validTraces, $this->io->getTraces());
+        static::assertSame($validTraces, $this->io->getTraces());
     }
 
     /**
@@ -346,18 +346,18 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(7, $packages);
+        static::assertCount(7, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
                 $package = $package->getAliasOf();
             }
 
-            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName, $package->getName());
+            static::assertInstanceOf('Composer\Package\CompletePackage', $package);
+            static::assertSame($validPackageName, $package->getName());
         }
 
-        $this->assertSame($validTraces, $this->io->getTraces());
+        static::assertSame($validTraces, $this->io->getTraces());
     }
 
     /**
@@ -381,9 +381,9 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $filter->expects($this->any())
+        $filter->expects(static::any())
             ->method('skip')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         /* @var VcsPackageFilter $filter */
@@ -391,18 +391,18 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(5, $packages);
+        static::assertCount(5, $packages);
 
         foreach ($packages as $package) {
             if ($package instanceof AliasPackage) {
                 $package = $package->getAliasOf();
             }
 
-            $this->assertInstanceOf('Composer\Package\CompletePackage', $package);
-            $this->assertSame($validPackageName, $package->getName());
+            static::assertInstanceOf('Composer\Package\CompletePackage', $package);
+            static::assertSame($validPackageName, $package->getName());
         }
 
-        $this->assertSame($validTraces, $this->io->getTraces());
+        static::assertSame($validTraces, $this->io->getTraces());
     }
 
     /**
@@ -431,8 +431,8 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
 
         /** @var PackageInterface[] $packages */
         $packages = $this->repository->getPackages();
-        $this->assertCount(10, $packages);
-        $this->assertSame($registryPackages, $packages);
+        static::assertCount(10, $packages);
+        static::assertSame($registryPackages, $packages);
     }
 
     /**

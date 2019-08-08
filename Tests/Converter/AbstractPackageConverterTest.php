@@ -40,36 +40,36 @@ abstract class AbstractPackageConverterTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
-        $versionConverter->expects($this->any())
+        $versionConverter->expects(static::any())
             ->method('convertVersion')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return $value;
-            }))
+            })
         ;
-        $versionConverter->expects($this->any())
+        $versionConverter->expects(static::any())
             ->method('convertRange')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return $value;
-            }))
+            })
         ;
         $type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
-        $type->expects($this->any())
+        $type->expects(static::any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('ASSET'))
+            ->willReturn('ASSET')
         ;
-        $type->expects($this->any())
+        $type->expects(static::any())
             ->method('getComposerType')
-            ->will($this->returnValue('ASSET_TYPE'))
+            ->willReturn('ASSET_TYPE')
         ;
-        $type->expects($this->any())
+        $type->expects(static::any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($versionConverter))
+            ->willReturn($versionConverter)
         ;
-        $type->expects($this->any())
+        $type->expects(static::any())
             ->method('formatComposerName')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return 'ASSET/'.$value;
-            }))
+            })
         ;
 
         $this->type = $type;

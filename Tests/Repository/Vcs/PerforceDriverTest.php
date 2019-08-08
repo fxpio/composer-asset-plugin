@@ -79,9 +79,9 @@ final class PerforceDriverTest extends TestCase
     {
         $driver = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
         $driver->initialize();
-        $this->assertEquals(self::TEST_URL, $driver->getUrl());
-        $this->assertEquals(self::TEST_DEPOT, $driver->getDepot());
-        $this->assertEquals(self::TEST_BRANCH, $driver->getBranch());
+        static::assertEquals(self::TEST_URL, $driver->getUrl());
+        static::assertEquals(self::TEST_DEPOT, $driver->getDepot());
+        static::assertEquals(self::TEST_BRANCH, $driver->getBranch());
     }
 
     /**
@@ -92,25 +92,25 @@ final class PerforceDriverTest extends TestCase
     public function testSupportsReturnsFalseNoDeepCheck()
     {
         $this->expectOutputString('');
-        $this->assertFalse(PerforceDriver::supports($this->io, $this->config, 'existing.url'));
+        static::assertFalse(PerforceDriver::supports($this->io, $this->config, 'existing.url'));
     }
 
     public function testInitializeLogsInAndConnectsClient()
     {
-        $this->perforce->expects($this->at(0))->method('p4Login');
-        $this->perforce->expects($this->at(1))->method('checkStream');
-        $this->perforce->expects($this->at(2))->method('writeP4ClientSpec');
-        $this->perforce->expects($this->at(3))->method('connectClient');
+        $this->perforce->expects(static::at(0))->method('p4Login');
+        $this->perforce->expects(static::at(1))->method('checkStream');
+        $this->perforce->expects(static::at(2))->method('writeP4ClientSpec');
+        $this->perforce->expects(static::at(3))->method('connectClient');
         $this->driver->initialize();
     }
 
     public function testPublicRepositoryWithEmptyComposer()
     {
         $identifier = 'TEST_IDENTIFIER';
-        $this->perforce->expects($this->any())
+        $this->perforce->expects(static::any())
             ->method('getComposerInformation')
-            ->with($this->equalTo($identifier))
-            ->will($this->returnValue(''))
+            ->with(static::equalTo($identifier))
+            ->willReturn('')
         ;
 
         $this->driver->initialize();
@@ -118,34 +118,34 @@ final class PerforceDriverTest extends TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $this->driver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $this->driver->getComposerInformation($identifier));
     }
 
     public function testPublicRepositoryWithCodeCache()
     {
         $identifier = 'TEST_IDENTIFIER';
-        $this->perforce->expects($this->any())
+        $this->perforce->expects(static::any())
             ->method('getComposerInformation')
-            ->with($this->equalTo($identifier))
-            ->will($this->returnValue(array('name' => 'foo')))
+            ->with(static::equalTo($identifier))
+            ->willReturn(array('name' => 'foo'))
         ;
 
         $this->driver->initialize();
         $composer1 = $this->driver->getComposerInformation($identifier);
         $composer2 = $this->driver->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     public function testPublicRepositoryWithFilesystemCache()
     {
         $identifier = 'TEST_IDENTIFIER';
-        $this->perforce->expects($this->any())
+        $this->perforce->expects(static::any())
             ->method('getComposerInformation')
-            ->with($this->equalTo($identifier))
-            ->will($this->returnValue(array('name' => 'foo')))
+            ->with(static::equalTo($identifier))
+            ->willReturn(array('name' => 'foo'))
         ;
 
         $driver2 = new PerforceDriver($this->repoConfig, $this->io, $this->config, $this->process, $this->remoteFileSystem);
@@ -160,9 +160,9 @@ final class PerforceDriverTest extends TestCase
         $composer1 = $this->driver->getComposerInformation($identifier);
         $composer2 = $driver2->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     protected function getMockIOInterface()

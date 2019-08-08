@@ -24,7 +24,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetTypes()
     {
-        $this->assertEquals(array(
+        static::assertEquals(array(
             'npm',
             'bower',
         ), Assets::getTypes());
@@ -32,7 +32,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
 
     public function testDefaultGetRegistries()
     {
-        $this->assertEquals(array(
+        static::assertEquals(array(
             'npm',
             'bower',
         ), array_keys(Assets::getDefaultRegistries()));
@@ -40,7 +40,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
 
     public function testGetVcsRepositoryDrivers()
     {
-        $this->assertEquals(array(
+        static::assertEquals(array(
             'vcs',
             'github',
             'git-bitbucket',
@@ -55,7 +55,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
 
     public function testGetVcsDrivers()
     {
-        $this->assertEquals(array(
+        static::assertEquals(array(
             'github',
             'git-bitbucket',
             'git',
@@ -79,20 +79,20 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase
     {
         $type = Assets::createType('npm');
 
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
     }
 
     public function testCreationOfBowerAsset()
     {
         $type = Assets::createType('bower');
 
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
     }
 
     public function testCreationOfPrivateBowerAsset()
     {
         $type = Assets::createType('bower');
 
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface', $type);
     }
 }

@@ -46,10 +46,10 @@ final class SemverConverterTest extends \PHPUnit\Framework\TestCase
      */
     public function testConverter($semver, $composer)
     {
-        $this->assertEquals($composer, $this->converter->convertVersion($semver));
+        static::assertEquals($composer, $this->converter->convertVersion($semver));
 
         if (!ctype_alpha($semver) && !\in_array($semver, array(null, ''), true)) {
-            $this->assertEquals('v'.$composer, $this->converter->convertVersion('v'.$semver));
+            static::assertEquals('v'.$composer, $this->converter->convertVersion('v'.$semver));
         }
     }
 
@@ -112,7 +112,7 @@ final class SemverConverterTest extends \PHPUnit\Framework\TestCase
      */
     public function testRangeConverter($semver, $composer)
     {
-        $this->assertEquals($composer, $this->converter->convertRange($semver));
+        static::assertEquals($composer, $this->converter->convertRange($semver));
     }
 
     public function getTestRanges()

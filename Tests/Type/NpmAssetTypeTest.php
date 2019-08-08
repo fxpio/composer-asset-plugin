@@ -31,11 +31,11 @@ final class NpmAssetTypeTest extends AbstractAssetTypeTest
 
     public function testInformations()
     {
-        $this->assertSame('npm', $this->type->getName());
-        $this->assertSame('npm-asset', $this->type->getComposerVendorName());
-        $this->assertSame('npm-asset-library', $this->type->getComposerType());
-        $this->assertSame('package.json', $this->type->getFilename());
-        $this->assertSame('npm-asset/foobar', $this->type->formatComposerName('foobar'));
-        $this->assertSame('npm-asset/foobar', $this->type->formatComposerName('npm-asset/foobar'));
+        static::assertSame('npm', $this->type->getName());
+        static::assertSame('npm-asset', $this->type->getComposerVendorName());
+        static::assertSame('npm-asset-library', $this->type->getComposerType());
+        static::assertSame('package.json', $this->type->getFilename());
+        static::assertSame('npm-asset/foobar', $this->type->formatComposerName('foobar'));
+        static::assertSame('npm-asset/foobar', $this->type->formatComposerName('npm-asset/foobar'));
     }
 }

@@ -51,6 +51,6 @@ final class ResolutionManagerTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->assertSame($expected, $data);
+        static::assertSame($expected, $data);
     }
 }

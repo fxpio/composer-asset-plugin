@@ -25,12 +25,12 @@ final class ValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testValidBranch()
     {
-        $this->assertNotFalse(Validator::validateBranch('master'));
+        static::assertNotFalse(Validator::validateBranch('master'));
     }
 
     public function testInvalidBranch()
     {
-        $this->assertFalse(Validator::validateBranch('1.x'));
+        static::assertFalse(Validator::validateBranch('1.x'));
     }
 
     /**
@@ -54,7 +54,7 @@ final class ValidatorTest extends \PHPUnit\Framework\TestCase
     public function testValidTag($type)
     {
         $assetType = Assets::createType($type);
-        $this->assertNotFalse(Validator::validateTag('1.0.0', $assetType));
+        static::assertNotFalse(Validator::validateTag('1.0.0', $assetType));
     }
 
     /**
@@ -65,6 +65,6 @@ final class ValidatorTest extends \PHPUnit\Framework\TestCase
     public function testInvalidTag($type)
     {
         $assetType = Assets::createType($type);
-        $this->assertFalse(Validator::validateTag('version', $assetType));
+        static::assertFalse(Validator::validateTag('version', $assetType));
     }
 }

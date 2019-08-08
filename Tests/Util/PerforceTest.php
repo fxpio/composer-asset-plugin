@@ -107,7 +107,7 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
         );
         $this->perforce = new Perforce($repoConfig, 'port', 'path', $this->processExecutor, false, $this->getMockIOInterface());
         $password = $this->perforce->queryP4Password();
-        $this->assertEquals('TEST_PASSWORD', $password);
+        static::assertEquals('TEST_PASSWORD', $password);
     }
 
     public function getTestRepoConfig()
@@ -127,17 +127,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print '.escapeshellarg('//depot/ASSET.json'),
             '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = PerforceTest::getComposerJson();
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = PerforceTest::getComposerJson();
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -148,7 +146,7 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             'minimum-stability' => 'dev',
             'autoload' => array('psr-0' => array()),
         );
-        $this->assertEquals($expected, $result);
+        static::assertEquals($expected, $result);
     }
 
     public function testGetComposerInformationWithLabelWithoutStream()
@@ -157,17 +155,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/ASSET.json@0.0.1'),
             '1.6.*' => 'p4 -u user -p port  files //depot/ASSET.json@0.0.1',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = '//depot/ASSET.json#1 - branch change 10001 (text)';
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = '//depot/ASSET.json#1 - branch change 10001 (text)';
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -175,17 +171,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print '.escapeshellarg('//depot/ASSET.json@10001'),
             '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot -p port  print //depot/ASSET.json@10001',
         ));
-        $this->processExecutor->expects($this->at(1))
+        $this->processExecutor->expects(static::at(1))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = PerforceTest::getComposerJson();
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = PerforceTest::getComposerJson();
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -197,7 +191,7 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             'minimum-stability' => 'dev',
             'autoload' => array('psr-0' => array()),
         );
-        $this->assertEquals($expected, $result);
+        static::assertEquals($expected, $result);
     }
 
     public function testGetComposerInformationWithoutLabelWithStream()
@@ -208,17 +202,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print '.escapeshellarg('//depot/branch/ASSET.json'),
             '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = PerforceTest::getComposerJson();
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = PerforceTest::getComposerJson();
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -230,7 +222,7 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             'minimum-stability' => 'dev',
             'autoload' => array('psr-0' => array()),
         );
-        $this->assertEquals($expected, $result);
+        static::assertEquals($expected, $result);
     }
 
     public function testGetComposerInformationWithLabelWithStream()
@@ -240,17 +232,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
             '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = '//depot/ASSET.json#1 - branch change 10001 (text)';
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = '//depot/ASSET.json#1 - branch change 10001 (text)';
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -258,17 +248,15 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print '.escapeshellarg('//depot/branch/ASSET.json@10001'),
             '1.6.*' => 'p4 -u user -c composer_perforce_TEST_depot_branch -p port  print //depot/branch/ASSET.json@10001',
         ));
-        $this->processExecutor->expects($this->at(1))
+        $this->processExecutor->expects(static::at(1))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = PerforceTest::getComposerJson();
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = PerforceTest::getComposerJson();
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
@@ -280,7 +268,7 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             'minimum-stability' => 'dev',
             'autoload' => array('psr-0' => array()),
         );
-        $this->assertEquals($expected, $result);
+        static::assertEquals($expected, $result);
     }
 
     public function testGetComposerInformationWithLabelButNoSuchFile()
@@ -290,23 +278,21 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
             '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = 'no such file(s).';
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = 'no such file(s).';
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
-        $this->assertNull($result);
+        static::assertNull($result);
     }
 
     public function testGetComposerInformationWithLabelWithStreamWithNoChange()
@@ -316,23 +302,21 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u user -p port  files '.escapeshellarg('//depot/branch/ASSET.json@0.0.1'),
             '1.6.*' => 'p4 -u user -p port  files //depot/branch/ASSET.json@0.0.1',
         ));
-        $this->processExecutor->expects($this->at(0))
+        $this->processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand))
-            ->will(
-                $this->returnCallback(
-                    function ($command, &$output) {
-                        $output = '//depot/ASSET.json#1 - branch 10001 (text)';
+            ->with(static::equalTo($expectedCommand))
+            ->willReturnCallback(
+                function ($command, &$output) {
+                    $output = '//depot/ASSET.json#1 - branch 10001 (text)';
 
-                        return $command ? true : true;
-                    }
-                )
+                    return $command ? true : true;
+                }
             )
         ;
 
         $result = $this->perforce->getComposerInformation('//depot/branch@0.0.1');
 
-        $this->assertNull($result);
+        static::assertNull($result);
     }
 
     public function testCheckServerExists()
@@ -344,14 +328,14 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -p '.escapeshellarg('perforce.does.exist:port').' info -s',
             '1.6.*' => 'p4 -p perforce.does.exist:port info -s',
         ));
-        $processExecutor->expects($this->at(0))
+        $processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand), $this->equalTo(null))
-            ->will($this->returnValue(0))
+            ->with(static::equalTo($expectedCommand), static::equalTo(null))
+            ->willReturn(0)
         ;
 
         $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
-        $this->assertTrue($result);
+        static::assertTrue($result);
     }
 
     /**
@@ -368,14 +352,14 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -p '.escapeshellarg('perforce.does.exist:port').' info -s',
             '1.6.*' => 'p4 -p perforce.does.exist:port info -s',
         ));
-        $processExecutor->expects($this->at(0))
+        $processExecutor->expects(static::at(0))
             ->method('execute')
-            ->with($this->equalTo($expectedCommand), $this->equalTo(null))
-            ->will($this->returnValue(127))
+            ->with(static::equalTo($expectedCommand), static::equalTo(null))
+            ->willReturn(127)
         ;
 
         $result = $this->perforce->checkServerExists('perforce.does.exist:port', $processExecutor);
-        $this->assertFalse($result);
+        static::assertFalse($result);
     }
 
     public function testCleanupClientSpecShouldDeleteClient()
@@ -389,9 +373,9 @@ final class PerforceTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'p4 -u '.self::TEST_P4USER.' -p '.self::TEST_PORT.' client -d '.escapeshellarg($testClient),
             '1.6.*' => 'p4 -u '.self::TEST_P4USER.' -p '.self::TEST_PORT.' client -d '.$testClient,
         ));
-        $this->processExecutor->expects($this->once())->method('execute')->with($this->equalTo($expectedCommand));
+        $this->processExecutor->expects(static::once())->method('execute')->with(static::equalTo($expectedCommand));
 
-        $fs->expects($this->once())->method('remove')->with($this->perforce->getP4ClientSpec());
+        $fs->expects(static::once())->method('remove')->with($this->perforce->getP4ClientSpec());
 
         $this->perforce->cleanupClientSpec();
     }

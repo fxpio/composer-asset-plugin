@@ -76,7 +76,7 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)
             ->disableOriginalConstructor()->getMock();
 
-        $this->assetRepositoryManager->expects($this->any())
+        $this->assetRepositoryManager->expects(static::any())
             ->method('solveResolutions')
             ->willReturnCallback(function ($value) {
                 return $value;
@@ -84,89 +84,89 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->lazyPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('PACKAGE_NAME'))
+            ->willReturn('PACKAGE_NAME')
         ;
         $this->lazyPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getUniqueName')
-            ->will($this->returnValue('PACKAGE_NAME-1.0.0.0'))
+            ->willReturn('PACKAGE_NAME-1.0.0.0')
         ;
         $this->lazyPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyVersion')
-            ->will($this->returnValue('1.0'))
+            ->willReturn('1.0')
         ;
         $this->lazyPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.0.0'))
+            ->willReturn('1.0.0.0')
         ;
 
         $versionConverter = $this->getMockBuilder(VersionConverterInterface::class)->getMock();
-        $versionConverter->expects($this->any())
+        $versionConverter->expects(static::any())
             ->method('convertVersion')
-            ->will($this->returnValue('VERSION_CONVERTED'))
+            ->willReturn('VERSION_CONVERTED')
         ;
-        $versionConverter->expects($this->any())
+        $versionConverter->expects(static::any())
             ->method('convertRange')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return $value;
-            }))
+            })
         ;
         $packageConverter = $this->getMockBuilder(PackageConverterInterface::class)->getMock();
         /** @var LazyPackageInterface $lasyPackage */
         $lasyPackage = $this->lazyPackage;
-        $packageConverter->expects($this->any())
+        $packageConverter->expects(static::any())
             ->method('convert')
-            ->will($this->returnCallback(function ($value) use ($lasyPackage) {
+            ->willReturnCallback(function ($value) use ($lasyPackage) {
                 $value['version'] = $lasyPackage->getPrettyVersion();
                 $value['version_normalized'] = $lasyPackage->getVersion();
 
                 return $value;
-            }))
+            })
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('ASSET'))
+            ->willReturn('ASSET')
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getComposerType')
-            ->will($this->returnValue('ASSET_TYPE'))
+            ->willReturn('ASSET_TYPE')
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getFilename')
-            ->will($this->returnValue('ASSET.json'))
+            ->willReturn('ASSET.json')
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($versionConverter))
+            ->willReturn($versionConverter)
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getPackageConverter')
-            ->will($this->returnValue($packageConverter))
+            ->willReturn($packageConverter)
         ;
 
         $this->driver
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getDist')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
                     'url' => 'http://foobar.tld/dist/'.$value,
                 );
-            }))
+            })
         ;
         $this->driver
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getSource')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return array(
                     'type' => 'vcs',
                     'url' => 'http://foobar.tld/source/'.$value,
                 );
-            }))
+            })
         ;
     }
 
@@ -259,23 +259,23 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $driver */
         $driver = $this->driver;
         $driver
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getComposerInformation')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject $loader */
         $loader = $this->loader;
         $loader
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('load')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $this->lazyLoader = $this->createLazyLoaderConfigured('TYPE', $verbose);
         $package = $this->lazyLoader->load($this->lazyPackage);
 
-        $this->assertFalse($package);
+        static::assertFalse($package);
 
         $filename = $this->assetType->getFilename();
         $validOutput = array('');
@@ -287,11 +287,11 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
                 '',
             );
         }
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
-        $this->assertFalse($packageCache);
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertFalse($packageCache);
+        static::assertSame($validOutput, $this->io->getTraces());
     }
 
     /**
@@ -308,40 +308,40 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
 
         $realPackage = $this->getMockBuilder(CompletePackageInterface::class)->getMock();
         $realPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('PACKAGE_NAME'))
+            ->willReturn('PACKAGE_NAME')
         ;
         $realPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getUniqueName')
-            ->will($this->returnValue('PACKAGE_NAME-1.0.0.0'))
+            ->willReturn('PACKAGE_NAME-1.0.0.0')
         ;
         $realPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyVersion')
-            ->will($this->returnValue('1.0'))
+            ->willReturn('1.0')
         ;
         $realPackage
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.0.0'))
+            ->willReturn('1.0.0.0')
         ;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject $driver */
         $driver = $this->driver;
         $driver
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getComposerInformation')
-            ->will($this->returnValue($arrayPackage))
+            ->willReturn($arrayPackage)
         ;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject $loader */
         $loader = $this->loader;
         $loader
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('load')
-            ->will($this->returnValue($realPackage))
+            ->willReturn($realPackage)
         ;
 
         $this->lazyLoader = $this->createLazyLoaderConfigured('TYPE', $verbose);
@@ -358,13 +358,13 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
             );
         }
 
-        $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $package);
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertInstanceOf('Composer\Package\CompletePackageInterface', $package);
+        static::assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
-        $this->assertInstanceOf('Composer\Package\CompletePackageInterface', $packageCache);
-        $this->assertSame($package, $packageCache);
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertInstanceOf('Composer\Package\CompletePackageInterface', $packageCache);
+        static::assertSame($package, $packageCache);
+        static::assertSame($validOutput, $this->io->getTraces());
     }
 
     public function getConfigIoForException()
@@ -394,15 +394,15 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $loader */
         $loader = $this->loader;
         $loader
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('load')
-            ->will($this->throwException(new $exceptionClass('MESSAGE')))
+            ->will(static::throwException(new $exceptionClass('MESSAGE')))
         ;
 
         $this->lazyLoader = $this->createLazyLoaderConfigured($type, $verbose);
         $package = $this->lazyLoader->load($this->lazyPackage);
 
-        $this->assertFalse($package);
+        static::assertFalse($package);
 
         $filename = $this->assetType->getFilename();
         $validOutput = array('');
@@ -415,11 +415,11 @@ final class LazyAssetPackageLoaderTest extends \PHPUnit\Framework\TestCase
                 '',
             );
         }
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertSame($validOutput, $this->io->getTraces());
 
         $packageCache = $this->lazyLoader->load($this->lazyPackage);
-        $this->assertFalse($packageCache);
-        $this->assertSame($validOutput, $this->io->getTraces());
+        static::assertFalse($packageCache);
+        static::assertSame($validOutput, $this->io->getTraces());
     }
 
     /**

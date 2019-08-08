@@ -37,23 +37,23 @@ final class BowerPackageConverterTest extends AbstractPackageConverterTest
     {
         $composer = $this->converter->convert($this->asset);
 
-        $this->assertArrayHasKey('name', $composer);
-        $this->assertSame('ASSET/'.$this->asset['name'], $composer['name']);
+        static::assertArrayHasKey('name', $composer);
+        static::assertSame('ASSET/'.$this->asset['name'], $composer['name']);
 
-        $this->assertArrayHasKey('type', $composer);
-        $this->assertSame('ASSET_TYPE', $composer['type']);
+        static::assertArrayHasKey('type', $composer);
+        static::assertSame('ASSET_TYPE', $composer['type']);
 
-        $this->assertArrayHasKey('description', $composer);
-        $this->assertSame($this->asset['description'], $composer['description']);
+        static::assertArrayHasKey('description', $composer);
+        static::assertSame($this->asset['description'], $composer['description']);
 
-        $this->assertArrayHasKey('version', $composer);
-        $this->assertSame('1.0.0-pre', $composer['version']);
+        static::assertArrayHasKey('version', $composer);
+        static::assertSame('1.0.0-pre', $composer['version']);
 
-        $this->assertArrayHasKey('keywords', $composer);
-        $this->assertSame($this->asset['keywords'], $composer['keywords']);
+        static::assertArrayHasKey('keywords', $composer);
+        static::assertSame($this->asset['keywords'], $composer['keywords']);
 
-        $this->assertArrayHasKey('require', $composer);
-        $this->assertSame(array(
+        static::assertArrayHasKey('require', $composer);
+        static::assertSame(array(
             'ASSET/library1' => '>= 1.0.0',
             'ASSET/library2' => '>= 1.0.0',
             'ASSET/library2-0.9.0' => '0.9.0',
@@ -77,37 +77,37 @@ final class BowerPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/test-library20-file' => '*',
         ), $composer['require']);
 
-        $this->assertArrayNotHasKey('require-dev', $composer);
+        static::assertArrayNotHasKey('require-dev', $composer);
 
-        $this->assertArrayHasKey('license', $composer);
-        $this->assertSame($this->asset['license'], $composer['license']);
+        static::assertArrayHasKey('license', $composer);
+        static::assertSame($this->asset['license'], $composer['license']);
 
-        $this->assertArrayHasKey('bin', $composer);
-        $this->assertSame($this->asset['bin'], $composer['bin']);
+        static::assertArrayHasKey('bin', $composer);
+        static::assertSame($this->asset['bin'], $composer['bin']);
 
-        $this->assertArrayHasKey('extra', $composer);
+        static::assertArrayHasKey('extra', $composer);
 
-        $this->assertArrayHasKey('bower-asset-main', $composer['extra']);
-        $this->assertSame($this->asset['main'], $composer['extra']['bower-asset-main']);
+        static::assertArrayHasKey('bower-asset-main', $composer['extra']);
+        static::assertSame($this->asset['main'], $composer['extra']['bower-asset-main']);
 
-        $this->assertArrayHasKey('bower-asset-ignore', $composer['extra']);
-        $this->assertSame($this->asset['ignore'], $composer['extra']['bower-asset-ignore']);
+        static::assertArrayHasKey('bower-asset-ignore', $composer['extra']);
+        static::assertSame($this->asset['ignore'], $composer['extra']['bower-asset-ignore']);
 
-        $this->assertArrayHasKey('bower-asset-private', $composer['extra']);
-        $this->assertSame($this->asset['private'], $composer['extra']['bower-asset-private']);
+        static::assertArrayHasKey('bower-asset-private', $composer['extra']);
+        static::assertSame($this->asset['private'], $composer['extra']['bower-asset-private']);
 
-        $this->assertArrayNotHasKey('homepage', $composer);
-        $this->assertArrayNotHasKey('time', $composer);
-        $this->assertArrayNotHasKey('authors', $composer);
-        $this->assertArrayNotHasKey('support', $composer);
-        $this->assertArrayNotHasKey('conflict', $composer);
-        $this->assertArrayNotHasKey('replace', $composer);
-        $this->assertArrayNotHasKey('provide', $composer);
-        $this->assertArrayNotHasKey('suggest', $composer);
-        $this->assertArrayNotHasKey('autoload', $composer);
-        $this->assertArrayNotHasKey('autoload-dev', $composer);
-        $this->assertArrayNotHasKey('include-path', $composer);
-        $this->assertArrayNotHasKey('target-dir', $composer);
-        $this->assertArrayNotHasKey('archive', $composer);
+        static::assertArrayNotHasKey('homepage', $composer);
+        static::assertArrayNotHasKey('time', $composer);
+        static::assertArrayNotHasKey('authors', $composer);
+        static::assertArrayNotHasKey('support', $composer);
+        static::assertArrayNotHasKey('conflict', $composer);
+        static::assertArrayNotHasKey('replace', $composer);
+        static::assertArrayNotHasKey('provide', $composer);
+        static::assertArrayNotHasKey('suggest', $composer);
+        static::assertArrayNotHasKey('autoload', $composer);
+        static::assertArrayNotHasKey('autoload-dev', $composer);
+        static::assertArrayNotHasKey('include-path', $composer);
+        static::assertArrayNotHasKey('target-dir', $composer);
+        static::assertArrayNotHasKey('archive', $composer);
     }
 }

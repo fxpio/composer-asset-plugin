@@ -105,7 +105,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         }
 
         if (false === self::$executableCache[$executableName]) {
-            $this->markTestSkipped($executableName.' is not found or not executable.');
+            static::markTestSkipped($executableName.' is not found or not executable.');
         }
     }
 }

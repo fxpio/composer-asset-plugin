@@ -30,24 +30,24 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     {
         $name = $this->getType().'-asset/CamelCasePackage';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found', 404)))
+            ->will(static::throwException(new TransportException('Package not found', 404)))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->rm->getRepositories());
     }
 
     public function testWatProvidesWithoutRepositoryUrl()
     {
         $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array(
+            ->willReturn(json_encode(array(
                 'repository' => array(
                     'type' => 'vcs',
                 ),
@@ -65,22 +65,22 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 'time' => array(
                     '1.0.0' => '2016-09-20T13:48:47.730Z',
                 ),
-            ))))
+            )))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
     }
 
     public function testWhatProvidesWithBrokenVersionConstraint()
     {
         $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array(
+            ->willReturn(json_encode(array(
                 'repository' => array(
                     'type' => 'vcs',
                 ),
@@ -121,14 +121,14 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
                 'time' => array(
                     '1.0.0' => '2016-09-20T13:48:47.730Z',
                 ),
-            ))))
+            )))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
-        $this->assertCount(2, $this->rm->getRepositories()[0]->getPackages());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
+        static::assertCount(2, $this->rm->getRepositories()[0]->getPackages());
     }
 
     /**
@@ -139,12 +139,12 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     {
         $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array())))
+            ->willReturn(json_encode(array()))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
 
         $this->registry->whatProvides($this->pool, $name);
     }
@@ -153,20 +153,20 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
     {
         $name = $this->getType().'-asset/existing';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array(
+            ->willReturn(json_encode(array(
                 'repository' => array(
                     'type' => 'vcs',
                     'url' => 'git+https://foo.tld',
                 ),
-            ))))
+            )))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
     }
 
     /**

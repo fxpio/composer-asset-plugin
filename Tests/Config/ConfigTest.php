@@ -53,12 +53,12 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
         $this->io = $this->getMockBuilder(IOInterface::class)->getMock();
         $this->package = $this->getMockBuilder(RootPackageInterface::class)->getMock();
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
             ->willReturn($this->package)
         ;
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getConfig')
             ->willReturn($this->composerConfig)
         ;
@@ -98,19 +98,19 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
         }
 
         $globalPath = realpath(__DIR__.'/../Fixtures/package/global');
-        $this->composerConfig->expects($this->any())
+        $this->composerConfig->expects(static::any())
             ->method('has')
             ->with('home')
             ->willReturn(true)
         ;
 
-        $this->composerConfig->expects($this->any())
+        $this->composerConfig->expects(static::any())
             ->method('get')
             ->with('home')
             ->willReturn($globalPath)
         ;
 
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
             ->willReturn(array(
                 'asset-baz' => false,
@@ -118,7 +118,7 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
             ))
         ;
 
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getConfig')
             ->willReturn(array(
                 'fxp-asset' => array(
@@ -130,16 +130,16 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
         ;
 
         if (0 === strpos($key, 'global-')) {
-            $this->io->expects($this->atLeast(2))
+            $this->io->expects(static::atLeast(2))
                 ->method('isDebug')
                 ->willReturn(true)
             ;
 
-            $this->io->expects($this->at(1))
+            $this->io->expects(static::at(1))
                 ->method('writeError')
                 ->with(sprintf('Loading fxp-asset config in file %s/composer.json', $globalPath))
             ;
-            $this->io->expects($this->at(3))
+            $this->io->expects(static::at(3))
                 ->method('writeError')
                 ->with(sprintf('Loading fxp-asset config in file %s/config.json', $globalPath))
             ;
@@ -152,12 +152,12 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
         if (null !== $env) {
             $envKey = substr($env, 0, strpos($env, '='));
             putenv($envKey);
-            $this->assertFalse(getenv($envKey));
+            static::assertFalse(getenv($envKey));
         }
 
-        $this->assertSame($expected, $value);
+        static::assertSame($expected, $value);
         // test cache
-        $this->assertSame($expected, $config->get($key, $default));
+        static::assertSame($expected, $config->get($key, $default));
     }
 
     /**
@@ -177,7 +177,7 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
         }
 
         putenv('FXP_ASSET__ENV_JSON');
-        $this->assertFalse(getenv('FXP_ASSET__ENV_JSON'));
+        static::assertFalse(getenv('FXP_ASSET__ENV_JSON'));
 
         if (null === $ex) {
             throw new \Exception('The expected exception was not thrown');
@@ -201,13 +201,13 @@ final class ConfigTest extends \PHPUnit\Framework\TestCase
             'asset-main-files' => 'deprecated',
         );
 
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
             ->willReturn($deprecated)
         ;
 
         foreach (array_keys($deprecated) as $i => $option) {
-            $this->io->expects($this->at($i))
+            $this->io->expects(static::at($i))
                 ->method('write')
                 ->with('<warning>The "extra.'.$option.'" option is deprecated, use the "config.fxp-asset.'.substr($option, 6).'" option</warning>')
             ;

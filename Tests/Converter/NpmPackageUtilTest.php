@@ -27,7 +27,7 @@ final class NpmPackageUtilTest extends AbstractPackageConverterTest
         $packageName = '@vendor/package';
         $expected = 'vendor--package';
 
-        $this->assertSame($expected, NpmPackageUtil::convertName($packageName));
+        static::assertSame($expected, NpmPackageUtil::convertName($packageName));
     }
 
     public function testRevertName()
@@ -35,7 +35,7 @@ final class NpmPackageUtilTest extends AbstractPackageConverterTest
         $packageName = 'vendor--package';
         $expected = '@vendor/package';
 
-        $this->assertSame($expected, NpmPackageUtil::revertName($packageName));
+        static::assertSame($expected, NpmPackageUtil::revertName($packageName));
     }
 
     public function getLicenses()
@@ -55,6 +55,6 @@ final class NpmPackageUtilTest extends AbstractPackageConverterTest
      */
     public function testLicenses($licenses, $expected)
     {
-        $this->assertSame($expected, NpmPackageUtil::convertLicenses($licenses));
+        static::assertSame($expected, NpmPackageUtil::convertLicenses($licenses));
     }
 }

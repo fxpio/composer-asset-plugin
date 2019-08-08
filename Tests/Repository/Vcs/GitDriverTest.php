@@ -43,7 +43,7 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
 
         /* @var AssetRepositoryManager|\PHPUnit_Framework_MockObject_MockObject $arm */
         $this->assetRepositoryManager = $this->getMockBuilder(AssetRepositoryManager::class)->disableOriginalConstructor()->getMock();
-        $this->assetRepositoryManager->expects($this->any())
+        $this->assetRepositoryManager->expects(static::any())
             ->method('getConfig')
             ->willReturn($assetConfig)
         ;
@@ -98,15 +98,15 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -118,7 +118,7 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $gitDriver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $gitDriver->getComposerInformation($identifier));
     }
 
     /**
@@ -141,13 +141,13 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
                 if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'git log')) {
@@ -156,7 +156,7 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -174,11 +174,11 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $gitDriver1->getComposerInformation($identifier);
         $composer2 = $gitDriver2->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
-        $this->assertNotSame($validEmpty, $composer1);
-        $this->assertNotSame($validEmpty, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
+        static::assertNotSame($validEmpty, $composer1);
+        static::assertNotSame($validEmpty, $composer2);
     }
 
     /**
@@ -199,13 +199,13 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
                 if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'git log')) {
@@ -214,7 +214,7 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -224,9 +224,9 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $gitDriver->getComposerInformation($identifier);
         $composer2 = $gitDriver->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     /**
@@ -247,13 +247,13 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
                 if ($command === sprintf('git show %s', sprintf('%s:%s', escapeshellarg($identifier), $repoConfig['filename']))) {
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'git log')) {
@@ -262,7 +262,7 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -274,9 +274,9 @@ final class GitDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $gitDriver1->getComposerInformation($identifier);
         $composer2 = $gitDriver2->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     protected function setAttribute($object, $attribute, $value)

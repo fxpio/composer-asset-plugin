@@ -113,29 +113,29 @@ final class BowerInstallerTest extends TestCase
         $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
         $this->type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('foo'))
+            ->willReturn('foo')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('foo-asset'))
+            ->willReturn('foo-asset')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getComposerType')
-            ->will($this->returnValue('foo-asset-library'))
+            ->willReturn('foo-asset-library')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getFilename')
-            ->will($this->returnValue('foo.json'))
+            ->willReturn('foo.json')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock()))
+            ->willReturn($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock())
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getPackageConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock()))
+            ->willReturn($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock())
         ;
     }
 
@@ -158,7 +158,7 @@ final class BowerInstallerTest extends TestCase
         $this->composer->setPackage($rootPackage);
 
         new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
-        $this->assertFileNotExists($this->vendorDir);
+        static::assertFileNotExists($this->vendorDir);
     }
 
     public function testInstallerCreationShouldNotCreateBinDirectory()
@@ -174,7 +174,7 @@ final class BowerInstallerTest extends TestCase
         $this->composer->setPackage($rootPackage);
 
         new BowerInstaller(ConfigBuilder::build($this->composer), $io, $this->composer, $type);
-        $this->assertFileNotExists($this->binDir);
+        static::assertFileNotExists($this->binDir);
     }
 
     public function testIsInstalled()
@@ -192,9 +192,9 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock();
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/package'))
+            ->willReturn('foo-asset/package')
         ;
 
         /** @var PackageInterface $package */
@@ -204,15 +204,15 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $repository */
         $repository = $this->repository;
         $repository
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('hasPackage')
             ->with($package)
-            ->will($this->onConsecutiveCalls(true, false))
+            ->will(static::onConsecutiveCalls(true, false))
         ;
 
-        /* @var InstalledRepositoryInterface $repository */
-        $this->assertTrue($library->isInstalled($repository, $package));
-        $this->assertFalse($library->isInstalled($repository, $package));
+        /** @var InstalledRepositoryInterface $repository */
+        static::assertTrue($library->isInstalled($repository, $package));
+        static::assertFalse($library->isInstalled($repository, $package));
 
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
@@ -262,9 +262,9 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock($ignoreFiles);
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/package'))
+            ->willReturn('foo-asset/package')
         ;
 
         /** @var PackageInterface $package */
@@ -274,7 +274,7 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $dm */
         $dm = $this->dm;
         $dm
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('download')
             ->with($package, $this->vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package')
         ;
@@ -282,15 +282,15 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $repository */
         $repository = $this->repository;
         $repository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('addPackage')
             ->with($package)
         ;
 
         /* @var InstalledRepositoryInterface $repository */
         $library->install($repository, $package);
-        $this->assertFileExists($this->vendorDir, 'Vendor dir should be created');
-        $this->assertFileExists($this->binDir, 'Bin dir should be created');
+        static::assertFileExists($this->vendorDir, 'Vendor dir should be created');
+        static::assertFileExists($this->binDir, 'Bin dir should be created');
 
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
@@ -315,9 +315,9 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->createPackageMock($ignoreFiles);
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/package'))
+            ->willReturn('foo-asset/package')
         ;
 
         /** @var PackageInterface $package */
@@ -328,16 +328,16 @@ final class BowerInstallerTest extends TestCase
         $repository = $this->repository;
 
         $repository
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('hasPackage')
             ->with($package)
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         /* @var InstalledRepositoryInterface $repository */
         $library->update($repository, $package, $package);
-        $this->assertFileExists($this->vendorDir, 'Vendor dir should be created');
-        $this->assertFileExists($this->binDir, 'Bin dir should be created');
+        static::assertFileExists($this->vendorDir, 'Vendor dir should be created');
+        static::assertFileExists($this->binDir, 'Bin dir should be created');
 
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
@@ -361,22 +361,22 @@ final class BowerInstallerTest extends TestCase
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/pkg'))
+            ->willReturn('foo-asset/pkg')
         ;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject $repository */
         $repository = $this->repository;
         $repository
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('hasPackage')
             ->with($package)
-            ->will($this->onConsecutiveCalls(true, false))
+            ->will(static::onConsecutiveCalls(true, false))
         ;
 
         $repository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('removePackage')
             ->with($package)
         ;
@@ -384,7 +384,7 @@ final class BowerInstallerTest extends TestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject $dm */
         $dm = $this->dm;
         $dm
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('remove')
             ->with($package, $this->vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/pkg')
         ;
@@ -412,19 +412,19 @@ final class BowerInstallerTest extends TestCase
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getTargetDir')
-            ->will($this->returnValue(null))
+            ->willReturn(null)
         ;
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('foo-asset/bar'))
+            ->willReturn('foo-asset/bar')
         ;
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/bar'))
+            ->willReturn('foo-asset/bar')
         ;
 
         /** @var PackageInterface $package */
@@ -433,7 +433,7 @@ final class BowerInstallerTest extends TestCase
         $packageDir = $library->getInstallPath($package);
         $packageDir = str_replace('\\', '/', $packageDir);
 
-        $this->assertEquals($exceptDir, $packageDir);
+        static::assertEquals($exceptDir, $packageDir);
     }
 
     public function testGetInstallPathWithTargetDir()
@@ -452,14 +452,14 @@ final class BowerInstallerTest extends TestCase
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getTargetDir')
-            ->will($this->returnValue('Some/Namespace'))
+            ->willReturn('Some/Namespace')
         ;
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getPrettyName')
-            ->will($this->returnValue('foo-asset/bar'))
+            ->willReturn('foo-asset/bar')
         ;
 
         /** @var PackageInterface $package */
@@ -468,7 +468,7 @@ final class BowerInstallerTest extends TestCase
         $packageDir = $library->getInstallPath($package);
         $packageDir = str_replace('\\', '/', $packageDir);
 
-        $this->assertEquals($exceptDir, $packageDir);
+        static::assertEquals($exceptDir, $packageDir);
     }
 
     /**
@@ -488,9 +488,9 @@ final class BowerInstallerTest extends TestCase
         $extra = $package->getExtra();
 
         if (isset($mainFiles['fxp-asset']['main-files'])) {
-            $this->assertEquals($extra['bower-asset-main'], $mainFiles['fxp-asset']['main-files']['foo-asset/bar']);
+            static::assertEquals($extra['bower-asset-main'], $mainFiles['fxp-asset']['main-files']['foo-asset/bar']);
         } else {
-            $this->assertEquals($extra, array());
+            static::assertEquals($extra, array());
         }
     }
 
@@ -507,11 +507,11 @@ final class BowerInstallerTest extends TestCase
         ;
 
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 'bower-asset-ignore' => $ignoreFiles,
-            )))
+            ))
         ;
 
         return $package;
@@ -529,9 +529,9 @@ final class BowerInstallerTest extends TestCase
         ;
 
         $package
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($mainFiles))
+            ->willReturn($mainFiles)
         ;
 
         return $package;

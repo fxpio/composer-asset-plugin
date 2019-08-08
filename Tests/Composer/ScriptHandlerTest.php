@@ -68,9 +68,9 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
         $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
 
         $this->config = $this->getMockBuilder('Composer\Config')->getMock();
-        $this->config->expects($this->any())
+        $this->config->expects(static::any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->willReturnCallback(function ($key) {
                 $val = null;
 
                 switch ($key) {
@@ -81,35 +81,35 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return $val;
-            }))
+            })
         ;
 
         $rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config))
+            ->willReturn($this->config)
         ;
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
-            ->will($this->returnValue($rootPackage))
+            ->willReturn($rootPackage)
         ;
 
         $plugin = $this->getMockBuilder(FxpAssetPlugin::class)->disableOriginalConstructor()->getMock();
-        $plugin->expects($this->any())
+        $plugin->expects(static::any())
             ->method('getConfig')
             ->willReturn(new Config(array()))
         ;
 
         $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
-        $pm->expects($this->any())
+        $pm->expects(static::any())
             ->method('getPlugins')
             ->willReturn(array($plugin))
         ;
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPluginManager')
-            ->will($this->returnValue($pm))
+            ->willReturn($pm)
         ;
     }
 
@@ -138,7 +138,7 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
     public function testDeleteIgnoreFiles($composerType)
     {
         $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock();
-        $this->assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
+        static::assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
     }
@@ -154,7 +154,7 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
+        static::assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
     }
@@ -170,7 +170,7 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
+        static::assertInstanceOf('Composer\DependencyResolver\Operation\OperationInterface', $this->operation);
 
         ScriptHandler::deleteIgnoredFiles($this->createEvent($composerType));
     }
@@ -188,24 +188,24 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
         $rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config))
+            ->willReturn($this->config)
         ;
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
-            ->will($this->returnValue($rootPackage))
+            ->willReturn($rootPackage)
         ;
 
         $pm = $this->getMockBuilder(PluginManager::class)->disableOriginalConstructor()->getMock();
-        $pm->expects($this->any())
+        $pm->expects(static::any())
             ->method('getPlugins')
             ->willReturn(array())
         ;
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPluginManager')
-            ->will($this->returnValue($pm))
+            ->willReturn($pm)
         ;
 
         $this->operation = $this->getMockBuilder('Composer\DependencyResolver\Operation\OperationInterface')->getMock();
@@ -220,22 +220,22 @@ final class ScriptHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected function createEvent($composerType)
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getType')
-            ->will($this->returnValue($composerType))
+            ->willReturn($composerType)
         ;
 
         if ($this->operation instanceof UpdateOperation) {
-            $this->operation->expects($this->any())
+            $this->operation->expects(static::any())
                 ->method('getTargetPackage')
-                ->will($this->returnValue($this->package))
+                ->willReturn($this->package)
             ;
         }
 
         if ($this->operation instanceof InstallOperation) {
-            $this->operation->expects($this->any())
+            $this->operation->expects(static::any())
                 ->method('getPackage')
-                ->will($this->returnValue($this->package))
+                ->willReturn($this->package)
             ;
         }
 

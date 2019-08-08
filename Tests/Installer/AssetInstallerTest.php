@@ -55,9 +55,9 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
     {
         $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $config = $this->getMockBuilder('Composer\Config')->getMock();
-        $config->expects($this->any())
+        $config->expects(static::any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->willReturnCallback(function ($key) {
                 $value = null;
 
                 switch ($key) {
@@ -72,45 +72,45 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return $value;
-            }))
+            })
         ;
 
         $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
-            ->will($this->returnValue($this->package))
+            ->willReturn($this->package)
         ;
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
 
         $this->type = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('foo'))
+            ->willReturn('foo')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getComposerVendorName')
-            ->will($this->returnValue('foo-asset'))
+            ->willReturn('foo-asset')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getComposerType')
-            ->will($this->returnValue('foo-asset-library'))
+            ->willReturn('foo-asset-library')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getFilename')
-            ->will($this->returnValue('foo.json'))
+            ->willReturn('foo.json')
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock()))
+            ->willReturn($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock())
         ;
-        $this->type->expects($this->any())
+        $this->type->expects(static::any())
             ->method('getPackageConverter')
-            ->will($this->returnValue($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock()))
+            ->willReturn($this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface')->getMock())
         ;
     }
 
@@ -133,11 +133,11 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
 
         $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo'));
         $installerPath = str_replace('\\', '/', $installerPath);
-        $this->assertEquals($vendorDir.'/foo', $installerPath);
+        static::assertEquals($vendorDir.'/foo', $installerPath);
 
         $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
-        $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
+        static::assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
     public function testCustomFooDir()
@@ -146,24 +146,24 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
         $vendorDir = str_replace('\\', '/', $vendorDir);
 
         $package = $this->package;
-        $package->expects($this->any())
+        $package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 'asset-installer-paths' => array(
                     $this->type->getComposerType() => $vendorDir,
                 ),
-            )))
+            ))
         ;
 
         $installer = $this->createInstaller();
 
         $installerPath = $installer->getInstallPath($this->createPackageMock('foo-asset/foo'));
         $installerPath = str_replace('\\', '/', $installerPath);
-        $this->assertEquals($vendorDir.'/foo', $installerPath);
+        static::assertEquals($vendorDir.'/foo', $installerPath);
 
         $installerPath2 = $installer->getInstallPath($this->createPackageMock('foo-asset/foo/bar'));
         $installerPath2 = str_replace('\\', '/', $installerPath2);
-        $this->assertEquals($vendorDir.'/foo/bar', $installerPath2);
+        static::assertEquals($vendorDir.'/foo/bar', $installerPath2);
     }
 
     public function testInstall()
@@ -183,9 +183,9 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getDownloadManager')
-            ->will($this->returnValue($dm))
+            ->willReturn($dm)
         ;
 
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
@@ -194,13 +194,13 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
         /** @var PackageInterface $package */
         $packageDir = $vendorDir.'/'.$package->getPrettyName();
 
-        $dm->expects($this->once())
+        $dm->expects(static::once())
             ->method('download')
             ->with($package, $vendorDir.\DIRECTORY_SEPARATOR.'foo-asset/package')
         ;
 
         $repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface')->getMock();
-        $repository->expects($this->once())
+        $repository->expects(static::once())
             ->method('addPackage')
             ->with($package)
         ;
@@ -210,7 +210,7 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
 
         /* @var InstalledRepositoryInterface $repository */
         $library->install($repository, $package);
-        $this->assertFileExists($vendorDir, 'Vendor dir should be created');
+        static::assertFileExists($vendorDir, 'Vendor dir should be created');
 
         $this->ensureDirectoryExistsAndClear($packageDir);
     }
@@ -242,9 +242,9 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $package->expects($this->any())
+        $package->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
 
         return $package;

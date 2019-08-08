@@ -52,7 +52,7 @@ abstract class AbstractAssetTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testConverter()
     {
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface', $this->type->getPackageConverter());
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface', $this->type->getVersionConverter());
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Converter\PackageConverterInterface', $this->type->getPackageConverter());
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface', $this->type->getVersionConverter());
     }
 }

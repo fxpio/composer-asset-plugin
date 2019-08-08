@@ -51,9 +51,9 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->config = $this->getMockBuilder('Composer\Config')->getMock();
-        $this->config->expects($this->any())
+        $this->config->expects(static::any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->willReturnCallback(function ($key) {
                 $value = null;
 
                 switch ($key) {
@@ -68,24 +68,24 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return $value;
-            }))
+            })
         ;
 
         $this->rootPackage = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
         $this->package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getName')
-            ->will($this->returnValue('foo-asset/foo'))
+            ->willReturn('foo-asset/foo')
         ;
 
         $this->composer = $this->getMockBuilder('Composer\Composer')->getMock();
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
-            ->will($this->returnValue($this->rootPackage))
+            ->willReturn($this->rootPackage)
         ;
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($this->config))
+            ->willReturn($this->config)
         ;
     }
 
@@ -102,8 +102,8 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
-        $this->assertTrue($manager->isEnabled());
-        $this->assertFalse($manager->hasPattern());
+        static::assertTrue($manager->isEnabled());
+        static::assertFalse($manager->hasPattern());
         $this->validateInstallDir($manager, $this->config->get('vendor-dir').'/'.$this->package->getName());
     }
 
@@ -120,16 +120,16 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->rootPackage->expects($this->any())
+        $this->rootPackage->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
-        $this->assertTrue($manager->isEnabled());
-        $this->assertTrue($manager->hasPattern());
+        static::assertTrue($manager->isEnabled());
+        static::assertTrue($manager->hasPattern());
         $this->validateInstallDir($manager, $this->config->get('vendor-dir').'/'.$this->package->getName());
     }
 
@@ -139,8 +139,8 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package, $installDir);
 
-        $this->assertTrue($manager->isEnabled());
-        $this->assertFalse($manager->hasPattern());
+        static::assertTrue($manager->isEnabled());
+        static::assertFalse($manager->hasPattern());
         $this->validateInstallDir($manager, rtrim($installDir, '/'));
     }
 
@@ -155,16 +155,16 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->rootPackage->expects($this->any())
+        $this->rootPackage->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
-        $this->assertTrue($manager->isEnabled());
-        $this->assertFalse($manager->hasPattern());
+        static::assertTrue($manager->isEnabled());
+        static::assertFalse($manager->hasPattern());
         $this->validateInstallDir($manager, $this->config->get('vendor-dir').'/'.$this->package->getName());
     }
 
@@ -179,16 +179,16 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->rootPackage->expects($this->any())
+        $this->rootPackage->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package);
 
-        $this->assertFalse($manager->isEnabled());
-        $this->assertFalse($manager->hasPattern());
+        static::assertFalse($manager->isEnabled());
+        static::assertFalse($manager->hasPattern());
         $this->validateInstallDir($manager, $this->config->get('vendor-dir').'/'.$this->package->getName());
     }
 
@@ -205,16 +205,16 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->rootPackage->expects($this->any())
+        $this->rootPackage->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
 
         $config = ConfigBuilder::build($this->composer);
         $manager = IgnoreFactory::create($config, $this->composer, $this->package, null, 'custom-ignore-files');
 
-        $this->assertTrue($manager->isEnabled());
-        $this->assertTrue($manager->hasPattern());
+        static::assertTrue($manager->isEnabled());
+        static::assertTrue($manager->hasPattern());
         $this->validateInstallDir($manager, $this->config->get('vendor-dir').'/'.$this->package->getName());
     }
 
@@ -228,6 +228,6 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
         $prop = $ref->getProperty('installDir');
         $prop->setAccessible(true);
 
-        $this->assertSame($installDir, $prop->getValue($manager));
+        static::assertSame($installDir, $prop->getValue($manager));
     }
 }

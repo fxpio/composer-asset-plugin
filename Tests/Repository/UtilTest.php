@@ -71,6 +71,6 @@ final class UtilTest extends \PHPUnit\Framework\TestCase
      */
     public function testConvertAliasName($name, $validName)
     {
-        $this->assertSame($validName, Util::convertAliasName($name));
+        static::assertSame($validName, Util::convertAliasName($name));
     }
 }

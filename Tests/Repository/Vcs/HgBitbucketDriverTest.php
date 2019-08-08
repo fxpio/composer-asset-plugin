@@ -72,9 +72,9 @@ final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
         $sha = 'SOMESHA';
 
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
-        $io->expects($this->any())
+        $io->expects(static::any())
             ->method('isInteractive')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $remoteFilesystem = $this->getMockBuilder('Composer\Util\RemoteFilesystem')
@@ -82,7 +82,7 @@ final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $remoteFilesystem->expects($this->any())
+        $remoteFilesystem->expects(static::any())
             ->method('getContents')
             ->withConsecutive(
                 array(
@@ -127,17 +127,17 @@ final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
             '^1.7.0' => 'default',
             '1.6.*' => 'test_master',
         ));
-        $this->assertEquals($expectedRootIdentifier, $driver->getRootIdentifier());
+        static::assertEquals($expectedRootIdentifier, $driver->getRootIdentifier());
 
         $dist = $driver->getDist($sha);
-        $this->assertEquals('zip', $dist['type']);
-        $this->assertEquals($this->getScheme($repoUrl).'/get/SOMESHA.zip', $dist['url']);
-        $this->assertEquals($sha, $dist['reference']);
+        static::assertEquals('zip', $dist['type']);
+        static::assertEquals($this->getScheme($repoUrl).'/get/SOMESHA.zip', $dist['url']);
+        static::assertEquals($sha, $dist['reference']);
 
         $source = $driver->getSource($sha);
-        $this->assertEquals('hg', $source['type']);
-        $this->assertEquals($repoUrl, $source['url']);
-        $this->assertEquals($sha, $source['reference']);
+        static::assertEquals('hg', $source['type']);
+        static::assertEquals($repoUrl, $source['url']);
+        static::assertEquals($sha, $source['reference']);
 
         $driver->getComposerInformation($identifier);
     }
@@ -159,10 +159,10 @@ final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $remoteFilesystem->expects($this->at(0))
+        $remoteFilesystem->expects(static::at(0))
             ->method('getContents')
-            ->with($this->equalTo('bitbucket.org'), $this->equalTo($this->getScheme($repoUrl).'/raw/'.$identifier.'/'.$filename), $this->equalTo(false))
-            ->will($this->throwException(new TransportException('Not Found', 404)))
+            ->with(static::equalTo('bitbucket.org'), static::equalTo($this->getScheme($repoUrl).'/raw/'.$identifier.'/'.$filename), static::equalTo(false))
+            ->will(static::throwException(new TransportException('Not Found', 404)))
         ;
 
         $repoConfig = array(
@@ -180,7 +180,7 @@ final class HgBitbucketDriverTest extends \PHPUnit\Framework\TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $driver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $driver->getComposerInformation($identifier));
     }
 
     /**

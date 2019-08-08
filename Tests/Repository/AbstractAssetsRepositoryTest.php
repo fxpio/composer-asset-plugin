@@ -63,9 +63,9 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
-        $io->expects($this->any())
+        $io->expects(static::any())
             ->method('isVerbose')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         /** @var IOInterface $io */
         $config = new Config();
@@ -105,12 +105,12 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
 
     public function testFindPackageMustBeAlwaysNull()
     {
-        $this->assertNull($this->registry->findPackage('foobar', '0'));
+        static::assertNull($this->registry->findPackage('foobar', '0'));
     }
 
     public function testFindPackageMustBeAlwaysEmpty()
     {
-        $this->assertCount(0, $this->registry->findPackages('foobar', '0'));
+        static::assertCount(0, $this->registry->findPackages('foobar', '0'));
     }
 
     /**
@@ -123,62 +123,62 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
 
     public function testGetProviderNamesMustBeEmpty()
     {
-        $this->assertCount(0, $this->registry->getProviderNames());
+        static::assertCount(0, $this->registry->getProviderNames());
     }
 
     public function testGetMinimalPackagesMustBeAlwaysEmpty()
     {
-        $this->assertCount(0, $this->registry->getMinimalPackages());
+        static::assertCount(0, $this->registry->getMinimalPackages());
     }
 
     public function testWhatProvidesWithNotAssetName()
     {
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, 'foo/bar'));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, 'foo/bar'));
     }
 
     public function testWhatProvidesWithNonExistentPackage()
     {
         $name = $this->getType().'-asset/non-existent';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found')))
+            ->will(static::throwException(new TransportException('Package not found')))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->rm->getRepositories());
     }
 
     public function testWhatProvidesWithExistingPackage()
     {
         $name = $this->getType().'-asset/existing';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())))
+            ->willReturn(json_encode($this->getMockPackageForVcsConfig()))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
     }
 
     public function testWhatProvidesWithExistingAliasPackage()
     {
         $name = $this->getType().'-asset/existing-1.0';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())))
+            ->willReturn(json_encode($this->getMockPackageForVcsConfig()))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
     }
 
     public function testWhatProvidesWithCamelcasePackageName()
@@ -186,55 +186,55 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
         $assetName = 'CamelCasePackage';
         $name = $this->getType().'-asset/'.strtolower($assetName);
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->at(0))
+        $rfs->expects(static::at(0))
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found', 404)))
+            ->will(static::throwException(new TransportException('Package not found', 404)))
         ;
-        $rfs->expects($this->at(1))
+        $rfs->expects(static::at(1))
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found', 404)))
+            ->will(static::throwException(new TransportException('Package not found', 404)))
         ;
-        $rfs->expects($this->at(2))
+        $rfs->expects(static::at(2))
             ->method('getContents')
-            ->will($this->throwException(new TransportException('Package not found', 404)))
+            ->will(static::throwException(new TransportException('Package not found', 404)))
         ;
-        $rfs->expects($this->at(3))
+        $rfs->expects(static::at(3))
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockSearchResult($assetName))))
+            ->willReturn(json_encode($this->getMockSearchResult($assetName)))
         ;
-        $rfs->expects($this->at(4))
+        $rfs->expects(static::at(4))
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())))
+            ->willReturn(json_encode($this->getMockPackageForVcsConfig()))
         ;
 
-        $this->assertCount(0, $this->rm->getRepositories());
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
-        $this->assertCount(1, $this->rm->getRepositories());
+        static::assertCount(0, $this->rm->getRepositories());
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(1, $this->rm->getRepositories());
     }
 
     public function testSearch()
     {
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockSearchResult())))
+            ->willReturn(json_encode($this->getMockSearchResult()))
         ;
 
         $result = $this->registry->search('query');
-        $this->assertCount(\count($this->getMockSearchResult()), $result);
+        static::assertCount(\count($this->getMockSearchResult()), $result);
     }
 
     public function testSearchWithAssetComposerPrefix()
     {
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockSearchResult())))
+            ->willReturn(json_encode($this->getMockSearchResult()))
         ;
 
         $result = $this->registry->search($this->getType().'-asset/query');
-        $this->assertCount(\count($this->getMockSearchResult()), $result);
+        static::assertCount(\count($this->getMockSearchResult()), $result);
     }
 
     public function testSearchWithSearchDisabled()
@@ -247,16 +247,16 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
         );
         $this->registry = $this->getRegistry($repoConfig, $this->io, $this->config);
 
-        $this->assertCount(0, $this->registry->search('query'));
+        static::assertCount(0, $this->registry->search('query'));
     }
 
     public function testOverridingVcsRepositoryConfig()
     {
         $name = $this->getType().'-asset/foobar';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode($this->getMockPackageForVcsConfig())))
+            ->willReturn(json_encode($this->getMockPackageForVcsConfig()))
         ;
 
         $repo = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository')
@@ -264,15 +264,15 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $repo->expects($this->any())
+        $repo->expects(static::any())
             ->method('getComposerPackageName')
-            ->will($this->returnValue($name))
+            ->willReturn($name)
         ;
 
         /* @var AssetVcsRepository $repo */
         $this->rm->addRepository($repo);
 
-        $this->assertCount(0, $this->registry->whatProvides($this->pool, $name));
+        static::assertCount(0, $this->registry->whatProvides($this->pool, $name));
     }
 
     protected function getCustomRepoConfig()

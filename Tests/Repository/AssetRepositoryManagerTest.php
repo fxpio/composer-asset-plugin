@@ -91,20 +91,20 @@ final class AssetRepositoryManagerTest extends \PHPUnit\Framework\TestCase
 
         if ($withResolutionManager) {
             $this->assetRepositoryManager->setResolutionManager($this->resolutionManager);
-            $this->resolutionManager->expects($this->once())
+            $this->resolutionManager->expects(static::once())
                 ->method('solveResolutions')
                 ->with($expected)
                 ->willReturn($expected)
             ;
         } else {
-            $this->resolutionManager->expects($this->never())
+            $this->resolutionManager->expects(static::never())
                 ->method('solveResolutions')
             ;
         }
 
         $data = $this->assetRepositoryManager->solveResolutions($expected);
 
-        $this->assertSame($expected, $data);
+        static::assertSame($expected, $data);
     }
 
     public function testAddRepositoryInPool()
@@ -124,7 +124,7 @@ final class AssetRepositoryManagerTest extends \PHPUnit\Framework\TestCase
 
         $repo = $this->getMockBuilder(RepositoryInterface::class)->getMock();
 
-        $this->rm->expects($this->once())
+        $this->rm->expects(static::once())
             ->method('createRepository')
             ->with('asset-vcs', $repoConfigExpected)
             ->willReturn($repo)
@@ -134,7 +134,7 @@ final class AssetRepositoryManagerTest extends \PHPUnit\Framework\TestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|Pool $pool */
         $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
-        $pool->expects($this->once())
+        $pool->expects(static::once())
             ->method('addRepository')
             ->with($repo)
         ;
@@ -144,6 +144,6 @@ final class AssetRepositoryManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testGetConfig()
     {
-        $this->assertSame($this->config, $this->assetRepositoryManager->getConfig());
+        static::assertSame($this->config, $this->assetRepositoryManager->getConfig());
     }
 }

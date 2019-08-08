@@ -63,6 +63,6 @@ final class UtilTest extends \PHPUnit\Framework\TestCase
 
         $composer = Util::addComposerTime($composer, $resourceKey, 'http://example.tld', $driver);
 
-        $this->assertSame($composerValid, $composer);
+        static::assertSame($composerValid, $composer);
     }
 }

@@ -76,15 +76,15 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -96,7 +96,7 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $driver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $driver->getComposerInformation($identifier));
     }
 
     /**
@@ -116,13 +116,13 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
                 if ($command === sprintf('hg cat -r %s %s', ProcessExecutor::escape($identifier), $repoConfig['filename'])) {
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'hg log')) {
@@ -131,7 +131,7 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -141,9 +141,9 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $driver->getComposerInformation($identifier);
         $composer2 = $driver->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     /**
@@ -163,13 +163,13 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output = null) use ($identifier, $repoConfig) {
                 if ($command === sprintf('hg cat -r %s %s', ProcessExecutor::escape($identifier), $repoConfig['filename'])) {
                     $output = '{"name": "foo"}';
                 } elseif (false !== strpos($command, 'hg log')) {
@@ -178,7 +178,7 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -190,9 +190,9 @@ final class HgDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $driver1->getComposerInformation($identifier);
         $composer2 = $driver2->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
     }
 
     /**

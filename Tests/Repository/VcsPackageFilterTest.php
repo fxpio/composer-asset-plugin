@@ -68,15 +68,15 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
         $this->assetType = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Type\AssetTypeInterface')->getMock();
 
         $versionConverter = $this->getMockBuilder('Fxp\Composer\AssetPlugin\Converter\VersionConverterInterface')->getMock();
-        $versionConverter->expects($this->any())
+        $versionConverter->expects(static::any())
             ->method('convertVersion')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return $value;
-            }))
+            })
         ;
-        $this->assetType->expects($this->any())
+        $this->assetType->expects(static::any())
             ->method('getVersionConverter')
-            ->will($this->returnValue($versionConverter))
+            ->willReturn($versionConverter)
         ;
 
         $this->installationManager = $this->getMockBuilder('Composer\Installer\InstallationManager')
@@ -84,12 +84,12 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->installationManager->expects($this->any())
+        $this->installationManager->expects(static::any())
             ->method('isPackageInstalled')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
-        $this->composer->expects($this->any())
+        $this->composer->expects(static::any())
             ->method('getPackage')
             ->willReturn($this->package)
         ;
@@ -474,7 +474,7 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->init($rootRequires, $minimumStability, $rootConfig);
 
-        $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
+        static::assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
     }
 
     public function getDataProviderForDisableTest()
@@ -504,7 +504,7 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
         $this->init($rootRequires, $minimumStability);
         $this->filter->setEnabled(false);
 
-        $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
+        static::assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
     }
 
     public function getDataForInstalledTests()
@@ -600,14 +600,14 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
             ->getMock()
         ;
 
-        $this->installedRepository->expects($this->any())
+        $this->installedRepository->expects(static::any())
             ->method('getPackages')
-            ->will($this->returnValue($this->convertInstalled($installed)))
+            ->willReturn($this->convertInstalled($installed))
         ;
 
         $this->init($require, $minimumStability, $config);
 
-        $this->assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
+        static::assertSame($validSkip, $this->filter->skip($this->assetType, $packageName, $version));
     }
 
     /**
@@ -624,27 +624,27 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
 
         $stabilityFlags = $this->findStabilityFlags($requires);
 
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getRequires')
-            ->will($this->returnValue($linkRequires))
+            ->willReturn($linkRequires)
         ;
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getDevRequires')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getMinimumStability')
-            ->will($this->returnValue($minimumStability))
+            ->willReturn($minimumStability)
         ;
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getStabilityFlags')
-            ->will($this->returnValue($stabilityFlags))
+            ->willReturn($stabilityFlags)
         ;
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 'fxp-asset' => $config,
-            )))
+            ))
         ;
 
         /** @var RootPackageInterface $package */
@@ -669,19 +669,19 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
         foreach ($installed as $name => $version) {
             $package = $this->getMockBuilder('Composer\Package\PackageInterface')->getMock();
 
-            $package->expects($this->any())
+            $package->expects(static::any())
                 ->method('getName')
-                ->will($this->returnValue($name))
+                ->willReturn($name)
             ;
 
-            $package->expects($this->any())
+            $package->expects(static::any())
                 ->method('getVersion')
-                ->will($this->returnValue($parser->normalize($version)))
+                ->willReturn($parser->normalize($version))
             ;
 
-            $package->expects($this->any())
+            $package->expects(static::any())
                 ->method('getPrettyVersion')
-                ->will($this->returnValue($version))
+                ->willReturn($version)
             ;
 
             $packages[] = $package;

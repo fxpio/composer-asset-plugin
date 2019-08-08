@@ -33,9 +33,9 @@ final class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
     {
         $name = $this->getType().'-asset/existing';
         $rfs = $this->replaceRegistryRfsByMock();
-        $rfs->expects($this->any())
+        $rfs->expects(static::any())
             ->method('getContents')
-            ->will($this->returnValue(json_encode(array())))
+            ->willReturn(json_encode(array()))
         ;
 
         $this->registry->whatProvides($this->pool, $name);

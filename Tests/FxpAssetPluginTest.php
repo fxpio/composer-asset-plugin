@@ -55,9 +55,9 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
     {
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $config = $this->getMockBuilder('Composer\Config')->getMock();
-        $config->expects($this->any())
+        $config->expects(static::any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->willReturnCallback(function ($key) {
                 $value = null;
 
                 switch ($key) {
@@ -68,16 +68,16 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return $value;
-            }))
+            })
         ;
         $this->package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getRequires')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getDevRequires')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
 
         /** @var IOInterface $io */
@@ -86,21 +86,21 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
         $im = new InstallationManager();
 
         $composer = $this->getMockBuilder('Composer\Composer')->getMock();
-        $composer->expects($this->any())
+        $composer->expects(static::any())
             ->method('getRepositoryManager')
-            ->will($this->returnValue($rm))
+            ->willReturn($rm)
         ;
-        $composer->expects($this->any())
+        $composer->expects(static::any())
             ->method('getPackage')
-            ->will($this->returnValue($this->package))
+            ->willReturn($this->package)
         ;
-        $composer->expects($this->any())
+        $composer->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue($config))
+            ->willReturn($config)
         ;
-        $composer->expects($this->any())
+        $composer->expects(static::any())
             ->method('getInstallationManager')
-            ->will($this->returnValue($im))
+            ->willReturn($im)
         ;
 
         $this->plugin = new FxpAssetPlugin();
@@ -120,23 +120,23 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
 
     public function testAssetRepositories()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 'fxp-asset' => array(
                     'private-bower-registries' => array(
                         'my-private-bower-server' => 'https://my-private-bower-server.tld/packages',
                     ),
                 ),
-            )))
+            ))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
+        static::assertCount(3, $repos);
         foreach ($repos as $repo) {
-            $this->assertInstanceOf('Composer\Repository\ComposerRepository', $repo);
+            static::assertInstanceOf('Composer\Repository\ComposerRepository', $repo);
         }
     }
 
@@ -147,9 +147,9 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetVcsRepositories($type)
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -160,7 +160,7 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
             'name' => 'foo',
         ));
 
-        $this->assertInstanceOf('Composer\Repository\VcsRepository', $repo);
+        static::assertInstanceOf('Composer\Repository\VcsRepository', $repo);
     }
 
     public function getDataForAssetVcsRepositories()
@@ -181,11 +181,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetRepositoryWithValueIsNotArray()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 'invalid_repo',
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -196,11 +196,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetRepositoryWithInvalidType()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array(),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -211,11 +211,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetRepositoryWithInvalidTypeFormat()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'invalid_type'),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -226,11 +226,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetRepositoryWithInvalidUrl()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'npm-vcs'),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -238,35 +238,35 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
 
     public function testAssetRepository()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
+        static::assertCount(3, $repos);
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
     }
 
     public function testAssetRepositoryWithAlreadyExistRepositoryName()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
                 array('type' => 'npm-vcs', 'url' => 'http://foo.tld', 'name' => 'foo'),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
+        static::assertCount(3, $repos);
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository', $repos[2]);
     }
 
     /**
@@ -274,11 +274,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetPackageWithoutPackage()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'package'),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -289,11 +289,11 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
      */
     public function testAssetPackageWithInvalidPackage()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array('type' => 'package', 'package' => array('key' => 'value')),
-            ))))
+            )))
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -301,9 +301,9 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
 
     public function testAssetPackageRepositories()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array('asset-repositories' => array(
+            ->willReturn(array('asset-repositories' => array(
                 array(
                     'type' => 'package',
                     'package' => array(
@@ -316,7 +316,7 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
                         ),
                     ),
                 ),
-            ))))
+            )))
         ;
 
         $rm = $this->composer->getRepositoryManager();
@@ -324,59 +324,59 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
         $this->plugin->activate($this->composer, $this->io);
         $repos = $this->composer->getRepositoryManager()->getRepositories();
 
-        $this->assertCount(3, $repos);
-        $this->assertInstanceOf('Composer\Repository\PackageRepository', $repos[2]);
+        static::assertCount(3, $repos);
+        static::assertInstanceOf('Composer\Repository\PackageRepository', $repos[2]);
     }
 
     public function testOptionsForAssetRegistryRepositories()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getConfig')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 'fxp-asset' => array(
                     'registry-options' => array(
                         'npm-option1' => 'value 1',
                         'bower-option1' => 'value 2',
                     ),
                 ),
-            )))
+            ))
         ;
-        $this->assertInstanceOf('Composer\Package\RootPackageInterface', $this->package);
+        static::assertInstanceOf('Composer\Package\RootPackageInterface', $this->package);
 
         $this->plugin->activate($this->composer, $this->io);
     }
 
     public function testSubscribeEvents()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
 
-        $this->assertCount(2, $this->plugin->getSubscribedEvents());
-        $this->assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
+        static::assertCount(2, $this->plugin->getSubscribedEvents());
+        static::assertCount(0, $this->composer->getRepositoryManager()->getRepositories());
 
         /** @var InstallerEvent|\PHPUnit_Framework_MockObject_MockObject $eventInstaller */
         $eventInstaller = $this->getMockBuilder('Composer\Installer\InstallerEvent')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $eventInstaller->expects($this->any())
+        $eventInstaller->expects(static::any())
             ->method('getPool')
-            ->will($this->returnValue(
+            ->willReturn(
                 $this->getMockBuilder(Pool::class)
                     ->disableOriginalConstructor()
                     ->getMock()
-            ))
+            )
         ;
         /** @var CommandEvent|\PHPUnit_Framework_MockObject_MockObject $eventCommand */
         $eventCommand = $this->getMockBuilder('Composer\Plugin\CommandEvent')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $eventCommand->expects($this->any())
+        $eventCommand->expects(static::any())
             ->method('getCommandName')
-            ->will($this->returnValue('show'))
+            ->willReturn('show')
         ;
 
         $this->plugin->activate($this->composer, $this->io);
@@ -386,16 +386,16 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
 
     public function testAssetInstallers()
     {
-        $this->package->expects($this->any())
+        $this->package->expects(static::any())
             ->method('getExtra')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
 
         $this->plugin->activate($this->composer, $this->io);
         $im = $this->composer->getInstallationManager();
 
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\BowerInstaller', $im->getInstaller('bower-asset-library'));
-        $this->assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\AssetInstaller', $im->getInstaller('npm-asset-library'));
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\BowerInstaller', $im->getInstaller('bower-asset-library'));
+        static::assertInstanceOf('Fxp\Composer\AssetPlugin\Installer\AssetInstaller', $im->getInstaller('npm-asset-library'));
     }
 
     public function testGetConfig()
@@ -403,6 +403,6 @@ final class FxpAssetPluginTest extends \PHPUnit\Framework\TestCase
         $this->plugin->activate($this->composer, $this->io);
 
         $config = $this->plugin->getConfig();
-        $this->assertInstanceOf(\Fxp\Composer\AssetPlugin\Config\Config::class, $config);
+        static::assertInstanceOf(\Fxp\Composer\AssetPlugin\Config\Config::class, $config);
     }
 }

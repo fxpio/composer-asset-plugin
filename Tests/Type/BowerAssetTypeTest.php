@@ -31,11 +31,11 @@ final class BowerAssetTypeTest extends AbstractAssetTypeTest
 
     public function testInformations()
     {
-        $this->assertSame('bower', $this->type->getName());
-        $this->assertSame('bower-asset', $this->type->getComposerVendorName());
-        $this->assertSame('bower-asset-library', $this->type->getComposerType());
-        $this->assertSame('bower.json', $this->type->getFilename());
-        $this->assertSame('bower-asset/foobar', $this->type->formatComposerName('foobar'));
-        $this->assertSame('bower-asset/foobar', $this->type->formatComposerName('bower-asset/foobar'));
+        static::assertSame('bower', $this->type->getName());
+        static::assertSame('bower-asset', $this->type->getComposerVendorName());
+        static::assertSame('bower-asset-library', $this->type->getComposerType());
+        static::assertSame('bower.json', $this->type->getFilename());
+        static::assertSame('bower-asset/foobar', $this->type->formatComposerName('foobar'));
+        static::assertSame('bower-asset/foobar', $this->type->formatComposerName('bower-asset/foobar'));
     }
 }

@@ -79,15 +79,15 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -99,7 +99,7 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $driver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $driver->getComposerInformation($identifier));
     }
 
     /**
@@ -133,15 +133,15 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -153,7 +153,7 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
             '_nonexistent_package' => true,
         );
 
-        $this->assertSame($validEmpty, $driver->getComposerInformation($identifier));
+        static::assertSame($validEmpty, $driver->getComposerInformation($identifier));
     }
 
     /**
@@ -174,15 +174,15 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return \is_string($value) ? preg_split('{\r?\n}', $value) : array();
-            }))
+            })
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
                 if ($command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/%s', $repoBaseUrl, $identifier, $repoConfig['filename'])))
                         || $command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s%s', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))))) {
                     $output('out', '{"name": "foo"}');
@@ -198,7 +198,7 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -208,10 +208,10 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $driver->getComposerInformation($identifier);
         $composer2 = $driver->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
-        $this->assertArrayHasKey('time', $composer1);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
+        static::assertArrayHasKey('time', $composer1);
     }
 
     /**
@@ -232,15 +232,15 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         );
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnCallback(function ($value) {
+            ->willReturnCallback(function ($value) {
                 return \is_string($value) ? preg_split('{\r?\n}', $value) : array();
-            }))
+            })
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
+            ->willReturnCallback(function ($command, &$output) use ($repoBaseUrl, $identifier, $repoConfig) {
                 if ($command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s/%s', $repoBaseUrl, $identifier, $repoConfig['filename'])))
                         || $command === sprintf('svn cat --non-interactive  %s', ProcessExecutor::escape(sprintf('%s/%s%s', $repoBaseUrl, $repoConfig['filename'], trim($identifier, '/'))))) {
                     $output('out', '{"name": "foo"}');
@@ -256,7 +256,7 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -268,10 +268,10 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         $composer1 = $driver1->getComposerInformation($identifier);
         $composer2 = $driver2->getComposerInformation($identifier);
 
-        $this->assertNotNull($composer1);
-        $this->assertNotNull($composer2);
-        $this->assertSame($composer1, $composer2);
-        $this->assertArrayHasKey('time', $composer1);
+        static::assertNotNull($composer1);
+        static::assertNotNull($composer2);
+        static::assertSame($composer1, $composer2);
+        static::assertArrayHasKey('time', $composer1);
     }
 
     /**
@@ -295,15 +295,15 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         );
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('splitLines')
-            ->will($this->returnValue(array()))
+            ->willReturn(array())
         ;
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function ($command) {
+            ->willReturnCallback(function ($command) {
                 return 0 === strpos($command, 'svn cat ') ? 1 : 0;
-            }))
+            })
         ;
 
         /** @var IOInterface $io */
@@ -344,18 +344,18 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         /** @var IOInterface $io */
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
-        $this->assertSame($supperted, SvnDriver::supports($io, $this->config, $url, false));
+        static::assertSame($supperted, SvnDriver::supports($io, $this->config, $url, false));
 
         if (!$supperted) {
             return;
         }
 
         $process = $this->getMockBuilder('Composer\Util\ProcessExecutor')->getMock();
-        $process->expects($this->any())
+        $process->expects(static::any())
             ->method('execute')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return 0;
-            }))
+            })
         ;
 
         $repoConfig = array(
@@ -369,6 +369,6 @@ final class SvnDriverTest extends \PHPUnit\Framework\TestCase
         $driver = new SvnDriver($repoConfig, $io, $this->config, $process, null);
         $driver->initialize();
 
-        $this->assertEquals($urlUsed, $driver->getUrl());
+        static::assertEquals($urlUsed, $driver->getUrl());
     }
 }
