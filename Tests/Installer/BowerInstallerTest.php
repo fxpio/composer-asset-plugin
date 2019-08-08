@@ -525,7 +525,6 @@ final class BowerInstallerTest extends TestCase
     protected function createRootPackageMock(array $mainFiles = array())
     {
         $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')
-            ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
             ->getMock()
         ;
 
