@@ -15,6 +15,7 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
+use Composer\Util\Filesystem;
 use Fxp\Composer\AssetPlugin\Config\ConfigBuilder;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreFactory;
 use Fxp\Composer\AssetPlugin\Installer\IgnoreManager;
@@ -95,6 +96,10 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
         $this->config = null;
         $this->rootPackage = null;
         $this->package = null;
+
+        $fs = new Filesystem();
+        $fs->remove(sys_get_temp_dir().'/composer-test-repo-cache');
+        $fs->remove(sys_get_temp_dir().'/composer-test');
     }
 
     public function testCreateWithoutIgnoreFiles()

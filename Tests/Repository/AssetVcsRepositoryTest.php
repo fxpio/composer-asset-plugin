@@ -206,6 +206,38 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
+    public function getMockDriversWithExceptions()
+    {
+        return array(
+            array('npm-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithException'),
+            array('bower-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithException'),
+            array('npm-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithException'),
+            array('bower-mock', 'http://example.org/foo', 'Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs\MockVcsDriverWithException'),
+        );
+    }
+
+    /**
+     * @dataProvider getMockDriversWithExceptions
+     *
+     * @param string $type
+     * @param string $url
+     * @param string $class
+     *
+     * @expectedException \ErrorException
+     * @expectedExceptionMessage Error to retrieve the tags
+     */
+    public function testInitFullDriverWithUncachedException($type, $url, $class)
+    {
+        $this->init(true, $type, $url, $class);
+
+        $this->repository->getComposerPackageName();
+    }
+
+    /**
+     * Data provider.
+     *
+     * @return array
+     */
     public function getMockDriversWithVersions()
     {
         return array(

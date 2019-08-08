@@ -122,7 +122,7 @@ final class AssetInstallerTest extends \PHPUnit\Framework\TestCase
 
         $fs = new Filesystem();
         $fs->remove(sys_get_temp_dir().'/composer-test-repo-cache');
-        $fs->remove(sys_get_temp_dir().'/composer-test/vendor');
+        $fs->remove(sys_get_temp_dir().'/composer-test');
     }
 
     public function testDefaultVendorDir()

@@ -44,6 +44,8 @@ final class NpmPackageUtilTest extends AbstractPackageConverterTest
             array(array('MIT'), array('MIT')),
             array(array('type' => 'MIT'), array('MIT')),
             array(array('name' => 'MIT'), array('MIT')),
+            array(array(array('type' => 'MIT')), array('MIT')),
+            array(array(array('name' => 'MIT')), array('MIT')),
         );
     }
 

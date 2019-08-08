@@ -22,6 +22,7 @@ use Fxp\Composer\AssetPlugin\Repository\AbstractAssetsRepository;
 use Fxp\Composer\AssetPlugin\Repository\AssetRepositoryManager;
 use Fxp\Composer\AssetPlugin\Repository\AssetVcsRepository;
 use Fxp\Composer\AssetPlugin\Repository\VcsPackageFilter;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Abstract class for Tests of assets repository.
@@ -72,7 +73,7 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
         $config->merge(array(
             'config' => array(
                 'home' => sys_get_temp_dir().'/composer-test',
-                'cache-repo-dir' => sys_get_temp_dir().'/composer-test-cache-repo',
+                'cache-repo-dir' => sys_get_temp_dir().'/composer-test-repo-cache',
             ),
         ));
         /** @var VcsPackageFilter $filter */
@@ -101,6 +102,10 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
         $this->rm = null;
         $this->registry = null;
         $this->pool = null;
+
+        $fs = new Filesystem();
+        $fs->remove(sys_get_temp_dir().'/composer-test-repo-cache');
+        $fs->remove(sys_get_temp_dir().'/composer-test');
     }
 
     public function testFindPackageMustBeAlwaysNull()
