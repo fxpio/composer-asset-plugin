@@ -86,7 +86,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
             $this->initTag($driver, $packageName, $tag, $identifier);
         }
 
-        if (!$this->verbose) {
+        if (!$this->io->isVerbose()) {
             $this->io->overwrite('', false);
         }
     }
@@ -106,7 +106,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
         }
 
         if (!$parsedTag = Validator::validateTag($tag, $this->assetType, $this->versionParser)) {
-            if ($this->verbose) {
+            if ($this->io->isVerbose()) {
                 $this->io->write('<warning>Skipped tag '.$tag.', invalid tag name</warning>');
             }
 
@@ -164,7 +164,7 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
             $this->preInitBranchLazyPackage($driver, $branch, $identifier);
         }
 
-        if (!$this->verbose) {
+        if (!$this->io->isVerbose()) {
             $this->io->overwrite('', false);
         }
     }

@@ -171,7 +171,7 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
                 }
             }
         } catch (\Exception $e) {
-            if ($this->verbose) {
+            if ($this->io->isVerbose()) {
                 $this->io->write('<error>Skipped parsing '.$driver->getRootIdentifier().', '.$e->getMessage().'</error>');
             }
         }

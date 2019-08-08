@@ -16,42 +16,56 @@ matrix:
           env: COMPOSER_VERSION="1.7.*"
         - php: 5.5
           env: COMPOSER_VERSION="1.8.*"
+        - php: 5.5
+          env: COMPOSER_VERSION="1.9.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.6.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.7.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.8.*"
+        - php: 5.6
+          env: COMPOSER_VERSION="1.9.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.6.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.7.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.8.*"
+        - php: 7.0
+          env: COMPOSER_VERSION="1.9.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.6.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.7.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.8.*"
+        - php: 7.1
+          env: COMPOSER_VERSION="1.9.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.6.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.7.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.8.*"
+        - php: 7.2
+          env: COMPOSER_VERSION="1.9.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.6.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.7.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.8.*"
+        - php: 7.3
+          env: COMPOSER_VERSION="1.9.*"
         - php: nightly
           env: COMPOSER_VERSION="1.6.*"
         - php: nightly
           env: COMPOSER_VERSION="1.7.*"
         - php: nightly
           env: COMPOSER_VERSION="1.8.*"
+        - php: nightly
+          env: COMPOSER_VERSION="1.9.*"
 
     allow_failures:
         - php: nightly
@@ -60,7 +74,7 @@ matrix:
 
 before_script:
     - composer self-update
-    - composer global require --prefer-source phpunit/phpunit:"^4.8 || ^5.7.0 || ^6.5.0" php-coveralls/php-coveralls:^2.1.0
+    - composer global require --prefer-source phpunit/phpunit:"^4.8 || ^5.7.0 || ^6.5.0 || ^7.5.0" php-coveralls/php-coveralls:^2.1.0
     - if [ "$COMPOSER_VERSION" == "" ]; then composer install --prefer-source; fi;
     - if [ "$COMPOSER_VERSION" != "" ]; then composer require "composer/composer:${COMPOSER_VERSION}" --no-update; fi;
     - if [ "$COMPOSER_VERSION" != "" ]; then composer update --prefer-source; fi;
