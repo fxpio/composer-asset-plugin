@@ -73,7 +73,7 @@ abstract class AbstractAssetType implements AssetTypeInterface
     {
         $prefix = $this->getComposerVendorName().'/';
 
-        if (preg_match('/(\:\/\/)|\@/', $name) || 0 === strpos($name, $prefix)) {
+        if (preg_match('/(:\/\/)|@/', $name) || 0 === strpos($name, $prefix)) {
             return $name;
         }
 

@@ -138,7 +138,7 @@ abstract class SemverUtil
         $version = $matches[1][0][0].'-';
 
         $matches = array();
-        if (preg_match('/^(\-|\+)/', $end, $matches)) {
+        if (preg_match('/^([-+])/', $end, $matches)) {
             $end = substr($end, 1);
         }
 

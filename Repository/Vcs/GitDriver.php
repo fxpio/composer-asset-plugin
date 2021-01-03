@@ -66,7 +66,7 @@ class GitDriver extends BaseGitDriver
      */
     private function initializeLocalPath()
     {
-        $this->url = preg_replace('{[\\/]\.git/?$}', '', $this->url);
+        $this->url = preg_replace('{[/]\.git/?$}', '', $this->url);
         $this->repoDir = $this->url;
 
         return realpath($this->url);

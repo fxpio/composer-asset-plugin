@@ -53,7 +53,7 @@ abstract class PackageUtil
      */
     public static function checkUrlVersion(AssetTypeInterface $assetType, $dependency, $version, array &$vcsRepos, array $composer)
     {
-        if (preg_match('/(\:\/\/)|\@/', $version)) {
+        if (preg_match('/(:\/\/)|@/', $version)) {
             list($url, $version) = static::splitUrlVersion($version);
 
             if (!static::isUrlArchive($url) && static::hasUrlDependencySupported($url)) {
@@ -296,7 +296,7 @@ abstract class PackageUtil
     {
         $version = trim($version);
 
-        return (bool) preg_match('/[\<\>\=\^\~\ ]/', $version);
+        return (bool) preg_match('/[<>=^~ ]/', $version);
     }
 
     /**

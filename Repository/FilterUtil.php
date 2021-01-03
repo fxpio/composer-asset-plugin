@@ -35,7 +35,7 @@ class FilterUtil
      */
     public static function getVersionConstraint($normalizedVersion, VersionParser $versionParser)
     {
-        if (preg_match('/^\d+(\.\d+)(\.\d+)(\.\d+)\-[A-Za-z0-9]+$/', $normalizedVersion)) {
+        if (preg_match('/^\d+(\.\d+)(\.\d+)(\.\d+)-[A-Za-z0-9]+$/', $normalizedVersion)) {
             $normalizedVersion = substr($normalizedVersion, 0, strpos($normalizedVersion, '-'));
         }
 
