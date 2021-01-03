@@ -20,17 +20,11 @@ use Fxp\Composer\AssetPlugin\Converter\BowerPackageConverter;
  */
 class BowerAssetType extends AbstractAssetType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'bower';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createPackageConverter()
     {
         return new BowerPackageConverter($this);

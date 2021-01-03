@@ -310,8 +310,6 @@ class VcsPackageFilter
     /**
      * Get the filter root constraint operator.
      *
-     * @param PackageInterface $package
-     *
      * @return string
      */
     private function getFilterOperator(PackageInterface $package)

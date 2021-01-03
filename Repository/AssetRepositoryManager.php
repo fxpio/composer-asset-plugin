@@ -133,8 +133,6 @@ class AssetRepositoryManager
     /**
      * Solve the dependency resolutions.
      *
-     * @param array $data
-     *
      * @return array
      */
     public function solveResolutions(array $data)

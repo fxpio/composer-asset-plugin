@@ -20,25 +20,16 @@ use Fxp\Composer\AssetPlugin\Converter\NpmPackageConverter;
  */
 class NpmAssetType extends AbstractAssetType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'npm';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilename()
     {
         return 'package.json';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createPackageConverter()
     {
         return new NpmPackageConverter($this);

@@ -18,9 +18,6 @@ namespace Fxp\Composer\AssetPlugin\Package;
  */
 class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPackageInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getTransportOptions()
     {
         $this->initialize();
@@ -28,9 +25,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getTransportOptions();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargetDir()
     {
         $this->initialize();
@@ -38,9 +32,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getTargetDir();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtra()
     {
         $this->initialize();
@@ -48,9 +39,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getExtra();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBinaries()
     {
         $this->initialize();
@@ -58,9 +46,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getBinaries();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstallationSource()
     {
         $this->initialize();
@@ -68,9 +53,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getInstallationSource();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceType()
     {
         $this->initialize();
@@ -78,9 +60,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getSourceType();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceUrl()
     {
         $this->initialize();
@@ -88,9 +67,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getSourceUrl();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceReference()
     {
         $this->initialize();
@@ -98,9 +74,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getSourceReference();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceMirrors()
     {
         $this->initialize();
@@ -108,9 +81,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getSourceMirrors();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceUrls()
     {
         $this->initialize();
@@ -118,9 +88,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getSourceUrls();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistType()
     {
         $this->initialize();
@@ -128,9 +95,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistType();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistUrl()
     {
         $this->initialize();
@@ -138,9 +102,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistUrl();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistReference()
     {
         $this->initialize();
@@ -148,9 +109,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistReference();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistSha1Checksum()
     {
         $this->initialize();
@@ -158,9 +116,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistSha1Checksum();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistMirrors()
     {
         $this->initialize();
@@ -168,9 +123,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistMirrors();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDistUrls()
     {
         $this->initialize();
@@ -178,9 +130,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDistUrls();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReleaseDate()
     {
         $this->initialize();
@@ -188,9 +137,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getReleaseDate();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequires()
     {
         $this->initialize();
@@ -198,9 +144,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getRequires();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConflicts()
     {
         $this->initialize();
@@ -208,9 +151,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getConflicts();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDevRequires()
     {
         $this->initialize();
@@ -218,9 +158,6 @@ class LazyCompletePackage extends AbstractLazyCompletePackage implements LazyPac
         return parent::getDevRequires();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSuggests()
     {
         $this->initialize();

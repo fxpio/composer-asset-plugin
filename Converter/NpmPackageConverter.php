@@ -18,9 +18,6 @@ namespace Fxp\Composer\AssetPlugin\Converter;
  */
 class NpmPackageConverter extends AbstractPackageConverter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getMapKeys()
     {
         $assetType = $this->assetType;
@@ -58,9 +55,6 @@ class NpmPackageConverter extends AbstractPackageConverter
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMapExtras()
     {
         return array(
@@ -84,9 +78,6 @@ class NpmPackageConverter extends AbstractPackageConverter
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function convertDependency($dependency, $version, array &$vcsRepos, array $composer)
     {
         $dependency = NpmPackageUtil::convertName($dependency);

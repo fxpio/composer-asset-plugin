@@ -73,9 +73,6 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     /**
      * Constructor.
      *
-     * @param array           $repoConfig
-     * @param IOInterface     $io
-     * @param Config          $config
      * @param EventDispatcher $dispatcher
      * @param array           $drivers
      */
@@ -100,9 +97,6 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
         parent::__construct($repoConfig, $io, $config, $dispatcher, $drivers);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return null !== $this->packages ? \count($this->packages) : 0;
@@ -153,8 +147,6 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
 
     /**
      * Initializes the root identifier.
-     *
-     * @param VcsDriverInterface $driver
      */
     protected function initRootIdentifier(VcsDriverInterface $driver)
     {
@@ -212,10 +204,8 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
     /**
      * Creates the lazy loader of package.
      *
-     * @param string             $type
-     * @param string             $identifier
-     * @param array              $packageData
-     * @param VcsDriverInterface $driver
+     * @param string $type
+     * @param string $identifier
      *
      * @return LazyAssetPackageLoader
      */
@@ -233,8 +223,6 @@ abstract class AbstractAssetVcsRepository extends VcsRepository
 
     /**
      * Pre process the data of package before the conversion to Package instance.
-     *
-     * @param array $data
      *
      * @return array
      */

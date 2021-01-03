@@ -27,49 +27,31 @@ use Fxp\Composer\AssetPlugin\Exception\InvalidCreateRepositoryException;
  */
 class NpmRepository extends AbstractAssetsRepository
 {
-    /**
-     * {@inheritdoc}
-     */
     public function search($query, $mode = 0, $type = null)
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getType()
     {
         return 'npm';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getUrl()
     {
         return 'https://registry.npmjs.org';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getPackageUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/%package%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSearchUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/-/all');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function buildPackageUrl($packageName)
     {
         $packageName = urlencode(NpmPackageUtil::revertName($packageName));
@@ -78,9 +60,6 @@ class NpmRepository extends AbstractAssetsRepository
         return parent::buildPackageUrl($packageName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         $type = isset($data['repository']['type']) ? $data['repository']['type'] : 'vcs';
@@ -101,9 +80,6 @@ class NpmRepository extends AbstractAssetsRepository
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function whatProvidesManageException(Pool $pool, $name, \Exception $exception)
     {
         if ($exception instanceof InvalidCreateRepositoryException) {

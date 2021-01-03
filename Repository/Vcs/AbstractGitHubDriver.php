@@ -43,9 +43,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
         parent::initialize();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBranches()
     {
         if ($this->gitDriver) {
@@ -237,7 +234,6 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
      * Push the list of all branch.
      *
      * @param string $resource
-     * @param array  $branchBlacklist
      */
     protected function doAddBranches($resource, array $branchBlacklist)
     {

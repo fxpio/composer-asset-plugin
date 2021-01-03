@@ -470,15 +470,13 @@ final class AssetVcsRepositoryTest extends \PHPUnit\Framework\TestCase
     /**
      * Init the test.
      *
-     * @param bool                  $supported
-     * @param string                $type
-     * @param string                $url
-     * @param string                $class
-     * @param bool                  $verbose
-     * @param null|array            $drivers
-     * @param null|string           $registryName
-     * @param null|VcsPackageFilter $vcsPackageFilter
-     * @param array                 $registryPackages
+     * @param bool        $supported
+     * @param string      $type
+     * @param string      $url
+     * @param string      $class
+     * @param bool        $verbose
+     * @param null|array  $drivers
+     * @param null|string $registryName
      */
     protected function init($supported, $type, $url, $class, $verbose = false, $drivers = null, $registryName = null, VcsPackageFilter $vcsPackageFilter = null, array $registryPackages = array())
     {

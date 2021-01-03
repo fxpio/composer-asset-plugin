@@ -466,9 +466,7 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
      * @param string $packageName
      * @param string $version
      * @param string $minimumStability
-     * @param array  $rootRequires
      * @param bool   $validSkip
-     * @param array  $rootConfig
      */
     public function testSkipVersion($packageName, $version, $minimumStability, array $rootRequires, $validSkip, array $rootConfig = array())
     {
@@ -496,7 +494,6 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
      * @param $packageName
      * @param $version
      * @param $minimumStability
-     * @param array $rootRequires
      * @param $validSkip
      */
     public function testDisabledFilterWithInstalledPackage($packageName, $version, $minimumStability, array $rootRequires, $validSkip)
@@ -577,7 +574,6 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getDataForInstalledTests
      *
-     * @param array       $config
      * @param string      $packageName
      * @param string      $version
      * @param string      $minimumStability
@@ -613,9 +609,7 @@ final class VcsPackageFilterTest extends \PHPUnit\Framework\TestCase
     /**
      * Init test.
      *
-     * @param array  $requires
      * @param string $minimumStability
-     * @param array  $config
      */
     protected function init(array $requires = array(), $minimumStability = 'stable', array $config = array())
     {

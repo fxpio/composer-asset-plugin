@@ -19,8 +19,6 @@ namespace Fxp\Composer\AssetPlugin\Tests\Fixtures\Repository\Vcs;
 class MockVcsDriverWithException extends MockVcsDriver
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function getTags()

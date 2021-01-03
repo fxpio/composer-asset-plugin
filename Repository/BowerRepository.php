@@ -18,41 +18,26 @@ namespace Fxp\Composer\AssetPlugin\Repository;
  */
 class BowerRepository extends AbstractAssetsRepository
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getType()
     {
         return 'bower';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getUrl()
     {
         return 'https://registry.bower.io/packages';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getPackageUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/%package%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSearchUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/search/%query%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         return array(

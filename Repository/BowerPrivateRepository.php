@@ -26,9 +26,6 @@ class BowerPrivateRepository extends AbstractAssetsRepository
     /**
      * Constructor.
      *
-     * @param array           $repoConfig
-     * @param IOInterface     $io
-     * @param Config          $config
      * @param EventDispatcher $eventDispatcher
      */
     public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
@@ -40,41 +37,26 @@ class BowerPrivateRepository extends AbstractAssetsRepository
         parent::__construct($repoConfig, $io, $config, $eventDispatcher);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getType()
     {
         return 'bower';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getUrl()
     {
         return $this->url;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getPackageUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/%package%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSearchUrl()
     {
         return $this->canonicalizeUrl($this->baseUrl.'/search/%query%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createVcsRepositoryConfig(array $data, $registryName = null)
     {
         $myArray = array();

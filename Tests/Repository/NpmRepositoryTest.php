@@ -169,25 +169,16 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         static::assertCount(1, $this->rm->getRepositories());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getType()
     {
         return 'npm';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
         return new NpmRepository($repoConfig, $io, $config, $eventDispatcher);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMockPackageForVcsConfig()
     {
         return array(
@@ -198,9 +189,6 @@ final class NpmRepositoryTest extends AbstractAssetsRepositoryTest
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMockSearchResult($name = 'mock-package')
     {
         return array();

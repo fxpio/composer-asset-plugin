@@ -244,8 +244,6 @@ final class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetIgnoreFiles
-     *
-     * @param array $ignoreFiles
      */
     public function testInstall(array $ignoreFiles)
     {
@@ -297,8 +295,6 @@ final class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetIgnoreFiles
-     *
-     * @param array $ignoreFiles
      */
     public function testUpdate(array $ignoreFiles)
     {
@@ -473,8 +469,6 @@ final class BowerInstallerTest extends TestCase
 
     /**
      * @dataProvider getAssetMainFiles
-     *
-     * @param array $mainFiles
      */
     public function testMainFiles(array $mainFiles)
     {
@@ -495,8 +489,6 @@ final class BowerInstallerTest extends TestCase
     }
 
     /**
-     * @param array $ignoreFiles
-     *
      * @return PackageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function createPackageMock(array $ignoreFiles = array())
@@ -518,8 +510,6 @@ final class BowerInstallerTest extends TestCase
     }
 
     /**
-     * @param array $mainFiles
-     *
      * @return \PHPUnit_Framework_MockObject_MockObject|RootPackageInterface
      */
     protected function createRootPackageMock(array $mainFiles = array())

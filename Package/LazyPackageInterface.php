@@ -23,8 +23,6 @@ interface LazyPackageInterface extends CompletePackageInterface
 {
     /**
      * Sets the lazy loader.
-     *
-     * @param LazyLoaderInterface $lazyLoader
      */
     public function setLoader(LazyLoaderInterface $lazyLoader);
 }

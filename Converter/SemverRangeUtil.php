@@ -121,9 +121,8 @@ abstract class SemverRangeUtil
     {
         $version = static::cleanExtraVersion($version);
         $version = str_replace(array('*', 'x', 'X'), '9999999', $version);
-        $exp = explode('.', $version);
 
-        return $exp;
+        return explode('.', $version);
     }
 
     /**

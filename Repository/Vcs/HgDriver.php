@@ -28,9 +28,6 @@ class HgDriver extends BaseHgDriver
      */
     protected $cache;
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
         parent::initialize();
@@ -41,9 +38,6 @@ class HgDriver extends BaseHgDriver
         $this->cache = new Cache($this->io, $this->config->get('cache-repo-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $cacheUrl));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
         $resource = sprintf('%s %s', ProcessExecutor::escape($identifier), $this->repoConfig['filename']);

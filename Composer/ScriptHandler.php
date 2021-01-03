@@ -31,8 +31,6 @@ class ScriptHandler
     /**
      * Remove ignored files of the installed package defined in the root
      * package config section.
-     *
-     * @param PackageEvent $event
      */
     public static function deleteIgnoredFiles(PackageEvent $event)
     {
@@ -47,8 +45,6 @@ class ScriptHandler
 
     /**
      * Get the plugin config.
-     *
-     * @param PackageEvent $event
      *
      * @return Config
      */

@@ -59,9 +59,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
      */
     protected $assetRepositoryManager;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -74,9 +71,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->config = ConfigBuilder::build($composer, $io);
@@ -101,8 +95,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Disable the package filter for all command, but for install and update command.
-     *
-     * @param CommandEvent $event
      */
     public function onPluginCommand(CommandEvent $event)
     {
@@ -117,8 +109,6 @@ class FxpAssetPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Add pool in asset repository manager.
-     *
-     * @param InstallerEvent $event
      */
     public function onPreDependenciesSolving(InstallerEvent $event)
     {

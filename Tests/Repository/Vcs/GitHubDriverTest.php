@@ -1051,8 +1051,6 @@ final class GitHubDriverTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $type
      * @param string $filename
-     * @param array  $branches
-     * @param array  $gitBranches
      */
     public function testGetBranchesWithGitDriver($type, $filename, array $branches, array $gitBranches)
     {
@@ -1097,7 +1095,6 @@ final class GitHubDriverTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $type
      * @param string $filename
-     * @param array  $branches
      */
     public function testGetBranches($type, $filename, array $branches)
     {
@@ -1167,8 +1164,6 @@ final class GitHubDriverTest extends \PHPUnit\Framework\TestCase
      *
      * @param string $type
      * @param string $filename
-     * @param array  $branches
-     * @param array  $gitBranches
      */
     public function testNoApi($type, $filename, array $branches, array $gitBranches)
     {

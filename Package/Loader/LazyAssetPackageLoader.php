@@ -83,7 +83,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
      *
      * @param string $identifier
      * @param string $type
-     * @param array  $packageData
      */
     public function __construct($type, $identifier, array $packageData)
     {
@@ -96,8 +95,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Sets the asset type.
-     *
-     * @param AssetTypeInterface $assetType
      */
     public function setAssetType(AssetTypeInterface $assetType)
     {
@@ -106,8 +103,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Sets the laoder.
-     *
-     * @param LoaderInterface $loader
      */
     public function setLoader(LoaderInterface $loader)
     {
@@ -116,8 +111,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Sets the driver.
-     *
-     * @param VcsDriverInterface $driver
      */
     public function setDriver(VcsDriverInterface $driver)
     {
@@ -126,8 +119,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Sets the IO.
-     *
-     * @param IOInterface $io
      */
     public function setIO(IOInterface $io)
     {
@@ -145,9 +136,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
         $this->assetRepositoryManager = $assetRepositoryManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(LazyPackageInterface $package)
     {
         if (isset($this->cache[$package->getUniqueName()])) {
@@ -189,8 +177,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Loads the real package.
-     *
-     * @param LazyPackageInterface $package
      *
      * @return CompletePackageInterface|false
      */
@@ -243,9 +229,7 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
     /**
      * Pre process the data of package before the conversion to Package instance.
      *
-     * @param VcsDriverInterface $driver
-     * @param array              $data
-     * @param string             $identifier
+     * @param string $identifier
      *
      * @return array
      */
@@ -269,8 +253,6 @@ class LazyAssetPackageLoader implements LazyLoaderInterface
 
     /**
      * Dispatches the vcs repositories event.
-     *
-     * @param array $vcsRepositories
      */
     protected function addRepositories(array $vcsRepositories)
     {

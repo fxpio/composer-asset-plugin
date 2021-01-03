@@ -36,11 +36,7 @@ class AssetInstaller extends LibraryInstaller
     /**
      * Constructor.
      *
-     * @param Config             $config
-     * @param IOInterface        $io
-     * @param Composer           $composer
-     * @param AssetTypeInterface $assetType
-     * @param Filesystem         $filesystem
+     * @param Filesystem $filesystem
      */
     public function __construct(Config $config, IOInterface $io, Composer $composer, AssetTypeInterface $assetType, Filesystem $filesystem = null)
     {
@@ -56,17 +52,11 @@ class AssetInstaller extends LibraryInstaller
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($packageType)
     {
         return $packageType === $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstallPath(PackageInterface $package)
     {
         $this->initializeVendorDir();
@@ -78,17 +68,11 @@ class AssetInstaller extends LibraryInstaller
         return ($this->vendorDir ? $this->vendorDir.'/' : '').$name.($targetDir ? '/'.$targetDir : '');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getPackageBasePath(PackageInterface $package)
     {
         return $this->getInstallPath($package);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function installCode(PackageInterface $package)
     {
         $package = AssetPlugin::addMainFiles($this->config, $package);
@@ -98,9 +82,6 @@ class AssetInstaller extends LibraryInstaller
         $this->deleteIgnoredFiles($package);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function updateCode(PackageInterface $initial, PackageInterface $target)
     {
         $target = AssetPlugin::addMainFiles($this->config, $target);
@@ -112,8 +93,6 @@ class AssetInstaller extends LibraryInstaller
 
     /**
      * Deletes files defined in bower.json in section "ignore".
-     *
-     * @param PackageInterface $package
      */
     protected function deleteIgnoredFiles(PackageInterface $package)
     {

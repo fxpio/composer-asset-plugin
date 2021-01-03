@@ -31,8 +31,6 @@ use Fxp\Composer\AssetPlugin\Util\Validator;
 class AssetVcsRepository extends AbstractAssetVcsRepository
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     protected function initialize()
@@ -73,8 +71,6 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
 
     /**
      * Initializes all tags.
-     *
-     * @param VcsDriverInterface $driver
      */
     protected function initTags(VcsDriverInterface $driver)
     {
@@ -94,10 +90,9 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     /**
      * Initializes the tag: check if tag must be skipped and validate the tag.
      *
-     * @param VcsDriverInterface $driver
-     * @param string             $packageName
-     * @param string             $tag
-     * @param string             $identifier
+     * @param string $packageName
+     * @param string $tag
+     * @param string $identifier
      */
     protected function initTag(VcsDriverInterface $driver, $packageName, $tag, $identifier)
     {
@@ -119,11 +114,10 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
     /**
      * Initializes the tag: convert data and create package.
      *
-     * @param VcsDriverInterface $driver
-     * @param string             $packageName
-     * @param string             $tag
-     * @param string             $identifier
-     * @param string             $parsedTag
+     * @param string $packageName
+     * @param string $tag
+     * @param string $identifier
+     * @param string $parsedTag
      */
     protected function initTagAddPackage(VcsDriverInterface $driver, $packageName, $tag, $identifier, $parsedTag)
     {
@@ -149,8 +143,6 @@ class AssetVcsRepository extends AbstractAssetVcsRepository
 
     /**
      * Initializes all branches.
-     *
-     * @param VcsDriverInterface $driver
      */
     protected function initBranches(VcsDriverInterface $driver)
     {

@@ -37,9 +37,6 @@ class PerforceDriver extends BasePerforceDriver
      */
     protected $cache;
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
         $this->depot = $this->repoConfig['depot'];
@@ -60,9 +57,6 @@ class PerforceDriver extends BasePerforceDriver
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
         $this->infoCache[$identifier] = Util::readCache($this->infoCache, $this->cache, $this->repoConfig['asset-type'], $identifier, true);

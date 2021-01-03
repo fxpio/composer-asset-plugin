@@ -41,25 +41,16 @@ final class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         $this->registry->whatProvides($this->pool, $name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getType()
     {
         return 'bower';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRegistry(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
     {
         return new BowerPrivateRepository($repoConfig, $io, $config, $eventDispatcher);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMockPackageForVcsConfig()
     {
         return array(
@@ -67,9 +58,6 @@ final class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMockSearchResult($name = 'mock-package')
     {
         return array(
@@ -79,9 +67,6 @@ final class BowerPrivateRepositoryTest extends AbstractAssetsRepositoryTest
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getCustomRepoConfig()
     {
         return array(

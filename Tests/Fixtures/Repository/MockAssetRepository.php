@@ -26,11 +26,6 @@ class MockAssetRepository implements RepositoryInterface
 {
     /**
      * Constructor.
-     *
-     * @param array                $repoConfig
-     * @param IOInterface          $io
-     * @param Config               $config
-     * @param null|EventDispatcher $eventDispatcher
      */
     public function __construct(
         array $repoConfig,
@@ -40,48 +35,30 @@ class MockAssetRepository implements RepositoryInterface
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPackage(PackageInterface $package)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findPackage($name, $version)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findPackages($name, $version = null)
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPackages()
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function search($query, $mode = 0, $type = null)
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return 0;

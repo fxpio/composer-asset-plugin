@@ -32,10 +32,6 @@ class AssetPlugin
 {
     /**
      * Adds asset installers.
-     *
-     * @param Config      $config
-     * @param Composer    $composer
-     * @param IOInterface $io
      */
     public static function addInstallers(Config $config, Composer $composer, IOInterface $io)
     {
@@ -89,10 +85,6 @@ class AssetPlugin
 
     /**
      * Adds asset registry repositories.
-     *
-     * @param AssetRepositoryManager $arm
-     * @param VcsPackageFilter       $filter
-     * @param Config                 $config
      */
     public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config)
     {
@@ -107,8 +99,6 @@ class AssetPlugin
 
     /**
      * Sets vcs type repositories.
-     *
-     * @param RepositoryManager $rm
      */
     public static function setVcsTypeRepositories(RepositoryManager $rm)
     {
@@ -122,9 +112,7 @@ class AssetPlugin
     /**
      * Adds the main file definitions from the root package.
      *
-     * @param Config           $config
-     * @param PackageInterface $package
-     * @param string           $section
+     * @param string $section
      *
      * @return PackageInterface
      */

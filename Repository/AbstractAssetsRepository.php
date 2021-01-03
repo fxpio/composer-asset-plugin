@@ -67,9 +67,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * Constructor.
      *
-     * @param array           $repoConfig
-     * @param IOInterface     $io
-     * @param Config          $config
      * @param EventDispatcher $eventDispatcher
      */
     public function __construct(array $repoConfig, IOInterface $io, Config $config, EventDispatcher $eventDispatcher = null)
@@ -95,9 +92,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         $this->fallbackProviders = false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function search($query, $mode = 0, $type = null)
     {
         if (!$this->searchable) {
@@ -118,9 +112,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         return $results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function whatProvides(Pool $pool, $name, $bypassFilters = false)
     {
         if (null !== $provides = $this->findWhatProvides($name)) {
@@ -148,9 +139,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         return $this->providers[$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMinimalPackages()
     {
         return array();
@@ -216,9 +204,6 @@ abstract class AbstractAssetsRepository extends ComposerRepository
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function loadRootServerFile()
     {
         return array(
@@ -262,9 +247,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
     /**
      * Manage exception for "whatProvides" method.
      *
-     * @param Pool       $pool
-     * @param string     $name
-     * @param \Exception $exception
+     * @param string $name
      *
      * @throws \Exception When exception is not a TransportException instance
      */
@@ -283,9 +266,7 @@ abstract class AbstractAssetsRepository extends ComposerRepository
      * Searchs if the registry has a package with the same name exists with a
      * different camelcase.
      *
-     * @param Pool               $pool
-     * @param string             $name
-     * @param TransportException $ex
+     * @param string $name
      */
     protected function fallbackWathProvides(Pool $pool, $name, TransportException $ex)
     {

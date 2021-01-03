@@ -40,26 +40,17 @@ class MockVcsDriverWithPackages extends MockVcsDriver
         ),
     );
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRootIdentifier()
     {
         return 'master';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasComposerFile($identifier)
     {
         return isset($this->composer['branch:'.$identifier])
             || isset($this->composer['tag:'.$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
         $composer = null;
@@ -75,17 +66,11 @@ class MockVcsDriverWithPackages extends MockVcsDriver
         return $composer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBranches()
     {
         return $this->getDataPackages('branch');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTags()
     {
         return $this->getDataPackages('tag');

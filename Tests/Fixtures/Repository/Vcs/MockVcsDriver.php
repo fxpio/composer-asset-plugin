@@ -32,99 +32,60 @@ class MockVcsDriver implements VcsDriverInterface
      */
     public $contents;
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
         // no action
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRootIdentifier()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBranches()
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTags()
     {
         return array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDist($identifier)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSource($identifier)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUrl()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasComposerFile($identifier)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cleanup()
     {
         // no action
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function supports(IOInterface $io, Config $config, $url, $deep = false)
     {
         return static::$supported;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFileContent($file, $identifier)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChangeDate($identifier)
     {
         return new \DateTime();

@@ -54,11 +54,9 @@ class Perforce extends BasePerforce
     /**
      * Create perforce helper.
      *
-     * @param array           $repoConfig
-     * @param int|string      $port
-     * @param string          $path
-     * @param ProcessExecutor $process
-     * @param IOInterface     $io
+     * @param array      $repoConfig
+     * @param int|string $port
+     * @param string     $path
      *
      * @return Perforce
      */

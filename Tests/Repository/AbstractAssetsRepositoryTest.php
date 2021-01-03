@@ -295,9 +295,6 @@ abstract class AbstractAssetsRepositoryTest extends \PHPUnit\Framework\TestCase
     /**
      * Gets the asset registry.
      *
-     * @param array           $repoConfig
-     * @param IOInterface     $io
-     * @param Config          $config
      * @param EventDispatcher $eventDispatcher
      *
      * @return AbstractAssetsRepository

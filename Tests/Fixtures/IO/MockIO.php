@@ -41,49 +41,31 @@ class MockIO extends BaseIO
         $this->traces = array();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isInteractive()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isVerbose()
     {
         return $this->verbose;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isVeryVerbose()
     {
         return $this->verbose;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDebug()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDecorated()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function write($messages, $newline = true, $verbosity = self::NORMAL)
     {
         $pos = max(\count($this->traces) - 1, 0);
@@ -96,17 +78,11 @@ class MockIO extends BaseIO
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function writeError($messages, $newline = true, $verbosity = self::NORMAL)
     {
         $this->write($messages, $newline, $verbosity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function overwrite($messages, $newline = true, $size = 80, $verbosity = self::NORMAL)
     {
         $pos = max(\count($this->traces) - 1, 0);
@@ -121,47 +97,32 @@ class MockIO extends BaseIO
         $this->overwrite($messages, $newline, $size, $verbosity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function ask($question, $default = null)
     {
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function askConfirmation($question, $default = true)
     {
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function askAndValidate($question, $validator, $attempts = false, $default = null)
     {
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function askAndHideAnswer($question)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function select($question, $choices, $default, $attempts = false, $errorMessage = 'Value "%s" is invalid', $multiselect = false)
     {
         return $default;
     }
 
     /**
-     * Gets the taces.
+     * Gets the traces.
      *
      * @return array
      */

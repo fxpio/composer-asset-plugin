@@ -224,8 +224,7 @@ final class IgnoreFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param IgnoreManager $manager
-     * @param string        $installDir
+     * @param string $installDir
      */
     protected function validateInstallDir(IgnoreManager $manager, $installDir)
     {

@@ -26,9 +26,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
      */
     protected $lazyLoader;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAutoload()
     {
         $this->initialize();
@@ -36,9 +33,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getAutoload();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDevAutoload()
     {
         $this->initialize();
@@ -46,9 +40,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getDevAutoload();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIncludePaths()
     {
         $this->initialize();
@@ -56,9 +47,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getIncludePaths();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNotificationUrl()
     {
         $this->initialize();
@@ -66,9 +54,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getNotificationUrl();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getArchiveExcludes()
     {
         $this->initialize();
@@ -76,9 +61,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getArchiveExcludes();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getScripts()
     {
         $this->initialize();
@@ -86,9 +68,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getScripts();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRepositories()
     {
         $this->initialize();
@@ -96,9 +75,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getRepositories();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLicense()
     {
         $this->initialize();
@@ -106,9 +82,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getLicense();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getKeywords()
     {
         $this->initialize();
@@ -116,9 +89,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getKeywords();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthors()
     {
         $this->initialize();
@@ -126,9 +96,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getAuthors();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         $this->initialize();
@@ -136,9 +103,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getDescription();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHomepage()
     {
         $this->initialize();
@@ -146,9 +110,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getHomepage();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSupport()
     {
         $this->initialize();
@@ -156,9 +117,6 @@ abstract class AbstractLazyCompletePackage extends CompletePackage implements La
         return parent::getSupport();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLoader(LazyLoaderInterface $lazyLoader)
     {
         $this->lazyLoader = $lazyLoader;

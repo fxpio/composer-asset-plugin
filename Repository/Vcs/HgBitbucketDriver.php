@@ -26,9 +26,6 @@ class HgBitbucketDriver extends BaseHgBitbucketDriver
      */
     protected $cache;
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize()
     {
         parent::initialize();
@@ -36,9 +33,6 @@ class HgBitbucketDriver extends BaseHgBitbucketDriver
         $this->cache = new Cache($this->io, $this->config->get('cache-repo-dir').'/'.$this->originUrl.'/'.$this->owner.'/'.$this->repository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
         return BitbucketUtil::getComposerInformation($this->cache, $this->infoCache, $this->getScheme(), $this->repoConfig, $identifier, $this->owner, $this->repository, $this, 'getContents');

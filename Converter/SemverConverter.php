@@ -18,9 +18,6 @@ namespace Fxp\Composer\AssetPlugin\Converter;
  */
 class SemverConverter implements VersionConverterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function convertVersion($version)
     {
         if (\in_array($version, array(null, '', 'latest'), true)) {
@@ -36,9 +33,6 @@ class SemverConverter implements VersionConverterInterface
         return $prefix.$version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertRange($range)
     {
         $range = $this->cleanRange(strtolower($range));
@@ -97,7 +91,6 @@ class SemverConverter implements VersionConverterInterface
      *
      * @param int         $i
      * @param string      $match
-     * @param array       $matches
      * @param null|string $special
      * @param null|string $replace
      */
@@ -123,7 +116,6 @@ class SemverConverter implements VersionConverterInterface
      *
      * @param int         $i
      * @param string      $match
-     * @param array       $matches
      * @param null|string $special
      * @param null|string $replace
      */
@@ -147,7 +139,6 @@ class SemverConverter implements VersionConverterInterface
      *
      * @param int         $i
      * @param string      $match
-     * @param array       $matches
      * @param null|string $special
      * @param null|string $replace
      */
@@ -170,7 +161,6 @@ class SemverConverter implements VersionConverterInterface
      *
      * @param int         $i
      * @param string      $match
-     * @param array       $matches
      * @param null|string $special
      * @param null|string $replace
      */
@@ -199,7 +189,6 @@ class SemverConverter implements VersionConverterInterface
      *
      * @param int         $i
      * @param string      $match
-     * @param array       $matches
      * @param null|string $special
      * @param null|string $replace
      */

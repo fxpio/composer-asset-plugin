@@ -28,17 +28,12 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
 
     /**
      * Constructor.
-     *
-     * @param AssetTypeInterface $assetType
      */
     public function __construct(AssetTypeInterface $assetType)
     {
         $this->assetType = $assetType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convert(array $data, array &$vcsRepos = array())
     {
         $keys = $this->getMapKeys();
@@ -162,9 +157,6 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         return array($dependency, $version);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMapKeys()
     {
         return array();
@@ -182,9 +174,6 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMapExtras()
     {
         return array();

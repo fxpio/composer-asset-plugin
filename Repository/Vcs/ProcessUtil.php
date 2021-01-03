@@ -25,16 +25,13 @@ class ProcessUtil
     /**
      * Get composer information.
      *
-     * @param Cache           $cache
-     * @param array           $infoCache
-     * @param string          $assetType
-     * @param ProcessExecutor $process
-     * @param string          $identifier
-     * @param string          $resource
-     * @param string          $cmdGet
-     * @param string          $cmdLog
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
+     * @param string $assetType
+     * @param string $identifier
+     * @param string $resource
+     * @param string $cmdGet
+     * @param string $cmdLog
+     * @param string $repoDir
+     * @param string $datetimePrefix
      *
      * @return array The composer
      */
@@ -65,12 +62,11 @@ class ProcessUtil
     /**
      * Get composer information.
      *
-     * @param string          $resource
-     * @param ProcessExecutor $process
-     * @param string          $cmdGet
-     * @param string          $cmdLog
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
+     * @param string $resource
+     * @param string $cmdGet
+     * @param string $cmdLog
+     * @param string $repoDir
+     * @param string $datetimePrefix
      *
      * @return array The composer
      */
@@ -90,11 +86,9 @@ class ProcessUtil
     /**
      * Add time in composer.
      *
-     * @param array           $composer
-     * @param ProcessExecutor $process
-     * @param string          $cmd
-     * @param string          $repoDir
-     * @param string          $datetimePrefix
+     * @param string $cmd
+     * @param string $repoDir
+     * @param string $datetimePrefix
      *
      * @return array The composer
      */

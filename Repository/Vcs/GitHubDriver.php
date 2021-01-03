@@ -21,9 +21,6 @@ use Composer\Json\JsonFile;
  */
 class GitHubDriver extends AbstractGitHubDriver
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerInformation($identifier)
     {
         if ($this->gitDriver) {

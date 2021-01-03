@@ -44,49 +44,31 @@ abstract class AbstractAssetType implements AssetTypeInterface
         $this->versionConverter = !$versionConverter ? new SemverConverter() : $versionConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerVendorName()
     {
         return $this->getName().'-asset';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getComposerType()
     {
         return $this->getName().'-asset-library';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilename()
     {
         return $this->getName().'.json';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPackageConverter()
     {
         return $this->packageConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionConverter()
     {
         return $this->versionConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function formatComposerName($name)
     {
         $prefix = $this->getComposerVendorName().'/';

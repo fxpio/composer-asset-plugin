@@ -22,9 +22,6 @@ use Fxp\Composer\AssetPlugin\Util\AssetPlugin;
  */
 class DefaultRegistryFactory implements RegistryFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function create(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config)
     {
         $rm = $arm->getRepositoryManager();
