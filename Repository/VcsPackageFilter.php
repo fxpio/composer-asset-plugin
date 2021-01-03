@@ -274,10 +274,8 @@ class VcsPackageFilter
      */
     private function initInstalledPackages()
     {
-        /** @var PackageInterface $package */
         foreach ($this->installedRepository->getPackages() as $package) {
             $operator = $this->getFilterOperator($package);
-            /** @var Link $link */
             $link = current($this->arrayLoader->parseLinks($this->package->getName(), $this->package->getVersion(), 'installed', array($package->getName() => $operator.$package->getPrettyVersion())));
             $link = $this->includeRootConstraint($package, $link);
 

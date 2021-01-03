@@ -67,6 +67,8 @@ class Util
      * @param string $identifier The identifier
      * @param array  $composer   The data composer
      * @param bool   $force      Force the write
+     *
+     * @throws
      */
     public static function writeCache(Cache $cache, $type, $identifier, array $composer, $force = false)
     {
@@ -83,6 +85,8 @@ class Util
      * @param string             $resource    The resource url
      * @param VcsDriverInterface $driver      The vcs driver
      * @param string             $method      The method for get content
+     *
+     * @throws
      *
      * @return array The composer
      */

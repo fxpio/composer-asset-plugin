@@ -136,6 +136,8 @@ abstract class AbstractGitHubDriver extends BaseGitHubDriver
      *
      * @param string $url The url
      *
+     * @throws
+     *
      * @return bool
      */
     protected function hasRedirectUrl($url)

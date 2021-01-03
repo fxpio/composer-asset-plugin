@@ -37,6 +37,9 @@ class PerforceDriver extends BasePerforceDriver
      */
     protected $cache;
 
+    /**
+     * @throws
+     */
     public function initialize()
     {
         $this->depot = $this->repoConfig['depot'];

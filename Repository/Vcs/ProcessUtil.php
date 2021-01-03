@@ -90,6 +90,8 @@ class ProcessUtil
      * @param string $repoDir
      * @param string $datetimePrefix
      *
+     * @throws
+     *
      * @return array The composer
      */
     protected static function addComposerTime(array $composer, ProcessExecutor $process, $cmd, $repoDir, $datetimePrefix = '')

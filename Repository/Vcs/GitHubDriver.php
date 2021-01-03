@@ -21,6 +21,11 @@ use Composer\Json\JsonFile;
  */
 class GitHubDriver extends AbstractGitHubDriver
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @throws
+     */
     public function getComposerInformation($identifier)
     {
         if ($this->gitDriver) {
@@ -52,7 +57,7 @@ class GitHubDriver extends AbstractGitHubDriver
      * @param string $resource
      *
      * @throws \RuntimeException
-     * @throws \Composer\Downloader\TransportException
+     * @throws TransportException
      * @throws \Exception
      *
      * @return null|array|false
@@ -93,6 +98,7 @@ class GitHubDriver extends AbstractGitHubDriver
     protected function parseComposerContent($resource)
     {
         $composer = (array) JsonFile::parseJson($this->getContents($resource));
+
         if (empty($composer['content']) || 'base64' !== $composer['encoding'] || !($composer = base64_decode($composer['content'], true))) {
             throw new \RuntimeException('Could not retrieve '.$this->repoConfig['filename'].' from '.$resource);
         }

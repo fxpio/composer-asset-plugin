@@ -133,6 +133,8 @@ class SvnDriver extends BaseSvnDriver
      * @param string $path     The path
      * @param string $rev      The rev
      *
+     * @throws
+     *
      * @return array The composer
      */
     protected function addComposerTime(array $composer, $path, $rev)

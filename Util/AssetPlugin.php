@@ -85,6 +85,8 @@ class AssetPlugin
 
     /**
      * Adds asset registry repositories.
+     *
+     * @throws
      */
     public static function addRegistryRepositories(AssetRepositoryManager $arm, VcsPackageFilter $filter, Config $config)
     {
