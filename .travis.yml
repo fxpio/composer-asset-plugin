@@ -1,91 +1,83 @@
+os: linux
+dist: xenial
+
 language: php
-
-dist: trusty
-
-sudo: false
 
 cache:
   directories:
     - $HOME/.composer/cache/files
 
-matrix:
+jobs:
     include:
-        - php: 5.5
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 5.5
-          env: COMPOSER_VERSION="1.7.*"
-        - php: 5.5
-          env: COMPOSER_VERSION="1.8.*"
-        - php: 5.5
-          env: COMPOSER_VERSION="1.9.*"
-        - php: 5.6
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 5.6
-          env: COMPOSER_VERSION="1.7.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.8.*"
         - php: 5.6
           env: COMPOSER_VERSION="1.9.*"
-        - php: 7.0
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 7.0
-          env: COMPOSER_VERSION="1.7.*"
+        - php: 5.6
+          env: COMPOSER_VERSION="1.10.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.8.*"
         - php: 7.0
           env: COMPOSER_VERSION="1.9.*"
-        - php: 7.1
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 7.1
-          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.0
+          env: COMPOSER_VERSION="1.10.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.8.*"
         - php: 7.1
           env: COMPOSER_VERSION="1.9.*"
-        - php: 7.2
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 7.2
-          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.1
+          env: COMPOSER_VERSION="1.10.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.8.*"
         - php: 7.2
           env: COMPOSER_VERSION="1.9.*"
-        - php: 7.3
-          env: COMPOSER_VERSION="1.6.*"
-        - php: 7.3
-          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.2
+          env: COMPOSER_VERSION="1.10.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.8.*"
         - php: 7.3
           env: COMPOSER_VERSION="1.9.*"
-        - php: nightly
-          env: COMPOSER_VERSION="1.6.*"
-        - php: nightly
-          env: COMPOSER_VERSION="1.7.*"
+        - php: 7.3
+          env: COMPOSER_VERSION="1.10.*"
+        - php: 7.4
+          env: COMPOSER_VERSION="1.8.*"
+        - php: 7.4
+          env: COMPOSER_VERSION="1.9.*"
+        - php: 7.4
+          env: COMPOSER_VERSION="1.10.*"
+        - php: 8.0
+          env: COMPOSER_VERSION="1.8.*"
+        - php: 8.0
+          env: COMPOSER_VERSION="1.9.*"
+        - php: 8.0
+          env: COMPOSER_VERSION="1.10.*"
         - php: nightly
           env: COMPOSER_VERSION="1.8.*"
         - php: nightly
           env: COMPOSER_VERSION="1.9.*"
+        - php: nightly
+          env: COMPOSER_VERSION="1.10.*"
 
     allow_failures:
         - php: nightly
 
     fast_finish: true
 
+
 before_script:
-    - composer self-update
-    - composer global require --prefer-source phpunit/phpunit:"^4.8 || ^5.7.0 || ^6.5.0 || ^7.5.0" php-coveralls/php-coveralls:^2.1.0
-    - if [ "$COMPOSER_VERSION" == "" ]; then composer install --prefer-source; fi;
-    - if [ "$COMPOSER_VERSION" != "" ]; then composer require "composer/composer:${COMPOSER_VERSION}" --no-update; fi;
-    - if [ "$COMPOSER_VERSION" != "" ]; then composer update --prefer-source; fi;
-    - mkdir -p ./build/logs
+    - |
+      composer self-update --1
+      if [ "$COMPOSER_VERSION" == "" ]; then composer install; fi;
+      if [ "$COMPOSER_VERSION" != "" ]; then composer require --dev --update-with-all-dependencies "composer/composer:${COMPOSER_VERSION}"; fi;
+      composer require --dev --update-with-all-dependencies phpunit/phpunit:"^4.8 || ^5.7.0 || ^6.5.0 || ^7.5.0" php-coveralls/php-coveralls:"^2.1.0"
 
 script:
-    - ~/.composer/vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
+    - |
+      vendor/bin/phpunit -v --coverage-clover coveralls.xml
 
 after_success:
-    - 'echo ''coverage_clover: build/logs/clover.xml'' >> ./.coveralls.yml'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then php ~/.composer/vendor/bin/php-coveralls -v; fi;'
+    - |
+      if [ "$TRAVIS_PHP_VERSION" != nightly ]; then php vendor/bin/php-coveralls -v; fi
 
 notifications:
     email: false
