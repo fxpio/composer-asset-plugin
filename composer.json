@@ -32,7 +32,7 @@
     "extra": {
         "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
         "branch-alias": {
-            "dev-1.4": "1.4-dev"
+            "dev-main": "1.4-dev"
         }
     }
 }
